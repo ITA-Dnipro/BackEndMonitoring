@@ -9,12 +9,13 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <BuildLog>
-      <Path>./Build\ReleaseWin32\log\$(MSBuildProjectName).log</Path>
+      <Path>./Build\ReleaseWin64\log\$(MSBuildProjectName).log</Path>
     </BuildLog>
     <ClCompile>
       <AdditionalIncludeDirectories>./include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />

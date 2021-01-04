@@ -1,9 +1,9 @@
 ﻿// BackendMonitoring.cpp : Этот файл содержит функцию "main". Здесь начинается и
 // заканчивается выполнение программы.
 //
-#include <iostream>
-
 #include "stdafx.h"
+
+#include <iostream>
 
 int main( )
 {

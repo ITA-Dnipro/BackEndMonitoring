@@ -3,15 +3,15 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <OutDir>.\Build\DebugWin64\out</OutDir>
-    <IntDir>.\Build\DebugWin64\temp</IntDir>
+    <OutDir>.\Build\DebugWin64\out\</OutDir>
+    <IntDir>.\Build\DebugWin64\temp\</IntDir>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
     <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <BuildLog>
-      <Path>.\Build\DebugWin64\log</Path>
+      <Path>.\Build\DebugWin64\log\$(MSBuildProjectName).log</Path>
     </BuildLog>
     <ClCompile>
       <AdditionalIncludeDirectories>./include</AdditionalIncludeDirectories>
