@@ -18,7 +18,7 @@
     <ClInclude Include="include\stdafx.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="HardwareStatus.h">
+    <ClInclude Include="include\HardwareStatus.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
