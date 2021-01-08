@@ -6,4 +6,4 @@ enum class CLOGGER_API ELogLevel : unsigned short
 	NONE, PROD, DEBUG, TRACE
 };
 
-CLOGGER_API std::string LogLevelToString(ELogLevel logLevel);
+CLOGGER_API std::string LogLevelToString(ELogLevel log_level);

@@ -8,4 +8,4 @@ enum class CLOGGER_API ELogConfig : unsigned short
 	PARAMS
 };
 
-CLOGGER_API std::string LogConfigToString(ELogConfig logConfig);
+CLOGGER_API std::string LogConfigToString(ELogConfig log_config);
