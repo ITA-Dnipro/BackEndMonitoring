@@ -4,21 +4,28 @@
 #include <thread>
 
 /// <summary>
-///		Gets current thread's id in <c>std::string</c>
+///		Namespace, that contains all classes and functions
+///		to work with CLogger and its macro-functions
 /// </summary>
-/// <returns>
-///		String, that contains thread_id
-/// </returns>
-/// <example>
-///		std::string thisThread = ThisThreadGetIdString();
-/// </example>
-inline std::string ThisThreadGetIdString()
+namespace Log
 {
-	std::stringstream ss;
-	ss << std::this_thread::get_id();
-	return ss.str();
-}
+	/// <summary>
+	///		Gets current thread's id in <c>std::string</c>
+	/// </summary>
+	/// <returns>
+	///		String, that contains thread_id
+	/// </returns>
+	/// <example>
+	///		std::string thisThread = ThisThreadGetIdString();
+	/// </example>
+	inline std::string ThisThreadGetIdString() // TODO: it maybe one of utils
+	{
+		std::stringstream ss;
+		ss << std::this_thread::get_id();
+		return ss.str();
+	}
 
+}
 #define TAKE_15(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, N, ...) N
 #define COUNT(...) TAKE_15(__VA_ARGS__, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
 

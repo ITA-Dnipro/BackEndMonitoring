@@ -3,20 +3,27 @@
 
 #include <map>
 
-std::string LogLevelToString(const ELogLevel log_level)
+/// <summary>
+///		Namespace, that contains all classes and functions
+///		to work with CLogger and its macro-functions
+/// </summary>
+namespace Log
 {
-	constexpr auto* c_none_str = "";
-	constexpr auto* c_prod_str = "PROD";
-	constexpr auto* c_debug_str = "DEBUG";
-	constexpr auto* c_trace_str = "TRACE";
-	
-	const std::map<ELogLevel, std::string> c_string_map
+	std::string LogLevelToString(const ELogLevel log_level)
 	{
-		{ELogLevel::NONE, c_none_str},
-		{ELogLevel::PROD, c_prod_str},
-		{ELogLevel::DEBUG, c_debug_str},
-		{ELogLevel::TRACE, c_trace_str}
-	};
+		constexpr auto* c_none_str = "";
+		constexpr auto* c_prod_str = "PROD";
+		constexpr auto* c_debug_str = "DEBUG";
+		constexpr auto* c_trace_str = "TRACE";
 
-	return c_string_map.at(log_level);
+		const std::map<ELogLevel, std::string> c_string_map
+		{
+			{ELogLevel::NONE, c_none_str},
+			{ELogLevel::PROD, c_prod_str},
+			{ELogLevel::DEBUG, c_debug_str},
+			{ELogLevel::TRACE, c_trace_str}
+		};
+
+		return c_string_map.at(log_level);
+	}
 }
