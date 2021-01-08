@@ -143,11 +143,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\CLogger\CLogger.cpp" />
     <ClCompile Include="src\DllMain.cpp" />
     <ClCompile Include="src\ELogConfig\ELogConfig.cpp" />
     <ClCompile Include="src\ELogLevel\ELogLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\CLogger\CLogger.h" />
     <ClInclude Include="include\CLogMessage\CLogMessage.h" />
     <ClInclude Include="include\ELogConfig\ELogConfig.h" />
     <ClInclude Include="include\ELogLevel\ELogLevel.h" />
