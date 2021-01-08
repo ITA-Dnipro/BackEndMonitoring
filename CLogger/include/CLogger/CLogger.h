@@ -12,7 +12,7 @@
 /// <summary>
 /// Class to output <c>CLogMessage</c>
 /// </summary>
-class CLogger
+class CLOGGER_API CLogger
 {
 public:
 	CLogger() = delete;

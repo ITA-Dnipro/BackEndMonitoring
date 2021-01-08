@@ -11,7 +11,7 @@
 /// <summary>
 ///		Class, that sets basic configuration of <c>CLogger</c> and creates it
 /// </summary>
-class CLogBuilder {
+class CLOGGER_API CLogBuilder {
 public:
 	CLogBuilder() = delete;
 	explicit CLogBuilder(const std::string& log_name, ELogLevel log_level);
