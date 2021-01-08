@@ -98,7 +98,7 @@ inline std::string ThisThreadGetIdString()
 #define WRITE_DEBUG_WITH_PARAMS(logger, messageString, ...) \
 	WRITE_LOG_WITH_PARAMS(logger, messageString, ELogLevel::DEBUG, __VA_ARGS__) \
 
-#define WRITE_PROD_EXCEPTION(logger, exception) \
+#define WRITE_DEBUG_EXCEPTION(logger, exception) \
 	WRITE_LOG_EXCEPTION(logger, exception, ELogLevel::DEBUG) \
 
 #define WRITE_TRACE(logger, messageString) \
@@ -107,5 +107,5 @@ inline std::string ThisThreadGetIdString()
 #define WRITE_TRACE_WITH_PARAMS(logger, messageString, ...) \
 	WRITE_LOG_WITH_PARAMS(logger, messageString, ELogLevel::TRACE, __VA_ARGS__) \
 
-#define WRITE_PROD_EXCEPTION(logger, exception) \
+#define WRITE_TRACE_EXCEPTION(logger, exception) \
 	WRITE_LOG_EXCEPTION(logger, exception, ELogLevel::TRACE) \
