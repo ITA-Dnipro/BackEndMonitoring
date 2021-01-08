@@ -44,7 +44,7 @@ namespace Log
 	CLogger::~CLogger() noexcept = default;
 
 	/// <summary>
-	///		Adds output stream of <c>CLogger</c>.
+	///		Adds thread safe (with <c>std::mutex</c>) output stream of <c>CLogger</c>.
 	///		<c>CLogger</c> doesn't own the stream, so it won't call there dtors
 	/// </summary>
 	/// <param name="stream">
@@ -60,9 +60,38 @@ namespace Log
 	///		auto* testLogger1 = new CLogger("TestName", ELogLevel::DEBUG);
 	///		testLogger1->AddStream(std::cout).AddStream(testFile);
 	/// </example>
-	CLogger& CLogger::AddStream(std::ostream& stream)
+	CLogger& CLogger::AddThreadSafeStream(std::ostream& stream)
 	{
-		this->m_write_stream_list.emplace_back(stream);
+		this->m_write_stream_list
+			.emplace_back(stream, std::unique_ptr<std::mutex>(nullptr));
+		
+		return *this;
+	}
+
+	/// <summary>
+	///		Adds thread unsafe (without <c>std::mutex</c>) output stream of
+	///		<c>CLogger</c>. <c>CLogger</c> doesn't own the stream,
+	///		so it won't call there dtors
+	/// </summary>
+	/// <param name="stream">
+	///		Output stream such as <c>std::cout</c>, <c>std::cerr</c>
+	///		or instance of <c>std::ofstream</c>
+	///	</param>
+	/// <returns>
+	///		Reference to <c>this</c> object
+	///		to continue work with class methods in one line
+	/// </returns>
+	/// <example>
+	///		std::ofstream testFile("TestFile.txt");
+	///		auto* testLogger1 = new CLogger("TestName", ELogLevel::DEBUG);
+	///		testLogger1->AddThreadUnsafeStream(std::cout)
+	///			.AddThreadUnsafeStream(testFile, mtx);
+	/// </example>
+	CLogger& CLogger::AddThreadUnsafeStream(std::ostream& stream)
+	{
+		this->m_write_stream_list
+			.emplace_back(stream, std::make_unique<std::mutex>());
+
 		return *this;
 	}
 
@@ -190,8 +219,17 @@ namespace Log
 	///		String to print
 	/// </param>
 	void CLogger::PrintToAllStreams(const std::string& info) const {
-		for (const auto& stream : this->m_write_stream_list) {
+		for (const auto& [stream, mutex] : this->m_write_stream_list)
+		{
+			if (nullptr != mutex) {
+				mutex->lock();
+			}
+			
 			this->PrintLogInfo(info, stream);
+			
+			if (nullptr != mutex) {
+				mutex->unlock();
+			}
 		}
 	}
 

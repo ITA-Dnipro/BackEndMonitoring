@@ -29,7 +29,8 @@ namespace Log
 		[[nodiscard]] ELogLevel GetLogLevel() const;
 		CLogBuilder& SetLogLevel(ELogLevel log_level);
 
-		CLogBuilder& AddStream(std::ostream& stream);
+		CLogBuilder& AddThreadSafeStream(std::ostream& stream);
+		CLogBuilder& AddThreadUnsafeStream(std::ostream& stream);
 
 		template<typename... Args>
 		CLogBuilder& SetLogConfig(Args... args);
@@ -48,7 +49,8 @@ namespace Log
 		ELogLevel m_log_level;
 		std::string m_log_name;
 		std::list<ELogConfig> m_log_config_list;
-		std::list<std::reference_wrapper<std::ostream>> m_write_stream_list_;
+		std::list<std::reference_wrapper<std::ostream>> m_write_stream_safe_list;
+		std::list<std::reference_wrapper<std::ostream>> m_write_stream_unsafe_list;
 
 		CLogBuilder& AddLogConfig(ELogConfig log_config);
 		template<typename... Args>

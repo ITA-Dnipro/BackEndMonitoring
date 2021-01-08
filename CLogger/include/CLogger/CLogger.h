@@ -2,6 +2,7 @@
 #include "stdafx.h"
 
 #include <list>
+#include <mutex>
 #include <ostream>
 #include <sstream>
 
@@ -28,7 +29,8 @@ namespace Log
 
 		~CLogger() noexcept;
 
-		CLogger& AddStream(std::ostream& stream);
+		CLogger& AddThreadSafeStream(std::ostream& stream);
+		CLogger& AddThreadUnsafeStream(std::ostream& stream);
 
 		[[nodiscard]] ELogLevel GetLogLevel() const;
 		CLogger& SetLogLevel(ELogLevel log_level);
@@ -51,22 +53,27 @@ namespace Log
 		ELogLevel m_log_level;
 		std::string m_log_name;
 		std::list<ELogConfig> m_log_config_list;
-		std::list<std::reference_wrapper<std::ostream>> m_write_stream_list;
+		std::list<std::pair<std::reference_wrapper<std::ostream>,
+			std::unique_ptr<std::mutex>>> m_write_stream_list;
 		//mutex logMutex_;
 
 		template<typename... Args>
 		void PrintToAllStreams(const CLogMessage<Args...>& log_message) const;
 		
 		template<typename... Args>
-		std::ostream& PrintLogMessage(const CLogMessage<Args...>& log_message, std::ostream& stream) const;
+		std::ostream& PrintLogMessage(const CLogMessage<Args...>& log_message,
+			std::ostream& stream) const;
 
 		template<typename... Args>
-		std::ostream& PrintParams(const CLogMessage<Args...>& log_message, std::ostream& stream) const;
+		std::ostream& PrintParams(const CLogMessage<Args...>& log_message,
+			std::ostream& stream) const;
 		template<typename TupleType, size_t... Size>
-		std::ostream& PrintParams(const TupleType& tuple, std::index_sequence<Size...>, std::ostream& stream) const;
+		std::ostream& PrintParams(const TupleType& tuple,
+			std::index_sequence<Size...>, std::ostream& stream) const;
 
 		void PrintToAllStreams(const std::string& info) const;
-		std::ostream& PrintLogInfo(const std::string& info, std::ostream& stream) const;
+		std::ostream& PrintLogInfo(const std::string& info,
+			std::ostream& stream) const;
 	};
 
 	/// <summary>
@@ -138,9 +145,21 @@ namespace Log
 	///		<c>CLogMessage</c> to print
 	/// </param>
 	template<typename ... Args>
-	void CLogger::PrintToAllStreams(const CLogMessage<Args...>& log_message) const {
-		for (const auto& stream : this->m_write_stream_list) {
+	void CLogger::PrintToAllStreams(const CLogMessage<Args...>& log_message) const
+	{
+		for (const auto& [stream, mutex] : this->m_write_stream_list)
+		{
+			if (nullptr != mutex)
+			{
+				mutex->lock();
+			}
+			
 			this->PrintLogMessage(log_message, stream);
+
+			if (nullptr != mutex)
+			{
+				mutex->unlock();
+			}
 		}
 	}
 
@@ -161,7 +180,9 @@ namespace Log
 	///		Modified output stream
 	/// </returns>
 	template<typename... Args>
-	std::ostream& CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message, std::ostream& stream) const {
+	std::ostream& CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message,
+		std::ostream& stream) const
+	{
 		std::stringstream ss;
 
 		for (const auto& config : this->m_log_config_list)

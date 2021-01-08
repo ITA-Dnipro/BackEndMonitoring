@@ -97,7 +97,7 @@ namespace Log
 	}
 
 	/// <summary>
-	///		Adds output stream of future <c>CLogger</c>.
+	///		Adds thread safe (with <c>std::mutex</c>) output stream of future <c>CLogger</c>.
 	///		Neither <c>CLogger</c> nor the <c>CLogBuilder</c> owns the stream,
 	///		so they won't call there dtors
 	/// </summary>
@@ -112,13 +112,40 @@ namespace Log
 	/// <example>
 	///		std::ofstream testFile("TestFile.txt");
 	///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG);
-	///		testBuilder->AddStream(std::cout)
-	///			.AddStream(std::cerr)
-	///			.AddStream(testFile);	
+	///		testBuilder->AddThreadSafeStream(std::cout)
+	///			.AddThreadSafeStream(std::cerr)
+	///			.AddThreadSafeStream(testFile);	
 	/// </example>
-	CLogBuilder& CLogBuilder::AddStream(std::ostream& stream)
+	CLogBuilder& CLogBuilder::AddThreadSafeStream(std::ostream& stream)
 	{
-		this->m_write_stream_list_.emplace_front(stream);
+		this->m_write_stream_safe_list.emplace_front(stream);
+		return *this;
+	}
+
+	/// <summary>
+	///		Adds thread unsafe (without <c>std::mutex</c>) output
+	///		stream of future <c>CLogger</c>. Neither <c>CLogger</c>
+	///		nor the <c>CLogBuilder</c> owns the stream, so they
+	///		won't call there dtors
+	/// </summary>
+	/// <param name="stream">
+	///		Output stream such as <c>std::cout</c>, <c>std::cerr</c>
+	///		or instance of <c>std::ofstream</c>
+	///	</param>
+	/// <returns>
+	///		Reference to <c>this</c> object
+	///		to continue work with class methods in one line
+	/// </returns>
+	/// <example>
+	///		std::ofstream testFile("TestFile.txt");
+	///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG);
+	///		testBuilder->AddThreadUnsafeStream(std::cout)
+	///			.AddThreadUnsafeStream(std::cerr)
+	///			.AddThreadUnsafeStream(testFile);	
+	/// </example>
+	CLogBuilder& CLogBuilder::AddThreadUnsafeStream(std::ostream& stream)
+	{
+		this->m_write_stream_unsafe_list.emplace_front(stream);
 		return *this;
 	}
 
@@ -195,9 +222,14 @@ namespace Log
 			log->AddLogConfig(config);
 		}
 
-		for (const auto& stream : this->m_write_stream_list_)
+		for (const auto& stream : this->m_write_stream_safe_list)
 		{
-			log->AddStream(stream);
+			log->AddThreadSafeStream(stream);
+		}
+
+		for (const auto& stream : this->m_write_stream_unsafe_list)
+		{
+			log->AddThreadUnsafeStream(stream);
 		}
 
 		return log;
