@@ -24,9 +24,14 @@
     <ClCompile Include="src\ELogConfig\ELogConfig.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="src\CLogBuilder\CLogBuilder.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
     <ClCompile Include="src\CLogger\CLogger.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="include\ELogLevel\ELogLevel.h">
       <Filter>Header files</Filter>
     </ClInclude>
@@ -37,6 +42,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="include\CLogMessage\CLogMessage.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CLogBuilder\CLogBuilder.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="include\CLogger\CLogger.h">
