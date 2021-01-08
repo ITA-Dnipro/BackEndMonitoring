@@ -14,4 +14,24 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ELogLevel\ELogLevel.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DllMain.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ELogConfig\ELogConfig.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClInclude Include="include\ELogLevel\ELogLevel.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stdafx.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ELogConfig\ELogConfig.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

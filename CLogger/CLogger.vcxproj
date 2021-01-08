@@ -144,6 +144,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\DllMain.cpp" />
+    <ClCompile Include="src\ELogConfig\ELogConfig.cpp" />
+    <ClCompile Include="src\ELogLevel\ELogLevel.cpp" />
+  </ItemGroup>
+    <ClInclude Include="include\ELogConfig\ELogConfig.h" />
+    <ClInclude Include="include\ELogLevel\ELogLevel.h" />
     <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
