@@ -12,18 +12,18 @@ namespace Log
 	///		Explicit two-parameter ctor, that initializes
 	///		name and <c>ELogLevel</c> of <c>CLogger</c>
 	/// </summary>
-	/// <param name="logName">
+	/// <param name="log_name">
 	///		Unique name of <c>CLogger</c> instance</param>
 	/// </param>
-	/// <param name="logLevel">
+	/// <param name="log_level">
 	///		<c>ELogLevel</c> of <c>CLogger</c>,
 	///		which helps to filter out some messages
 	/// </param>
 	/// <example>
 	///		const auto* testLogger = new CLogger("TestName", ELogLevel::DEBUG));
 	/// </example>
-	CLogger::CLogger(const std::string& logName, const ELogLevel logLevel)
-		: m_log_level(logLevel), m_log_name(logName)
+	CLogger::CLogger(const std::string& log_name, const ELogLevel log_level)
+		: m_log_level(log_level), m_log_name(log_name)
 	{}
 
 	/// <summary>
@@ -84,7 +84,7 @@ namespace Log
 	/// <summary>
 	///		<c>ELogLevel</c> setter
 	/// </summary>
-	/// <param name="logLevel">
+	/// <param name="log_level">
 	///		<c>ELogLevel</c> to set
 	///	</param>
 	/// <returns>
@@ -95,11 +95,11 @@ namespace Log
 	///		const auto* testLogger = new CLogger("TestName", ELogLevel::DEBUG);
 	///		testLogger->SetLogLevel(ELogLevel::TRACE);
 	/// </example>
-	CLogger& CLogger::SetLogLevel(const ELogLevel logLevel)
+	CLogger& CLogger::SetLogLevel(const ELogLevel log_level)
 	{
-		if (logLevel != this->m_log_level)
+		if (log_level != this->m_log_level)
 		{
-			this->m_log_level = logLevel;
+			this->m_log_level = log_level;
 		}
 		return *this;
 	}
@@ -124,7 +124,7 @@ namespace Log
 	///		The order of addition is important for output string of
 	///		<c>CLogger</c>. Also it ignores duplicates
 	/// </summary>
-	/// <param name="logConfig">
+	/// <param name="log_config">
 	///		<c>ELogConfig</c> that modifies output string of <c>CLogger</c>
 	/// </param>
 	/// <returns>
@@ -138,12 +138,12 @@ namespace Log
 	///			.AddLogConfig(ELogConfig::PARAMS)
 	///			.AddLogConfig(ELogConfig::MESSAGE); // won't be added
 	/// </example>
-	CLogger& CLogger::AddLogConfig(const ELogConfig logConfig)
+	CLogger& CLogger::AddLogConfig(const ELogConfig log_config)
 	{
 		if (std::find(this->m_log_config_list.begin(),
-			this->m_log_config_list.end(), logConfig) == this->m_log_config_list.end())
+			this->m_log_config_list.end(), log_config) == this->m_log_config_list.end())
 		{
-			this->m_log_config_list.emplace_back(logConfig);
+			this->m_log_config_list.emplace_back(log_config);
 		}
 		return *this;
 	}
@@ -157,6 +157,12 @@ namespace Log
 	/// </example>
 	void CLogger::PrintLogInfo() const
 	{
+		if (this->m_write_stream_list.empty()
+			|| this->m_log_config_list.empty())
+		{
+			return;
+		}
+		
 		std::stringstream ss;
 		ss << "CLogger name:" << " " << "\"" << this->m_log_name << "\"" << " "
 		   << "Level:" << " " << "[" << LogLevelToString(this->m_log_level)
@@ -173,11 +179,19 @@ namespace Log
 				ss << "," << " " << LogConfigToString(*config) << std::flush;
 			}
 		}
+		
+		this->PrintToAllStreams(ss.str());
+	}
 
-		const auto string = ss.str();
-		for (const auto& stream : this->m_write_stream_list)
-		{
-			this->PrintLogInfo(string, stream);
+	/// <summary>
+	///		Prints to all streams some <c>std::string</c>
+	/// </summary>
+	/// <param name="info">
+	///		String to print
+	/// </param>
+	void CLogger::PrintToAllStreams(const std::string& info) const {
+		for (const auto& stream : this->m_write_stream_list) {
+			this->PrintLogInfo(info, stream);
 		}
 	}
 

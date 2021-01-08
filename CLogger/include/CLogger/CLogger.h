@@ -16,13 +16,13 @@
 namespace Log
 {
 	/// <summary>
-	/// Class to output <c>CLogMessage</c>
+	///		Class to output <c>CLogMessage</c>
 	/// </summary>
 	class CLOGGER_API CLogger
 	{
 	public:
 		CLogger() = delete;
-		explicit CLogger(const std::string& logName, ELogLevel logLevel);
+		explicit CLogger(const std::string& log_name, ELogLevel log_level);
 		CLogger(const CLogger&) = delete;
 		CLogger(CLogger&&) noexcept;
 
@@ -31,16 +31,16 @@ namespace Log
 		CLogger& AddStream(std::ostream& stream);
 
 		[[nodiscard]] ELogLevel GetLogLevel() const;
-		CLogger& SetLogLevel(ELogLevel logLevel);
+		CLogger& SetLogLevel(ELogLevel log_level);
 
 		[[nodiscard]] std::string GetLogName() const;
 
 		template<typename... Args>
 		CLogger& SetLogConfig(Args... args);
-		CLogger& AddLogConfig(ELogConfig logConfig);
+		CLogger& AddLogConfig(ELogConfig log_config);
 
 		template<typename... Args>
-		void PrintLogMessage(const CLogMessage<Args...>& logMessage) const;
+		void PrintLogMessage(const CLogMessage<Args...>& log_message) const;
 
 		void PrintLogInfo() const;
 
@@ -55,13 +55,17 @@ namespace Log
 		//mutex logMutex_;
 
 		template<typename... Args>
-		std::ostream& PrintLogMessage(const CLogMessage<Args...>& logMessage, std::ostream& stream) const;
+		void PrintToAllStreams(const CLogMessage<Args...>& log_message) const;
+		
+		template<typename... Args>
+		std::ostream& PrintLogMessage(const CLogMessage<Args...>& log_message, std::ostream& stream) const;
 
 		template<typename... Args>
-		std::ostream& PrintParams(const CLogMessage<Args...>& logMessage, std::ostream& stream) const;
+		std::ostream& PrintParams(const CLogMessage<Args...>& log_message, std::ostream& stream) const;
 		template<typename TupleType, size_t... Size>
 		std::ostream& PrintParams(const TupleType& tuple, std::index_sequence<Size...>, std::ostream& stream) const;
 
+		void PrintToAllStreams(const std::string& info) const;
 		std::ostream& PrintLogInfo(const std::string& info, std::ostream& stream) const;
 	};
 
@@ -100,7 +104,7 @@ namespace Log
 	/// <typeparam name="...Args">
 	///		Variadic template types of <c>CLogMessage</c>
 	///	</typeparam>
-	/// <param name="logMessage">
+	/// <param name="log_message">
 	///		<c>CLogMessage</c> to print
 	/// </param>
 	/// <example>
@@ -111,34 +115,34 @@ namespace Log
 	///		testLogger->PrintLogMessage(CLogMessage(/*...*/));
 	/// </example>
 	template<typename... Args>
-	void CLogger::PrintLogMessage(const CLogMessage<Args...>& logMessage) const
+	void CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message) const
 	{
-		// TODO: method
-		if (this->m_log_level < logMessage.GetLogLevel()) {
+		if (this->m_log_level < log_message.GetLogLevel()
+			|| this->m_write_stream_list.empty()
+			|| this->m_log_config_list.empty())
+		{
 			return;
 		}
 
-		// TODO: method to out all data to all stream
-		for (const auto& stream : this->m_write_stream_list) {
-			this->PrintLogMessage(logMessage, stream);
-		}
+		this->PrintToAllStreams(log_message);
 	}
 
 	/// <summary>
+	///		Prints some <c>CLogMessage</c> to all
+	///		output streams of <c>CLogger</c>
 	/// </summary>
 	/// <typeparam name="...Args">
-	///		Variadic template types of <c>CLogMessage</c>
-	///	</typeparam>
-	/// <param name="logMessage">
+	///		
+	/// </typeparam>
+	/// <param name="log_message">
 	///		<c>CLogMessage</c> to print
 	/// </param>
-	/// <example>
-	///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG);
-	///		auto* testLogger = testBuilder->Build();
-	///		testLogger->SetLogConfig(ELogConfig::MESSAGE, ELogConfig::LOG_LEVEL,
-	///		ELogConfig::PARAMS);
-	///		testLogger->PrintLogMessage(CLogMessage(/*...*/));
-	/// </example>
+	template<typename ... Args>
+	void CLogger::PrintToAllStreams(const CLogMessage<Args...>& log_message) const {
+		for (const auto& stream : this->m_write_stream_list) {
+			this->PrintLogMessage(log_message, stream);
+		}
+	}
 
 	/// <summary>
 	///		Prints to one stream <c>CLogMessage</c> object
@@ -146,7 +150,7 @@ namespace Log
 	/// <typeparam name="...Args">
 	///		Variadic template types of <c>CLogMessage</c>	
 	/// </typeparam>
-	/// <param name="logMessage">
+	/// <param name="log_message">
 	///		<c>CLogMessage</c> to print
 	/// </param>
 	/// <param name="stream">
@@ -157,7 +161,7 @@ namespace Log
 	///		Modified output stream
 	/// </returns>
 	template<typename... Args>
-	std::ostream& CLogger::PrintLogMessage(const CLogMessage<Args...>& logMessage, std::ostream& stream) const {
+	std::ostream& CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message, std::ostream& stream) const {
 		std::stringstream ss;
 
 		for (const auto& config : this->m_log_config_list)
@@ -169,49 +173,49 @@ namespace Log
 				// TODO config flush
 			case ELogConfig::THREAD_ID:
 			{
-				ss << "Thread id:" << " " << "[" << logMessage.GetThreadId()
+				ss << "Thread id:" << " " << "[" << log_message.GetThreadId()
 					<< "]" << " " << std::flush;
 				break;
 			}
 			case ELogConfig::CALL_TIME:
 			{
-				ss << "Time:" << " " << "[" << logMessage.GetTimeString()
+				ss << "Time:" << " " << "[" << log_message.GetTimeString()
 					<< "]" << " " << std::flush;
 				break;
 			}
 			case ELogConfig::FUNCTION_NAME:
 			{
-				ss << "Function:" << " " << logMessage.GetFunctionString()
+				ss << "Function:" << " " << log_message.GetFunctionString()
 					<< " " << std::flush;
 				break;
 			}
 			case ELogConfig::FILE_NAME:
 			{
-				ss << "File:" << " " << logMessage.GetFileString()
+				ss << "File:" << " " << log_message.GetFileString()
 					<< " " << std::flush;
 				break;
 			}
 			case ELogConfig::LINE_NUMBER:
 			{
-				ss << "Line number:" << " " << logMessage.GetLineNumber()
+				ss << "Line number:" << " " << log_message.GetLineNumber()
 					<< " " << std::flush;
 				break;
 			}
 			case ELogConfig::MESSAGE:
 			{
-				ss << std::endl << "Message:" << " " << logMessage.GetMessageString()
+				ss << std::endl << "Message:" << " " << log_message.GetMessageString()
 					<< " " << std::flush;
 				break;
 			}
 			case ELogConfig::LOG_LEVEL:
 			{
-				ss << "[" << LogLevelToString(logMessage.GetLogLevel())
+				ss << "[" << LogLevelToString(log_message.GetLogLevel())
 					<< "]" << " " << std::flush;
 				break;
 			}
 			case ELogConfig::PARAMS:
 			{
-				this->PrintParams(logMessage, ss);
+				this->PrintParams(log_message, ss);
 				ss << std::flush;
 				break;
 			}
@@ -237,7 +241,7 @@ namespace Log
 	/// <typeparam name="...Args">
 	///		Variadic template types of <c>CLogMessage</c>
 	/// </typeparam>
-	/// <param name="logMessage">
+	/// <param name="log_message">
 	///		<c>CLogMessage</c> with parameters to print
 	/// </param>
 	/// <param name="stream">
@@ -247,10 +251,10 @@ namespace Log
 	///		Reference to output stream
 	/// </returns>
 	template<typename... Args>
-	std::ostream& CLogger::PrintParams(const CLogMessage<Args...>& logMessage,
+	std::ostream& CLogger::PrintParams(const CLogMessage<Args...>& log_message,
 		std::ostream& stream) const
 	{
-		auto temp = logMessage.GetParams();
+		auto temp = log_message.GetParams();
 
 		if (0u == std::tuple_size<decltype(temp)>::value)
 		{
