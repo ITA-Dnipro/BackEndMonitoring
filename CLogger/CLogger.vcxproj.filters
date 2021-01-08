@@ -33,5 +33,8 @@
     <ClInclude Include="include\ELogConfig\ELogConfig.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CLogMessage\CLogMessage.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

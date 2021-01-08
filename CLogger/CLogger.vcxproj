@@ -147,6 +147,8 @@
     <ClCompile Include="src\ELogConfig\ELogConfig.cpp" />
     <ClCompile Include="src\ELogLevel\ELogLevel.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\CLogMessage\CLogMessage.h" />
     <ClInclude Include="include\ELogConfig\ELogConfig.h" />
     <ClInclude Include="include\ELogLevel\ELogLevel.h" />
     <ClInclude Include="include\stdafx.h" />
