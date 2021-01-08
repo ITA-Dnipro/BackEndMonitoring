@@ -21,12 +21,21 @@
     <ClInclude Include="include\HardwareStatus.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="include\LogicalDiskStatus.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EMemoryCountType.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BackEndMonitoringServer.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LogicalDiskStatus.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,0 +1,6 @@
+﻿  LogicalDiskStatus.cpp
+D:\git\BackEndMonitoring\Server\BackEndMonitoringServer\include\HardwareStatus.h(13,16): warning C4227: anachronism used: qualifiers on reference are ignored
+D:\git\BackEndMonitoring\Server\BackEndMonitoringServer\include\LogicalDiskStatus.h(12,28): warning C4227: anachronism used: qualifiers on reference are ignored
+D:\git\BackEndMonitoring\Server\BackEndMonitoringServer\include\LogicalDiskStatus.h(16): error C2280: 'HardwareStatus::HardwareStatus(void)': attempting to reference a deleted function
+D:\git\BackEndMonitoring\Server\BackEndMonitoringServer\include\HardwareStatus.h(9): message : see declaration of 'HardwareStatus::HardwareStatus'
+D:\git\BackEndMonitoring\Server\BackEndMonitoringServer\include\HardwareStatus.h(9,2): message : 'HardwareStatus::HardwareStatus(void)': function was explicitly deleted
