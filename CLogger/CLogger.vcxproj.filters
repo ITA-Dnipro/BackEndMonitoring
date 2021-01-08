@@ -53,5 +53,8 @@
     <ClInclude Include="include\CLogMacro\CLogMacro.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Log.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
