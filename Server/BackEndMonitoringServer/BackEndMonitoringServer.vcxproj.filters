@@ -18,13 +18,22 @@
     <ClInclude Include="include\stdafx.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\HardwareStatus.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="include\LogicalDiskStatus.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="include\EMemoryCountType.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ContainerOfLogicalDisk.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\HardwareStatusSpecification.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\HardwareInfoLifeCycle.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LogicalDiskStatusLifeCycle.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -36,6 +45,15 @@
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="src\LogicalDiskStatus.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ContainerOfLogicalDisk.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\HardwareStatusSpecification.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LogicalDiskStatusLifeCycle.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
