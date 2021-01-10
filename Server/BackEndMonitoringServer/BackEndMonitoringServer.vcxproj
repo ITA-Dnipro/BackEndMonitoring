@@ -148,17 +148,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\ContainerOfLogicalDisk.h" />
+    <ClInclude Include="include\EConvertValueFromBytes.h" />
     <ClInclude Include="include\EMemoryCountType.h" />
-    <ClInclude Include="include\HardwareStatus.h" />
+    <ClInclude Include="include\HardwareInfoLifeCycle.h" />
+    <ClInclude Include="include\HardwareStatusSpecification.h" />
     <ClInclude Include="include\LogicalDiskStatus.h" />
+    <ClInclude Include="include\LogicalDiskStatusLifeCycle.h" />
     <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="include\HardwareStatusSpecification.cpp" />
     <ClCompile Include="src\BackEndMonitoringServer.cpp" />
+    <ClCompile Include="src\ContainerOfLogicalDisk.cpp" />
     <ClCompile Include="src\LogicalDiskStatus.cpp" />
+    <ClCompile Include="src\LogicalDiskStatusLifeCycle.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
