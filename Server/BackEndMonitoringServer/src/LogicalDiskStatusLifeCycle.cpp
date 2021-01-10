@@ -4,12 +4,11 @@
 
 void LogicalDiskStatusLifeCycle::ThreadLifeCycle( )
 {
+	container_in_lifecircle_ = 
+		ContainerOfLogicalDisk::FactoryContainerOfLogicalDisk(
+		specification_);
 	while (true)
 	{
-		container_in_lifecircle_ = 
-			ContainerOfLogicalDisk::FactoryContainerOfLogicalDisk(
-			specification_);
-
 		for (const auto& disk : 
 			*(container_in_lifecircle_->GetAllLogicalDisk()))
 		{

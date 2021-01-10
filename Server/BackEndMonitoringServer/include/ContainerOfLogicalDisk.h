@@ -24,6 +24,13 @@ public:
 	{ };
 	ContainerOfLogicalDisk(ContainerOfLogicalDisk&&) noexcept = delete;
 
+	~ContainerOfLogicalDisk()
+	{
+		for (const auto& disk : container_all_logical_disks_)
+		{
+			delete disk;
+		}
+	}
 	[[nodiscard]] static ContainerOfLogicalDisk* FactoryContainerOfLogicalDisk(
 		HardwareStatusSpecification* specification);
 

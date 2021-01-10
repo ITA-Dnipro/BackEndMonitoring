@@ -5,9 +5,17 @@
 
 #include <iostream>
 
+#include "LogicalDiskStatusLifeCycle.h"
+#include "HardwareStatusSpecification.h"
+
 int main( )
 {
-	std::cout << "Hello World!\n";
+	HardwareStatusSpecification* a = new HardwareStatusSpecification(std::chrono::duration<int>(30), "LogicalDiskStatusLog.json", EMemoryCountType::GIGABYTES);
+	LogicalDiskStatusLifeCycle b(a);
+
+	b.ThreadLifeCycle();
+
+	return 0;
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"

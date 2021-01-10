@@ -9,6 +9,10 @@ class LogicalDiskStatusLifeCycle :
 {
 public:
     LogicalDiskStatusLifeCycle() = delete;
+    /// <summary>
+    /// Saving specification of LogicalDisk information
+    /// </summary>
+    /// <param name="specification"> must be in dynamic memory </param>
     LogicalDiskStatusLifeCycle(HardwareStatusSpecification* specification)
         : specification_(specification)
     { };
@@ -23,6 +27,14 @@ public:
     { };
     LogicalDiskStatusLifeCycle(LogicalDiskStatusLifeCycle&&) noexcept = delete;
 
+    ~LogicalDiskStatusLifeCycle()
+    {
+        delete specification_;
+        delete container_in_lifecircle_;
+    }
+    /// <summary>
+    /// infinite loop. Stoped only if stop-event
+    /// </summary>
     virtual void ThreadLifeCycle() override;
 
 private:
