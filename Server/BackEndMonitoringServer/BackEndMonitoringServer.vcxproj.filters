@@ -18,12 +18,24 @@
     <ClInclude Include="include\stdafx.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="include\JSONFormatter.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\JSONFormatSaver.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BackEndMonitoringServer.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSONFormatter.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSONFormatSaver.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

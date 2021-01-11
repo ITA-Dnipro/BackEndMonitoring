@@ -2,12 +2,35 @@
 // заканчивается выполнение программы.
 //
 #include "stdafx.h"
+#include <fstream>
 
 #include <iostream>
+#include "JSONFormatter.h"
+#include <vector>
+#include "JSONFormatSaver.h"
+
+nlohmann::json TryParse(nlohmann::json buff)
+{
+	nlohmann::json a = { "disk", buff };
+
+	return a;
+}
 
 int main( )
 {
-	std::cout << "Hello World!\n";
+	
+	std::string ag = "chi";
+	nlohmann::json b = nlohmann::json::array({ "capacity", 20, "free_space", 12 });
+	nlohmann::json a = { "C:/", b};
+	JSONFormatter* ga = JSONFormatter::FactoryJSONFormatter();
+	ga->AddNewPair("C:/", b);
+	ga->AddNewPair("D:/", b);
+	
+	std::string p = "info.json";
+	JSONFormatSaver saver(p);
+	
+	saver.TrySaveToFile(*ga);
+
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
