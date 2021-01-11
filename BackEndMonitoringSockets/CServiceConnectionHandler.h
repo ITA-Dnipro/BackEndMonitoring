@@ -1,6 +1,8 @@
 #pragma once
 #include "stdafx.h"
-
+#include "CInitiationDispatcher.h"
+#include "CServiceHandler.h"
+#include "CSocketWrapper.h"
 // This class handles event form the server
 class CServiceConnectionHandler : public CServiceHandler
 {

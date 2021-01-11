@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "CServiceHandler.h"
 #include "CSocketWrapper.h"
-
+#include "CInitiationDispatcher.h"
 // This class handles event form the user
 class CClientConnectionHandler : public CServiceHandler
 {

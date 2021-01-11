@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "CClientConnectionHandler.h"
 
 CClientConnectionHandler::CClientConnectionHandler(
 	EventType type, const CSocketWrapper& stream, 

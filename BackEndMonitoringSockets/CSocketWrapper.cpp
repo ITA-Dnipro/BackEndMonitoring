@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "CSocketWrapper.h"
 #pragma warning(disable: 4996)
 
 CSocketWrapper::CSocketWrapper()
@@ -18,6 +19,7 @@ CSocketWrapper::~CSocketWrapper()
 
 void CSocketWrapper::SetSocket(const int socket)
 {
+	std::cout << socket << " - socket in wrapper" << std::endl;
 	m_socket = socket;
 }
 

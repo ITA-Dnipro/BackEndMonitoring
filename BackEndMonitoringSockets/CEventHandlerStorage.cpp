@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "CEventHandlerStorage.h"
 
 CEventHandlerStorage::CEventHandlerStorage()
 {
@@ -27,6 +28,7 @@ CEventHandler* CEventHandlerStorage::GetHandler(EventType event_type)
 void CEventHandlerStorage::AddHandler(EventType event_type,
 	CEventHandler* event_handler)
 {
+	std::cout << event_handler->GetHandle() << std::endl;
 	if (m_handlers_map.count(event_type))
 	{
 		m_handlers_map[event_type] = event_handler;

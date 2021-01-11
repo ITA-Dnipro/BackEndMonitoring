@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "CSocket.h"
 #pragma warning(disable: 4996)
 
 CSocket::CSocket(const int port, const std::string& ip_address)
@@ -6,6 +7,7 @@ CSocket::CSocket(const int port, const std::string& ip_address)
 {
 	SetSocketAddress(port, ip_address);
 	m_socket = InitSocket(port, ip_address);
+	std::cout << "socket in csocket - base class = " << m_socket << std::endl;
 }
 
 CSocket::~CSocket()
@@ -26,7 +28,7 @@ int CSocket::GetHandle() const
 
 int CSocket::InitSocket(const int port, const std::string& ip_address)
 {
-	SOCKET new_socket = socket(AF_INET, SOCK_STREAM, 0);
+	SOCKET new_socket = socket(AF_INET, SOCK_STREAM, NULL);
 	if (!IsValidSocket())
 	{
 		// LOGGER + EXCEPTIOn
@@ -38,9 +40,10 @@ int CSocket::InitSocket(const int port, const std::string& ip_address)
 void CSocket::SetSocketAddress(const int port,
 	const std::string& ip_address)
 {
+	std::cout << port << " " << ip_address << std::endl;
 	m_address.sin_family = AF_INET;
 	m_address.sin_port = htons(port);
-	m_address.sin_addr.s_addr = inet_addr("127.0.0.1");
+	m_address.sin_addr.s_addr = inet_addr(ip_address.c_str());
 }
 
 bool CSocket::IsValidSocket() const

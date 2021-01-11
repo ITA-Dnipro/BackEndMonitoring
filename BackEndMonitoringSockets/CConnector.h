@@ -2,7 +2,8 @@
 #include "stdafx.h"
 #include "CEventHandler.h"
 #include "CInitiationDispatcher.h"
-
+#include "CServiceHandler.h"
+#include "CConnectorSocket.h"
 // This class allows user to connect to the server
 class CConnector : private CEventHandler
 {
@@ -11,16 +12,15 @@ public:
 		CInitiationDispatcher* dispathcer);
 
 	void Connect(CServiceHandler* handler);
-	void HandleEvent(const int socket, EventType type);
-	int GetHandle() const;
+	void HandleEvent(const int socket, EventType type) override;
+	int GetHandle() const override;
 
-protected:
+private:
 	virtual bool ConnectServiceHandler(CServiceHandler* handler);
-	//virtual int ActivateServiceHandler(CSH* handler);
 	virtual bool Complete(int handle);
 	void RegisterHandler(CServiceHandler* handler);
 
-private:
+
 	std::unique_ptr<CConnectorSocket> m_socket_connector;
 	std::map<int, CServiceHandler*> m_connection_map;
 	CInitiationDispatcher* m_dispatcher;

@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "CEventHandler.h"
 
 // Base class for all the handlers
 class CServiceHandler : public CEventHandler

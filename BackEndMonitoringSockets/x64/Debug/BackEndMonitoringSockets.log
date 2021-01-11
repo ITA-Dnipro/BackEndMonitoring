@@ -2,19 +2,19 @@
   CAcceptor.cpp
   CAcceptorSocket.cpp
   CAcceptorWrapper.cpp
+  CBaseSocket.cpp
+C:\Users\Sergei\source\repos\BackEndMonitoring\BackEndMonitoringSockets\CBaseSocket.cpp(45,49): warning C4551: function call missing argument list
   CClientConnectionHandler.cpp
   CConnector.cpp
   CConnectorSocket.cpp
   CConnectorWrapper.cpp
   CEventHandler.cpp
   CEventHandlerStorage.cpp
-C:\Users\Sergei\source\repos\BackEndMonitoring\BackEndMonitoringSockets\CEventHandlerStorage.cpp(86,30): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Sergei\source\repos\BackEndMonitoring\BackEndMonitoringSockets\CEventHandlerStorage.cpp(88,30): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
   CInitiationDispatcher.cpp
   CServiceConnectionHandler.cpp
   CSocket.cpp
   CSocketWrapper.cpp
-C:\Users\Sergei\source\repos\BackEndMonitoring\BackEndMonitoringSockets\CSocketWrapper.cpp(57,5): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-  CWindowsSocket.cpp
-C:\Users\Sergei\source\repos\BackEndMonitoring\BackEndMonitoringSockets\CWindowsSocket.cpp(37,6): warning C4551: function call missing argument list
+C:\Users\Sergei\source\repos\BackEndMonitoring\BackEndMonitoringSockets\CSocketWrapper.cpp(59,5): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   Generating Code...
   BackEndMonitoringSockets.vcxproj -> C:\Users\Sergei\source\repos\BackEndMonitoring\x64\Debug\BackEndMonitoringSockets.lib

@@ -1,5 +1,5 @@
 #pragma once
-
+#include "CEventHandler.h"
 // It is an interface for the class CInitiationDispatcher
 class IDispatcher
 {

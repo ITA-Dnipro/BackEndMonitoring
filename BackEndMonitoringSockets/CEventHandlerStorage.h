@@ -1,6 +1,6 @@
 #pragma once
 #include "stdafx.h"
-
+#include "CEventHandler.h"
 // This class is a storage for all types of events
 class CEventHandlerStorage
 {

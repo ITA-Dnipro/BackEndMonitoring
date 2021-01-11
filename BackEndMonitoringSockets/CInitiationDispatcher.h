@@ -2,7 +2,6 @@
 #include "stdafx.h"
 #include "IDispatcher.h"
 #include "CEventHandlerStorage.h"
-
 // Class stores events in the storage and allow to handle them
 class CInitiationDispatcher : public IDispatcher
 {
@@ -13,8 +12,8 @@ public:
 	void HandleEvents(timeval* timeout = NULL) override;
 
 private:
-	CInitiationDispatcher();
-	static CInitiationDispatcher* m_instance;
+	explicit CInitiationDispatcher();
+	static CInitiationDispatcher* s_instance;
 
 	CEventHandlerStorage m_storage;
 };

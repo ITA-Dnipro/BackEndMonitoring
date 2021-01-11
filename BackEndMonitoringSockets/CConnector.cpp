@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "CConnector.h"
 
 CConnector::CConnector(const int port, const std::string& ip_address,
 	CInitiationDispatcher* dispathcer)
@@ -14,7 +15,7 @@ void CConnector::Connect(CServiceHandler* handler)
 
 int CConnector::GetHandle() const
 {
-	return m_socket_connector.get()->GetHandle();
+	return m_socket_connector->GetHandle();
 }
 
 bool CConnector::ConnectServiceHandler(CServiceHandler* handler)
@@ -44,9 +45,8 @@ bool CConnector::Complete(const int handle)
 
 void CConnector::RegisterHandler(CServiceHandler* handler)
 {
-	m_dispatcher->RegisterHandler(this,
-		EventType::WRITE_EVENT);
-	m_connection_map[m_socket_connector.get()->GetHandle()] = handler;
+	m_dispatcher->RegisterHandler(this, EventType::WRITE_EVENT);
+	m_connection_map[m_socket_connector->GetHandle()] = handler;
 }
 
 void CConnector::HandleEvent(const int socket, EventType type)

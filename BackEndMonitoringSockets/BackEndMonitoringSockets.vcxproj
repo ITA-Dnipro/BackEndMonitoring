@@ -162,12 +162,10 @@
     <ClInclude Include="CEventHandler.h" />
     <ClInclude Include="CEventHandlerStorage.h" />
     <ClInclude Include="CInitiationDispatcher.h" />
-    <ClInclude Include="CLinuxSocket.h" />
     <ClInclude Include="CServiceConnectionHandler.h" />
     <ClInclude Include="CServiceHandler.h" />
     <ClInclude Include="CSocket.h" />
     <ClInclude Include="CSocketWrapper.h" />
-    <ClInclude Include="CWindowsSocket.h" />
     <ClInclude Include="IDispatcher.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
@@ -175,6 +173,7 @@
     <ClCompile Include="CAcceptor.cpp" />
     <ClCompile Include="CAcceptorSocket.cpp" />
     <ClCompile Include="CAcceptorWrapper.cpp" />
+    <ClCompile Include="CBaseSocket.cpp" />
     <ClCompile Include="CClientConnectionHandler.cpp" />
     <ClCompile Include="CConnector.cpp" />
     <ClCompile Include="CConnectorSocket.cpp" />
@@ -185,7 +184,6 @@
     <ClCompile Include="CServiceConnectionHandler.cpp" />
     <ClCompile Include="CSocket.cpp" />
     <ClCompile Include="CSocketWrapper.cpp" />
-    <ClCompile Include="CWindowsSocket.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>

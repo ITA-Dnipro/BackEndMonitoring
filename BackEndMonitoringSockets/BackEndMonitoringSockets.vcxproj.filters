@@ -66,12 +66,6 @@
     <ClInclude Include="CConnectorSocket.h">
       <Filter>Header Files\Sockets</Filter>
     </ClInclude>
-    <ClInclude Include="CLinuxSocket.h">
-      <Filter>Header Files\Sockets</Filter>
-    </ClInclude>
-    <ClInclude Include="CWindowsSocket.h">
-      <Filter>Header Files\Sockets</Filter>
-    </ClInclude>
     <ClInclude Include="CSocket.h">
       <Filter>Header Files\Sockets</Filter>
     </ClInclude>
@@ -119,11 +113,11 @@
     <ClCompile Include="CSocket.cpp">
       <Filter>Source Files\Sockets</Filter>
     </ClCompile>
-    <ClCompile Include="CWindowsSocket.cpp">
-      <Filter>Source Files\Sockets</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CBaseSocket.cpp">
+      <Filter>Source Files\Sockets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

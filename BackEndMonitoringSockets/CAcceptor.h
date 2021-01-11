@@ -2,14 +2,16 @@
 #include "stdafx.h"
 #include "CEventHandler.h"
 #include "CInitiationDispatcher.h"
-
+#include "CAcceptorSocket.h"
+#include "CServiceConnectionHandler.h"
+#include "CServiceHandler.h"
 // Class for accepting connection by the server
 class CAcceptor : private CEventHandler
 {
 public:
 	CAcceptor(const int port, const std::string& address,
 		CInitiationDispatcher* dispathcer);
-	bool Listening();
+	int GetConnectedHandle();
 	int GetHandle() const override;
 	void HandleEvent(const int socket, EventType type) override;
 

@@ -1,17 +1,18 @@
 #include "stdafx.h"
+#include "CInitiationDispatcher.h"
 
-CInitiationDispatcher* CInitiationDispatcher::m_instance = nullptr;
+CInitiationDispatcher* CInitiationDispatcher::s_instance = nullptr;
 
 CInitiationDispatcher::CInitiationDispatcher()
 { }
 
 CInitiationDispatcher* CInitiationDispatcher::GetInstance()
 {
-	if (!m_instance)
+	if (s_instance == nullptr)
 	{
-		m_instance = new CInitiationDispatcher();
+		s_instance = new CInitiationDispatcher();
 	}
-	return m_instance;
+	return s_instance;
 }
 
 void CInitiationDispatcher::RegisterHandler(CEventHandler* handler,
@@ -70,3 +71,4 @@ void CInitiationDispatcher::HandleEvents(timeval* timeout)
 		}
 	}
 }
+
