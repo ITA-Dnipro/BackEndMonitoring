@@ -1,12 +1,11 @@
 #pragma once
+#include "stdafx.h"
 #include "CSocket.h"
-namespace ConnectorSocket
-{
-	class CConnectorSocket : public Socket::CSocket
-	{
-	public:
-		CConnectorSocket(const int port, const std::string& ip_address);
-		bool Connect();
-	};
 
-}
+// Socket for Connector
+class CConnectorSocket : public CSocket
+{
+public:
+	CConnectorSocket(const int port, const std::string& ip_address);
+	bool Connect();
+};

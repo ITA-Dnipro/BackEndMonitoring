@@ -1,24 +1,22 @@
-#include "CAcceptorWrapper.h"
+#include "stdafx.h"
 
-namespace AcceptorWrapper
+CAcceptorWrapper::CAcceptorWrapper()
 {
-	CAcceptorWrapper::CAcceptorWrapper()
-	{
-		m_dispatcher = CDispatcher::GetInstance();
-		m_server_acceptor = new Acceptor::CAcceptor(27015, "127.0.0.1", 
-			m_dispatcher);
-		std::cout << m_dispatcher << std::endl;
+	m_dispatcher = CInitiationDispatcher::GetInstance();
+	m_server_acceptor = new CAcceptor(27015, "127.0.0.1",
+		m_dispatcher);
+	std::cout << m_dispatcher << " CInitiationDispatcher address"
+		<< std::endl;
 
-	}
+}
 
-	void CAcceptorWrapper::Start()
+void CAcceptorWrapper::Start()
+{
+	while (true)
 	{
-		while (true)
+		if (m_server_acceptor->Listening())
 		{
-			if (m_server_acceptor->Listening())
-			{
-				m_dispatcher->HandleEvents();
-			}
+			m_dispatcher->HandleEvents();
 		}
 	}
 }

@@ -1,12 +1,8 @@
 #pragma once
 
-namespace LinuxSocket
+class CLinuxSocket
 {
-	class CLinuxSocket
-	{
-	protected:
-		int m_socket;
-	};
-
-}
+protected:
+	int m_socket;
+};
 

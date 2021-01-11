@@ -1,21 +1,15 @@
 #pragma once
-#include <WinSock2.h>
-#include <ws2tcpip.h>
 
 
-namespace WindowsSocket
+class CWindowsSocket
 {
-	class CWindowsSocket
-	{
-	public:
-		CWindowsSocket();
-		virtual ~CWindowsSocket();
+public:
+	CWindowsSocket();
+	virtual ~CWindowsSocket();
 
-	protected:
-		bool StartLibrary();
-		bool CloseLibrary();
+protected:
+	bool StartLibrary();
+	bool CloseLibrary();
 
-		SOCKET m_socket;
-	};
-}
-
+	SOCKET m_socket;
+};

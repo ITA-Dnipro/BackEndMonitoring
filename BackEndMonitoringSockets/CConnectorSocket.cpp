@@ -1,27 +1,23 @@
-#include "CConnectorSocket.h"
+#include "stdafx.h"
 
-namespace ConnectorSocket
+CConnectorSocket::CConnectorSocket(const int port,
+    const std::string& ip_address) : CSocket(port, ip_address)
 {
-    CConnectorSocket::CConnectorSocket(const int port, 
-        const std::string& ip_address)
-        : Socket::CSocket(port, ip_address)
+
+}
+
+bool CConnectorSocket::Connect()
+{
+    std::cout << "connect" << std::endl;
+    if (connect(m_socket, (sockaddr*)&m_address,
+        sizeof(m_address)) == SOCKET_ERROR)
     {
-
+        std::cout << "success connection" << std::endl;
+        return false;
     }
+    std::cout << "success connection" << std::endl;
 
-    bool CConnectorSocket::Connect()
-    {
-        std::cout << "connect";
-        if (connect(m_socket, (sockaddr*)&m_address, 
-            sizeof(m_address)) == SOCKET_ERROR)
-        {
-            std::cout << "success connection";
-            return false;
-        }
-        std::cout << "success connection";
-
-        return true;
-    }
+    return true;
 }
 
 

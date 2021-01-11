@@ -122,8 +122,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -169,12 +169,12 @@
     <ClInclude Include="CSocketWrapper.h" />
     <ClInclude Include="CWindowsSocket.h" />
     <ClInclude Include="IDispatcher.h" />
+    <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAcceptor.cpp" />
     <ClCompile Include="CAcceptorSocket.cpp" />
     <ClCompile Include="CAcceptorWrapper.cpp" />
-    <ClCompile Include="CBaseSocket.cpp" />
     <ClCompile Include="CClientConnectionHandler.cpp" />
     <ClCompile Include="CConnector.cpp" />
     <ClCompile Include="CConnectorSocket.cpp" />
@@ -182,13 +182,13 @@
     <ClCompile Include="CEventHandler.cpp" />
     <ClCompile Include="CEventHandlerStorage.cpp" />
     <ClCompile Include="CInitiationDispatcher.cpp" />
-    <ClCompile Include="CLinuxSocket.cpp" />
     <ClCompile Include="CServiceConnectionHandler.cpp" />
-    <ClCompile Include="CServiceHandler.cpp" />
     <ClCompile Include="CSocket.cpp" />
     <ClCompile Include="CSocketWrapper.cpp" />
     <ClCompile Include="CWindowsSocket.cpp" />
-    <ClCompile Include="IDispatcher.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

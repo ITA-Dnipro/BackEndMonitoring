@@ -1,22 +1,18 @@
 #pragma once
 
+// This class inherits logic work with sockets fom Windows or Linux 
+// according to the current OS
 #ifdef __linux__	// Linux
 #include "CLinuxSocket.h"
-namespace BaseSocket
+class CBaseSocket : public LinuxSocket::CLinuxSocket
 {
-	class CBaseSocket : public LinuxSocket::CLinuxSocket
-	{
-	};
-}
+};
 
 #else				// Windows
 #include "CWindowsSocket.h"
-namespace BaseSocket
+class CBaseSocket : public CWindowsSocket
 {
-	class CBaseSocket : public WindowsSocket::CWindowsSocket
-	{
-	};
-}
+};
 #endif
 
 

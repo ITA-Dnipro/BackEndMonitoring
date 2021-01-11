@@ -9,7 +9,7 @@
 int main( )
 {
 	//std::cout << "Hello World!\n";
-	AcceptorWrapper::CAcceptorWrapper acceptor;
+	CAcceptorWrapper acceptor;
 
 	acceptor.Start();
 	system("pause");

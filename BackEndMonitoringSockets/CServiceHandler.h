@@ -1,12 +1,10 @@
 #pragma once
-#include "CEventHandler.h"
+#include "stdafx.h"
 
-namespace ServiceHandler
+// Base class for all the handlers
+class CServiceHandler : public CEventHandler
 {
-	class CServiceHandler : public EventHandler::CEventHandler
-	{
-	public:
-		virtual void HandleEvent(int socket, EventHandler::EventType type) = 0;
-		virtual int GetHandle() const = 0;
-	};
-}
+public:
+	virtual void HandleEvent(int socket, EventType type) = 0;
+	virtual int GetHandle() const = 0;
+};

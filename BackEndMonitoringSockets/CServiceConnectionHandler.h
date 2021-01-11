@@ -1,29 +1,16 @@
 #pragma once
-#include <memory>
+#include "stdafx.h"
 
-#include "CServiceHandler.h"
-#include "CSocketWrapper.h"
-#include "CInitiationDispatcher.h"
-#include "CAcceptor.h"
-
-using CStream = SocketWrapper::CSocketWrapper;
-using CDispatcher = Dispatcher::CInitiationDispatcher;
-
-namespace ServiceConHandler
+// This class handles event form the server
+class CServiceConnectionHandler : public CServiceHandler
 {
-	class CServiceConnectionHandler : public ServiceHandler::CServiceHandler
-	{
-	public:
-		CServiceConnectionHandler(const int port, 
-			const std::string& ip_address, 
-			CDispatcher* dispatcher);
-		void HandleEvent(const int socket, 
-			EventHandler::EventType type) override;
-		int GetHandle() const override;
+public:
+	CServiceConnectionHandler(const int port, const std::string& ip_address, 
+		CInitiationDispatcher* dispatcher);
+	void HandleEvent(const int socket, EventType type) override;
+	int GetHandle() const override;
 
-	private:
-		std::unique_ptr<CStream> m_peer_stream;
-		CDispatcher* m_dispatcher;
-	};
-
-}
+private:
+	std::unique_ptr<CSocketWrapper> m_peer_stream;
+	CInitiationDispatcher* m_dispatcher;
+};

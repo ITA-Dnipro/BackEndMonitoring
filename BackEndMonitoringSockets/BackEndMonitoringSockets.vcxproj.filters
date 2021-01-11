@@ -75,6 +75,9 @@
     <ClInclude Include="CSocket.h">
       <Filter>Header Files\Sockets</Filter>
     </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAcceptor.cpp">
@@ -104,25 +107,13 @@
     <ClCompile Include="CServiceConnectionHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CServiceHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CSocketWrapper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IDispatcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CAcceptorSocket.cpp">
       <Filter>Source Files\Sockets</Filter>
     </ClCompile>
-    <ClCompile Include="CBaseSocket.cpp">
-      <Filter>Source Files\Sockets</Filter>
-    </ClCompile>
     <ClCompile Include="CConnectorSocket.cpp">
-      <Filter>Source Files\Sockets</Filter>
-    </ClCompile>
-    <ClCompile Include="CLinuxSocket.cpp">
       <Filter>Source Files\Sockets</Filter>
     </ClCompile>
     <ClCompile Include="CSocket.cpp">
@@ -130,6 +121,9 @@
     </ClCompile>
     <ClCompile Include="CWindowsSocket.cpp">
       <Filter>Source Files\Sockets</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

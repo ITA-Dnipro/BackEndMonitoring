@@ -1,5 +1,5 @@
-#include "CEventHandler.h"
+#include "stdafx.h"
 
-EventHandler::CEventHandler::~CEventHandler()
+CEventHandler::~CEventHandler()
 {
 }

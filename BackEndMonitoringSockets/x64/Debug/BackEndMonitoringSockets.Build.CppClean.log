@@ -1,12 +1,11 @@
+c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\backendmonitoringsockets.pch
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\backendmonitoringsockets.pdb
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\backendmonitoringsockets.idb
-c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\idispatcher.obj
+c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\stdafx.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cwindowssocket.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\csocketwrapper.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\csocket.obj
-c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cservicehandler.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cserviceconnectionhandler.obj
-c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\clinuxsocket.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cinitiationdispatcher.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\ceventhandlerstorage.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\ceventhandler.obj
@@ -14,7 +13,6 @@ c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debu
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cconnectorsocket.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cconnector.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cclientconnectionhandler.obj
-c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cbasesocket.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cacceptorwrapper.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cacceptorsocket.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cacceptor.obj

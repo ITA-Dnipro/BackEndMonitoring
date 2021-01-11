@@ -1,27 +1,20 @@
 #pragma once
-#include <iostream>
+#include "stdafx.h"
 #include "IDispatcher.h"
-
 #include "CEventHandlerStorage.h"
 
-using CStorage = Storage::CEventHandlerStorage;
-namespace Dispatcher
+// Class stores events in the storage and allow to handle them
+class CInitiationDispatcher : public IDispatcher
 {
-	class CInitiationDispatcher : public Dispatcher::IDispatcher
-	{
-	public:
-		static CInitiationDispatcher* GetInstance();
-		void RegisterHandler(Handler* handler, 
-			EventHandler::EventType type) override; 
-		void RemoveHandler(Handler* handler, 
-			EventHandler::EventType type) override;
-		void HandleEvents(timeval* timeout = NULL) override;
+public:
+	static CInitiationDispatcher* GetInstance();
+	void RegisterHandler(CEventHandler* handler, EventType type) override;
+	void RemoveHandler(CEventHandler* handler, EventType type) override;
+	void HandleEvents(timeval* timeout = NULL) override;
 
-	private:
-		CInitiationDispatcher();
-		static CInitiationDispatcher* m_instance;
+private:
+	CInitiationDispatcher();
+	static CInitiationDispatcher* m_instance;
 
-		CStorage m_storage;
-	};
-
-}
+	CEventHandlerStorage m_storage;
+};

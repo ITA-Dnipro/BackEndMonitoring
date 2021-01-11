@@ -9,7 +9,7 @@ int main()
 {
     //std::cout << "Hello World!\n";
 
-	ConnectorWrapper::CConnectorWrapper connector;
+	CConnectorWrapper connector;
 
 	connector.MakeRequest("hello world!");
 	std::cout << connector.GetResponse();

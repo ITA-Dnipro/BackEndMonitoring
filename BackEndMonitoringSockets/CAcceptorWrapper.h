@@ -1,23 +1,16 @@
 #pragma once
-#include "CAcceptor.h"
-#include "CInitiationDispatcher.h"
+#include "stdafx.h"
 
-using CDispatcher = Dispatcher::CInitiationDispatcher;
-
-namespace AcceptorWrapper
+// This class works with server 
+class CAcceptorWrapper
 {
-	class CAcceptorWrapper
-	{
-	public:
-		CAcceptorWrapper();
-		void Start();
-		//void SendMessage(const std::string& message);
-		//void ReceiveMessage();
+public:
+	CAcceptorWrapper();
+	void Start();
 
-	private:
-		Acceptor::CAcceptor* m_server_acceptor;
-		CDispatcher* m_dispatcher;
+private:
+	CAcceptor* m_server_acceptor;
+	CInitiationDispatcher* m_dispatcher;
 
-	};
-}
+};
 

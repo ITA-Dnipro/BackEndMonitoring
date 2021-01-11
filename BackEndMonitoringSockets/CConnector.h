@@ -1,40 +1,29 @@
 #pragma once
-#include <map>
-
+#include "stdafx.h"
 #include "CEventHandler.h"
-#include "CServiceHandler.h"
 #include "CInitiationDispatcher.h"
-#include "CConnectorSocket.h"
 
-using SockConn = ConnectorSocket::CConnectorSocket;
-using CSH = ServiceHandler::CServiceHandler;
-using EH = EventHandler::CEventHandler;
-using CDispatcher = Dispatcher::CInitiationDispatcher;
-
-namespace Connector
+// This class allows user to connect to the server
+class CConnector : private CEventHandler
 {
-	class CConnector : public EventHandler::CEventHandler
-	{
-	public:
-		CConnector(const int port, const std::string& address, 
-			CDispatcher* dispathcer);
+public:
+	CConnector(const int port, const std::string& address,
+		CInitiationDispatcher* dispathcer);
 
-		void Connect(CSH* handler);
-		void HandleEvent(const int socket, EventHandler::EventType type);
-		int GetHandle() const;
+	void Connect(CServiceHandler* handler);
+	void HandleEvent(const int socket, EventType type);
+	int GetHandle() const;
 
-	protected:
-		virtual bool ConnectServiceHandler(CSH* handler);
-		//virtual int ActivateServiceHandler(CSH* handler);
-		virtual bool Complete(int handle);
-		void RegisterHandler(CSH* handler);
+protected:
+	virtual bool ConnectServiceHandler(CServiceHandler* handler);
+	//virtual int ActivateServiceHandler(CSH* handler);
+	virtual bool Complete(int handle);
+	void RegisterHandler(CServiceHandler* handler);
 
-	private:
-		std::unique_ptr<SockConn> m_socket_connector;
-		std::map<int, CSH*> m_connection_map;
-		CDispatcher* m_dispatcher;
-		int m_port;
-		std::string m_ip_address;
-	};
-
-}
+private:
+	std::unique_ptr<CConnectorSocket> m_socket_connector;
+	std::map<int, CServiceHandler*> m_connection_map;
+	CInitiationDispatcher* m_dispatcher;
+	int m_port;
+	std::string m_ip_address;
+};

@@ -1,25 +1,17 @@
 #pragma once
-#include <iostream>
+#include "stdafx.h"
 #include "CServiceHandler.h"
 #include "CSocketWrapper.h"
-#include "CInitiationDispatcher.h"
 
-using CDispatcher = Dispatcher::CInitiationDispatcher;
-
-namespace ClientConHandler
+// This class handles event form the user
+class CClientConnectionHandler : public CServiceHandler
 {
-	class CClientConnectionHandler : public ServiceHandler::CServiceHandler
-	{
-	public:
-		CClientConnectionHandler(EventHandler::EventType type, 
-			const SocketWrapper::CSocketWrapper& stream, 
-			CDispatcher* dispatcher);
-		void HandleEvent(const int socket, 
-			EventHandler::EventType type) override;
-		int GetHandle() const override;
+public:
+	CClientConnectionHandler(EventType type, const CSocketWrapper& stream,
+		CInitiationDispatcher* dispatcher);
+	void HandleEvent(const int socket, EventType type) override;
+	int GetHandle() const override;
 
-	private:
-		SocketWrapper::CSocketWrapper m_client_stream;
-	};
-}
-
+private:
+	CSocketWrapper m_client_stream;
+};

@@ -1,66 +1,63 @@
-#include "CSocketWrapper.h"
-#include <iostream>
-namespace SocketWrapper
+#include "stdafx.h"
+#pragma warning(disable: 4996)
+
+CSocketWrapper::CSocketWrapper()
 {
+	m_socket = INVALID_SOCKET;
+}
 
-	CSocketWrapper::CSocketWrapper()
-	{
-		m_socket = INVALID_SOCKET;
-	}
+CSocketWrapper::CSocketWrapper(const int socket)
+{
+	m_socket = socket;
+}
 
-	CSocketWrapper::CSocketWrapper(const int socket)
-	{
-		m_socket = socket;
-	}
+CSocketWrapper::~CSocketWrapper()
+{
+	closesocket(m_socket);
+}
 
-	CSocketWrapper::~CSocketWrapper()
-	{
-		closesocket(m_socket);
-	}
+void CSocketWrapper::SetSocket(const int socket)
+{
+	m_socket = socket;
+}
 
-	void CSocketWrapper::SetSocket(const int socket)
-	{
-		m_socket = socket;
-	}
+int CSocketWrapper::GetHandle() const
+{
+	return static_cast<int>(m_socket);
+}
 
-	int CSocketWrapper::GetHandle() const
+std::string CSocketWrapper::Receive(const int client_socket)
+{
+	std::string received_line;
+	while (true)
 	{
-		return static_cast<int>(m_socket);
-	}
+		char symb;
 
-	std::string CSocketWrapper::Receive(const int client_socket)
-	{
-		std::string received_line;
-		while (true)
+		switch (recv(client_socket, &symb, 1, 0))
 		{
-			char symb;
+		case 0:
+			return received_line;
+		case -1:
+			return "";
+		}
 
-			switch (recv(client_socket, &symb, 1, 0))
-			{
-			case 0:
-				return received_line;
-			case -1:
-				return "";
-			}
+		std::cout << symb;
+		received_line += symb;
 
-			std::cout << symb;
-			received_line += symb;
-
-			if (symb == '\n')
-			{
-				return received_line;
-			}
+		if (symb == '\n')
+		{
+			return received_line;
 		}
 	}
+}
 
-	bool CSocketWrapper::Send(const int client_socket, const std::string& line)
+bool CSocketWrapper::Send(const int client_socket, const std::string& line)
+{
+	std::cout << line;
+	if (send(client_socket, line.c_str(), line.length(), 0)
+		== INVALID_SOCKET)
 	{
-		std::cout << line;
-		if (send(client_socket, line.c_str(), line.length(), 0) 
-			== INVALID_SOCKET)
-		{
-			return false;
-		}
-		return true;
+		return false;
 	}
+	return true;
 }

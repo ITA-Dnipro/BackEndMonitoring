@@ -1,30 +1,20 @@
 #pragma once
-#include "CClientConnectionHandler.h"
-#include "CInitiationDispatcher.h"
-#include "CConnector.h"
-#include "CSocketWrapper.h"
+#include "stdafx.h"
 
-using Stream = SocketWrapper::CSocketWrapper;
-using ClientHandler = ClientConHandler::CClientConnectionHandler;
-using CDispatcher = Dispatcher::CInitiationDispatcher;
-
-
-namespace ConnectorWrapper
+// This class is the window for the user to send requests to the server and 
+// get responses from it
+class CConnectorWrapper
 {
-	class CConnectorWrapper
-	{
-	public:
-		CConnectorWrapper();
-		void MakeRequest(const std::string& message);
-		std::string GetResponse();
-		void Connect();
+public:
+	CConnectorWrapper();
+	void MakeRequest(const std::string& message);
+	std::string GetResponse();
+	void Connect();
 
-	private:
-		std::unique_ptr<Connector::CConnector> m_connector;
-		CDispatcher* m_dispatcher;
+private:
+	std::unique_ptr<CConnector> m_connector;
+	CInitiationDispatcher* m_dispatcher;
 
-		ClientHandler* m_handler;
-		Stream m_stream;
-	};
-
-}
+	CClientConnectionHandler* m_handler;
+	CSocketWrapper m_stream;
+};

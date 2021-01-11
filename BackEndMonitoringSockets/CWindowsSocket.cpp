@@ -1,6 +1,6 @@
-#include "CWindowsSocket.h"
+#include "stdafx.h"
 
-WindowsSocket::CWindowsSocket::CWindowsSocket()
+CWindowsSocket::CWindowsSocket()
 {
 	if (StartLibrary()) {
 		// log pos
@@ -11,7 +11,7 @@ WindowsSocket::CWindowsSocket::CWindowsSocket()
 	}
 }
 
-WindowsSocket::CWindowsSocket::~CWindowsSocket()
+CWindowsSocket::~CWindowsSocket()
 {
 	if (CloseLibrary()) {
 		// log pos
@@ -22,7 +22,7 @@ WindowsSocket::CWindowsSocket::~CWindowsSocket()
 	}
 }
 
-bool WindowsSocket::CWindowsSocket::StartLibrary()
+bool CWindowsSocket::StartLibrary()
 {
 	WSADATA info;
 	if (WSAStartup(MAKEWORD(2, 0), &info) == SOCKET_ERROR)
@@ -32,7 +32,7 @@ bool WindowsSocket::CWindowsSocket::StartLibrary()
 	return true;
 }
 
-bool WindowsSocket::CWindowsSocket::CloseLibrary()
+bool CWindowsSocket::CloseLibrary()
 {
 	if (WSACleanup)
 	{

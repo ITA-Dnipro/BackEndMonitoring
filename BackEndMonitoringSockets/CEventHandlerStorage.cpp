@@ -1,104 +1,99 @@
-#include "CEventHandlerStorage.h"
+#include "stdafx.h"
 
-namespace Storage
+CEventHandlerStorage::CEventHandlerStorage()
 {
+}
 
-	CEventHandlerStorage::CEventHandlerStorage()
+CEventHandlerStorage::~CEventHandlerStorage()
+{
+	for (auto it = m_handlers_map.begin(); it != m_handlers_map.end(); it++)
 	{
+		delete it->second;
+	}
+	m_handlers_map.clear();
+}
+
+CEventHandler* CEventHandlerStorage::GetHandler(EventType event_type)
+{
+	CEventHandler* event_handler = m_handlers_map[event_type];
+
+	if (event_handler != nullptr) {
+		return event_handler;
 	}
 
-	CEventHandlerStorage::~CEventHandlerStorage()
+	return nullptr;
+}
+
+void CEventHandlerStorage::AddHandler(EventType event_type,
+	CEventHandler* event_handler)
+{
+	if (m_handlers_map.count(event_type))
 	{
-		for (auto it = m_handlers_map.begin(); it!= m_handlers_map.end(); it++)
+		m_handlers_map[event_type] = event_handler;
+	}
+	else
+	{
+		m_handlers_map.insert(std::make_pair(event_type, event_handler));
+	}
+}
+
+void CEventHandlerStorage::RemoveHandler(const int handle)
+{
+	for (auto it = m_handlers_map.begin(); it != m_handlers_map.end(); ++it)
+	{
+		if (it->second->GetHandle() == handle)
 		{
 			delete it->second;
+			m_handlers_map.erase(it);
 		}
-		m_handlers_map.clear();
 	}
+}
 
-	CEH* CEventHandlerStorage::GetHandler(EventHandler::EventType event_type)
+void CEventHandlerStorage::ConvertToFdSet(fd_set& read_fds,
+	fd_set& write_fds, fd_set& except_fds)
+{
+	for (auto it = m_handlers_map.begin(); it != m_handlers_map.end(); ++it)
 	{
-		CEH* event_handler = m_handlers_map[event_type];
-
-		if (event_handler != nullptr) {
-			return event_handler;
+		if (it->first == EventType::READ_EVENT) {
+			FD_SET(it->second->GetHandle(), &read_fds);
 		}
-
-		return nullptr;
-	}
-
-	void CEventHandlerStorage::AddHandler(EventHandler::EventType event_type, 
-		CEH* event_handler)
-	{
-		if (m_handlers_map.count(event_type))
+		else if (it->first == EventType::WRITE_EVENT)
 		{
-			m_handlers_map[event_type] = event_handler;
+			FD_SET(it->second->GetHandle(), &write_fds);
 		}
-		else
+		else if (it->first == EventType::TIMEOUT_EVENT)
 		{
-			m_handlers_map.insert(std::make_pair(event_type, event_handler));
+			FD_SET(it->second->GetHandle(), &except_fds);
 		}
 	}
+}
 
-	void CEventHandlerStorage::RemoveHandler(const int handle)
+int CEventHandlerStorage::GetMaxFd() const
+{
+	int max_fd = 0;
+	for (auto it = m_handlers_map.begin(); it != m_handlers_map.end(); ++it)
 	{
-		for (auto it = m_handlers_map.begin(); it != m_handlers_map.end(); ++it)
+		if (max_fd < it->second->GetHandle())
 		{
-			if(it->second->GetHandle() == handle)
-			{
-				delete it->second;
-				m_handlers_map.erase(it);
-			}
+			max_fd = it->second->GetHandle();
 		}
 	}
+	return max_fd;
+}
 
-	void CEventHandlerStorage::ConvertToFdSet(fd_set& read_fds, 
-		fd_set& write_fds, fd_set& except_fds)
-	{
-		for (auto it = m_handlers_map.begin(); it!= m_handlers_map.end(); ++it)
-		{
-			if (it->first == EventHandler::EventType::READ_EVENT) {
-				FD_SET(it->second->GetHandle(), &read_fds);
-			}
-			else if (it->first == EventHandler::EventType::WRITE_EVENT)
-			{
-				FD_SET(it->second->GetHandle(), &write_fds);
-			}
-			else if (it->first == EventHandler::EventType::TIMEOUT_EVENT)
-			{
-				FD_SET(it->second->GetHandle(), &except_fds);
-			}
-		}
-	}
+int CEventHandlerStorage::GetSize() const
+{
+	return m_handlers_map.size();
+}
 
-	int CEventHandlerStorage::GetMaxFd() const
-	{
-		int max_fd = 0;
-		for(auto it = m_handlers_map.begin(); it != m_handlers_map.end(); ++it)
-		{
-			if (max_fd < it->second->GetHandle())
-			{
-				max_fd = it->second->GetHandle();
-			}
-		}
-		return max_fd;
-	}
+std::map<EventType, CEventHandler*>::const_iterator
+	CEventHandlerStorage::GetBegin() const
+{
+	return m_handlers_map.begin();
+}
 
-	int CEventHandlerStorage::GetSize() const
-	{
-		return m_handlers_map.size();
-	}
-
-	std::map<EventHandler::EventType, CEH*>::const_iterator 
-		CEventHandlerStorage::GetBegin() const
-	{
-		return m_handlers_map.begin();
-	}
-
-	std::map<EventHandler::EventType, CEH*>::const_iterator 
-		CEventHandlerStorage::GetEnd() const
-	{
-		return m_handlers_map.end();
-	}
-
+std::map<EventType, CEventHandler*>::const_iterator
+	CEventHandlerStorage::GetEnd() const
+{
+	return m_handlers_map.end();
 }
