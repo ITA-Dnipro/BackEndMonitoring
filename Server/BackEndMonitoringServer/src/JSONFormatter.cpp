@@ -1,29 +1,33 @@
 #include "stdafx.h"
 #include "JSONFormatter.h"
 
-JSONFormatter* JSONFormatter::FactoryJSONFormatter()
+bool JSONFormatter::TryAddJSONFormattedData(const nlohmann::json* formatted_data)
 {
-    // todo: ask where I should put func GetCurrentTimeAndDay
-    std::time_t current_time = std::chrono::system_clock::to_time_t(
-        std::chrono::system_clock::now());
-    std::string date_and_time = ctime(&current_time);
-    date_and_time.pop_back();
-
-    JSONFormatter* formatter = new JSONFormatter(date_and_time);
-
-    return formatter;
-}
-
-bool JSONFormatter::AddNewPair(std::string key, nlohmann::json value)
-{
-
-    formatted_data_.push_back({ key, value });
+    if(formatted_data->is_null())
+    { 
+        return false;
+    }
+    formatted_data_[Utilities::GetCurrentDateAndTimeFormatted()] 
+        += *formatted_data;
+   
     return true;
 }
 
-std::vector<nlohmann::json>* JSONFormatter::GetJSONFormattedData()
+bool JSONFormatter::TrySetJSONFormattedData(const nlohmann::json* formatted_data)
 {
-    if (formatted_data_.capacity() == 0)
+    if (formatted_data->is_null())
+    {
+        return false;
+    }
+    formatted_data_[Utilities::GetCurrentDateAndTimeFormatted()] 
+        = *formatted_data;
+
+    return true;
+}
+
+nlohmann::json* JSONFormatter::GetJSONFormattedData()
+{
+    if (formatted_data_.is_null())
     {
         return nullptr;
     }
