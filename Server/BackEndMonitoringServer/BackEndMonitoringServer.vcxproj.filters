@@ -18,12 +18,27 @@
     <ClInclude Include="include\stdafx.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Event.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TaskInQueue.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ThreadPool.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BackEndMonitoringServer.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Event.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ThreadPool.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
