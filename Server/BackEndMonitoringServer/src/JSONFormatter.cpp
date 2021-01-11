@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "JSONFormatter.h"
 
-bool JSONFormatter::TryAddJSONFormattedData(const nlohmann::json* formatted_data)
+bool JSONFormatter::TryAddJSONFormattedData(const nlohmann::json* 
+    formatted_data)
 {
     if(formatted_data->is_null())
     { 
@@ -13,7 +14,8 @@ bool JSONFormatter::TryAddJSONFormattedData(const nlohmann::json* formatted_data
     return true;
 }
 
-bool JSONFormatter::TrySetJSONFormattedData(const nlohmann::json* formatted_data)
+bool JSONFormatter::TrySetJSONFormattedData(const nlohmann::json* 
+    formatted_data)
 {
     if (formatted_data->is_null())
     {
