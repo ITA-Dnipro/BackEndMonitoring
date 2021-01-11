@@ -12,10 +12,12 @@ namespace Acceptor
 	class CAcceptor : public EventHandler::CEventHandler
 	{
 	public:
-		CAcceptor(const int port, const std::string& address, CDispatcher* dispathcer);
+		CAcceptor(const int port, const std::string& address, 
+			CDispatcher* dispathcer);
 		bool Listening();
 		int GetHandle() const override;
-		void HandleEvent(const int socket, EventHandler::EventType type) override;
+		void HandleEvent(const int socket, 
+			EventHandler::EventType type) override;
 
 	private:
 		const int m_port;

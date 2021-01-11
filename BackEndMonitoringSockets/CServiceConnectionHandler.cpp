@@ -2,14 +2,16 @@
 
 namespace ServiceConHandler
 {
-	CServiceConnectionHandler::CServiceConnectionHandler(const int port, const std::string& ip_address, CDispatcher* dispatcher)
+	CServiceConnectionHandler::CServiceConnectionHandler(const int port, 
+		const std::string& ip_address, CDispatcher* dispatcher)
 	{
 		m_peer_stream = std::make_unique<CStream>();
 		m_dispatcher = dispatcher;
 		m_dispatcher->RegisterHandler(this, EventHandler::EventType::WRITE_EVENT);
 	}
 
-	void CServiceConnectionHandler::HandleEvent(const int socket, EventHandler::EventType type)
+	void CServiceConnectionHandler::HandleEvent(const int socket, 
+		EventHandler::EventType type)
 	{
 
 		if (type == EventHandler::EventType::READ_EVENT)

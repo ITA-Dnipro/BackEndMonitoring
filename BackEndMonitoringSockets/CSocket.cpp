@@ -38,7 +38,8 @@ namespace Socket
 		return static_cast<int>(new_socket);
 	}
 
-	void CSocket::SetSocketAddress(const int port, const std::string& ip_address)
+	void CSocket::SetSocketAddress(const int port, 
+		const std::string& ip_address)
 	{
 		m_address.sin_family = AF_INET;
 		m_address.sin_port = htons(port);

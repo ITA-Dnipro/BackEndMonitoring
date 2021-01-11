@@ -3,7 +3,8 @@
 
 namespace AcceptorSocket
 {
-	CAcceptorSocket::CAcceptorSocket(const int port, const std::string& ip_address)
+	CAcceptorSocket::CAcceptorSocket(const int port, 
+		const std::string& ip_address)
 		: Socket::CSocket(port, ip_address)
 	{
 		Open(port, ip_address);
@@ -12,7 +13,8 @@ namespace AcceptorSocket
 	int CAcceptorSocket::AcceptIncommingCalls()
 	{
 		int sizeofaddr = sizeof(m_address);
-		int new_socket = static_cast<int>(accept(m_socket, (SOCKADDR*)&m_address, &sizeofaddr));
+		int new_socket = static_cast<int>(accept(m_socket, 
+			(SOCKADDR*)&m_address, &sizeofaddr));
 
 		return new_socket;
 	}
@@ -23,7 +25,8 @@ namespace AcceptorSocket
 		m_address.sin_port = htons(port);
 		m_address.sin_family = AF_INET;
 
-		if (bind(m_socket, (SOCKADDR*)&m_address, sizeof(m_address) != SOCKET_ERROR))
+		if (bind(m_socket, (SOCKADDR*)&m_address, 
+			sizeof(m_address) != SOCKET_ERROR))
 		{
 			std::cout << "bind socket " << m_socket << std::endl;
 			//if (listen(m_socket, SOMAXCONN) != SOCKET_ERROR)

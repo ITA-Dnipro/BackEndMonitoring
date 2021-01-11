@@ -1,11 +1,15 @@
 #include "CClientConnectionHandler.h"
 
-ClientConHandler::CClientConnectionHandler::CClientConnectionHandler(EventHandler::EventType type, const SocketWrapper::CSocketWrapper& stream, CDispatcher* dispatcher)
+ClientConHandler::CClientConnectionHandler::CClientConnectionHandler(
+	EventHandler::EventType type, 
+	const SocketWrapper::CSocketWrapper& stream, 
+	CDispatcher* dispatcher)
 {
 	dispatcher->RegisterHandler(this, type);
 }
 
-void ClientConHandler::CClientConnectionHandler::HandleEvent(const int socket, EventHandler::EventType type)
+void ClientConHandler::CClientConnectionHandler::HandleEvent(const int socket, 
+	EventHandler::EventType type)
 {
 	std::cout << socket;
 	std::cout << static_cast<int>(type);

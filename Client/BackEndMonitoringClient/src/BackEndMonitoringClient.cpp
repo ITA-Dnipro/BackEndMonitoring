@@ -3,10 +3,18 @@
 #include "stdafx.h"
 
 #include <iostream>
+#include "CConnectorWrapper.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    //std::cout << "Hello World!\n";
+
+	ConnectorWrapper::CConnectorWrapper connector;
+
+	connector.MakeRequest("hello world!");
+	std::cout << connector.GetResponse();
+
+	system("pause");
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"

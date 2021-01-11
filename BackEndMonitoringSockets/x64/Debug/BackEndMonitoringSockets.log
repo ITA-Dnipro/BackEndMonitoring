@@ -8,7 +8,7 @@
   CConnectorWrapper.cpp
   CEventHandler.cpp
   CEventHandlerStorage.cpp
-C:\Users\Sergei\source\repos\BackEndMonitoring\BackEndMonitoringSockets\CEventHandlerStorage.cpp(87,31): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Sergei\source\repos\BackEndMonitoring\BackEndMonitoringSockets\CEventHandlerStorage.cpp(89,31): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
   CInitiationDispatcher.cpp
   CLinuxSocket.cpp
   CServiceConnectionHandler.cpp

@@ -56,7 +56,8 @@ namespace SocketWrapper
 	bool CSocketWrapper::Send(const int client_socket, const std::string& line)
 	{
 		std::cout << line;
-		if (send(client_socket, line.c_str(), line.length(), 0) == INVALID_SOCKET)
+		if (send(client_socket, line.c_str(), line.length(), 0) 
+			== INVALID_SOCKET)
 		{
 			return false;
 		}

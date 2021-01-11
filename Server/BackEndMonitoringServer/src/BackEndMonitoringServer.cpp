@@ -4,10 +4,16 @@
 #include "stdafx.h"
 
 #include <iostream>
+#include "CAcceptorWrapper.h"
 
 int main( )
 {
-	std::cout << "Hello World!\n";
+	//std::cout << "Hello World!\n";
+	AcceptorWrapper::CAcceptorWrapper acceptor;
+
+	acceptor.Start();
+	system("pause");
+	return 0;
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"

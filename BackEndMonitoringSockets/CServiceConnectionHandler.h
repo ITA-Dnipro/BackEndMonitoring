@@ -14,8 +14,11 @@ namespace ServiceConHandler
 	class CServiceConnectionHandler : public ServiceHandler::CServiceHandler
 	{
 	public:
-		CServiceConnectionHandler(const int port, const std::string& ip_address, CDispatcher* dispatcher);
-		void HandleEvent(const int socket, EventHandler::EventType type) override;
+		CServiceConnectionHandler(const int port, 
+			const std::string& ip_address, 
+			CDispatcher* dispatcher);
+		void HandleEvent(const int socket, 
+			EventHandler::EventType type) override;
 		int GetHandle() const override;
 
 	private:

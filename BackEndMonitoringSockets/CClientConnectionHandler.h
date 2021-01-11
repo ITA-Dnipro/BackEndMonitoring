@@ -11,8 +11,11 @@ namespace ClientConHandler
 	class CClientConnectionHandler : public ServiceHandler::CServiceHandler
 	{
 	public:
-		CClientConnectionHandler(EventHandler::EventType type, const SocketWrapper::CSocketWrapper& stream, CDispatcher* dispatcher);
-		void HandleEvent(const int socket, EventHandler::EventType type) override;
+		CClientConnectionHandler(EventHandler::EventType type, 
+			const SocketWrapper::CSocketWrapper& stream, 
+			CDispatcher* dispatcher);
+		void HandleEvent(const int socket, 
+			EventHandler::EventType type) override;
 		int GetHandle() const override;
 
 	private:

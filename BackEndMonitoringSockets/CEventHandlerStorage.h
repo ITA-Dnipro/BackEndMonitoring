@@ -15,7 +15,8 @@ namespace Storage
 		CEH* GetHandler(EventType event_type);
 		void AddHandler(EventType event_type, CEH* event_handler);
 		void RemoveHandler(const int handle);
-		void ConvertToFdSet(fd_set& read_fds, fd_set& write_fds, fd_set& except_fds);
+		void ConvertToFdSet(fd_set& read_fds, fd_set& write_fds, 
+			fd_set& except_fds);
 		int GetMaxFd() const;
 		int GetSize() const;
 		std::map<EventType, CEH*>::const_iterator GetBegin() const;

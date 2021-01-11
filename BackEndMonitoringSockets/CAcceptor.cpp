@@ -2,19 +2,23 @@
 
 namespace Acceptor
 {
-	CAcceptor::CAcceptor(const int port, const std::string& address, CDispatcher* dispatcher)
+	CAcceptor::CAcceptor(const int port, const std::string& address, 
+		CDispatcher* dispatcher)
 		:  m_dispatcher(dispatcher), m_address(address), m_port(port)
 	{
-		dispatcher->RegisterHandler(this, EventHandler::EventType::ACCEPT_EVENT);
-		m_peer_acceptor = std::make_unique<AcceptorSocket::CAcceptorSocket>(port, address);
+		dispatcher->RegisterHandler(this, 
+			EventHandler::EventType::ACCEPT_EVENT);
+		m_peer_acceptor = 
+			std::make_unique<AcceptorSocket::CAcceptorSocket>(port, address);
 	}
 
 	bool CAcceptor::Listening()
 	{
 		int socket = m_peer_acceptor.get()->AcceptIncommingCalls();
+		std::cout << socket << std::endl;
+
 		if (socket != -1)
 		{
-			std::cout << socket << std::endl;
 			return true;
 		}
 		return false;
@@ -30,8 +34,12 @@ namespace Acceptor
 		if (type == EventHandler::EventType::ACCEPT_EVENT) 
 		{
 			int client_socket = m_peer_acceptor.get()->AcceptIncommingCalls();
-			ServiceHandler::CServiceHandler* handler = new ServiceConHandler::CServiceConnectionHandler(m_port, m_address, m_dispatcher);
-			m_dispatcher->RegisterHandler(handler, EventHandler::EventType::READ_EVENT);
+			ServiceHandler::CServiceHandler* handler 
+				= new ServiceConHandler::CServiceConnectionHandler(m_port,
+					m_address, 
+					m_dispatcher);
+			m_dispatcher->RegisterHandler(handler, 
+				EventHandler::EventType::READ_EVENT);
 		}
 	}
 

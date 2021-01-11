@@ -16,12 +16,14 @@ namespace Dispatcher
 		return m_instance;
 	}
 
-	void CInitiationDispatcher::RegisterHandler(Handler* handler, EventHandler::EventType type)
+	void CInitiationDispatcher::RegisterHandler(Handler* handler, 
+		EventHandler::EventType type)
     {
         m_storage.AddHandler(type, handler);
     }
 
-    void CInitiationDispatcher::RemoveHandler(Handler* handler, EventHandler::EventType type)
+    void CInitiationDispatcher::RemoveHandler(Handler* handler, 
+		EventHandler::EventType type)
     {
         m_storage.RemoveHandler(handler->GetHandle());
     }
@@ -34,7 +36,8 @@ namespace Dispatcher
 		FD_ZERO(&except_fds);
 		m_storage.ConvertToFdSet(read_fds, write_fds, except_fds);
 		int maxfd = m_storage.GetMaxFd();
-		int nResult = select(maxfd, &read_fds, &write_fds, &except_fds, timeout);
+		int nResult = select(maxfd, &read_fds, &write_fds, &except_fds, 
+			timeout);
 		if (nResult <= 0) 
 		{ 
 			//error 
@@ -46,7 +49,8 @@ namespace Dispatcher
 				if (it->first == EventHandler::EventType::READ_EVENT)
 				{
 					std::cout << "read";
-					it->second->HandleEvent(it->second->GetHandle(), EventHandler::EventType::READ_EVENT);
+					it->second->HandleEvent(it->second->GetHandle(), 
+						EventHandler::EventType::READ_EVENT);
 				}
 			}
 			if (FD_ISSET(it->second->GetHandle(), &write_fds))
@@ -54,14 +58,16 @@ namespace Dispatcher
 				if (it->first == EventHandler::EventType::WRITE_EVENT)
 				{
 					std::cout << "write";
-					it->second->HandleEvent(it->second->GetHandle(), EventHandler::EventType::WRITE_EVENT);
+					it->second->HandleEvent(it->second->GetHandle(), 
+						EventHandler::EventType::WRITE_EVENT);
 				}
 			}
 			if (FD_ISSET(it->second->GetHandle(), &except_fds))
 			{
 				if (it->first == EventHandler::EventType::CLOSE_EVENT)
 				{
-					it->second->HandleEvent(it->second->GetHandle(), EventHandler::EventType::CLOSE_EVENT);
+					it->second->HandleEvent(it->second->GetHandle(), 
+						EventHandler::EventType::CLOSE_EVENT);
 				}
 			}
 		}

@@ -16,7 +16,8 @@ namespace Connector
 	class CConnector : public EventHandler::CEventHandler
 	{
 	public:
-		CConnector(const int port, const std::string& address, CDispatcher* dispathcer);
+		CConnector(const int port, const std::string& address, 
+			CDispatcher* dispathcer);
 
 		void Connect(CSH* handler);
 		void HandleEvent(const int socket, EventHandler::EventType type);

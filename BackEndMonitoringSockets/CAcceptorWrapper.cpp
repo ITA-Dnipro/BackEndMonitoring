@@ -5,7 +5,8 @@ namespace AcceptorWrapper
 	CAcceptorWrapper::CAcceptorWrapper()
 	{
 		m_dispatcher = CDispatcher::GetInstance();
-		m_server_acceptor = new Acceptor::CAcceptor(20, "127.0.0.1", m_dispatcher);
+		m_server_acceptor = new Acceptor::CAcceptor(27015, "127.0.0.1", 
+			m_dispatcher);
 		std::cout << m_dispatcher << std::endl;
 
 	}

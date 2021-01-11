@@ -2,7 +2,8 @@
 
 namespace Connector
 {
-	CConnector::CConnector(const int port, const std::string& ip_address, CDispatcher* dispathcer)
+	CConnector::CConnector(const int port, const std::string& ip_address, 
+		CDispatcher* dispathcer)
 		: m_dispatcher(dispathcer), m_port(port), m_ip_address(ip_address)
 	{
 		m_socket_connector = std::make_unique<SockConn>(port, ip_address);
@@ -20,7 +21,6 @@ namespace Connector
 
 	bool CConnector::ConnectServiceHandler(CSH* handler)
 	{
-		std::cout << "connect";
 		if (m_socket_connector.get()->Connect())
 		{
 			RegisterHandler(handler);
@@ -38,7 +38,8 @@ namespace Connector
 			return false;
 		}
 		ServiceHandler::CServiceHandler* new_handler = (*sock_iterator).second;
-		m_dispatcher->RemoveHandler(new_handler, EventHandler::EventType::WRITE_EVENT);
+		m_dispatcher->RemoveHandler(new_handler, 
+			EventHandler::EventType::WRITE_EVENT);
 		m_connection_map.erase(sock_iterator);
 
 		return true;
@@ -46,11 +47,13 @@ namespace Connector
 
 	void CConnector::RegisterHandler(CSH* handler)
 	{
-		m_dispatcher->RegisterHandler(this, EventHandler::EventType::WRITE_EVENT);
+		m_dispatcher->RegisterHandler(this, 
+			EventHandler::EventType::WRITE_EVENT);
 		m_connection_map[m_socket_connector.get()->GetHandle()] = handler;
 	}
 
-	void CConnector::HandleEvent(const int socket, EventHandler::EventType type)
+	void CConnector::HandleEvent(const int socket, 
+		EventHandler::EventType type)
 	{
 		if (type == EventHandler::EventType::WRITE_EVENT)
 		{

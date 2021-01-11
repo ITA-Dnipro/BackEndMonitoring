@@ -9,7 +9,7 @@ namespace Storage
 
 	CEventHandlerStorage::~CEventHandlerStorage()
 	{
-		for (auto it = m_handlers_map.begin(); it != m_handlers_map.end(); it++)
+		for (auto it = m_handlers_map.begin(); it!= m_handlers_map.end(); it++)
 		{
 			delete it->second;
 		}
@@ -27,7 +27,8 @@ namespace Storage
 		return nullptr;
 	}
 
-	void CEventHandlerStorage::AddHandler(EventHandler::EventType event_type, CEH* event_handler)
+	void CEventHandlerStorage::AddHandler(EventHandler::EventType event_type, 
+		CEH* event_handler)
 	{
 		if (m_handlers_map.count(event_type))
 		{
@@ -51,9 +52,10 @@ namespace Storage
 		}
 	}
 
-	void CEventHandlerStorage::ConvertToFdSet(fd_set& read_fds, fd_set& write_fds, fd_set& except_fds)
+	void CEventHandlerStorage::ConvertToFdSet(fd_set& read_fds, 
+		fd_set& write_fds, fd_set& except_fds)
 	{
-		for (auto it = m_handlers_map.begin(); it != m_handlers_map.end(); ++it)
+		for (auto it = m_handlers_map.begin(); it!= m_handlers_map.end(); ++it)
 		{
 			if (it->first == EventHandler::EventType::READ_EVENT) {
 				FD_SET(it->second->GetHandle(), &read_fds);
@@ -87,12 +89,14 @@ namespace Storage
 		return m_handlers_map.size();
 	}
 
-	std::map<EventHandler::EventType, CEH*>::const_iterator CEventHandlerStorage::GetBegin() const
+	std::map<EventHandler::EventType, CEH*>::const_iterator 
+		CEventHandlerStorage::GetBegin() const
 	{
 		return m_handlers_map.begin();
 	}
 
-	std::map<EventHandler::EventType, CEH*>::const_iterator CEventHandlerStorage::GetEnd() const
+	std::map<EventHandler::EventType, CEH*>::const_iterator 
+		CEventHandlerStorage::GetEnd() const
 	{
 		return m_handlers_map.end();
 	}

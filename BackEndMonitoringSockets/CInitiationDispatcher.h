@@ -11,8 +11,10 @@ namespace Dispatcher
 	{
 	public:
 		static CInitiationDispatcher* GetInstance();
-		void RegisterHandler(Handler* handler, EventHandler::EventType type) override; 
-		void RemoveHandler(Handler* handler, EventHandler::EventType type) override;
+		void RegisterHandler(Handler* handler, 
+			EventHandler::EventType type) override; 
+		void RemoveHandler(Handler* handler, 
+			EventHandler::EventType type) override;
 		void HandleEvents(timeval* timeout = NULL) override;
 
 	private:
