@@ -3,7 +3,7 @@
 #include <future>
 
 template <typename TaskType>
-struct TaskInQueue 
+struct STaskInQueue 
 {
 	std::future<TaskType> future;
 	size_t position;

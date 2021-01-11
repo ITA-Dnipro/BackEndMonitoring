@@ -18,13 +18,13 @@
     <ClInclude Include="include\stdafx.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Event.h">
+    <ClInclude Include="include\STaskInQueue.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\TaskInQueue.h">
+    <ClInclude Include="include\CEvent.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\ThreadPool.h">
+    <ClInclude Include="include\CThreadPool.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,10 +35,10 @@
     <ClCompile Include="src\BackEndMonitoringServer.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Event.cpp">
+    <ClCompile Include="src\CEvent.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ThreadPool.cpp">
+    <ClCompile Include="src\CThreadPool.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

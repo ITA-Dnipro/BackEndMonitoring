@@ -147,18 +147,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\Event.h" />
+    <ClInclude Include="include\CEvent.h" />
     <ClInclude Include="include\stdafx.h" />
-    <ClInclude Include="include\TaskInQueue.h" />
-    <ClInclude Include="include\ThreadPool.h" />
+    <ClInclude Include="include\STaskInQueue.h" />
+    <ClInclude Include="include\CThreadPool.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BackEndMonitoringServer.cpp" />
-    <ClCompile Include="src\Event.cpp" />
-    <ClCompile Include="src\ThreadPool.cpp" />
+    <ClCompile Include="src\CEvent.cpp" />
+    <ClCompile Include="src\CThreadPool.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
