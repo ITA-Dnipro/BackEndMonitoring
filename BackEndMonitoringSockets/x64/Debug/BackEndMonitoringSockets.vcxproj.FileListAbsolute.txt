@@ -1,0 +1,2 @@
+C:\Users\Sergei\source\repos\BackEndMonitoring\x64\Debug\BackEndMonitoringSockets.pdb
+C:\Users\Sergei\source\repos\BackEndMonitoring\BackEndMonitoringSockets\x64\Debug\BackEndMonitoringSockets.pdb
