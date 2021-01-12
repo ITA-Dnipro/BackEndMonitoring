@@ -6,12 +6,20 @@
 
 int main(int argc, char** argv)
 {
-	std::cout << argv[0] << std::endl;
 	XMLParser xml_parser("D:\\xgconsole.xml");
-	std::cout << xml_parser.getStringConfiguration("//root/Server/serverdisplayname") << std::endl;
-	std::cout << xml_parser.getIntegerConfiguration("//root/time/Period_time") << std::endl;
-	std::cout << xml_parser.getIntegerConfiguration("//root/HDDinfo/counttype") << std::endl;
-	if (xml_parser.isConfigurationEnabled("//root/HDDinfo/checkhdd"))
+	int a; 
+	if (xml_parser.TryToGetIntegerConfiguration("//root/time/Period_time", a))
+	{
+		std::cout << a << std::endl;
+	}
+
+	std::string data; 
+	if (xml_parser.TryToGetStringConfiguration("//root/Server/serverdisplayname", data))
+	{
+		std::cout << data << std::endl;
+	}
+
+	if (xml_parser.IsConfigurationEnabled("//root/HDDinfo/checkhdd"))
 	{
 		std::cout << "enabled" << std::endl;
 	}

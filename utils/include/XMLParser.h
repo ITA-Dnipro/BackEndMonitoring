@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 
 class XMLParser
 {
@@ -14,15 +13,17 @@ public:
 
 	~XMLParser() = default;
 
-	int getIntegerConfiguration(const std::string& data_path) const;
-	bool isConfigurationEnabled(const std::string& data_path) const;
-	std::string getStringConfiguration(const std::string& data_path) const;
+	bool IsConfigurationEnabled(const std::string& data_path) const;
+
+	bool TryToGetIntegerConfiguration(const std::string& data_path, int& return_data) const;
+	bool TryToGetStringConfiguration(const std::string& data_path, std::string& return_data) const;
+
+private:
+	bool TryToGetStringDataFromFile(const std::string& data_path, std::string& return_data) const;
+	void FormConfigurationString(std::string& data_to_form) const;
 
 private:
 	std::string path_to_configuration_file_;
-
-	std::string formConfigurationString(const std::string& string_to_form) const;
-	std::string getStringDataFromFile(const std::string& data_path) const;
 };
 
 

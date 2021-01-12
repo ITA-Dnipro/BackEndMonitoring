@@ -2,37 +2,51 @@
 #include "XMLParser.h"
 #include "pugixml.hpp"
 
-std::string XMLParser::formConfigurationString(const std::string& string_to_form) const
+void XMLParser::FormConfigurationString(std::string& return_data) const
 {
-	return string_to_form.substr((string_to_form.find_first_of("\"") + 1), (string_to_form.find_last_of("\"") - 2));
+	return_data = return_data.substr((return_data.find_first_of("\"") + 1), (return_data.find_last_of("\"") - 2));
 }
 
-std::string XMLParser::getStringDataFromFile(const std::string& data_path) const
+bool XMLParser::TryToGetStringDataFromFile(const std::string& data_path, std::string& return_data) const
 {
 	pugi::xml_document doc;
 	if (doc.load_file(path_to_configuration_file_.c_str()))
 	{
 		auto point = doc.select_node(data_path.c_str());
-		return formConfigurationString(point.node().child_value());
+		return_data = point.node().child_value();
+		FormConfigurationString(return_data);
+		return true;
 	}
 
 	std::cerr << "Failed to open File!! with this path: " <<
 		path_to_configuration_file_ << std::endl;
-	return "";
+	return false;
 }
 
-int XMLParser::getIntegerConfiguration(const std::string& data_path) const
+bool XMLParser::TryToGetIntegerConfiguration(const std::string& data_path, int& return_data) const
 {
-	std::string data = getStringDataFromFile(data_path);
-	return data.size() > 0 ? std::stoi(data) : -1;
+	std::string tmp_answer;
+	if (TryToGetStringDataFromFile(data_path, tmp_answer))
+	{
+		return_data = std::stoi(tmp_answer);
+		return true;
+	}
+
+	return false;
 }
 
-bool XMLParser::isConfigurationEnabled(const std::string& data_path) const
+bool XMLParser::IsConfigurationEnabled(const std::string& data_path) const
 {
-	return getStringDataFromFile(data_path) == "enabled" ? true : false;
+	std::string tmp_answer;
+	if (TryToGetStringDataFromFile(data_path, tmp_answer))
+	{
+		return tmp_answer == "enable";
+	}
+
+	return false;
 }
 
-std::string XMLParser::getStringConfiguration(const std::string& data_path) const
+bool XMLParser::TryToGetStringConfiguration(const std::string& data_path, std::string& return_data) const
 {
-	return getStringDataFromFile(data_path);
+	return TryToGetStringDataFromFile(data_path, return_data);
 }
