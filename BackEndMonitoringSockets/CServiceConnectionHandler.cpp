@@ -29,6 +29,7 @@ void CServiceConnectionHandler::HandleRequestEvent(const int socket)
 {
 	std::cout << "Request from the client " << socket << ": " << std::endl;
 	std::cout << m_peer_stream->Receive(socket);
+	Sleep(10000);
 	HandleResponseEvent(socket);
 }
 

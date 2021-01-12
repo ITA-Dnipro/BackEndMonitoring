@@ -12,7 +12,7 @@ CConnectorWrapper::CConnectorWrapper()
 void CConnectorWrapper::MakeRequest(const std::string& message)
 {
 	Connect();
-
+	Sleep(10000);
 	m_client_handler->HandleEvent(m_connector->GetHandle(), 
 		EventType::REQUEST_DATA);
 }

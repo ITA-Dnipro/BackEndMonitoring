@@ -2,6 +2,7 @@
   CAcceptor.cpp
   CAcceptorSocket.cpp
   CAcceptorWrapper.cpp
+C:\Users\Sergei\source\repos\BackEndMonitoring\BackEndMonitoringSockets\CAcceptorWrapper.cpp(23,10): warning C4834: discarding return value of function with 'nodiscard' attribute
   CBaseSocket.cpp
 C:\Users\Sergei\source\repos\BackEndMonitoring\BackEndMonitoringSockets\CBaseSocket.cpp(45,49): warning C4551: function call missing argument list
   CClientConnectionHandler.cpp
