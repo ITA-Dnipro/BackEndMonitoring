@@ -5,3 +5,4 @@
 #include <queue>
 #include <condition_variable>
 #include <functional>
+#include <string>

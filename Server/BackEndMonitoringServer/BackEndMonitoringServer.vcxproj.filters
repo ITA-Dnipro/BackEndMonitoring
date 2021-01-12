@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="3rdPartyLib">
+      <UniqueIdentifier>{510adb4a-4b8e-461b-b39c-c2936ec563b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdPartyLib\pugixml">
+      <UniqueIdentifier>{a63b69a6-d5b3-410c-bc93-ef8d2b260dff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XMLParser">
+      <UniqueIdentifier>{72936619-1cd4-4340-b19b-ab3d124bf9ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\stdafx.h">
@@ -26,6 +35,15 @@
     </ClInclude>
     <ClInclude Include="include\CThreadPool.h">
       <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\3rdParty\include\pugiconfig.hpp">
+      <Filter>3rdPartyLib\pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\3rdParty\include\pugixml.hpp">
+      <Filter>3rdPartyLib\pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="include\XMLParser.h">
+      <Filter>XMLParser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +61,12 @@
     </ClCompile>
     <ClCompile Include="src\stdafx.cpp">
       <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\3rdParty\include\pugixml.cpp">
+      <Filter>3rdPartyLib\pugixml</Filter>
+    </ClCompile>
+    <ClCompile Include="src\XMLParser.cpp">
+      <Filter>XMLParser</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
