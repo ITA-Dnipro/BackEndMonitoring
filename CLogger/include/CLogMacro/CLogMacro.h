@@ -24,14 +24,22 @@ namespace Log
 		ss << std::this_thread::get_id();
 		return ss.str();
 	}
-
 }
-#define TAKE_15(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, N, ...) N
-#define COUNT(...) TAKE_15(__VA_ARGS__, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
+
+// Takes fifteenth argument from parameter pack
+#define TAKE_15(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, N, ...) \
+	N \
+	
+// Size of template parameter pack that less than fifteen
+#define COUNT(...) \
+	TAKE_15(__VA_ARGS__, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0) \
 
 //#define GET_VA_ARGS_SIZE(...) ((int)(sizeof((int[])(__VA_ARGS__ ))/sizeof(int)))
 
+// Returns var itself
 #define IDENTITY(var) var
+
+// Unites macro command and variable arguments args
 #define APPLY(macro, ...) IDENTITY(macro(__VA_ARGS__))
 
 #define F_0(F)
@@ -51,12 +59,17 @@ namespace Log
 #define F_14(F, a, b, c, d, e, f, g, h, i, j, k, l, m, n) F(a), F(b), F(c), F(d), F(e), F(f), F(g), F(h), F(i), F(j), F(k), F(l), F(m), F(n)
 #define F_15(F, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o) F(a), F(b), F(c), F(d), F(e), F(f), F(g), F(h), F(i), F(j), F(k), F(l), F(m), F(n), F(o)
 
+// Returns var name
 #define GET_NAME(x) #x
 
+// Concatenation of F_ and some var
 #define DISPATCH(N) F_ ## N
 
+// Macro foreach function
 #define FOR_EACH(F, ...) IDENTITY(APPLY(DISPATCH, COUNT(__VA_ARGS__)))(F, __VA_ARGS__)
 
+// Makes std::pair<std::const char*, Type> that contains
+// var's name and var's value
 #define MAKE_PAIR(x) std::make_pair(GET_NAME(x), x)
 
 #define WRITE_INFO_LOG(logger) \

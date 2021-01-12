@@ -55,7 +55,6 @@ namespace Log
 		std::list<ELogConfig> m_log_config_list;
 		std::list<std::pair<std::reference_wrapper<std::ostream>,
 			std::unique_ptr<std::mutex>>> m_write_stream_list;
-		//mutex logMutex_;
 
 		template<typename... Args>
 		void PrintToAllStreams(const CLogMessage<Args...>& log_message) const;
