@@ -13,11 +13,11 @@ bool CJSONFormatter::TryAddJSONFormattedData(const nlohmann::json*
     }
     std::string date_and_time;
 
-    if (!Utils::GetCurrentDateAndTimeFormatted(date_and_time))
+    if (!Utils::TryGetCurrentDateAndTimeFormatted(date_and_time))
     {
         return false;
     }
-    m_formatted_data_[date_and_time] += *p_formatted_data;
+    m_formatted_data[date_and_time] += *p_formatted_data;
    
     return true;
 }
@@ -31,21 +31,21 @@ bool CJSONFormatter::TrySetJSONFormattedData(const nlohmann::json*
     }
     std::string date_and_time;
 
-    if (!Utils::GetCurrentDateAndTimeFormatted(date_and_time))
+    if (!Utils::TryGetCurrentDateAndTimeFormatted(date_and_time))
     {
         return false;
     }
-    m_formatted_data_[date_and_time] = *p_formatted_data;
+    m_formatted_data[date_and_time] = *p_formatted_data;
 
     return true;
 }
 
 nlohmann::json* CJSONFormatter::GetJSONFormattedData()
 {
-    if (m_formatted_data_.is_null())
+    if (m_formatted_data.is_null())
     {
         return nullptr;
     }
 
-    return &m_formatted_data_;
+    return &m_formatted_data;
 }

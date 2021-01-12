@@ -1,4 +1,5 @@
 #pragma once
+
 enum class EConvertValueFromBytes
 {
 	INTO_BYTES = 1,

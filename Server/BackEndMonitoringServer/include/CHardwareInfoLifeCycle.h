@@ -1,9 +1,8 @@
 #pragma once
 
-#include "stdafx.h"
-#include "HardwareStatusSpecification.h"
+#include "ÑHardwareStatusSpecification.h"
 
-class HardwareInfoLifeCycle
+class CHardwareInfoLifeCycle
 {
 public:
 	// todo: add as param specificator-class

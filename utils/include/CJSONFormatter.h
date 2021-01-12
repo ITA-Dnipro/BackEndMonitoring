@@ -1,11 +1,12 @@
 #pragma once
+
 #include "json.hpp"
 
 class CJSONFormatter
 {
 public:
 	CJSONFormatter() = default;
-	CJSONFormatter(const CJSONFormatter& orig) : m_formatted_data_(orig.m_formatted_data_)
+	CJSONFormatter(const CJSONFormatter& orig) : m_formatted_data(orig.m_formatted_data)
 	{ };
 	CJSONFormatter(const CJSONFormatter&&) = delete;
 
@@ -15,6 +16,6 @@ public:
 	nlohmann::json* GetJSONFormattedData();
 
 protected:
-	nlohmann::json m_formatted_data_{};
+	nlohmann::json m_formatted_data{};
 };
 
