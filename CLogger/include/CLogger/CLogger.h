@@ -23,7 +23,7 @@ namespace Log
 	{
 	public:
 		CLogger() = delete;
-		CLogger(const std::string& log_name, ELogLevel log_level);
+		explicit CLogger(const std::string& log_name, ELogLevel log_level);
 		CLogger(const CLogger&) = delete;
 		CLogger(CLogger&&) noexcept;
 

@@ -20,7 +20,7 @@ namespace Log
 	class CLOGGER_API CLogBuilder {
 	public:
 		CLogBuilder() = delete;
-		CLogBuilder(const std::string& log_name, ELogLevel log_level);
+		explicit CLogBuilder(const std::string& log_name, ELogLevel log_level);
 		CLogBuilder(const CLogBuilder& copy) = delete;
 		CLogBuilder(CLogBuilder&& move) noexcept;
 
