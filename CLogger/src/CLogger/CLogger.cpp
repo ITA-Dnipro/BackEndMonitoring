@@ -168,6 +168,7 @@ CLogger& CLogger::AddLogConfig(const ELogConfig log_config)
 	{
 		m_log_config_list.emplace_back(log_config);
 	}
+	
 	return *this;
 }
 

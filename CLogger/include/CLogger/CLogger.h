@@ -29,6 +29,9 @@ public:
 
 	template<typename... Args>
 	CLogger& SetLogConfig(Args... args);
+	
+	template<class ... Args>
+	CLogger& AddLogConfig(ELogConfig log_config, Args... args);
 	CLogger& AddLogConfig(ELogConfig log_config);
 
 	template<typename... Args>
@@ -91,7 +94,20 @@ CLogger& CLogger::SetLogConfig(Args... args)
 {
 	m_log_config_list.clear();
 	AddLogConfig(args...);
+	
 	return *this;
+}
+
+template<typename... Args>
+CLogger& CLogger::AddLogConfig(const ELogConfig log_config, Args... args)
+{
+	if (std::find(m_log_config_list.begin(),
+		m_log_config_list.end(), log_config) == m_log_config_list.end())
+	{
+		m_log_config_list.emplace_back(log_config);
+	}
+
+	return AddLogConfig(args...);
 }
 
 /// <summary>

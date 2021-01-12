@@ -45,7 +45,7 @@ private:
 
 	CLogBuilder& AddLogConfig(ELogConfig log_config);
 	template<typename... Args>
-	CLogBuilder& AddLogConfig(ELogConfig logConfig, Args... args);
+	CLogBuilder& AddLogConfig(ELogConfig log_config, Args... args);
 };
 
 	/// <summary>
@@ -76,7 +76,12 @@ CLogBuilder& CLogBuilder::SetLogConfig(Args... args) {
 }
 
 template<typename... Args>
-CLogBuilder& CLogBuilder::AddLogConfig(const ELogConfig logConfig, Args... args) {
-	m_log_config_list.emplace_back(logConfig);
+CLogBuilder& CLogBuilder::AddLogConfig(const ELogConfig log_config, Args... args) {
+	if (std::find(m_log_config_list.begin(),
+		m_log_config_list.end(), log_config) == m_log_config_list.end())
+	{
+		m_log_config_list.emplace_back(log_config);
+	}
+	
 	return AddLogConfig(args...);
 }
