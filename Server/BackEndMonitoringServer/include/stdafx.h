@@ -1,8 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include <fstream>
-#include <chrono>
-#include <ctime>
-#include <iomanip>
-#include <string>
+#include <future>
+#include <queue>
+#include <condition_variable>
+#include <functional>

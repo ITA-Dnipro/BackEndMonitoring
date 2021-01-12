@@ -9,7 +9,7 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header files\Resources">
+    <Filter Include="Resources">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
@@ -18,13 +18,13 @@
     <ClInclude Include="include\stdafx.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\CJSONFormatter.h">
+    <ClInclude Include="include\STaskInQueue.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h">
+    <ClInclude Include="include\CEvent.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\Utils.h">
+    <ClInclude Include="include\CThreadPool.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,13 +35,13 @@
     <ClCompile Include="src\BackEndMonitoringServer.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp">
+    <ClCompile Include="src\CEvent.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp">
+    <ClCompile Include="src\CThreadPool.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\Utils.cpp">
+    <ClCompile Include="src\stdafx.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
