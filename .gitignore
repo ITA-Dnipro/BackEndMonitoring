@@ -31,5 +31,14 @@
 *.out
 *.app
 
-VisualStudio Files
+# VisualStudio Files
 *.vs
+
+# Build folders
+Client/BackEndMonitoringClient/Build/**
+Client/BackEndMonitoringClientTests/Build/**
+Server/BackEndMonitoringServer/Build/**
+Server/BackEndMonitoringServerTests/Build/**
+
+# Dont ingore files in "packages" dir
+!packages/**
