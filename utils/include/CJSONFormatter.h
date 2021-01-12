@@ -1,15 +1,13 @@
 #pragma once
-
-#include "stdafx.h"
-#include "Utilities.h"
+#include "json.hpp"
 
 class CJSONFormatter
 {
 public:
 	CJSONFormatter() = default;
-	CJSONFormatter(CJSONFormatter& orig) : m_formatted_data_(orig.m_formatted_data_)
+	CJSONFormatter(const CJSONFormatter& orig) : m_formatted_data_(orig.m_formatted_data_)
 	{ };
-	CJSONFormatter(CJSONFormatter&&) = delete;
+	CJSONFormatter(const CJSONFormatter&&) = delete;
 
 	bool TryAddJSONFormattedData(const nlohmann::json* formatted_data);
 	bool TrySetJSONFormattedData(const nlohmann::json* formatted_data);

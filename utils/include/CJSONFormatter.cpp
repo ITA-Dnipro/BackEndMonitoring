@@ -1,15 +1,23 @@
 #include "stdafx.h"
-#include "CJSONFormatter.h"
 
+#include "json.hpp"
+
+#include "CJSONFormatter.h"
+#include "Utils.h"
 bool CJSONFormatter::TryAddJSONFormattedData(const nlohmann::json* 
     p_formatted_data)
 {
-    if(p_formatted_data->is_null())
+    if (p_formatted_data->is_null())
     { 
         return false;
     }
-    m_formatted_data_[Utilities::GetCurrentDateAndTimeFormatted()] 
-        += *p_formatted_data;
+    std::string date_and_time;
+
+    if (!Utils::GetCurrentDateAndTimeFormatted(date_and_time))
+    {
+        return false;
+    }
+    m_formatted_data_[date_and_time] += *p_formatted_data;
    
     return true;
 }
@@ -21,8 +29,13 @@ bool CJSONFormatter::TrySetJSONFormattedData(const nlohmann::json*
     {
         return false;
     }
-    m_formatted_data_[Utilities::GetCurrentDateAndTimeFormatted()] 
-        = *p_formatted_data;
+    std::string date_and_time;
+
+    if (!Utils::GetCurrentDateAndTimeFormatted(date_and_time))
+    {
+        return false;
+    }
+    m_formatted_data_[date_and_time] = *p_formatted_data;
 
     return true;
 }

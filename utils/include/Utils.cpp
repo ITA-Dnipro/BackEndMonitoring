@@ -1,40 +1,44 @@
 #include "stdafx.h"
-#include "Utilities.h"
+#include "Utils.h"
 
-std::string Utilities::GetCurrentDateAndTimeFormatted()
+bool Utils::GetCurrentDateAndTimeFormatted(std::string&
+    date_time_var_to_save)
 {
     //parse to format: dd.mm.yyyy hh:mm:ss
     std::time_t current_time = std::chrono::system_clock::to_time_t(
         std::chrono::system_clock::now());
-    std::string date_and_time = ctime(&current_time);
+    date_time_var_to_save = ctime(&current_time);
 
-    date_and_time.pop_back();
-    date_and_time = date_and_time.substr(date_and_time.find_first_of(" ") + 1);
+    date_time_var_to_save.pop_back();
+    date_time_var_to_save = date_time_var_to_save.substr(
+        date_time_var_to_save.find_first_of(" ") + 1ULL);
     
-    std::string buff_year = date_and_time.substr(
-        date_and_time.find_last_of(" ") + 1);
-    date_and_time.erase(date_and_time.end() - buff_year.size(), 
-        date_and_time.end());
+    std::string buff_year = date_time_var_to_save.substr(
+        date_time_var_to_save.find_last_of(" ") + 1ULL);
+    date_time_var_to_save.erase(date_time_var_to_save.end() - buff_year.size(), 
+        date_time_var_to_save.end());
 
-    std::string buff_month = date_and_time.substr(0, 
-        date_and_time.find_first_of(" "));
-    date_and_time.erase(date_and_time.begin(), date_and_time.begin() + 
-        buff_month.size() + 1);
+    std::string buff_month = date_time_var_to_save.substr(0, 
+        date_time_var_to_save.find_first_of(" "));
+    date_time_var_to_save.erase(date_time_var_to_save.begin(), 
+        date_time_var_to_save.begin() + buff_month.size() + 1ULL);
 
-    if (!HelperDateAndTime::TrySetMonthAsNumber(&buff_month))
+    if (!TrySetMonthAsNumber(buff_month))
     {
-        return std::string("Couln't parse month to number!");
+        return false;
     }
     
-    date_and_time.insert(date_and_time.find_first_of(" "), "." + buff_month);
-    date_and_time.insert(date_and_time.find_first_of(" "), 
+    date_time_var_to_save.insert(date_time_var_to_save.find_first_of(" "), 
+        "." + buff_month);
+    date_time_var_to_save.insert(date_time_var_to_save.find_first_of(" "), 
         "." + buff_year + " ");
 
-    return date_and_time;
+    return true;
 }
 
-bool Utilities::HelperDateAndTime::TrySetMonthAsNumber(std::string* p_month)
+bool Utils::TrySetMonthAsNumber(std::string& p_month)
 {
+    
     constexpr char c_name_of_all_months[][4] = {{'J', 'a', 'n', '\0'},
                                               {'F', 'e', 'b', '\0'},
                                               {'M', 'a', 'r', '\0'},
@@ -49,10 +53,10 @@ bool Utilities::HelperDateAndTime::TrySetMonthAsNumber(std::string* p_month)
                                               {'D', 'e', 'c', '\0'} };
     for (size_t month_as_num = 0; month_as_num < 12; ++month_as_num)
     {
-        if (!strcmp(p_month->c_str(),
+        if (!strcmp(p_month.c_str(),
             c_name_of_all_months[month_as_num - 1]))
         {
-            *p_month = std::to_string(month_as_num);
+            p_month = std::to_string(month_as_num);
             return true;
         }
     }

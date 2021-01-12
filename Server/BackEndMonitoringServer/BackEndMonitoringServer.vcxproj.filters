@@ -18,13 +18,13 @@
     <ClInclude Include="include\stdafx.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\Utilities.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\utils\include\CJSONFormatter.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\Utils.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,13 +35,13 @@
     <ClCompile Include="src\BackEndMonitoringServer.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\Utilities.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\Utils.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
