@@ -10,8 +10,11 @@
 	#define CLOGGER_API __declspec(dllimport)
 #endif
 
-#include <string>
+#include <filesystem>
 #include <list>
+#include <map>
 #include <mutex>
 #include <ostream>
 #include <sstream>
+#include <string>
+#include <thread>

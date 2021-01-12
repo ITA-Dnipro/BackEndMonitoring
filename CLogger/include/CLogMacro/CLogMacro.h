@@ -1,9 +1,6 @@
 #pragma once
 #include "stdafx.h"
 
-#include <filesystem>
-#include <thread>
-
 /// <summary>
 ///		Namespace, that contains all classes and functions
 ///		to work with CLogger and its macro-functions
