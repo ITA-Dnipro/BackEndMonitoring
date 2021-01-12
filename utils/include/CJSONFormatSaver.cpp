@@ -3,13 +3,14 @@
 #include "json.hpp"
 
 #include "CJSONFormatSaver.h"
+#include "Utils.h"
 
 bool CJSONFormatSaver::TrySaveToFile(CJSONFormatter& formatted_data)
 {
 	std::ifstream json_file_to_read;
 	json_file_to_read.open(m_path_to_file);
 	nlohmann::json buff;
-	if (!json_file_to_read.eof())
+	if (Utils::IsFileEmpty(json_file_to_read))
 	{
 		buff = *formatted_data.GetJSONFormattedData();
 	}
@@ -18,7 +19,7 @@ bool CJSONFormatSaver::TrySaveToFile(CJSONFormatter& formatted_data)
 		json_file_to_read >> buff;
 	}
 	json_file_to_read.close();
-	if (buff.is_null())
+	if (!buff.is_null())
 	{
 		buff.merge_patch(*formatted_data.GetJSONFormattedData());
 	}

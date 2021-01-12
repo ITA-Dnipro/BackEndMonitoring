@@ -12,4 +12,8 @@ namespace Utils
 	[[nodiscard]] bool TrySetMonthAsNumber(std::string& p_month);
 	
 	[[nodiscard]] bool TryGetFormattedDiskName(std::string& name_of_disk);
+
+	[[nodiscard]] bool IsFileEmpty(std::ifstream& file);
+	[[nodiscard]] bool IsFileEmpty(std::fstream& file);
+
 }

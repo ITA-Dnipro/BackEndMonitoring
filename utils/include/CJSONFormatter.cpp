@@ -4,10 +4,10 @@
 
 #include "CJSONFormatter.h"
 #include "Utils.h"
-bool CJSONFormatter::TryAddJSONFormattedData(const nlohmann::json* 
+bool CJSONFormatter::TryAddJSONFormattedData(const nlohmann::json& 
     p_formatted_data)
 {
-    if (p_formatted_data->is_null())
+    if (p_formatted_data.is_null())
     { 
         return false;
     }
@@ -17,15 +17,15 @@ bool CJSONFormatter::TryAddJSONFormattedData(const nlohmann::json*
     {
         return false;
     }
-    m_formatted_data[date_and_time] += *p_formatted_data;
+    m_formatted_data[date_and_time] += p_formatted_data;
    
     return true;
 }
 
-bool CJSONFormatter::TrySetJSONFormattedData(const nlohmann::json* 
+bool CJSONFormatter::TrySetJSONFormattedData(const nlohmann::json& 
     p_formatted_data)
 {
-    if (p_formatted_data->is_null())
+    if (p_formatted_data.is_null())
     {
         return false;
     }
@@ -35,7 +35,7 @@ bool CJSONFormatter::TrySetJSONFormattedData(const nlohmann::json*
     {
         return false;
     }
-    m_formatted_data[date_and_time] = *p_formatted_data;
+    m_formatted_data[date_and_time] = p_formatted_data;
 
     return true;
 }

@@ -29,14 +29,21 @@ bool CLogicalDiskStatus::TryUpdateCurrentStatus()
 	return true;
 }
 
-std::string* CLogicalDiskStatus::GetDiskName()
-{ return &m_disk_name; }
+std::string CLogicalDiskStatus::GetDiskName() const
+{ return m_disk_name; }
 
 long double CLogicalDiskStatus::GetCapacityOfDisk() const
-{ return CalculateAsCountType(m_disk_info.capacity); }
+{ return RoundToDecimal(CalculateAsCountType(m_disk_info.capacity)); }
+
+long double CLogicalDiskStatus::GetAvailableOfDisk() const
+{ return RoundToDecimal(CalculateAsCountType(m_disk_info.available)); }
 
 long double CLogicalDiskStatus::GetFreeSpaceOfDisk() const
-{ return CalculateAsCountType(m_disk_info.free); }
+{ return RoundToDecimal(CalculateAsCountType(m_disk_info.free)); }
+
+long double CLogicalDiskStatus::RoundToDecimal(
+	long double const value_to_round) const
+{ return round(value_to_round * 100.0) / 100.0; }
 
 long double CLogicalDiskStatus::CalculateAsCountType(
 	long double const value_to_calculate) const
@@ -47,14 +54,17 @@ long double CLogicalDiskStatus::CalculateAsCountType(
 		return value_to_calculate / static_cast<long double>
 			(EConvertValueFromBytes::INTO_BYTES);
 		break;
+
 	case EMemoryCountType::MEGABYTES:
 		return value_to_calculate / static_cast<long double>
 			(EConvertValueFromBytes::INTO_MEGABYTES);
 		break;
+
 	case EMemoryCountType::GIGABYTES:
 		return value_to_calculate / static_cast<long double>
 			(EConvertValueFromBytes::INTO_GIGABYTES);
 		break;
+
 	default:
 		break;
 	}

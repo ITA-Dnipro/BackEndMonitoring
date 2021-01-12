@@ -19,8 +19,9 @@ public:
 
 	[[nodiscard]] bool TryUpdateCurrentStatus();
 
-	[[nodiscard]] std::string* GetDiskName();
+	[[nodiscard]] std::string GetDiskName() const;
 	[[nodiscard]] long double GetCapacityOfDisk() const;
+	[[nodiscard]] long double GetAvailableOfDisk() const;
 	[[nodiscard]] long double GetFreeSpaceOfDisk() const;
 
 private:
@@ -30,6 +31,9 @@ private:
 		m_disk_name(disk_name), m_count_type(count_type)
 	{ };
 	
+	[[nodiscard]] long double RoundToDecimal(long double const value_to_round) 
+		const;
+
 	[[nodiscard]] long double CalculateAsCountType(
 		long double const value_to_calculate) const;
 

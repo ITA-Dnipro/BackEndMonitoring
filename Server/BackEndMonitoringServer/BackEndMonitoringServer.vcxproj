@@ -151,6 +151,7 @@
     <ClInclude Include="..\..\utils\include\CJSONFormatter.h" />
     <ClInclude Include="..\..\utils\include\Utils.h" />
     <ClInclude Include="include\CEvent.h" />
+    <ClInclude Include="include\CJSONFormatterLogicalDisk.h" />
     <ClInclude Include="include\СContainerOfLogicalDisk.h" />
     <ClInclude Include="include\EConvertValueFromBytes.h" />
     <ClInclude Include="include\EMemoryCountType.h" />
@@ -163,6 +164,7 @@
     <ClInclude Include="include\CThreadPool.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\.gitignore" />
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +173,7 @@
     <ClCompile Include="..\..\utils\include\Utils.cpp" />
     <ClCompile Include="src\BackEndMonitoringServer.cpp" />
     <ClCompile Include="src\CEvent.cpp" />
+    <ClCompile Include="src\CJSONFormatterLogicalDisk.cpp" />
     <ClCompile Include="src\СContainerOfLogicalDisk.cpp" />
     <ClCompile Include="src\CThreadPool.cpp" />
     <ClCompile Include="src\СHardwareStatusSpecification.cpp" />

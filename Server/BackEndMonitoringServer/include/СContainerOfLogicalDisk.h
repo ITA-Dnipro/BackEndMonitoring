@@ -13,19 +13,19 @@ public:
 		ÑHardwareStatusSpecification(period_of_checking_status, path_to_file,
 			count_type)
 	{ };
-	explicit ÑContainerOfLogicalDisk(const ÑHardwareStatusSpecification& orig) :
-		ÑHardwareStatusSpecification(orig)
+	explicit ÑContainerOfLogicalDisk(const ÑHardwareStatusSpecification& orig) 
+		: ÑHardwareStatusSpecification(orig)
 	{ };
 	explicit ÑContainerOfLogicalDisk(const ÑContainerOfLogicalDisk& orig) :
 		ÑHardwareStatusSpecification(orig.m_pause_duration, 
 			orig.m_path_to_file, orig.m_count_type),
-		m_container_all_logical_disks(orig.m_container_all_logical_disks)
+		m_p_container_all_logical_disks(orig.m_p_container_all_logical_disks)
 	{ };
 	ÑContainerOfLogicalDisk(const ÑContainerOfLogicalDisk&&) noexcept = delete;
 
 	~ÑContainerOfLogicalDisk()
 	{
-		for (const auto& disk : m_container_all_logical_disks)
+		for (const auto& disk : m_p_container_all_logical_disks)
 		{
 			delete disk;
 		}
@@ -40,6 +40,6 @@ public:
 private:
 	[[nodiscard]] bool TryGetAllExistedLogicalDisksAndInfo();
 
-	std::vector<CLogicalDiskStatus*> m_container_all_logical_disks;
+	std::vector<CLogicalDiskStatus*> m_p_container_all_logical_disks;
 };
 

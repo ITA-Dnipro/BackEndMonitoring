@@ -10,9 +10,11 @@
 
 int main( )
 {
+	CEvent c;
 	СHardwareStatusSpecification* a = new СHardwareStatusSpecification(
-		std::chrono::duration<int>(30), "LogicalDiskStatusLog.json", EMemoryCountType::GIGABYTES);
-	CLogicalDiskStatusLifeCycle b(a);
+		std::chrono::duration<int>(5), "LogicalDiskStatusLog.json", 
+		EMemoryCountType::GIGABYTES);
+	CLogicalDiskStatusLifeCycle b(c, a);
 	
 	b.ThreadLifeCycle();
 

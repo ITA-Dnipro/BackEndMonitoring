@@ -7,7 +7,7 @@ bool ÑContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 {
 	const unsigned short c_size_of_buffer_for_api = 1024;
 	//We just skip some chars
-	const unsigned short number_of_chars_need_miss = 1;
+	const unsigned short number_of_chars_need_miss = 1U;
 	DWORD buffer_size = c_size_of_buffer_for_api;
 	char container_all_disks_names[c_size_of_buffer_for_api + 
 		c_size_of_buffer_for_api] = {};
@@ -29,7 +29,7 @@ bool ÑContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 			{
 				return false;
 			}
-			m_container_all_logical_disks.push_back
+			m_p_container_all_logical_disks.push_back
 				(CLogicalDiskStatus::FactoryLogicalDiskStatus(
 					name_of_disk, m_count_type));
 
@@ -45,7 +45,6 @@ bool ÑContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 	}
 
 	return true;
-
 }
 
 ÑContainerOfLogicalDisk* 
@@ -64,6 +63,4 @@ bool ÑContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 }
 
 std::vector<CLogicalDiskStatus*>* ÑContainerOfLogicalDisk::GetAllLogicalDisk()
-{
-	return &m_container_all_logical_disks;
-}
+{ return &m_p_container_all_logical_disks; }

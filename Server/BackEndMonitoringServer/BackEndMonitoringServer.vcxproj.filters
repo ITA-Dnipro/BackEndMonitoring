@@ -57,9 +57,13 @@
     <ClInclude Include="..\..\utils\include\Utils.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CJSONFormatterLogicalDisk.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
+    <None Include="..\..\.gitignore" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BackEndMonitoringServer.cpp">
@@ -93,6 +97,9 @@
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\utils\include\Utils.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CJSONFormatterLogicalDisk.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

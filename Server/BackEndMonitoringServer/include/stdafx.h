@@ -12,3 +12,4 @@
 #include <string>
 #include <Windows.h>
 #include <filesystem>
+#include <cmath>

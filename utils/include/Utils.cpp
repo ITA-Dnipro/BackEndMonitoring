@@ -42,8 +42,8 @@ bool Utils::TryGetCurrentDateAndTimeFormatted(std::string&
 
 bool Utils::TrySetMonthAsNumber(std::string& p_month)
 {
-    constexpr size_t num_of_month_in_year = 12;
-    constexpr size_t num_of_letters = 4;
+    constexpr size_t num_of_month_in_year = 12U;
+    constexpr size_t num_of_letters = 4U;
     constexpr char c_name_of_all_months[][num_of_letters] = { 
         {'J', 'a', 'n', '\0'},
         {'F', 'e', 'b', '\0'},
@@ -83,3 +83,10 @@ bool Utils::TryGetFormattedDiskName(std::string& name_of_disk)
 
     return true;
 }
+
+bool Utils::IsFileEmpty(std::ifstream& file)
+{ return file.peek() == std::ifstream::traits_type::eof(); }
+
+bool Utils::IsFileEmpty(std::fstream& file)
+{ return file.peek() == std::fstream::traits_type::eof(); }
+
