@@ -56,5 +56,8 @@
     <ClInclude Include="include\Log.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Utils\Utils.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

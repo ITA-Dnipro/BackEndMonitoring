@@ -1,28 +1,7 @@
 #pragma once
 #include "stdafx.h"
 
-/// <summary>
-///		Namespace, that contains all classes and functions
-///		to work with CLogger and its macro-functions
-/// </summary>
-namespace Log
-{
-	/// <summary>
-	///		Gets current thread's id in <c>std::string</c>
-	/// </summary>
-	/// <returns>
-	///		String, that contains thread_id
-	/// </returns>
-	/// <example>
-	///		std::string thisThread = ThisThreadGetIdString();
-	/// </example>
-	inline std::string ThisThreadGetIdString() // TODO: it maybe one of utils
-	{
-		std::stringstream ss;
-		ss << std::this_thread::get_id();
-		return ss.str();
-	}
-}
+#include "Utils/Utils.h"
 
 // Takes fifteenth argument from parameter pack
 #define TAKE_15(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, N, ...) \
@@ -77,20 +56,20 @@ namespace Log
 // Creates and prints CLogMessage of some CLogLevel via CLogger
 #define WRITE_LOG(logger, messageString, logLevel) \
     (logger).PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
-                             std::filesystem::path(__FILE__).filename().string(), \
-                             __FUNCTION__, __TIMESTAMP__, ThisThreadGetIdString())) \
+                             LogUtils::GetFileNameByPath(__FILE__), __FUNCTION__, \
+                             __TIMESTAMP__, ThisThreadGetIdString())) \
 
 // Creates and prints CLogMessage with variable parameters of some CLogLevel via CLogger
 #define WRITE_LOG_WITH_PARAMS(logger, messageString, logLevel, ...) \
     (logger).PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
-                             std::filesystem::path(__FILE__).filename().string(), \
-                             __FUNCTION__, __TIMESTAMP__, ThisThreadGetIdString(), \
+                             LogUtils::GetFileNameByPath(__FILE__), __FUNCTION__, \
+                             __TIMESTAMP__, ThisThreadGetIdString(), \
 							std::make_tuple(FOR_EACH(MAKE_PAIR, __VA_ARGS__)))) \
 
 // Creates and prints CLogMessage that formed from exception of some CLogLevel via CLogger
 #define WRITE_LOG_EXCEPTION(logger, exception, logLevel) \
 	    (logger).PrintLogMessage(CLogMessage(std::string("EXCEPTION!!!!") + " " + (exception).what(), \
-							logLevel, __LINE__, std::filesystem::path(__FILE__).filename().string(), \
+							logLevel, __LINE__, LogUtils::GetFileNameByPath(__FILE__), \
                             __FUNCTION__, __TIMESTAMP__, ThisThreadGetIdString())) \
 
 // Creates and prints CLogMessage of PROD-level via CLogger

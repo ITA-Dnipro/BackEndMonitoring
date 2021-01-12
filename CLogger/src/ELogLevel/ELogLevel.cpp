@@ -14,7 +14,7 @@
 /// </returns>
 /// <example>
 ///		ELogLevel level = ELogLevel::DEBUG;
-///		std::string str = Log::LogLevelToString(level);
+///		std::string str = LogUtils::LogLevelToString(level);
 std::string LogLevelToString(const ELogLevel log_level)
 {
 	constexpr auto* c_none_str  = "";

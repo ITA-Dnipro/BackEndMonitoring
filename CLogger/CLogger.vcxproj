@@ -162,6 +162,7 @@
     <ClInclude Include="include\ELogLevel\ELogLevel.h" />
     <ClInclude Include="include\Log.h" />
     <ClInclude Include="include\stdafx.h" />
+    <ClInclude Include="include\Utils\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

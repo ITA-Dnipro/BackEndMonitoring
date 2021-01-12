@@ -13,7 +13,7 @@
 /// </returns>
 /// <example>
 ///		ELogConfig config = ELogConfig::LOG_LEVEL;
-///		std::string str = Log::LogConfigToString(config);
+///		std::string str = LogUtils::LogConfigToString(config);
 /// </example>
 std::string LogConfigToString(const ELogConfig log_config)
 {
