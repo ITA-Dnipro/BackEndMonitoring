@@ -31,8 +31,5 @@
 *.out
 *.app
 
-# VisualStudio Files
+VisualStudio Files
 *.vs
-
-# CLogger Build Files
-CLogger/Build/
