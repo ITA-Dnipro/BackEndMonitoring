@@ -5,9 +5,6 @@
 
 #include <iostream>
 
-#include "LogicalDiskStatusLifeCycle.h"
-#include "HardwareStatusSpecification.h"
-
 int main( )
 {
 	HardwareStatusSpecification* a = new HardwareStatusSpecification(std::chrono::duration<int>(30), "LogicalDiskStatusLog.json", EMemoryCountType::GIGABYTES);

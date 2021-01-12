@@ -18,25 +18,13 @@
     <ClInclude Include="include\stdafx.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\LogicalDiskStatus.h">
+    <ClInclude Include="include\STaskInQueue.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\EMemoryCountType.h">
+    <ClInclude Include="include\CEvent.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\ContainerOfLogicalDisk.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\HardwareStatusSpecification.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\HardwareInfoLifeCycle.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\LogicalDiskStatusLifeCycle.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\EConvertValueFromBytes.h">
+    <ClInclude Include="include\CThreadPool.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,16 +35,13 @@
     <ClCompile Include="src\BackEndMonitoringServer.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="src\LogicalDiskStatus.cpp">
+    <ClCompile Include="src\CEvent.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ContainerOfLogicalDisk.cpp">
+    <ClCompile Include="src\CThreadPool.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="include\HardwareStatusSpecification.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LogicalDiskStatusLifeCycle.cpp">
+    <ClCompile Include="src\stdafx.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
