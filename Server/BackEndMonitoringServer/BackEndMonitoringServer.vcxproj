@@ -149,11 +149,11 @@
   <ItemGroup>
     <ClInclude Include="..\..\3rdParty\include\pugiconfig.hpp" />
     <ClInclude Include="..\..\3rdParty\include\pugixml.hpp" />
+    <ClInclude Include="..\..\utils\include\XMLParser.h" />
     <ClInclude Include="include\CEvent.h" />
     <ClInclude Include="include\stdafx.h" />
     <ClInclude Include="include\STaskInQueue.h" />
     <ClInclude Include="include\CThreadPool.h" />
-    <ClInclude Include="include\XMLParser.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
@@ -163,6 +163,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\..\utils\include\XMLParser.cpp" />
     <ClCompile Include="src\BackEndMonitoringServer.cpp" />
     <ClCompile Include="src\CEvent.cpp" />
     <ClCompile Include="src\CThreadPool.cpp" />
@@ -170,7 +171,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\XMLParser.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

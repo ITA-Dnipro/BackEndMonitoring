@@ -42,7 +42,7 @@
     <ClInclude Include="..\..\3rdParty\include\pugixml.hpp">
       <Filter>3rdPartyLib\pugixml</Filter>
     </ClInclude>
-    <ClInclude Include="include\XMLParser.h">
+    <ClInclude Include="..\..\utils\include\XMLParser.h">
       <Filter>XMLParser</Filter>
     </ClInclude>
   </ItemGroup>
@@ -65,7 +65,7 @@
     <ClCompile Include="..\..\3rdParty\include\pugixml.cpp">
       <Filter>3rdPartyLib\pugixml</Filter>
     </ClCompile>
-    <ClCompile Include="src\XMLParser.cpp">
+    <ClCompile Include="..\..\utils\include\XMLParser.cpp">
       <Filter>XMLParser</Filter>
     </ClCompile>
   </ItemGroup>
