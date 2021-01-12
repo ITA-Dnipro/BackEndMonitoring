@@ -148,8 +148,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\utils\include\JSONFormatSaver.h" />
-    <ClInclude Include="..\..\utils\include\JSONFormatter.h" />
+    <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h" />
+    <ClInclude Include="..\..\utils\include\CJSONFormatter.h" />
     <ClInclude Include="..\..\utils\include\Utilities.h" />
     <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
@@ -157,8 +157,8 @@
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\utils\include\JSONFormatSaver.cpp" />
-    <ClCompile Include="..\..\utils\include\JSONFormatter.cpp" />
+    <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp" />
+    <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp" />
     <ClCompile Include="..\..\utils\include\Utilities.cpp" />
     <ClCompile Include="src\BackEndMonitoringServer.cpp" />
   </ItemGroup>

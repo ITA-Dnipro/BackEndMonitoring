@@ -12,7 +12,7 @@ namespace Utilities
 
 	namespace HelperDateAndTime
 	{
-		bool TrySetMonthAsNumber(std::string* month);
+		bool TrySetMonthAsNumber(std::string* p_month);
 	}
 
 }

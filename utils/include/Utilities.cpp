@@ -33,9 +33,9 @@ std::string Utilities::GetCurrentDateAndTimeFormatted()
     return date_and_time;
 }
 
-bool Utilities::HelperDateAndTime::TrySetMonthAsNumber(std::string* month)
+bool Utilities::HelperDateAndTime::TrySetMonthAsNumber(std::string* p_month)
 {
-    constexpr char name_of_all_months[][4] = {{'J', 'a', 'n', '\0'},
+    constexpr char c_name_of_all_months[][4] = {{'J', 'a', 'n', '\0'},
                                               {'F', 'e', 'b', '\0'},
                                               {'M', 'a', 'r', '\0'},
                                               {'A', 'p', 'r', '\0'},
@@ -49,10 +49,10 @@ bool Utilities::HelperDateAndTime::TrySetMonthAsNumber(std::string* month)
                                               {'D', 'e', 'c', '\0'} };
     for (size_t month_as_num = 0; month_as_num < 12; ++month_as_num)
     {
-        if (!strcmp(month->c_str(),
-            name_of_all_months[month_as_num - 1]))
+        if (!strcmp(p_month->c_str(),
+            c_name_of_all_months[month_as_num - 1]))
         {
-            *month = std::to_string(month_as_num);
+            *p_month = std::to_string(month_as_num);
             return true;
         }
     }

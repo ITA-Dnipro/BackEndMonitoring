@@ -21,10 +21,10 @@
     <ClInclude Include="..\..\utils\include\Utilities.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\JSONFormatSaver.h">
+    <ClInclude Include="..\..\utils\include\CJSONFormatter.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\JSONFormatter.h">
+    <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,10 +38,10 @@
     <ClCompile Include="..\..\utils\include\Utilities.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\JSONFormatSaver.cpp">
+    <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\JSONFormatter.cpp">
+    <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

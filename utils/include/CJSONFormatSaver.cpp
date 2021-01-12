@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "JSONFormatSaver.h"
+#include "CJSONFormatSaver.h"
 
-bool JSONFormatSaver::TrySaveToFile(JSONFormatter& formatted_data)
+bool CJSONFormatSaver::TrySaveToFile(CJSONFormatter& formatted_data)
 {
 	std::ifstream json_file_to_read;
-	json_file_to_read.open(path_to_file_);
+	json_file_to_read.open(m_path_to_file_);
 	nlohmann::json buff;
 	if (!json_file_to_read.eof())
 	{
@@ -22,7 +22,7 @@ bool JSONFormatSaver::TrySaveToFile(JSONFormatter& formatted_data)
 	}
 
 
-    std::ofstream JSON_file_to_save(path_to_file_);
+    std::ofstream JSON_file_to_save(m_path_to_file_);
 
 	if (!JSON_file_to_save.is_open())
 	{
@@ -30,7 +30,7 @@ bool JSONFormatSaver::TrySaveToFile(JSONFormatter& formatted_data)
 	}
 
 
-	JSON_file_to_save << std::setw(number_of_spaces_) << buff << std::endl;
+	JSON_file_to_save << std::setw(m_number_of_spaces_) << buff << std::endl;
 
     return true;
 }
