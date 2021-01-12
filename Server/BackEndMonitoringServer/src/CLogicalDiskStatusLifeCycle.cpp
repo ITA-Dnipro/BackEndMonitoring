@@ -1,16 +1,22 @@
 #include "stdafx.h"
-#include "LogicalDiskStatusLifeCycle.h"
 
+#include "CLogicalDiskStatusLifeCycle.h"
 
-void LogicalDiskStatusLifeCycle::ThreadLifeCycle( )
+void CLogicalDiskStatusLifeCycle::ThreadLifeCycle( )
 {
-	container_in_lifecircle_ = 
-		ContainerOfLogicalDisk::FactoryContainerOfLogicalDisk(
-		specification_);
+	m_container_in_lifecircle = 
+		ÑContainerOfLogicalDisk::FactoryContainerOfLogicalDisk(
+		*m_specification);
+
+	if (nullptr == m_container_in_lifecircle)
+	{
+		std::cout << "Problem with creating container!";
+		return;
+	}
 	while (true)
 	{
 		for (const auto& disk : 
-			*(container_in_lifecircle_->GetAllLogicalDisk()))
+			*(m_container_in_lifecircle->GetAllLogicalDisk()))
 		{
 			if (!disk->TryUpdateCurrentStatus())
 			{

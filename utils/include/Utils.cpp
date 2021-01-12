@@ -1,7 +1,11 @@
 #include "stdafx.h"
+
 #include "Utils.h"
 
-bool Utils::GetCurrentDateAndTimeFormatted(std::string&
+//in order to use ctime
+#pragma warning(disable:4996)
+
+bool Utils::TryGetCurrentDateAndTimeFormatted(std::string&
     date_time_var_to_save)
 {
     //parse to format: dd.mm.yyyy hh:mm:ss
@@ -38,23 +42,27 @@ bool Utils::GetCurrentDateAndTimeFormatted(std::string&
 
 bool Utils::TrySetMonthAsNumber(std::string& p_month)
 {
-    
-    constexpr char c_name_of_all_months[][4] = {{'J', 'a', 'n', '\0'},
-                                              {'F', 'e', 'b', '\0'},
-                                              {'M', 'a', 'r', '\0'},
-                                              {'A', 'p', 'r', '\0'},
-                                              {'M', 'a', 'y', '\0'},
-                                              {'J', 'u', 'n', '\0'},
-                                              {'J', 'u', 'l', '\0'},
-                                              {'S', 'e', 'p', '\0'},
-                                              {'A', 'u', 'g', '\0'},
-                                              {'O', 'c', 't', '\0'},
-                                              {'N', 'o', 'v', '\0'},
-                                              {'D', 'e', 'c', '\0'} };
-    for (size_t month_as_num = 0; month_as_num < 12; ++month_as_num)
+    constexpr size_t num_of_month_in_year = 12;
+    constexpr size_t num_of_letters = 4;
+    constexpr char c_name_of_all_months[][num_of_letters] = { 
+        {'J', 'a', 'n', '\0'},
+        {'F', 'e', 'b', '\0'},
+        {'M', 'a', 'r', '\0'},
+        {'A', 'p', 'r', '\0'},
+        {'M', 'a', 'y', '\0'},
+        {'J', 'u', 'n', '\0'},
+        {'J', 'u', 'l', '\0'},
+        {'S', 'e', 'p', '\0'},
+        {'A', 'u', 'g', '\0'},
+        {'O', 'c', 't', '\0'},
+        {'N', 'o', 'v', '\0'},
+        {'D', 'e', 'c', '\0'} };
+
+    for (size_t month_as_num = 0; month_as_num < num_of_month_in_year; 
+         ++month_as_num)
     {
         if (!strcmp(p_month.c_str(),
-            c_name_of_all_months[month_as_num - 1]))
+            c_name_of_all_months[month_as_num - 1ULL]))
         {
             p_month = std::to_string(month_as_num);
             return true;
@@ -62,4 +70,16 @@ bool Utils::TrySetMonthAsNumber(std::string& p_month)
     }
 
     return false;
+}
+
+bool Utils::TryGetFormattedDiskName(std::string& name_of_disk)
+{
+    if (name_of_disk.empty())
+    {
+        return false;
+    }
+    name_of_disk.replace(name_of_disk.begin() + 1ULL, name_of_disk.end(),
+        std::string(":/"));
+
+    return true;
 }

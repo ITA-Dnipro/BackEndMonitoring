@@ -91,7 +91,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -121,7 +121,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -147,7 +147,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h" />
+    <ClInclude Include="..\..\utils\include\CJSONFormatter.h" />
+    <ClInclude Include="..\..\utils\include\Utils.h" />
     <ClInclude Include="include\CEvent.h" />
+    <ClInclude Include="include\СContainerOfLogicalDisk.h" />
+    <ClInclude Include="include\EConvertValueFromBytes.h" />
+    <ClInclude Include="include\EMemoryCountType.h" />
+    <ClInclude Include="include\CHardwareInfoLifeCycle.h" />
+    <ClInclude Include="include\СHardwareStatusSpecification.h" />
+    <ClInclude Include="include\CLogicalDiskStatus.h" />
+    <ClInclude Include="include\CLogicalDiskStatusLifeCycle.h" />
     <ClInclude Include="include\stdafx.h" />
     <ClInclude Include="include\STaskInQueue.h" />
     <ClInclude Include="include\CThreadPool.h" />
@@ -156,9 +166,16 @@
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp" />
+    <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp" />
+    <ClCompile Include="..\..\utils\include\Utils.cpp" />
     <ClCompile Include="src\BackEndMonitoringServer.cpp" />
     <ClCompile Include="src\CEvent.cpp" />
+    <ClCompile Include="src\СContainerOfLogicalDisk.cpp" />
     <ClCompile Include="src\CThreadPool.cpp" />
+    <ClCompile Include="src\СHardwareStatusSpecification.cpp" />
+    <ClCompile Include="src\CLogicalDiskStatus.cpp" />
+    <ClCompile Include="src\CLogicalDiskStatusLifeCycle.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

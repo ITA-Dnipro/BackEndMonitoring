@@ -27,6 +27,36 @@
     <ClInclude Include="include\CThreadPool.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="include\EConvertValueFromBytes.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EMemoryCountType.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CHardwareInfoLifeCycle.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CLogicalDiskStatusLifeCycle.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\СHardwareStatusSpecification.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\СContainerOfLogicalDisk.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CLogicalDiskStatus.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CJSONFormatter.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\Utils.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
@@ -42,6 +72,27 @@
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="src\stdafx.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CLogicalDiskStatusLifeCycle.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\СHardwareStatusSpecification.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\СContainerOfLogicalDisk.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CLogicalDiskStatus.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\Utils.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

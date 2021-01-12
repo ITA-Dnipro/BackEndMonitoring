@@ -5,11 +5,15 @@
 
 #include <iostream>
 
+#include "CLogicalDiskStatusLifeCycle.h"
+
+
 int main( )
 {
-	HardwareStatusSpecification* a = new HardwareStatusSpecification(std::chrono::duration<int>(30), "LogicalDiskStatusLog.json", EMemoryCountType::GIGABYTES);
-	LogicalDiskStatusLifeCycle b(a);
-
+	СHardwareStatusSpecification* a = new СHardwareStatusSpecification(
+		std::chrono::duration<int>(30), "LogicalDiskStatusLog.json", EMemoryCountType::GIGABYTES);
+	CLogicalDiskStatusLifeCycle b(a);
+	
 	b.ThreadLifeCycle();
 
 	return 0;
