@@ -1,2 +1,6 @@
-﻿  BackEndMonitoringServer.cpp
+﻿  stdafx.cpp
+  BackEndMonitoringServer.cpp
+  CEvent.cpp
+  CThreadPool.cpp
+  Generating Code...
   BackEndMonitoringServer.vcxproj -> C:\Users\Sergei\source\repos\BackEndMonitoring\Server\BackEndMonitoringServer\Build\DebugWin64\out\BackEndMonitoringServer.exe
