@@ -89,8 +89,8 @@ private:
 template<typename... Args>
 CLogger& CLogger::SetLogConfig(Args... args)
 {
-	this->m_log_config_list.clear();
-	this->AddLogConfig(args...);
+	m_log_config_list.clear();
+	AddLogConfig(args...);
 	return *this;
 }
 
@@ -113,14 +113,14 @@ CLogger& CLogger::SetLogConfig(Args... args)
 template<typename... Args>
 void CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message) const
 {
-	if (this->m_log_level < log_message.GetLogLevel()
-		|| this->m_write_stream_list.empty()
-		|| this->m_log_config_list.empty())
+	if (m_log_level < log_message.GetLogLevel()
+		|| m_write_stream_list.empty()
+		|| m_log_config_list.empty())
 	{
 		return;
 	}
 
-	this->PrintToAllStreams(log_message);
+	PrintToAllStreams(log_message);
 }
 
 /// <summary>
@@ -136,14 +136,14 @@ void CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message) const
 template<typename ... Args>
 void CLogger::PrintToAllStreams(const CLogMessage<Args...>& log_message) const
 {
-	for (const auto& [stream, mutex] : this->m_write_stream_list)
+	for (const auto& [stream, mutex] : m_write_stream_list)
 	{
 		if (nullptr != mutex)
 		{
 			mutex->lock();
 		}
 		
-		this->PrintLogMessage(log_message, stream);
+		PrintLogMessage(log_message, stream);
 
 		if (nullptr != mutex)
 		{
@@ -174,7 +174,7 @@ std::ostream& CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message,
 {
 	std::stringstream ss;
 
-	for (const auto& config : this->m_log_config_list)
+	for (const auto& config : m_log_config_list)
 	{
 		switch (config)
 		{
@@ -225,13 +225,13 @@ std::ostream& CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message,
 		}
 		case ELogConfig::PARAMS:
 		{
-			this->PrintParams(log_message, ss);
+			PrintParams(log_message, ss);
 			ss << std::flush;
 			break;
 		}
 		case ELogConfig::LOG_NAME:
 		{
-			ss << this->m_log_name << " " << std::flush;
+			ss << m_log_name << " " << std::flush;
 			break;
 		}
 		case ELogConfig::NONE:
@@ -271,7 +271,7 @@ std::ostream& CLogger::PrintParams(const CLogMessage<Args...>& log_message,
 		return stream;
 	}
 
-	return this->PrintParams(temp, std::make_index_sequence<sizeof...(Args)>(), stream) << " ";
+	return PrintParams(temp, std::make_index_sequence<sizeof...(Args)>(), stream) << " ";
 }
 
 /// <summary>

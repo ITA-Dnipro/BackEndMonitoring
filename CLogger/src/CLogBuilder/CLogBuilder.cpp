@@ -48,7 +48,7 @@ CLogBuilder::~CLogBuilder() noexcept = default;
 /// </example>
 ELogLevel CLogBuilder::GetLogLevel() const
 {
-	return this->m_log_level;
+	return m_log_level;
 }
 
 /// <summary>
@@ -63,7 +63,7 @@ ELogLevel CLogBuilder::GetLogLevel() const
 /// </example>
 std::string CLogBuilder::GetLogName() const
 {
-	return this->m_log_name;
+	return m_log_name;
 }
 
 /// <summary>
@@ -82,9 +82,9 @@ std::string CLogBuilder::GetLogName() const
 /// </example>
 CLogBuilder& CLogBuilder::SetLogLevel(const ELogLevel log_level)
 {
-	if (log_level != this->m_log_level)
+	if (log_level != m_log_level)
 	{
-		this->m_log_level = log_level;
+		m_log_level = log_level;
 	}
 
 	return *this;
@@ -112,7 +112,7 @@ CLogBuilder& CLogBuilder::SetLogLevel(const ELogLevel log_level)
 /// </example>
 CLogBuilder& CLogBuilder::AddThreadSafeStream(std::ostream& stream)
 {
-	this->m_write_stream_safe_list.emplace_front(stream);
+	m_write_stream_safe_list.emplace_front(stream);
 	return *this;
 }
 
@@ -139,7 +139,7 @@ CLogBuilder& CLogBuilder::AddThreadSafeStream(std::ostream& stream)
 /// </example>
 CLogBuilder& CLogBuilder::AddThreadUnsafeStream(std::ostream& stream)
 {
-	this->m_write_stream_unsafe_list.emplace_front(stream);
+	m_write_stream_unsafe_list.emplace_front(stream);
 	return *this;
 }
 
@@ -164,10 +164,10 @@ CLogBuilder& CLogBuilder::AddThreadUnsafeStream(std::ostream& stream)
 /// </example>
 CLogBuilder& CLogBuilder::AddLogConfig(const ELogConfig log_config)
 {
-	if (std::find(this->m_log_config_list.begin(),
-		this->m_log_config_list.end(), log_config) == this->m_log_config_list.end())
+	if (std::find(m_log_config_list.begin(),
+		m_log_config_list.end(), log_config) == m_log_config_list.end())
 	{
-		this->m_log_config_list.emplace_back(log_config);
+		m_log_config_list.emplace_back(log_config);
 	}
 
 	return *this;
@@ -189,9 +189,9 @@ CLogBuilder& CLogBuilder::AddLogConfig(const ELogConfig log_config)
 /// </example>
 CLogBuilder& CLogBuilder::SetLogName(const std::string& log_name)
 {
-	if (log_name != this->m_log_name)
+	if (log_name != m_log_name)
 	{
-		this->m_log_name = log_name;
+		m_log_name = log_name;
 	}
 
 	return *this;
@@ -209,19 +209,19 @@ CLogBuilder& CLogBuilder::SetLogName(const std::string& log_name)
 ///		const CLogger* testLogger = testBuilder->BuildLog();
 /// </example>
 CLogger* CLogBuilder::BuildLog() const {
-	auto* log = new CLogger(this->m_log_name, this->m_log_level);
+	auto* log = new CLogger(m_log_name, m_log_level);
 
-	for (const auto& config : this->m_log_config_list)
+	for (const auto& config : m_log_config_list)
 	{
 		log->AddLogConfig(config);
 	}
 
-	for (const auto& stream : this->m_write_stream_safe_list)
+	for (const auto& stream : m_write_stream_safe_list)
 	{
 		log->AddThreadSafeStream(stream);
 	}
 
-	for (const auto& stream : this->m_write_stream_unsafe_list)
+	for (const auto& stream : m_write_stream_unsafe_list)
 	{
 		log->AddThreadUnsafeStream(stream);
 	}
@@ -242,7 +242,7 @@ CLogger* CLogBuilder::BuildLog() const {
 /// </example>
 std::unique_ptr<CLogger> CLogBuilder::BuildUniqueLog() const
 {
-	return std::unique_ptr<CLogger>(this->BuildLog());
+	return std::unique_ptr<CLogger>(BuildLog());
 }
 
 /// <summary>
@@ -258,7 +258,7 @@ std::unique_ptr<CLogger> CLogBuilder::BuildUniqueLog() const
 /// </example>
 std::shared_ptr<CLogger> CLogBuilder::BuildSharedLog() const
 {
-	return std::shared_ptr<CLogger>(this->BuildLog());
+	return std::shared_ptr<CLogger>(BuildLog());
 }
 
 /// <summary>

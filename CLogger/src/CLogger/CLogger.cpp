@@ -56,7 +56,7 @@ CLogger::~CLogger() noexcept = default;
 /// </example>
 CLogger& CLogger::AddThreadSafeStream(std::ostream& stream)
 {
-	this->m_write_stream_list
+	m_write_stream_list
 		.emplace_back(stream, std::unique_ptr<std::mutex>(nullptr));
 	
 	return *this;
@@ -83,7 +83,7 @@ CLogger& CLogger::AddThreadSafeStream(std::ostream& stream)
 /// </example>
 CLogger& CLogger::AddThreadUnsafeStream(std::ostream& stream)
 {
-	this->m_write_stream_list
+	m_write_stream_list
 		.emplace_back(stream, std::make_unique<std::mutex>());
 
 	return *this;
@@ -101,7 +101,7 @@ CLogger& CLogger::AddThreadUnsafeStream(std::ostream& stream)
 /// </example>
 ELogLevel CLogger::GetLogLevel() const
 {
-	return this->m_log_level;
+	return m_log_level;
 }
 
 /// <summary>
@@ -120,9 +120,9 @@ ELogLevel CLogger::GetLogLevel() const
 /// </example>
 CLogger& CLogger::SetLogLevel(const ELogLevel log_level)
 {
-	if (log_level != this->m_log_level)
+	if (log_level != m_log_level)
 	{
-		this->m_log_level = log_level;
+		m_log_level = log_level;
 	}
 	return *this;
 }
@@ -139,7 +139,7 @@ CLogger& CLogger::SetLogLevel(const ELogLevel log_level)
 /// </example>
 std::string CLogger::GetLogName() const
 {
-	return this->m_log_name;
+	return m_log_name;
 }
 
 /// <summary>
@@ -163,10 +163,10 @@ std::string CLogger::GetLogName() const
 /// </example>
 CLogger& CLogger::AddLogConfig(const ELogConfig log_config)
 {
-	if (std::find(this->m_log_config_list.begin(),
-		this->m_log_config_list.end(), log_config) == this->m_log_config_list.end())
+	if (std::find(m_log_config_list.begin(),
+		m_log_config_list.end(), log_config) == m_log_config_list.end())
 	{
-		this->m_log_config_list.emplace_back(log_config);
+		m_log_config_list.emplace_back(log_config);
 	}
 	return *this;
 }
@@ -180,30 +180,30 @@ CLogger& CLogger::AddLogConfig(const ELogConfig log_config)
 /// </example>
 void CLogger::PrintLogInfo() const
 {
-	if (this->m_write_stream_list.empty()
-		|| this->m_log_config_list.empty())
+	if (m_write_stream_list.empty()
+		|| m_log_config_list.empty())
 	{
 		return;
 	}
 	
 	std::stringstream ss;
-	ss << "CLogger name:" << " " << "\"" << this->m_log_name << "\"" << " "
-	   << "Level:" << " " << "[" << LogLevelToString(this->m_log_level)
+	ss << "CLogger name:" << " " << "\"" << m_log_name << "\"" << " "
+	   << "Level:" << " " << "[" << LogLevelToString(m_log_level)
 	   << "]" << " ";
 
-	if (!this->m_log_config_list.empty())
+	if (!m_log_config_list.empty())
 	{
 		ss << "Output order:" << " "
-		   << LogConfigToString(*this->m_log_config_list.begin()) << std::flush;
+		   << LogConfigToString(*m_log_config_list.begin()) << std::flush;
 
-		for (auto config = ++this->m_log_config_list.cbegin();
-			config != this->m_log_config_list.cend(); ++config)
+		for (auto config = ++m_log_config_list.cbegin();
+			config != m_log_config_list.cend(); ++config)
 		{
 			ss << "," << " " << LogConfigToString(*config) << std::flush;
 		}
 	}
 	
-	this->PrintToAllStreams(ss.str());
+	PrintToAllStreams(ss.str());
 }
 
 /// <summary>
@@ -213,13 +213,13 @@ void CLogger::PrintLogInfo() const
 ///		String to print
 /// </param>
 void CLogger::PrintToAllStreams(const std::string& info) const {
-	for (const auto& [stream, mutex] : this->m_write_stream_list)
+	for (const auto& [stream, mutex] : m_write_stream_list)
 	{
 		if (nullptr != mutex) {
 			mutex->lock();
 		}
 		
-		this->PrintLogInfo(info, stream);
+		PrintLogInfo(info, stream);
 		
 		if (nullptr != mutex) {
 			mutex->unlock();

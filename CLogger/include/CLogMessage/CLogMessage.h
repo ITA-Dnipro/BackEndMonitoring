@@ -78,49 +78,49 @@ CLogMessage<Args...>::~CLogMessage() noexcept = default;
 template<typename... Args>
 ELogLevel CLogMessage<Args...>::GetLogLevel() const
 {
-	return this->m_log_level;
+	return m_log_level;
 }
 
 template<typename... Args>
 unsigned CLogMessage<Args...>::GetLineNumber() const
 {
-	return this->m_line_number;
+	return m_line_number;
 }
 
 template<typename... Args>
 std::string CLogMessage<Args...>::GetThreadId() const
 {
-	return this->m_thread_id;
+	return m_thread_id;
 }
 
 template<typename... Args>
 std::string CLogMessage<Args...>::GetFileString() const
 {
-	return this->m_file_string;
+	return m_file_string;
 }
 
 template<typename... Args>
 std::string CLogMessage<Args...>::GetFunctionString() const
 {
-	return this->m_function_string;
+	return m_function_string;
 }
 
 template<typename... Args>
 std::string CLogMessage<Args...>::GetTimeString() const
 {
-	return this->m_time_string;
+	return m_time_string;
 }
 
 template<typename... Args>
 std::string CLogMessage<Args...>::GetMessageString() const
 {
-	return this->m_message_string;
+	return m_message_string;
 }
 
 template<typename... Args>
 std::tuple<std::pair<const char*, Args>...> CLogMessage<Args...>::GetParams() const
 {
-	return this->m_param_tuple;
+	return m_param_tuple;
 }
 
 template<typename... Args>

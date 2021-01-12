@@ -70,13 +70,13 @@ private:
 	/// </example>
 template<typename... Args>
 CLogBuilder& CLogBuilder::SetLogConfig(Args... args) {
-	this->m_log_config_list.clear();
-	this->AddLogConfig(args...);
+	m_log_config_list.clear();
+	AddLogConfig(args...);
 	return *this;
 }
 
 template<typename... Args>
 CLogBuilder& CLogBuilder::AddLogConfig(const ELogConfig logConfig, Args... args) {
-	this->m_log_config_list.emplace_back(logConfig);
-	return this->AddLogConfig(args...);
+	m_log_config_list.emplace_back(logConfig);
+	return AddLogConfig(args...);
 }
