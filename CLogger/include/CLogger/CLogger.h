@@ -138,17 +138,11 @@ void CLogger::PrintToAllStreams(const CLogMessage<Args...>& log_message) const
 {
 	for (const auto& [stream, mutex] : m_write_stream_list)
 	{
-		if (nullptr != mutex)
-		{
-			mutex->lock();
-		}
+		auto unique_lock = nullptr == mutex ?
+			std::unique_lock<std::mutex>() :
+			std::unique_lock<std::mutex>(*mutex);
 		
 		PrintLogMessage(log_message, stream);
-
-		if (nullptr != mutex)
-		{
-			mutex->unlock();
-		}
 	}
 }
 
