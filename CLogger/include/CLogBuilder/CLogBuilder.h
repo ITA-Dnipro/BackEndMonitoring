@@ -1,9 +1,6 @@
 #pragma once
 #include "stdafx.h"
 
-#include <memory>
-#include <list>
-
 #include "ELogConfig/ELogConfig.h"
 #include "CLogger/CLogger.h"
 #include "ELogLevel/ELogLevel.h"

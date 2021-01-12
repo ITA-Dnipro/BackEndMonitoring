@@ -11,3 +11,7 @@
 #endif
 
 #include <string>
+#include <list>
+#include <mutex>
+#include <ostream>
+#include <sstream>
