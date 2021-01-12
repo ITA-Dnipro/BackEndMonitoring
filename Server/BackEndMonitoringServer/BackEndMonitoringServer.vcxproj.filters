@@ -18,13 +18,13 @@
     <ClInclude Include="include\stdafx.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\JSONFormatter.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\JSONFormatSaver.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\utils\include\Utilities.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\JSONFormatSaver.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\JSONFormatter.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,13 +35,13 @@
     <ClCompile Include="src\BackEndMonitoringServer.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="src\JSONFormatter.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\JSONFormatSaver.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\utils\include\Utilities.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\JSONFormatSaver.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\JSONFormatter.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
