@@ -41,5 +41,8 @@
     <ClCompile Include="src\CThreadPool.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="src\stdafx.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

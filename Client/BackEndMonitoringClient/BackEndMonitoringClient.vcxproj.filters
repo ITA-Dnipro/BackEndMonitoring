@@ -18,6 +18,9 @@
     <ClCompile Include="src\BackEndMonitoringClient.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="src\stdafx.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\stdafx.h">
