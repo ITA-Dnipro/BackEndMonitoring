@@ -14,12 +14,12 @@ namespace Log
 	{
 	public:
 		CLogMessage() = delete;
-		explicit CLogMessage(const std::string& messageString, ELogLevel logLevel,
+		CLogMessage(const std::string& messageString, ELogLevel logLevel,
 			unsigned lineNumber, const std::string& fileString,
 			const std::string& functionString,
 			const std::string& timeString, const std::string& threadId);
 
-		explicit CLogMessage(const std::string& messageString, ELogLevel logLevel,
+		CLogMessage(const std::string& messageString, ELogLevel logLevel,
 			unsigned lineNumber, const std::string& fileString,
 			const std::string& functionString, const std::string& timeString,
 			const std::string& threadId,
