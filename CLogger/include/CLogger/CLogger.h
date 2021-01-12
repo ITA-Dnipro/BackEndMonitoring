@@ -223,7 +223,7 @@ namespace Log
 			}
 			case ELogConfig::MESSAGE:
 			{
-				ss << std::endl << "Message:" << " " << log_message.GetMessageString()
+				ss << "Message:" << " " << log_message.GetMessageString()
 					<< " " << std::flush;
 				break;
 			}

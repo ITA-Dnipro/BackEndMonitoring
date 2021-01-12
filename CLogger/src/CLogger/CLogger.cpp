@@ -199,8 +199,8 @@ namespace Log
 
 		if (!this->m_log_config_list.empty())
 		{
-			ss << std::endl << "Output order:" << " "
-				<< LogConfigToString(*this->m_log_config_list.begin()) << std::flush;
+			ss << "Output order:" << " "
+			   << LogConfigToString(*this->m_log_config_list.begin()) << std::flush;
 
 			for (auto config = ++this->m_log_config_list.cbegin();
 				config != this->m_log_config_list.cend(); ++config)
