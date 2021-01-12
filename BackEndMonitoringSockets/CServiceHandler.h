@@ -1,9 +1,18 @@
 #pragma once
 #include "stdafx.h"
-#include "CEventHandler.h"
+
+enum class EventType
+{
+	REQUEST_DATA = 1,
+	ACCEPT_EVENT = 1,
+	RESPONSE_DATA = 2,
+	TIMEOUT_EVENT = 3,
+	SIGNAL_EVENT = 4,
+	CLOSE_EVENT = 5,
+};
 
 // Base class for all the handlers
-class CServiceHandler : public CEventHandler
+class CServiceHandler
 {
 public:
 	virtual void HandleEvent(int socket, EventType type) = 0;

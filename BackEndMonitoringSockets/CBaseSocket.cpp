@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CBaseSocket.h"
 
-#ifdef _WIN64
+#ifndef _linux_
 
 bool CBaseSocket::s_is_started_library = false;
 bool CBaseSocket::s_is_stopped_library = false;
@@ -32,7 +32,7 @@ CBaseSocket::~CBaseSocket()
 bool CBaseSocket::StartLibrary()
 {
 	WSADATA info;
-	if (s_is_started_library == false && WSAStartup(MAKEWORD(2, 0), &info) == SOCKET_ERROR)
+	if (s_is_started_library == false && WSAStartup(MAKEWORD(2, 1), &info) == 0)
 	{
 		s_is_started_library = true;
 		return false;

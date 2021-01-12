@@ -12,7 +12,6 @@ int main()
 	CConnectorWrapper connector;
 
 	connector.MakeRequest("hello world!");
-	std::cout << connector.GetResponse();
 
 	system("pause");
 }

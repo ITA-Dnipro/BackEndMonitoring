@@ -8,8 +8,7 @@ CConnectorSocket::CConnectorSocket(const int port,
 
 bool CConnectorSocket::Connect()
 {
-    std::cout << "connect" << std::endl;
-    if (connect(m_socket, (sockaddr*)&m_address, sizeof(m_address)) != 0)
+    if (connect(m_socket, (sockaddr*)&m_address, sizeof(m_address)) == SOCKET_ERROR)
     {
         std::cout << "fail connection" << std::endl;
         return false;

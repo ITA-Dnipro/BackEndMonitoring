@@ -7,7 +7,6 @@ CSocket::CSocket(const int port, const std::string& ip_address)
 {
 	SetSocketAddress(port, ip_address);
 	m_socket = InitSocket(port, ip_address);
-	std::cout << "socket in csocket - base class = " << m_socket << std::endl;
 }
 
 CSocket::~CSocket()
@@ -40,7 +39,6 @@ int CSocket::InitSocket(const int port, const std::string& ip_address)
 void CSocket::SetSocketAddress(const int port,
 	const std::string& ip_address)
 {
-	std::cout << port << " " << ip_address << std::endl;
 	m_address.sin_family = AF_INET;
 	m_address.sin_port = htons(port);
 	m_address.sin_addr.s_addr = inet_addr(ip_address.c_str());

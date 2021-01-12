@@ -1,35 +1,38 @@
 #include "stdafx.h"
 #include "CClientConnectionHandler.h"
 
-CClientConnectionHandler::CClientConnectionHandler(
-	EventType type, const CSocketWrapper& stream, 
-	CInitiationDispatcher* dispatcher)
+CClientConnectionHandler::CClientConnectionHandler(int client_socket)
+	: m_socket(client_socket)
 {
-	dispatcher->RegisterHandler(this, type);
+	m_client_stream = std::make_unique<CSocketWrapper>(client_socket);
 }
 
-void CClientConnectionHandler::HandleEvent(const int socket, EventType type)
+void CClientConnectionHandler::HandleEvent(const int server_socket, EventType type)
 {
-	std::cout << socket;
-	std::cout << static_cast<int>(type);
 
-	if (type == EventType::READ_EVENT)
+	if (type == EventType::REQUEST_DATA)
 	{
-		std::cout << m_client_stream.Receive(socket);
+		HandleReadEvent(server_socket);
 	}
-	else if (type == EventType::WRITE_EVENT)
+	else if (type == EventType::RESPONSE_DATA)
 	{
-
-		m_client_stream.Send(socket, "CClientConnectionHandler");
-	}
-	else if (type == EventType::CLOSE_EVENT)
-	{
-		m_client_stream.~CSocketWrapper();
-		delete this;
+		HandleReadEvent(server_socket);
 	}
 }
 
 int CClientConnectionHandler::GetHandle() const
 {
-	return m_client_stream.GetHandle();
+	return m_client_stream->GetHandle();
+}
+
+void CClientConnectionHandler::HandleReadEvent(int socket)
+{
+	m_client_stream->Send(socket, "Request for data\n");
+	HandleWriteEvent(socket);
+}
+
+void CClientConnectionHandler::HandleWriteEvent(int socket)
+{
+	std::cout << "the response from the server" << std::endl;
+	std::cout << m_client_stream->Receive(socket) << std::endl;
 }

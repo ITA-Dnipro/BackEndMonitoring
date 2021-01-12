@@ -1,6 +1,5 @@
 #pragma once
 #include "stdafx.h"
-#include "CInitiationDispatcher.h"
 #include "CConnector.h"
 #include "CClientConnectionHandler.h"
 
@@ -10,15 +9,15 @@ class CConnectorWrapper
 {
 public:
 	CConnectorWrapper();
-	~CConnectorWrapper();
 	void MakeRequest(const std::string& message);
-	std::string GetResponse();
+	//std::string GetResponse();
 	void Connect();
 
 private:
-	std::unique_ptr<CConnector> m_connector;
-	CInitiationDispatcher* m_dispatcher;
+	std::unique_ptr<CConnector> InitConnector();
+	std::unique_ptr<CSocketWrapper> InitStream(int handle);
 
-	CClientConnectionHandler* m_handler;
-	CSocketWrapper m_stream;
+	std::unique_ptr<CConnector> m_connector;
+	std::unique_ptr<CClientConnectionHandler> m_client_handler;
+	std::unique_ptr<CSocketWrapper> m_stream;
 };

@@ -1,0 +1,18 @@
+﻿  stdafx.cpp
+  CAcceptor.cpp
+  CAcceptorSocket.cpp
+  CAcceptorWrapper.cpp
+  CBaseSocket.cpp
+C:\Users\Sergei\source\repos\BackEndMonitoring\BackEndMonitoringSockets\CBaseSocket.cpp(45,49): warning C4551: function call missing argument list
+  CClientConnectionHandler.cpp
+  CConnector.cpp
+  CConnectorSocket.cpp
+  CConnectorWrapper.cpp
+  CEventHandler.cpp
+  CEventHandlerStorage.cpp
+  CInitiationDispatcher.cpp
+  CServiceConnectionHandler.cpp
+  CSocket.cpp
+  CSocketWrapper.cpp
+  Generating Code...
+  BackEndMonitoringSockets.vcxproj -> C:\Users\Sergei\source\repos\BackEndMonitoring\Debug\BackEndMonitoringSockets.lib

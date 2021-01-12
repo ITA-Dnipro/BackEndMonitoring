@@ -89,13 +89,16 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>
       </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>ws2_32.dll;</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -130,6 +133,9 @@
       </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>ws2_32.dll;</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -159,14 +165,11 @@
     <ClInclude Include="CConnector.h" />
     <ClInclude Include="CConnectorSocket.h" />
     <ClInclude Include="CConnectorWrapper.h" />
-    <ClInclude Include="CEventHandler.h" />
-    <ClInclude Include="CEventHandlerStorage.h" />
-    <ClInclude Include="CInitiationDispatcher.h" />
     <ClInclude Include="CServiceConnectionHandler.h" />
     <ClInclude Include="CServiceHandler.h" />
     <ClInclude Include="CSocket.h" />
     <ClInclude Include="CSocketWrapper.h" />
-    <ClInclude Include="IDispatcher.h" />
+    <ClInclude Include="DataHolder.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -178,14 +181,13 @@
     <ClCompile Include="CConnector.cpp" />
     <ClCompile Include="CConnectorSocket.cpp" />
     <ClCompile Include="CConnectorWrapper.cpp" />
-    <ClCompile Include="CEventHandler.cpp" />
-    <ClCompile Include="CEventHandlerStorage.cpp" />
-    <ClCompile Include="CInitiationDispatcher.cpp" />
     <ClCompile Include="CServiceConnectionHandler.cpp" />
     <ClCompile Include="CSocket.cpp" />
     <ClCompile Include="CSocketWrapper.cpp" />
+    <ClCompile Include="DataHolder.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
