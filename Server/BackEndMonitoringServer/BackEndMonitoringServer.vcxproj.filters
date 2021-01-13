@@ -60,6 +60,18 @@
     <ClInclude Include="include\CJSONFormatterLogicalDisk.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CContainerOfProcesses.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CProcess.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CProcessesMonitoringLifeCycle.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CJSONFormatterProcess.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
@@ -100,6 +112,18 @@
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="src\CJSONFormatterLogicalDisk.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CProcess.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CJSONFormatterProcess.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CProcessesMonitoringLifeCycle.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CContainerOfProcesses.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

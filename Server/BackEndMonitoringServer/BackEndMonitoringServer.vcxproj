@@ -150,8 +150,12 @@
     <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h" />
     <ClInclude Include="..\..\utils\include\CJSONFormatter.h" />
     <ClInclude Include="..\..\utils\include\Utils.h" />
+    <ClInclude Include="include\CContainerOfProcesses.h" />
     <ClInclude Include="include\CEvent.h" />
     <ClInclude Include="include\CJSONFormatterLogicalDisk.h" />
+    <ClInclude Include="include\CJSONFormatterProcess.h" />
+    <ClInclude Include="include\CProcess.h" />
+    <ClInclude Include="include\CProcessesMonitoringLifeCycle.h" />
     <ClInclude Include="include\СContainerOfLogicalDisk.h" />
     <ClInclude Include="include\EConvertValueFromBytes.h" />
     <ClInclude Include="include\EMemoryCountType.h" />
@@ -172,8 +176,12 @@
     <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp" />
     <ClCompile Include="..\..\utils\include\Utils.cpp" />
     <ClCompile Include="src\BackEndMonitoringServer.cpp" />
+    <ClCompile Include="src\CContainerOfProcesses.cpp" />
     <ClCompile Include="src\CEvent.cpp" />
     <ClCompile Include="src\CJSONFormatterLogicalDisk.cpp" />
+    <ClCompile Include="src\CJSONFormatterProcess.cpp" />
+    <ClCompile Include="src\CProcess.cpp" />
+    <ClCompile Include="src\CProcessesMonitoringLifeCycle.cpp" />
     <ClCompile Include="src\СContainerOfLogicalDisk.cpp" />
     <ClCompile Include="src\CThreadPool.cpp" />
     <ClCompile Include="src\СHardwareStatusSpecification.cpp" />
