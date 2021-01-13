@@ -21,37 +21,36 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{9fe1f712-fdde-419f-9d2a-11603dbfbefd}</ProjectGuid>
-    <RootNamespace>BackEndMonitoring</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
-    <ProjectName>BackEndMonitoringServer</ProjectName>
+    <ProjectGuid>{1604205a-fbeb-45dc-b262-6c219fe87d8d}</ProjectGuid>
+    <RootNamespace>CLogger</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -60,19 +59,19 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\PropertySheets\DebugWin32.props" />
+    <Import Project="..\PropertySheets\DebugWin32.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\PropertySheets\ReleaseWin32.props" />
+    <Import Project="..\PropertySheets\ReleaseWin32.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\PropertySheets\DebugWin64.props" />
+    <Import Project="..\PropertySheets\DebugWin64.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\PropertySheets\ReleaseWin64.props" />
+    <Import Project="..\PropertySheets\ReleaseWin64.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -93,7 +92,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -108,7 +108,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -123,6 +124,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,7 +140,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,50 +151,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\utils\include\CEvent.h" />
-    <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h" />
-    <ClInclude Include="..\..\utils\include\CJSONFormatter.h" />
-    <ClInclude Include="..\..\utils\include\CThreadPool.h" />
-    <ClInclude Include="..\..\utils\include\CThreadSafeVariable.h" />
-    <ClInclude Include="..\..\utils\include\STaskInQueue.h" />
-    <ClInclude Include="..\..\utils\include\Utils.h" />
-    <ClInclude Include="include\CContainerOfProcesses.h" />
-    <ClInclude Include="include\CHardwareInfoLifeCycle.h" />
-    <ClInclude Include="include\CJSONFormatterLogicalDisk.h" />
-    <ClInclude Include="include\CJSONFormatterProcess.h" />
-    <ClInclude Include="include\CLogicalDiskStatus.h" />
-    <ClInclude Include="include\CLogicalDiskStatusLifeCycle.h" />
-    <ClInclude Include="include\CProcess.h" />
-    <ClInclude Include="include\CProcessesMonitoringLifeCycle.h" />
-    <ClInclude Include="include\EConvertValueFromBytes.h" />
-    <ClInclude Include="include\EMemoryCountType.h" />
+    <ClCompile Include="src\CLogBuilder\CLogBuilder.cpp" />
+    <ClCompile Include="src\CLogger\CLogger.cpp" />
+    <ClCompile Include="src\DllMain.cpp" />
+    <ClCompile Include="src\ELogConfig\ELogConfig.cpp" />
+    <ClCompile Include="src\ELogLevel\ELogLevel.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\CLogBuilder\CLogBuilder.h" />
+    <ClInclude Include="include\CLogger\CLogger.h" />
+    <ClInclude Include="include\CLogMacro\CLogMacro.h" />
+    <ClInclude Include="include\CLogMessage\CLogMessage.h" />
+    <ClInclude Include="include\ELogConfig\ELogConfig.h" />
+    <ClInclude Include="include\ELogLevel\ELogLevel.h" />
+    <ClInclude Include="include\Log.h" />
     <ClInclude Include="include\stdafx.h" />
-    <ClInclude Include="include\СContainerOfLogicalDisk.h" />
-    <ClInclude Include="include\СHardwareStatusSpecification.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\utils\include\CEvent.cpp" />
-    <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp" />
-    <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp" />
-    <ClCompile Include="..\..\utils\include\CThreadPool.cpp" />
-    <ClCompile Include="..\..\utils\include\Utils.cpp" />
-    <ClCompile Include="src\BackEndMonitoringServer.cpp" />
-    <ClCompile Include="src\CContainerOfProcesses.cpp" />
-    <ClCompile Include="src\CJSONFormatterLogicalDisk.cpp" />
-    <ClCompile Include="src\CJSONFormatterProcess.cpp" />
-    <ClCompile Include="src\CLogicalDiskStatus.cpp" />
-    <ClCompile Include="src\CLogicalDiskStatusLifeCycle.cpp" />
-    <ClCompile Include="src\CProcess.cpp" />
-    <ClCompile Include="src\CProcessesMonitoringLifeCycle.cpp" />
-    <ClCompile Include="src\stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="src\СContainerOfLogicalDisk.cpp" />
-    <ClCompile Include="src\СHardwareStatusSpecification.cpp" />
+    <ClInclude Include="include\Utils\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

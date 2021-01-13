@@ -18,49 +18,22 @@
     <ClInclude Include="include\stdafx.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\STaskInQueue.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CEvent.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CThreadPool.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\EConvertValueFromBytes.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\EMemoryCountType.h">
+    <ClInclude Include="include\CContainerOfProcesses.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="include\CHardwareInfoLifeCycle.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\CLogicalDiskStatusLifeCycle.h">
+    <ClInclude Include="include\CJSONFormatterLogicalDisk.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\СHardwareStatusSpecification.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\СContainerOfLogicalDisk.h">
+    <ClInclude Include="include\CJSONFormatterProcess.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="include\CLogicalDiskStatus.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CJSONFormatter.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\Utils.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CJSONFormatterLogicalDisk.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CContainerOfProcesses.h">
+    <ClInclude Include="include\CLogicalDiskStatusLifeCycle.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="include\CProcess.h">
@@ -69,37 +42,78 @@
     <ClInclude Include="include\CProcessesMonitoringLifeCycle.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\CJSONFormatterProcess.h">
+    <ClInclude Include="include\EConvertValueFromBytes.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EMemoryCountType.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\СContainerOfLogicalDisk.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\СHardwareStatusSpecification.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CEvent.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CJSONFormatter.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CThreadPool.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CThreadSafeVariable.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\STaskInQueue.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\Utils.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
-    <None Include="..\..\.gitignore" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BackEndMonitoringServer.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CEvent.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CThreadPool.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="src\stdafx.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CContainerOfProcesses.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CJSONFormatterLogicalDisk.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CJSONFormatterProcess.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CLogicalDiskStatus.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="src\CLogicalDiskStatusLifeCycle.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="src\СHardwareStatusSpecification.cpp">
+    <ClCompile Include="src\CProcessesMonitoringLifeCycle.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="src\СContainerOfLogicalDisk.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CLogicalDiskStatus.cpp">
+    <ClCompile Include="src\СHardwareStatusSpecification.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CProcess.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CEvent.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp">
@@ -108,22 +122,10 @@
     <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\utils\include\CThreadPool.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\utils\include\Utils.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CJSONFormatterLogicalDisk.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CProcess.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CJSONFormatterProcess.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CProcessesMonitoringLifeCycle.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CContainerOfProcesses.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

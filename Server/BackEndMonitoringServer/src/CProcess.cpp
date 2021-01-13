@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
+#include <windows.h>
 #include <psapi.h>
 
 #include "EConvertValueFromBytes.h"
-
 #include "CProcess.h"
 
 CProcess::CProcess(unsigned PID, unsigned count_of_processors, 

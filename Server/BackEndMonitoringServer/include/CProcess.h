@@ -1,6 +1,7 @@
 #pragma once
 
 #include <windows.h>
+#include <psapi.h>
 #include <functional>
 
 #include "EMemoryCountType.h"
