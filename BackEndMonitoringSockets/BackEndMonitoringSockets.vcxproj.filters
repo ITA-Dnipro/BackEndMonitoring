@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Sockets">
+      <UniqueIdentifier>{bcb1488d-394d-4060-a2b3-7f28d1ca32ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sockets">
+      <UniqueIdentifier>{a47295a0-e054-4107-bb20-03044a9aa6de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -21,22 +27,13 @@
     <ClInclude Include="CAcceptor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CAcceptorSocket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CAcceptorWrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CBaseSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CClientConnectionHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CConnector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CConnectorSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CConnectorWrapper.h">
@@ -48,14 +45,23 @@
     <ClInclude Include="CServiceHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CSocket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CSocketWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DataHolder.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CAcceptorSocket.h">
+      <Filter>Header Files\Sockets</Filter>
+    </ClInclude>
+    <ClInclude Include="CConnectorSocket.h">
+      <Filter>Header Files\Sockets</Filter>
+    </ClInclude>
+    <ClInclude Include="CSocket.h">
+      <Filter>Header Files\Sockets</Filter>
+    </ClInclude>
+    <ClInclude Include="CBaseSocket.h">
+      <Filter>Header Files\Sockets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -68,16 +74,10 @@
     <ClCompile Include="CSocketWrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CSocket.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CServiceConnectionHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CConnectorWrapper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CConnectorSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CConnector.cpp">
@@ -86,17 +86,23 @@
     <ClCompile Include="CClientConnectionHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CBaseSocket.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CAcceptorWrapper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CAcceptorSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CAcceptor.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSocket.cpp">
+      <Filter>Source Files\Sockets</Filter>
+    </ClCompile>
+    <ClCompile Include="CConnectorSocket.cpp">
+      <Filter>Source Files\Sockets</Filter>
+    </ClCompile>
+    <ClCompile Include="CBaseSocket.cpp">
+      <Filter>Source Files\Sockets</Filter>
+    </ClCompile>
+    <ClCompile Include="CAcceptorSocket.cpp">
+      <Filter>Source Files\Sockets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

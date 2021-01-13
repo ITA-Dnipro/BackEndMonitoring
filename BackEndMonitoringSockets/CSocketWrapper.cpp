@@ -3,20 +3,8 @@
 #pragma warning(disable: 4996)
 
 CSocketWrapper::CSocketWrapper(const int socket, 
-	std::shared_ptr<CLogger> logger) : CBaseSocket(logger)
-{ 
-	m_socket = socket;
-}
-
-CSocketWrapper::~CSocketWrapper()
-{
-	closesocket(m_socket);
-}
-
-int CSocketWrapper::GetHandle() const
-{
-	return static_cast<int>(m_socket);
-}
+	std::shared_ptr<CLogger> logger) : CSocket(socket, logger)
+{ }
 
 std::string CSocketWrapper::Receive(const int socket)
 {

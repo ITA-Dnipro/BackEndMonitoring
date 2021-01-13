@@ -11,9 +11,10 @@ public:
 	CConnectorWrapper(int port, const std::string& ip_address, 
 		std::shared_ptr<CLogger> logger);
 	bool MakeRequest();
-	bool Connect();
 
 private:
+	bool GetRequestConfirmation();
+	bool Connect();
 	std::unique_ptr<CConnector> InitConnector(int port, 
 		const std::string& ip_address);
 	std::unique_ptr<CSocketWrapper> InitStream(int handle);

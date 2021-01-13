@@ -29,13 +29,12 @@ int CClientConnectionHandler::GetHandle() const
 void CClientConnectionHandler::HandleReadEvent(int socket)
 {
 	m_client_stream->Send(socket, "Request for data\n");
-	Sleep(10000);
+	Sleep(5000);
 	HandleWriteEvent(socket);
 }
 
 void CClientConnectionHandler::HandleWriteEvent(int socket)
 {
-	std::cout << "the response from the server" << std::endl;
 	std::cout << m_client_stream->Receive(socket) << std::endl;
 }
 

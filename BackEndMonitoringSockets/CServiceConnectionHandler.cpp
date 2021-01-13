@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CServiceConnectionHandler.h"
 
-CServiceConnectionHandler::CServiceConnectionHandler(int socket,
+CServiceConnectionHandler::CServiceConnectionHandler(const int socket,
 	std::shared_ptr<CLogger> logger)
 	: m_server_socket(socket), m_logger(logger)
 {
@@ -30,7 +30,7 @@ void CServiceConnectionHandler::HandleRequestEvent(const int socket)
 {
 	std::cout << "Request from the client " << socket << ": " << std::endl;
 	std::cout << m_peer_stream->Receive(socket);
-	Sleep(10000);
+	Sleep(5000);
 	HandleResponseEvent(socket);
 }
 

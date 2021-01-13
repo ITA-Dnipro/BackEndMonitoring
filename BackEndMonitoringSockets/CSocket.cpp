@@ -9,6 +9,13 @@ CSocket::CSocket(const int port, const std::string& ip_address,
 	m_socket = InitSocket(port, ip_address);
 }
 
+CSocket::CSocket(const int socket, std::shared_ptr<CLogger> logger)
+	: CBaseSocket(logger)
+{
+	m_socket = socket;
+	m_address = { 0 };
+}
+
 CSocket::~CSocket()
 {
 	if (CloseSocket()) {

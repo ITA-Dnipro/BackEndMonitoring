@@ -6,6 +6,7 @@ c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debu
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\csocketwrapper.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\csocket.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cserviceconnectionhandler.obj
+c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cconnectorwrapper.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cconnectorsocket.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cconnector.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cclientconnectionhandler.obj
@@ -13,6 +14,10 @@ c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debu
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cacceptorwrapper.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cacceptorsocket.obj
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\cacceptor.obj
+c:\users\sergei\source\repos\backendmonitoring\x64\debug\backendmonitoringsockets.lib
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\backendm.91dd7f62.tlog\cl.command.1.tlog
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\backendm.91dd7f62.tlog\cl.read.1.tlog
 c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\backendm.91dd7f62.tlog\cl.write.1.tlog
+c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\backendm.91dd7f62.tlog\lib-link.read.1.tlog
+c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\backendm.91dd7f62.tlog\lib-link.write.1.tlog
+c:\users\sergei\source\repos\backendmonitoring\backendmonitoringsockets\x64\debug\backendm.91dd7f62.tlog\lib.command.1.tlog

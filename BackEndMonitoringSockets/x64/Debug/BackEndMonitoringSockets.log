@@ -167,7 +167,7 @@ C:\Users\Sergei\source\repos\BackEndMonitoring\CLogger\include\CLogBuilder\CLogB
 C:\Users\Sergei\source\repos\BackEndMonitoring\CLogger\include\CLogBuilder\CLogBuilder.h(43): message : see declaration of 'std::list<std::reference_wrapper<std::ostream>,std::allocator<std::reference_wrapper<std::ostream>>>'
 C:\Users\Sergei\source\repos\BackEndMonitoring\CLogger\include\CLogBuilder\CLogBuilder.h(44,76): warning C4251: 'CLogBuilder::m_write_stream_unsafe_list': class 'std::list<std::reference_wrapper<std::ostream>,std::allocator<std::reference_wrapper<std::ostream>>>' needs to have dll-interface to be used by clients of class 'CLogBuilder'
 C:\Users\Sergei\source\repos\BackEndMonitoring\CLogger\include\CLogBuilder\CLogBuilder.h(43): message : see declaration of 'std::list<std::reference_wrapper<std::ostream>,std::allocator<std::reference_wrapper<std::ostream>>>'
-C:\Users\Sergei\source\repos\BackEndMonitoring\BackEndMonitoringSockets\CSocketWrapper.cpp(63,5): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Sergei\source\repos\BackEndMonitoring\BackEndMonitoringSockets\CSocketWrapper.cpp(51,5): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   DataHolder.cpp
   Generating Code...
   BackEndMonitoringSockets.vcxproj -> C:\Users\Sergei\source\repos\BackEndMonitoring\x64\Debug\BackEndMonitoringSockets.lib

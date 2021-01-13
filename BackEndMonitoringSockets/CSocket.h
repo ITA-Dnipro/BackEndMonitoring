@@ -8,9 +8,9 @@ class CSocket : public CBaseSocket
 public:
 	CSocket(const int port, const std::string& ip_address, 
 		std::shared_ptr<CLogger> logger);
+	CSocket(const int socket, std::shared_ptr<CLogger> logger);
 	virtual ~CSocket();
-
-	int GetHandle() const;
+	virtual int GetHandle() const;
 
 protected:
 	int InitSocket(const int port, const std::string& ip_address);

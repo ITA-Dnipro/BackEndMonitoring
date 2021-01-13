@@ -12,13 +12,41 @@ CConnectorWrapper::CConnectorWrapper(int port, const std::string& ip_address,
 
 bool CConnectorWrapper::MakeRequest()
 {
-	if (Connect())
+	std::cout << "\t\tClient" << std::endl << std::endl;
+	if (GetRequestConfirmation())
 	{
-		Sleep(5000);
-		m_client_handler->HandleEvent(m_connector->GetHandle(),
-			EventType::REQUEST_DATA);
-		return true;
+		if (Connect())
+		{
+			Sleep(5000);
+
+			m_client_handler->HandleEvent(m_connector->GetHandle(),
+				EventType::REQUEST_DATA);
+			return true;
+		}
 	}
+
+	return false;
+}
+
+bool CConnectorWrapper::GetRequestConfirmation()
+{
+	std::cout << "\t\tMenu" << std::endl
+		<< "\t[1] - get current status from the server" << std::endl
+		<< "\t[0] - exit" << std::endl;
+	char choice;
+	choice = std::getchar();
+
+	switch (choice)
+	{
+	case '1':
+		return true;
+	case '0':
+		std::cout << "Goodbay!" << std::endl;
+		break;
+	default:
+		std::cout << "The wrong parameter has been passed, exit!" << std::endl;
+	}
+
 	return false;
 }
 

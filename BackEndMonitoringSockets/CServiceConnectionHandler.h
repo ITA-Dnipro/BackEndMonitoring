@@ -7,7 +7,8 @@
 class CServiceConnectionHandler : public CServiceHandler
 {
 public:
-	CServiceConnectionHandler(int socket, std::shared_ptr<CLogger> logger);
+	CServiceConnectionHandler(const int socket, 
+		std::shared_ptr<CLogger> logger);
 	void HandleEvent(const int socket, EventType type) override;
 	int GetHandle() const override;
 
