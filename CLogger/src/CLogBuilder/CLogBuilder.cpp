@@ -13,7 +13,7 @@
 ///		which helps to filter out some messages
 /// </param>
 /// <example>
-///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG));
+///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL));
 /// </example>
 CLogBuilder::CLogBuilder(const std::string& log_name, const ELogLevel log_level)
 	: m_log_level(log_level), m_log_name(log_name)
@@ -26,7 +26,7 @@ CLogBuilder::CLogBuilder(const std::string& log_name, const ELogLevel log_level)
 ///		Rvalue reference to <c>CLogBuilder</c>
 /// </param>
 /// <example>
-///		auto* testBuilder1       = new CLogBuilder("TestName", ELogLevel::DEBUG);
+///		auto* testBuilder1       = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 ///		const auto* testBuilder2 = new CLogBuilder(std::move(*testBuilder1));
 /// </example>
 CLogBuilder::CLogBuilder(CLogBuilder&& move) noexcept = default;
@@ -43,7 +43,7 @@ CLogBuilder::~CLogBuilder() noexcept = default;
 ///		<c>ELogLevel</c>, which helps to filter out some messages
 /// </returns>
 /// <example>
-///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG);
+///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 ///		ELogLevel test = testBuilder->GetLogLevel();
 /// </example>
 ELogLevel CLogBuilder::GetLogLevel() const
@@ -58,7 +58,7 @@ ELogLevel CLogBuilder::GetLogLevel() const
 ///		Unique name of future <c>CLogger</c>
 /// </returns>
 /// <example>
-///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG);
+///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 ///		std::string name = testBuilder->GetLogName();
 /// </example>
 std::string CLogBuilder::GetLogName() const
@@ -77,8 +77,8 @@ std::string CLogBuilder::GetLogName() const
 ///		to continue work with class methods in one line
 /// </returns>
 /// <example>
-///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG);
-///		testBuilder->SetLogLevel(ELogLevel::TRACE);
+///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
+///		testBuilder->SetLogLevel(ELogLevel::TRACE_LEVEL);
 /// </example>
 CLogBuilder& CLogBuilder::SetLogLevel(const ELogLevel log_level)
 {
@@ -105,7 +105,7 @@ CLogBuilder& CLogBuilder::SetLogLevel(const ELogLevel log_level)
 /// </returns>
 /// <example>
 ///		std::ofstream testFile("TestFile.txt");
-///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG);
+///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 ///		testBuilder->AddThreadSafeStream(std::cout)
 ///			.AddThreadSafeStream(std::cerr)
 ///			.AddThreadSafeStream(testFile);	
@@ -132,7 +132,7 @@ CLogBuilder& CLogBuilder::AddThreadSafeStream(std::ostream& stream)
 /// </returns>
 /// <example>
 ///		std::ofstream testFile("TestFile.txt");
-///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG);
+///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 ///		testBuilder->AddThreadUnsafeStream(std::cout)
 ///			.AddThreadUnsafeStream(std::cerr)
 ///			.AddThreadUnsafeStream(testFile);	
@@ -156,7 +156,7 @@ CLogBuilder& CLogBuilder::AddThreadUnsafeStream(std::ostream& stream)
 ///		to continue work with class methods in one line
 /// </returns>
 /// <example>
-///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG);
+///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 ///		testBuilder->AddLogConfig(ELogConfig::MESSAGE)
 ///			.AddLogConfig(ELogConfig::LINE_NUMBER)
 ///			.AddLogConfig(ELogConfig::PARAMS)
@@ -184,7 +184,7 @@ CLogBuilder& CLogBuilder::AddLogConfig(const ELogConfig log_config)
 ///		to continue work with class methods in one line
 /// </returns>
 /// <example>
-///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG);
+///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 ///		testBuilder->SetLogName(std::string("new_name"));
 /// </example>
 CLogBuilder& CLogBuilder::SetLogName(const std::string& log_name)
@@ -205,7 +205,7 @@ CLogBuilder& CLogBuilder::SetLogName(const std::string& log_name)
 ///		by the values, that contains <c>CLogBuilder</c> object
 /// </returns>
 /// <example>
-///		const auto* testBuilder  = new CLogBuilder("TestName", ELogLevel::DEBUG);
+///		const auto* testBuilder  = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 ///		const CLogger* testLogger = testBuilder->BuildLog();
 /// </example>
 CLogger* CLogBuilder::BuildLog() const {
@@ -237,7 +237,7 @@ CLogger* CLogBuilder::BuildLog() const {
 ///		by the values, that contains <c>CLogBuilder</c> object
 /// </returns>
 /// <example>
-///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG);
+///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 ///		const std::unique_ptr<CLogger> testLogger = testBuilder->BuildUniqueLog();
 /// </example>
 std::unique_ptr<CLogger> CLogBuilder::BuildUniqueLog() const
@@ -253,7 +253,7 @@ std::unique_ptr<CLogger> CLogBuilder::BuildUniqueLog() const
 ///		by the values, that contains <c>CLogBuilder</c> object
 /// </returns>
 /// <example>
-///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG);
+///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 ///		const std::unique_ptr<CLogger> testLogger = testBuilder->BuildSharedLog();
 /// </example>
 std::shared_ptr<CLogger> CLogBuilder::BuildSharedLog() const
@@ -268,7 +268,7 @@ std::shared_ptr<CLogger> CLogBuilder::BuildSharedLog() const
 ///		Rvalue reference to <c>CLogBuilder</c>
 /// </param>
 /// <example>
-///		auto* testBuilder1       = new CLogBuilder("TestName", ELogLevel::DEBUG);
+///		auto* testBuilder1       = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 ///		const auto* testBuilder2 = std::move(*testBuilder1);
 /// </example>
 CLogBuilder& CLogBuilder::operator=(CLogBuilder&& move) noexcept = default;

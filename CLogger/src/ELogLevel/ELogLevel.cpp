@@ -13,7 +13,7 @@
 ///		<c>std::string</c> of <c>ELogLevel</c>
 /// </returns>
 /// <example>
-///		ELogLevel level = ELogLevel::DEBUG;
+///		ELogLevel level = ELogLevel::DEBUG_LEVEL;
 ///		std::string str = LogUtils::LogLevelToString(level);
 std::string LogLevelToString(const ELogLevel log_level)
 {
@@ -24,10 +24,10 @@ std::string LogLevelToString(const ELogLevel log_level)
 
 	const std::map<ELogLevel, std::string> c_string_map
 	{
-		{ELogLevel::NONE, c_none_str},
-		{ELogLevel::PROD, c_prod_str},
-		{ELogLevel::DEBUG, c_debug_str},
-		{ELogLevel::TRACE, c_trace_str}
+		{ELogLevel::NONE_LEVEL, c_none_str},
+		{ELogLevel::PROD_LEVEL, c_prod_str},
+		{ELogLevel::DEBUG_LEVEL, c_debug_str},
+		{ELogLevel::TRACE_LEVEL, c_trace_str}
 	};
 
 	return c_string_map.at(log_level);

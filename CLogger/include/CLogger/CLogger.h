@@ -84,7 +84,7 @@ private:
 ///		to continue work with class methods in one line
 /// </returns>
 /// <example>
-///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG);
+///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 ///		auto* testLogger = testBuilder->Build();
 ///		testLogger->SetLogConfig(ELogConfig::MESSAGE, ELogConfig::LOG_LEVEL,
 ///		ELogConfig::PARAMS, ELogConfig::MESSAGE /* won't be added */);
@@ -120,7 +120,7 @@ CLogger& CLogger::AddLogConfig(const ELogConfig log_config, Args... args)
 ///		<c>CLogMessage</c> to print
 /// </param>
 /// <example>
-///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG);
+///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 ///		auto* testLogger = testBuilder->Build();
 ///		testLogger->SetLogConfig(ELogConfig::MESSAGE, ELogConfig::LOG_LEVEL,
 ///		ELogConfig::PARAMS);

@@ -14,7 +14,7 @@
 ///		which helps to filter out some messages
 /// </param>
 /// <example>
-///		const auto* testLogger = new CLogger("TestName", ELogLevel::DEBUG));
+///		const auto* testLogger = new CLogger("TestName", ELogLevel::DEBUG_LEVEL));
 /// </example>
 CLogger::CLogger(const std::string& log_name, const ELogLevel log_level)
 	: m_log_level(log_level), m_log_name(log_name)
@@ -27,7 +27,7 @@ CLogger::CLogger(const std::string& log_name, const ELogLevel log_level)
 ///		Rvalue reference to <c>CLogger</c>
 /// </param>
 /// <example>
-///		auto* testLogger1       = new CLogger("TestName", ELogLevel::DEBUG);
+///		auto* testLogger1       = new CLogger("TestName", ELogLevel::DEBUG_LEVEL);
 ///		const auto* testLogger2 = new CLogger(std::move(*testLogger1));
 /// </example>
 CLogger::CLogger(CLogger&& move) noexcept = default;
@@ -51,7 +51,7 @@ CLogger::~CLogger() noexcept = default;
 /// </returns>
 /// <example>
 ///		std::ofstream testFile("TestFile.txt");
-///		auto* testLogger1 = new CLogger("TestName", ELogLevel::DEBUG);
+///		auto* testLogger1 = new CLogger("TestName", ELogLevel::DEBUG_LEVEL);
 ///		testLogger1->AddStream(std::cout).AddStream(testFile);
 /// </example>
 CLogger& CLogger::AddThreadSafeStream(std::ostream& stream)
@@ -77,7 +77,7 @@ CLogger& CLogger::AddThreadSafeStream(std::ostream& stream)
 /// </returns>
 /// <example>
 ///		std::ofstream testFile("TestFile.txt");
-///		auto* testLogger1 = new CLogger("TestName", ELogLevel::DEBUG);
+///		auto* testLogger1 = new CLogger("TestName", ELogLevel::DEBUG_LEVEL);
 ///		testLogger1->AddThreadUnsafeStream(std::cout)
 ///			.AddThreadUnsafeStream(testFile, mtx);
 /// </example>
@@ -96,7 +96,7 @@ CLogger& CLogger::AddThreadUnsafeStream(std::ostream& stream)
 ///		<c>ELogLevel</c>, which helps to filter out some messages
 /// </returns>
 /// <example>
-///		const auto* testLogger = new CLogger("TestName", ELogLevel::DEBUG);
+///		const auto* testLogger = new CLogger("TestName", ELogLevel::DEBUG_LEVEL);
 ///		ELogLevel test = testLogger->GetLogLevel();
 /// </example>
 ELogLevel CLogger::GetLogLevel() const
@@ -115,8 +115,8 @@ ELogLevel CLogger::GetLogLevel() const
 ///		to continue work with class methods in one line
 /// </returns>
 /// <example>
-///		const auto* testLogger = new CLogger("TestName", ELogLevel::DEBUG);
-///		testLogger->SetLogLevel(ELogLevel::TRACE);
+///		const auto* testLogger = new CLogger("TestName", ELogLevel::DEBUG_LEVEL);
+///		testLogger->SetLogLevel(ELogLevel::TRACE_LEVEL);
 /// </example>
 CLogger& CLogger::SetLogLevel(const ELogLevel log_level)
 {
@@ -134,7 +134,7 @@ CLogger& CLogger::SetLogLevel(const ELogLevel log_level)
 ///		Unique name of <c>CLogger</c>
 /// </returns>
 /// <example>
-///		const auto* testLogger = new CLogger("TestName", ELogLevel::DEBUG);
+///		const auto* testLogger = new CLogger("TestName", ELogLevel::DEBUG_LEVEL);
 ///		std::string name = testLogger->GetLogName();
 /// </example>
 std::string CLogger::GetLogName() const
@@ -155,7 +155,7 @@ std::string CLogger::GetLogName() const
 ///		to continue work with class methods in one line
 /// </returns>
 /// <example>
-///		const auto* testLogger = new CLogger("TestName", ELogLevel::DEBUG);
+///		const auto* testLogger = new CLogger("TestName", ELogLevel::DEBUG_LEVEL);
 ///		testLogger->AddLogConfig(ELogConfig::MESSAGE)
 ///			.AddLogConfig(ELogConfig::LINE_NUMBER)
 ///			.AddLogConfig(ELogConfig::PARAMS)
@@ -176,7 +176,7 @@ CLogger& CLogger::AddLogConfig(const ELogConfig log_config)
 ///		Prints to all streams info about <c>CLogger</c>
 /// </summary>
 /// <example>
-///		const auto* testLogger = new CLogger("TestName", ELogLevel::DEBUG);
+///		const auto* testLogger = new CLogger("TestName", ELogLevel::DEBUG_LEVEL);
 ///		testLogger->PrintLogInfo();
 /// </example>
 void CLogger::PrintLogInfo() const
@@ -231,7 +231,7 @@ void CLogger::PrintToAllStreams(const std::string& info) const {
 ///		Rvalue reference to <c>CLogger</c>
 /// </param>
 /// <example>
-///		auto* testLogger1       = new CLogger("TestName", ELogLevel::DEBUG);
+///		auto* testLogger1       = new CLogger("TestName", ELogLevel::DEBUG_LEVEL);
 ///		const auto* testLogger2 = std::move(*testLogger1);
 /// </example>
 CLogger& CLogger::operator=(CLogger&& move) noexcept = default;

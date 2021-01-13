@@ -64,7 +64,7 @@ private:
 	///		to continue work with class methods in one line
 	/// </returns>
 	/// <example>
-	///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG);
+	///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 	///		testBuilder->SetLogConfig(ELogConfig::MESSAGE, ELogConfig::LINE_NUMBER,
 	///		ELogConfig::PARAMS, ELogConfig::LINE_NUMBER /* won't be added */);
 	/// </example>
