@@ -1,18 +1,19 @@
 #pragma once
 #include "stdafx.h"
-#include "CServiceHandler.h"
 #include "CConnectorSocket.h"
 // This class allows user to connect to the server
 class CConnector
 {
 public:
-	CConnector(const int port, const std::string& address);
+	CConnector(const int port, const std::string& address, 
+		std::shared_ptr<CLogger> logger);
 
-	void Connect();
+	bool Connect();
 	int GetHandle() const;
 private:
+	std::unique_ptr<CConnectorSocket> InitSocketConnector(const int port, 
+		const std::string& ip_address);
+
 	std::unique_ptr<CConnectorSocket> m_socket_connector;
-	std::map<int, CServiceHandler*> m_connection_map;
-	int m_port;
-	std::string m_ip_address;
+	std::shared_ptr<CLogger> m_logger;
 };

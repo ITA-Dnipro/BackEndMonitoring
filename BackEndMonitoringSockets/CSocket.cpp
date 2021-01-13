@@ -2,8 +2,8 @@
 #include "CSocket.h"
 #pragma warning(disable: 4996)
 
-CSocket::CSocket(const int port, const std::string& ip_address)
-	: m_port(port)
+CSocket::CSocket(const int port, const std::string& ip_address, 
+	std::shared_ptr<CLogger> logger) : CBaseSocket(logger)
 {
 	SetSocketAddress(port, ip_address);
 	m_socket = InitSocket(port, ip_address);

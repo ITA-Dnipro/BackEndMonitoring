@@ -6,7 +6,8 @@
 class CSocket : public CBaseSocket
 {
 public:
-	CSocket(const int port, const std::string& ip_address);
+	CSocket(const int port, const std::string& ip_address, 
+		std::shared_ptr<CLogger> logger);
 	virtual ~CSocket();
 
 	int GetHandle() const;
@@ -18,5 +19,4 @@ protected:
 	bool CloseSocket();
 
 	sockaddr_in m_address;
-	int m_port;
 };

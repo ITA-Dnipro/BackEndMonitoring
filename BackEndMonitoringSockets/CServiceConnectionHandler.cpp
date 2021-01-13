@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "CServiceConnectionHandler.h"
 
-CServiceConnectionHandler::CServiceConnectionHandler(int socket)
-	: m_server_socket(socket)
+CServiceConnectionHandler::CServiceConnectionHandler(int socket,
+	std::shared_ptr<CLogger> logger)
+	: m_server_socket(socket), m_logger(logger)
 {
-	m_peer_stream = std::make_unique<CSocketWrapper>(socket);
+	m_peer_stream = InitPeerStream(socket);
 }
 
 void CServiceConnectionHandler::HandleEvent(const int socket, EventType type)
@@ -37,5 +38,11 @@ void CServiceConnectionHandler::HandleResponseEvent(const int socket)
 {
 	std::cout << "The respone has been sent" << std::endl;
 	m_peer_stream->Send(socket, data.GetData());
+}
+
+std::unique_ptr<CSocketWrapper> CServiceConnectionHandler::InitPeerStream
+	(int handle)
+{
+	return std::move(std::make_unique<CSocketWrapper>(handle, m_logger));
 }
 

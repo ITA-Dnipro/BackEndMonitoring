@@ -1,13 +1,14 @@
 #include "stdafx.h"
 #include "CClientConnectionHandler.h"
 
-CClientConnectionHandler::CClientConnectionHandler(int client_socket)
-	: m_socket(client_socket)
+CClientConnectionHandler::CClientConnectionHandler(int socket, 
+	std::shared_ptr<CLogger> logger) : m_socket(socket), m_logger(logger)
 {
-	m_client_stream = std::make_unique<CSocketWrapper>(client_socket);
+	m_client_stream = InitClientStream(socket);
 }
 
-void CClientConnectionHandler::HandleEvent(const int server_socket, EventType type)
+void CClientConnectionHandler::HandleEvent(const int server_socket, 
+	EventType type)
 {
 
 	if (type == EventType::REQUEST_DATA)
@@ -36,4 +37,10 @@ void CClientConnectionHandler::HandleWriteEvent(int socket)
 {
 	std::cout << "the response from the server" << std::endl;
 	std::cout << m_client_stream->Receive(socket) << std::endl;
+}
+
+std::unique_ptr<CSocketWrapper> CClientConnectionHandler::InitClientStream
+	(int handle)
+{
+	return std::move(std::make_unique<CSocketWrapper>(handle, m_logger));
 }

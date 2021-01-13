@@ -1,14 +1,18 @@
 #include "stdafx.h"
 #include "CBaseSocket.h"
 
-#ifndef _linux_
+#ifdef _linux_
+
+CBaseSocket::CBaseSocket(std::shared_ptr<CLogger> logger)
+	: m_socket(socket), m_logger(logger) { }
+
+#else
 
 bool CBaseSocket::s_is_started_library = false;
 bool CBaseSocket::s_is_stopped_library = false;
 
-CBaseSocket::CBaseSocket()
+CBaseSocket::CBaseSocket(std::shared_ptr<CLogger> logger) : m_logger(logger)
 {
-	
 	if (StartLibrary()) {
 		// log pos
 	}
@@ -51,3 +55,5 @@ bool CBaseSocket::CloseLibrary()
 }
 
 #endif
+
+

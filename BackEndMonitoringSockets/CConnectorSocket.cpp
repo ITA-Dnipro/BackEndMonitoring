@@ -2,7 +2,8 @@
 #include "CConnectorSocket.h"
 
 CConnectorSocket::CConnectorSocket(const int port,
-    const std::string& ip_address) : CSocket(port, ip_address)
+    const std::string& ip_address, std::shared_ptr<CLogger> logger) 
+    : CSocket(port, ip_address, logger)
 {
 }
 

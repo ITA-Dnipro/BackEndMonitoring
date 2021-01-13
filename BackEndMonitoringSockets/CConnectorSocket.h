@@ -6,6 +6,7 @@
 class CConnectorSocket : public CSocket
 {
 public:
-	CConnectorSocket(const int port, const std::string& ip_address);
+	CConnectorSocket(const int port, const std::string& ip_address, 
+		std::shared_ptr<CLogger> logger);
 	bool Connect();
 };

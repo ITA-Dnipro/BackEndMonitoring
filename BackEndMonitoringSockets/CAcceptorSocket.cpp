@@ -4,7 +4,8 @@
 #pragma warning(disable: 4996)
 
 CAcceptorSocket::CAcceptorSocket(const int port,
-	const std::string& ip_address) : CSocket(port, ip_address)
+	const std::string& ip_address, std::shared_ptr<CLogger> logger) 
+	: CSocket(port, ip_address, logger)
 {
 	Open(port, ip_address);
 }
