@@ -18,7 +18,15 @@ CLogicalDiskStatus* CLogicalDiskStatus::FactoryLogicalDiskStatus(
 
 bool CLogicalDiskStatus::TryUpdateCurrentStatus()
 {
-	m_disk_info = std::filesystem::space(m_disk_name);
+	//try-catch block for avoidind floppy disks
+	try
+	{
+		m_disk_info = std::filesystem::space(m_disk_name);
+	}
+	catch (std::filesystem::filesystem_error&)
+	{
+		return false;
+	}
 	if (m_disk_info.capacity == NULL &&
 		m_disk_info.available == NULL &&
 		m_disk_info.free == NULL)

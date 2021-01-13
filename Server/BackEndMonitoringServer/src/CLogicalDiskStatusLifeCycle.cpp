@@ -26,6 +26,7 @@ void CLogicalDiskStatusLifeCycle::ThreadLifeCycle( )
 		for (const auto& disk :
 			*(m_p_container_in_lifecircle->GetAllLogicalDisk()))
 		{
+
 			if (!disk->TryUpdateCurrentStatus())
 			{
 				std::cout << "Enable to update!" << std::endl;
@@ -34,17 +35,20 @@ void CLogicalDiskStatusLifeCycle::ThreadLifeCycle( )
 			if (!json_formatter.TryAddLogicalDiskData(*disk, disk_number))
 			{
 				//exception handler
-				return;
+				continue;
 			}
 			disk_number++;
 			if (!json_saver.TrySaveToFile(json_formatter))
 			{
 				//exception handler
-				return;
+				continue;
 
 			}
-			// check status "Ask info for client-side"
+		}
+
+		if (!json_formatter.TryAllEraseData())
+		{
+			continue;
 		}
 	}
-	std::cout << "Fuck!";
 }

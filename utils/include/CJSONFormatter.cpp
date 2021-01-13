@@ -49,3 +49,27 @@ nlohmann::json* CJSONFormatter::GetJSONFormattedData()
 
     return &m_formatted_data;
 }
+
+bool CJSONFormatter::TryGetJSONDataAsString(std::string& str_for_data)
+{
+    str_for_data = m_formatted_data.dump();
+    if (str_for_data.empty())
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool CJSONFormatter::TryAllEraseData()
+{
+    nlohmann::json empty_json;
+    m_formatted_data = empty_json;
+    
+    if (!m_formatted_data.is_null())
+    {
+        return false;
+    }
+
+    return true;
+}

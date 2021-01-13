@@ -29,10 +29,15 @@ bool ÑContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 			{
 				return false;
 			}
-			m_p_container_all_logical_disks.push_back
-				(CLogicalDiskStatus::FactoryLogicalDiskStatus(
-					name_of_disk, m_count_type));
+			CLogicalDiskStatus* is_created = 
+				CLogicalDiskStatus::FactoryLogicalDiskStatus(
+					name_of_disk, m_count_type);
 
+			if (nullptr == is_created)
+			{
+				continue;
+			}
+			m_p_container_all_logical_disks.push_back(is_created);
 			//go to the next driver
 			variable_for_checking_names +=
 				strlen(variable_for_checking_names)

@@ -16,6 +16,8 @@ public:
 	[[nodiscard]] bool TrySetJSONFormattedData(
 		const nlohmann::json& formatted_data);
 	[[nodiscard]] nlohmann::json* GetJSONFormattedData();
+	[[nodiscard]] bool TryGetJSONDataAsString(std::string& str_for_data);
+	[[nodiscard]] bool TryAllEraseData();
 
 protected:
 	template <typename Value>
