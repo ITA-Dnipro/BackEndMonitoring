@@ -29,8 +29,8 @@ void CProcessesMonitoringLifeCycle::ThreadLifeCycle( )
 			{
 				continue;
 			}
-
 			auto processes = m_container.GetAllProcesses( );
+
 			for (auto& process : processes)
 			{
 				if (!json_formatter.TryAddProcessData(process))
@@ -41,7 +41,6 @@ void CProcessesMonitoringLifeCycle::ThreadLifeCycle( )
 				{
 					//exception handler
 					continue;
-
 				}
 			}
 		}

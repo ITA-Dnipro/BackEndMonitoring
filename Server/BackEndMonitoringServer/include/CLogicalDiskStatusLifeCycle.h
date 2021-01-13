@@ -14,7 +14,8 @@ public:
     /// Saving specification of LogicalDisk information
     /// </summary>
     /// <param name="specification"> must be in dynamic memory </param>
-    explicit CLogicalDiskStatusLifeCycle(CEvent& stop_event,
+    explicit CLogicalDiskStatusLifeCycle(
+        CEvent& stop_event,
         ÑHardwareStatusSpecification* specification,
         CThreadSafeVariable<CJSONFormatterLogicalDisk>& json_formatter) :
         CHardwareInfoLifeCycle(stop_event), 

@@ -10,7 +10,6 @@ public:
     CJSONFormatterLogicalDisk() : CJSONFormatter()
     { };
 
-    bool TryAddLogicalDiskData(
-        const CLogicalDiskStatus& data_to_json,
-        unsigned short disk_number);
+    bool TryAddLogicalDiskData(const CLogicalDiskStatus& data_to_json,
+                               unsigned short disk_number);
 };

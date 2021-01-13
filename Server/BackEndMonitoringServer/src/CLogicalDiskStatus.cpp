@@ -8,6 +8,7 @@ CLogicalDiskStatus* CLogicalDiskStatus::FactoryLogicalDiskStatus(
 {
 	CLogicalDiskStatus* p_created_object = new CLogicalDiskStatus(
 		disk_name, count_type);
+
 	if (!p_created_object->TryUpdateCurrentStatus())
 	{
 		return nullptr;

@@ -7,7 +7,8 @@
 #include "CContainerOfProcesses.h"
 
 CContainerOfProcesses::CContainerOfProcesses(unsigned m_max_process_count,
-											std::chrono::duration<int> pause_duration,
+											std::chrono::duration<int> 
+											pause_duration,
 											std::string path_to_file,
 											EMemoryCountType count_type) :
 	m_max_process_count(m_max_process_count),
@@ -48,7 +49,8 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 
 			if (it == m_container.end())
 			{
-				m_container.push_back(CProcess(PID, m_processors_count, m_count_type));
+				m_container.push_back(CProcess(PID, m_processors_count, 
+													m_count_type));
 			}
 			else
 			{
@@ -56,7 +58,8 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 			}
 		}
 
-		auto dead_process = std::find_if(m_container.begin(), m_container.end(), 
+		auto dead_process = std::find_if(m_container.begin(), 
+										 m_container.end(), 
 										 [](const CProcess& proc)
 		{
 			return !proc.IsActive();
@@ -75,7 +78,8 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 	return success;
 }
 
-bool CContainerOfProcesses::GetListOfProcessIds(std::list<DWORD>& list_of_PIDs) const
+bool CContainerOfProcesses::GetListOfProcessIds(std::list<DWORD>& list_of_PIDs)
+const
 {
 	DWORD success = NO_ERROR;
 	DWORD* p_process_ids = new DWORD[m_max_process_count];

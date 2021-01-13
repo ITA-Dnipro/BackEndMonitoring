@@ -11,7 +11,7 @@ public:
 		std::chrono::duration<int> period_of_checking_status, 
 		const std::string& path_to_file, EMemoryCountType count_type) :
 		ÑHardwareStatusSpecification(period_of_checking_status, path_to_file,
-			count_type)
+									 count_type)
 	{ };
 	explicit ÑContainerOfLogicalDisk(const ÑHardwareStatusSpecification& orig) 
 		: ÑHardwareStatusSpecification(orig)

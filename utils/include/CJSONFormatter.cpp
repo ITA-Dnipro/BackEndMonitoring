@@ -4,6 +4,7 @@
 
 #include "CJSONFormatter.h"
 #include "Utils.h"
+
 bool CJSONFormatter::TryAddJSONFormattedData(const nlohmann::json& 
     p_formatted_data)
 {

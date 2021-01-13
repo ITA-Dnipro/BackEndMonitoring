@@ -10,7 +10,8 @@
 class CProcess {
 public:
 	CProcess() = default;
-	CProcess(unsigned PID, unsigned count_of_processors, EMemoryCountType type);
+	CProcess(unsigned PID, unsigned count_of_processors, 
+		     EMemoryCountType type);
 	CProcess(const CProcess&);
 	CProcess(CProcess&&) noexcept;
 	CProcess& operator= (const CProcess&);

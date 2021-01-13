@@ -10,7 +10,7 @@ bool ÑContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 	const unsigned short number_of_chars_need_miss = 1U;
 	DWORD buffer_size = c_size_of_buffer_for_api;
 	char container_all_disks_names[c_size_of_buffer_for_api + 
-		c_size_of_buffer_for_api] = {};
+								   c_size_of_buffer_for_api] = {};
 
 	DWORD is_created_correct = GetLogicalDriveStrings(buffer_size,
 		LPSTR(container_all_disks_names));
@@ -40,8 +40,8 @@ bool ÑContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 			m_p_container_all_logical_disks.push_back(is_created);
 			//go to the next driver
 			variable_for_checking_names +=
-				strlen(variable_for_checking_names)
-				+ number_of_chars_need_miss;
+				strlen(variable_for_checking_names) +
+					   number_of_chars_need_miss;
 		}
 	}
 	else

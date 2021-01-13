@@ -6,7 +6,8 @@ class ÑHardwareStatusSpecification
 {
 public:
 	ÑHardwareStatusSpecification() = delete;
-	explicit ÑHardwareStatusSpecification(std::chrono::duration<int> 
+	explicit ÑHardwareStatusSpecification(
+		std::chrono::duration<int> 
 		pause_duration, const std::string& path_to_file, 
 		EMemoryCountType count_type) :
 		m_pause_duration(pause_duration), m_path_to_file(path_to_file),

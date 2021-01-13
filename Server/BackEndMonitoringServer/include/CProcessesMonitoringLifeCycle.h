@@ -15,10 +15,13 @@ public:
 								  std::string path_to_file,
 								  EMemoryCountType count_type,
 								  CEvent& stop_event,
-								  CThreadSafeVariable<CJSONFormatterProcess>& json_formatter);
+								  CThreadSafeVariable<CJSONFormatterProcess>& 
+								  json_formatter);
 
-	CProcessesMonitoringLifeCycle(const CProcessesMonitoringLifeCycle&) = delete;
-	CProcessesMonitoringLifeCycle(CProcessesMonitoringLifeCycle&&) noexcept = delete;
+	CProcessesMonitoringLifeCycle(const CProcessesMonitoringLifeCycle&) 
+		= delete;
+	CProcessesMonitoringLifeCycle(CProcessesMonitoringLifeCycle&&) 
+		noexcept = delete;
 	~CProcessesMonitoringLifeCycle() noexcept = default;
 
 	void ThreadLifeCycle() override;
