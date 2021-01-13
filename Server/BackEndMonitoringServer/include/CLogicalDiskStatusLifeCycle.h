@@ -20,6 +20,7 @@ public:
         CThreadSafeVariable<CJSONFormatterLogicalDisk>& json_formatter) :
         CHardwareInfoLifeCycle(stop_event), 
         m_p_specification(specification),
+        m_p_container_in_lifecircle(nullptr),
         m_json_formatter(json_formatter)
     { };
 
@@ -34,7 +35,7 @@ public:
         m_json_formatter(json_formatter)
     { };
 
-    explicit CLogicalDiskStatusLifeCycle(CLogicalDiskStatusLifeCycle&)
+    CLogicalDiskStatusLifeCycle(CLogicalDiskStatusLifeCycle&)
         = delete;
     CLogicalDiskStatusLifeCycle(CLogicalDiskStatusLifeCycle&&) 
         noexcept = delete;
@@ -50,8 +51,8 @@ public:
     virtual void ThreadLifeCycle() override;
 
 private:
-    ÑHardwareStatusSpecification* m_p_specification = nullptr;
-    ÑContainerOfLogicalDisk* m_p_container_in_lifecircle = nullptr;
+    ÑHardwareStatusSpecification* m_p_specification;
+    ÑContainerOfLogicalDisk* m_p_container_in_lifecircle;
     CThreadSafeVariable<CJSONFormatterLogicalDisk>& m_json_formatter;
 };
 

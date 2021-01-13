@@ -6,8 +6,8 @@ bool CJSONFormatterLogicalDisk::TryAddLogicalDiskData(
     const CLogicalDiskStatus& data_to_json, unsigned short disk_number)
 {
     nlohmann::json json_format_data;
-    constexpr size_t num_of_letter = 10;
-    const std::string common_main_name = "disk";
+    constexpr size_t num_of_letter = 10ULL;
+    const std::string common_main_name("disk");
     constexpr char all_field[][num_of_letter] = {
         {'n', 'a', 'm', 'e'},
         {'c', 'a', 'p', 'a', 'c', 'i', 't', 'y'},

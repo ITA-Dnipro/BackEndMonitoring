@@ -25,7 +25,7 @@ void CProcessesMonitoringLifeCycle::ThreadLifeCycle( )
 		{
 			auto [json_formatter, mtx] = m_json_formatter.GetAccess( );
 
-			if (!json_formatter.TryAllEraseData( ))
+			if (!json_formatter.TryEraseAllData( ))
 			{
 				continue;
 			}

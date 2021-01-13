@@ -1,8 +1,5 @@
 #include "stdafx.h"
 
-#include <windows.h>
-#include <psapi.h>
-
 #include "EConvertValueFromBytes.h"
 #include "CProcess.h"
 
@@ -10,7 +7,7 @@ CProcess::CProcess(unsigned PID, unsigned count_of_processors,
                    EMemoryCountType type) :
     m_PID(PID),
     m_count_of_processors(count_of_processors),
-    m_count_type(type)
+    m_count_type(type), m_cpu_usage(0), m_ram_usage(0), m_pagefile_usage(0)
 { }
 
 CProcess::CProcess(const CProcess& other) : m_PID(other.m_PID), 

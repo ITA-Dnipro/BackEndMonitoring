@@ -58,23 +58,16 @@ long double CLogicalDiskStatus::CalculateAsCountType(
 	long double const value_to_calculate) const
 {
 	switch (m_count_type)
-
 	{
 	case EMemoryCountType::BYTES:
 		return value_to_calculate / static_cast<long double>
 			(EConvertValueFromBytes::INTO_BYTES);
-		break;
-
 	case EMemoryCountType::MEGABYTES:
 		return value_to_calculate / static_cast<long double>
 			(EConvertValueFromBytes::INTO_MEGABYTES);
-		break;
-
 	case EMemoryCountType::GIGABYTES:
 		return value_to_calculate / static_cast<long double>
 			(EConvertValueFromBytes::INTO_GIGABYTES);
-		break;
-
 	default:
 		break;
 	}

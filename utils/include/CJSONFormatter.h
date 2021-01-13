@@ -18,8 +18,8 @@ public:
 	[[nodiscard]] nlohmann::json* GetJSONFormattedData();
 
 	[[nodiscard]] bool TryGetJSONDataAsString(std::string& str_for_data);
-	
-	[[nodiscard]] bool TryAllEraseData();
+
+	[[nodiscard]] bool TryEraseAllData();
 
 protected:
 	template <typename Value>

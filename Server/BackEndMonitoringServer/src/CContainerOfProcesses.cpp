@@ -6,11 +6,9 @@
 
 #include "CContainerOfProcesses.h"
 
-CContainerOfProcesses::CContainerOfProcesses(unsigned m_max_process_count,
-											std::chrono::duration<int> 
-											pause_duration,
-											std::string path_to_file,
-											EMemoryCountType count_type) :
+CContainerOfProcesses::CContainerOfProcesses(
+	unsigned m_max_process_count, std::chrono::duration<int> 
+	pause_duration, std::string path_to_file, EMemoryCountType count_type) :
 	m_max_process_count(m_max_process_count),
 	ÑHardwareStatusSpecification(pause_duration, path_to_file, count_type)
 {

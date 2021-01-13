@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CLogicalDiskStatus.h"
-#include "ÑHardwareStatusSpecification.h"
+#include "CHardwareStatusSpecification.h"
 
 class ÑContainerOfLogicalDisk : public ÑHardwareStatusSpecification
 {

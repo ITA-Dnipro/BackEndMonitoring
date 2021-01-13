@@ -13,3 +13,7 @@
 #include <Windows.h>
 #include <filesystem>
 #include <cmath>
+#include <unordered_map>
+#include <list>
+#include <vector>
+#include <psapi.h>

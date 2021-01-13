@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "ÑHardwareStatusSpecification.h"
+#include "CHardwareStatusSpecification.h"
 
 std::chrono::duration<int> 
 ÑHardwareStatusSpecification::GetPauseDuration() const

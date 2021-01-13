@@ -62,7 +62,7 @@ bool CJSONFormatter::TryGetJSONDataAsString(std::string& str_for_data)
     return true;
 }
 
-bool CJSONFormatter::TryAllEraseData()
+bool CJSONFormatter::TryEraseAllData()
 {
     nlohmann::json empty_json;
     m_formatted_data = empty_json;

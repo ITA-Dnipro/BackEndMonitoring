@@ -51,9 +51,6 @@
     <ClInclude Include="include\СContainerOfLogicalDisk.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\СHardwareStatusSpecification.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\utils\include\CEvent.h">
       <Filter>Header files</Filter>
     </ClInclude>
@@ -73,6 +70,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\utils\include\Utils.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CHardwareStatusSpecification.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

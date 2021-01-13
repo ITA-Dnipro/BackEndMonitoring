@@ -166,7 +166,7 @@
     <ClInclude Include="include\EMemoryCountType.h" />
     <ClInclude Include="include\stdafx.h" />
     <ClInclude Include="include\СContainerOfLogicalDisk.h" />
-    <ClInclude Include="include\СHardwareStatusSpecification.h" />
+    <ClInclude Include="include\CHardwareStatusSpecification.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
