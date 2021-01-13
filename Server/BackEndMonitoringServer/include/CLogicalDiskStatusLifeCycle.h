@@ -2,7 +2,8 @@
 
 #include "CHardwareInfoLifeCycle.h"
 #include "ÑContainerOfLogicalDisk.h"
-
+#include "CJSONFormatterLogicalDisk.h"
+#include "CThreadSafeVariable.h"
 
 class CLogicalDiskStatusLifeCycle :
     public CHardwareInfoLifeCycle
@@ -14,17 +15,24 @@ public:
     /// </summary>
     /// <param name="specification"> must be in dynamic memory </param>
     explicit CLogicalDiskStatusLifeCycle(CEvent& stop_event,
-        ÑHardwareStatusSpecification* specification) : 
-        CHardwareInfoLifeCycle(stop_event), m_p_specification(specification)
+        ÑHardwareStatusSpecification* specification,
+        CThreadSafeVariable<CJSONFormatterLogicalDisk>& json_formatter) :
+        CHardwareInfoLifeCycle(stop_event), 
+        m_p_specification(specification),
+        m_json_formatter(json_formatter)
     { };
+
     explicit CLogicalDiskStatusLifeCycle(
         ÑHardwareStatusSpecification* specification,
         ÑContainerOfLogicalDisk* container_in_lifecircle,
-        CEvent& stop_event) : 
+        CEvent& stop_event, 
+        CThreadSafeVariable<CJSONFormatterLogicalDisk>& json_formatter) : 
         m_p_specification(specification), 
         m_p_container_in_lifecircle(container_in_lifecircle),
-        CHardwareInfoLifeCycle(stop_event)
+        CHardwareInfoLifeCycle(stop_event),
+        m_json_formatter(json_formatter)
     { };
+
     explicit CLogicalDiskStatusLifeCycle(CLogicalDiskStatusLifeCycle&)
         = delete;
     CLogicalDiskStatusLifeCycle(CLogicalDiskStatusLifeCycle&&) 
@@ -43,5 +51,6 @@ public:
 private:
     ÑHardwareStatusSpecification* m_p_specification = nullptr;
     ÑContainerOfLogicalDisk* m_p_container_in_lifecircle = nullptr;
+    CThreadSafeVariable<CJSONFormatterLogicalDisk>& m_json_formatter;
 };
 

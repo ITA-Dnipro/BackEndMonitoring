@@ -12,7 +12,6 @@ void CLogicalDiskStatusLifeCycle::ThreadLifeCycle( )
 		*m_p_specification);
 	CJSONFormatSaver json_saver(
 		*m_p_container_in_lifecircle->GetPathToSaveFile());
-	CJSONFormatterLogicalDisk json_formatter;
 
 	if (nullptr == m_p_container_in_lifecircle)
 	{
@@ -21,6 +20,13 @@ void CLogicalDiskStatusLifeCycle::ThreadLifeCycle( )
 	}
 	while (!m_stop_event.WaitFor(m_p_specification->GetPauseDuration()))
 	{
+		auto [json_formatter, mtx] = m_json_formatter.GetAccess( );
+		
+		if (!json_formatter.TryAllEraseData( ))
+		{
+			continue;
+		}
+
 		size_t disk_number = 0;
 
 		for (const auto& disk :
@@ -44,11 +50,6 @@ void CLogicalDiskStatusLifeCycle::ThreadLifeCycle( )
 				continue;
 
 			}
-		}
-
-		if (!json_formatter.TryAllEraseData())
-		{
-			continue;
 		}
 	}
 }
