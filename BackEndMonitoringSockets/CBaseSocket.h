@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 #include "..\..\CLogger\include\Log.h"
 // This class inherits logic work with sockets fom Windows or Linux 
 // according to the current OS

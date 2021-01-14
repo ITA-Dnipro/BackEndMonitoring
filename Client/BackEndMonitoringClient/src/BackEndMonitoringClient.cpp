@@ -2,13 +2,11 @@
 
 #include <iostream>
 #include <fstream>
-//#include "CThreadPool.h"
 #include "..\..\CLogger\include\Log.h"
 #include "CConnectorWrapper.h"
 
 int main()
 {
-    //std::cout << "Hello World!\n";
 	std::fstream stream("ClientLog.txt", std::ios_base::out);
 	CLogBuilder builder("Logger", ELogLevel::DEBUG);
 	builder.AddThreadUnsafeStream(stream).SetLogConfig(ELogConfig::CALL_TIME,

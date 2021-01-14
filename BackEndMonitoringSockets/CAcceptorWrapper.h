@@ -1,7 +1,6 @@
 #pragma once
-#include "stdafx.h"
 #include "CAcceptor.h"
-#include "DataHolder.h"
+#include "DataReceiver.h"
 #include "CServiceConnectionHandler.h"
 #include "..\Server\BackEndMonitoringServer\include\CThreadPool.h"
 #include "..\Server\BackEndMonitoringServer\include\CEvent.h"

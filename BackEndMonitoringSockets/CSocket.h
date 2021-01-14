@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 #include "CBaseSocket.h"
 
 // Base class for CAcceptorSocket, CConnectorSocket and CSocketWrapper

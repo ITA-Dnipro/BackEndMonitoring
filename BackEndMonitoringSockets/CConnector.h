@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 #include "CConnectorSocket.h"
 // This class allows user to connect to the server
 class CConnector

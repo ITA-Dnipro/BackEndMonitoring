@@ -171,7 +171,7 @@
     <ClInclude Include="CServiceHandler.h" />
     <ClInclude Include="CSocket.h" />
     <ClInclude Include="CSocketWrapper.h" />
-    <ClInclude Include="DataHolder.h" />
+    <ClInclude Include="DataReceiver.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -186,7 +186,7 @@
     <ClCompile Include="CServiceConnectionHandler.cpp" />
     <ClCompile Include="CSocket.cpp" />
     <ClCompile Include="CSocketWrapper.cpp" />
-    <ClCompile Include="DataHolder.cpp" />
+    <ClCompile Include="DataReceiver.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

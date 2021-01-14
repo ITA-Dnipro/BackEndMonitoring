@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 #include "CSocket.h"
 
 // Socket for Acceptor class

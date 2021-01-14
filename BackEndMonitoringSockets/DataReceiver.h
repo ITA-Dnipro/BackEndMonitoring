@@ -1,7 +1,6 @@
 #pragma once
-#include "stdafx.h"
 
-class DataHolder
+class DataReceiver
 {
 public:
 	std::string GetData();

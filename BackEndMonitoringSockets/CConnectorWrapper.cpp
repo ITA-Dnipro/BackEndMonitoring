@@ -17,7 +17,7 @@ bool CConnectorWrapper::MakeRequest()
 	{
 		if (Connect())
 		{
-			Sleep(5000);
+			Sleep(1000);
 
 			m_client_handler->HandleEvent(m_connector->GetHandle(),
 				EventType::REQUEST_DATA);

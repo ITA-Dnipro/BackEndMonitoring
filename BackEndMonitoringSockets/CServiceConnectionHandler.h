@@ -1,8 +1,7 @@
 #pragma once
-#include "stdafx.h"
 #include "CServiceHandler.h"
 #include "CSocketWrapper.h"
-#include "DataHolder.h"
+#include "DataReceiver.h"
 // This class handles event form the server
 class CServiceConnectionHandler : public CServiceHandler
 {
@@ -19,6 +18,6 @@ private:
 
 	std::unique_ptr<CSocketWrapper> m_peer_stream;
 	int m_server_socket;
-	DataHolder data;
+	DataReceiver data;
 	std::shared_ptr<CLogger> m_logger;
 };

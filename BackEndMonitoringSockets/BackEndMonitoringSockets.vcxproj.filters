@@ -48,9 +48,6 @@
     <ClInclude Include="CSocketWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DataHolder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CAcceptorSocket.h">
       <Filter>Header Files\Sockets</Filter>
     </ClInclude>
@@ -63,12 +60,12 @@
     <ClInclude Include="CBaseSocket.h">
       <Filter>Header Files\Sockets</Filter>
     </ClInclude>
+    <ClInclude Include="DataReceiver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DataHolder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CSocketWrapper.cpp">
@@ -103,6 +100,9 @@
     </ClCompile>
     <ClCompile Include="CAcceptorSocket.cpp">
       <Filter>Source Files\Sockets</Filter>
+    </ClCompile>
+    <ClCompile Include="DataReceiver.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

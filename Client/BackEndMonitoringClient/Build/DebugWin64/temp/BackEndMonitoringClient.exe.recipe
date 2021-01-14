@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\Sergei\source\repos\BackEndMonitoring\Client\BackEndMonitoringClient\Build\DebugWin64\out\BackEndMonitoringClient.exe</FullPath>
+      <FullPath>D:\BackEndMonitoring\Client\BackEndMonitoringClient\Build\DebugWin64\out\BackEndMonitoringClient.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

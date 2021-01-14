@@ -14,10 +14,9 @@ int main( )
 		ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE, ELogConfig::PARAMS);
 	auto logger = builder.BuildSharedLog();
 	CEvent event;
-	size_t num_threads = 3;
+	size_t num_threads = 20;
 	int port = 1111;
 	std::string ip_address = "127.0.0.1";
-	//std::cout << "Hello World!\n";
 	WRITE_DEBUG(*logger, "Start server");
 	CAcceptorWrapper acceptor(port, ip_address, num_threads, event, logger);
 

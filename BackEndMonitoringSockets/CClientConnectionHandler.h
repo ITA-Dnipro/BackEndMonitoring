@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 #include "CServiceHandler.h"
 #include "CSocketWrapper.h"
 
