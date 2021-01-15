@@ -57,7 +57,7 @@ CLogger::~CLogger() noexcept = default;
 CLogger& CLogger::AddThreadSafeStream(std::ostream& stream)
 {
 	m_write_stream_list
-		.emplace_back(stream, std::unique_ptr<std::mutex>(nullptr));
+		.emplace_back(stream, std::make_unique<std::mutex>());
 	
 	return *this;
 }
@@ -84,7 +84,7 @@ CLogger& CLogger::AddThreadSafeStream(std::ostream& stream)
 CLogger& CLogger::AddThreadUnsafeStream(std::ostream& stream)
 {
 	m_write_stream_list
-		.emplace_back(stream, std::make_unique<std::mutex>());
+		.emplace_back(stream, std::unique_ptr<std::mutex>(nullptr));
 
 	return *this;
 }
