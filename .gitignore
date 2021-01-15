@@ -34,11 +34,14 @@
 # VisualStudio Files
 *.vs
 
+# Log files
+*.log
+*.tlog
+
 # Build folders
 Client/BackEndMonitoringClient/Build/**
 Client/BackEndMonitoringClientTests/Build/**
 Server/BackEndMonitoringServer/Build/**
-Server/BackEndMonitoringServerTests/Build/**
 Server/BackEndMonitoringServerTests/Build/**
 CLogger/Build/**
 
