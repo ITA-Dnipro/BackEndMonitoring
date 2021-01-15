@@ -2,19 +2,6 @@
 
 #include "ELogLevel/ELogLevel.h"
 
-
-/// <summary>
-///		Casts <c>ELogLevel</c> to <c>std::string</c>
-/// </summary>
-/// <param name="log_level">
-///		<c>ELogConfig</c> to convert
-/// </param>
-/// <returns>
-///		<c>std::string</c> of <c>ELogLevel</c>
-/// </returns>
-/// <example>
-///		ELogLevel level = ELogLevel::DEBUG_LEVEL;
-///		std::string str = LogUtils::LogLevelToString(level);
 std::string LogLevelToString(const ELogLevel log_level)
 {
 	constexpr auto* c_none_str  = "";
