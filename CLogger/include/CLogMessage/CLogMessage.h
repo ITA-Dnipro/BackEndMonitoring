@@ -1,5 +1,4 @@
 #pragma once
-#pragma warning( disable : 4251 )
 #include "stdafx.h"
 
 #include "ELogLevel/ELogLevel.h"
