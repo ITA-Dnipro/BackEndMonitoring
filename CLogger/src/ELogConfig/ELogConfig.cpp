@@ -2,19 +2,6 @@
 
 #include "ELogConfig/ELogConfig.h"
 
-/// <summary>
-///		Casts <c>ELogConfig</c> to <c>std::string</c>
-/// </summary>
-/// <param name="log_config">
-///		<c>ELogConfig</c> to convert
-/// </param>
-/// <returns>
-///		<c>std::string</c> of <c>ELogConfig</c>
-/// </returns>
-/// <example>
-///		ELogConfig config = ELogConfig::LOG_LEVEL;
-///		std::string str = LogUtils::LogConfigToString(config);
-/// </example>
 std::string LogConfigToString(const ELogConfig log_config)
 {
 	constexpr auto* c_none_str          = "";

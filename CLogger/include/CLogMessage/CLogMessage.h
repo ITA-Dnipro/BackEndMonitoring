@@ -3,27 +3,102 @@
 
 #include "ELogLevel/ELogLevel.h"
 
+/// <summary>
+///		Stores some message with different data
+/// </summary>
 template<typename... Args>
 class CLogMessage
 {
 public:
 	CLogMessage() = delete;
+	/// <summary>
+	///		Explicit multi-parameters ctor, that initializes
+	///		<c>CLogMessage</c> without additional parameters
+	/// </summary>
+	/// <param name="messageString">
+	///		Message to output <c>std::string</c>
+	/// </param>
+	/// <param name="logLevel">
+	///		Logging level of message
+	/// </param>
+	/// <param name="lineNumber">
+	///		Number of string where is the command
+	/// </param>
+	/// <param name="fileString">
+	///		Name of file where is the command
+	/// </param>
+	/// <param name="functionString">
+	///		Name of function where if the command
+	/// </param>
+	/// <param name="timeString">
+	///		Time when command was called
+	/// </param>
+	/// <param name="threadId">
+	///		Thread from where command was called
+	/// </param>
+	/// <example>
+	///		const auto* cLogMessage = new CLogMessage
+	///			("Test", ELogLevel::DEBUG_LEVEL, 1u, "File.cpp",
+	///			"Function", __TIMESTAMP__, "0000");
+	/// </example>
 	explicit CLogMessage(const std::string& messageString, ELogLevel logLevel,
 		unsigned lineNumber, const std::string& fileString,
 		const std::string& functionString,
 		const std::string& timeString, const std::string& threadId);
-
+	/// <summary>
+	///		Explicit multi-parameters ctor, that initializes
+	///		<c>CLogMessage</c> with additional parameters
+	/// </summary>
+	/// <param name="messageString">
+	///		Message to output <c>std::string</c>
+	/// </param>
+	/// <param name="logLevel">
+	///		Logging level of message
+	/// </param>
+	/// <param name="lineNumber">
+	///		Number of string where is the command
+	/// </param>
+	/// <param name="fileString">
+	///		Name of file where is the command
+	/// </param>
+	/// <param name="functionString">
+	///		Name of function where if the command
+	/// </param>
+	/// <param name="timeString">
+	///		Time when command was called
+	/// </param>
+	/// <param name="threadId">
+	///		Thread from where command was called
+	/// </param>
+	/// <param name="args">
+	///		Additional parameters
+	/// </param>
+	/// <example>
+	///		const auto* cLogMessage = new CLogMessage
+	///			("Test", ELogLevel::DEBUG_LEVEL, 1u, "File.cpp",
+	///			"Function", __TIMESTAMP__, "0000",
+	///			std::make_tuple(std::make_pair("First", 1ull)));
+	/// </example>
 	explicit CLogMessage(const std::string& messageString, ELogLevel logLevel,
 		unsigned lineNumber, const std::string& fileString,
 		const std::string& functionString, const std::string& timeString,
 		const std::string& threadId,
 		const std::tuple<std::pair<const char*, Args>...>& args);
 
-	CLogMessage(const CLogMessage&);
-	CLogMessage(CLogMessage&&) noexcept;
+	/// <summary>
+	///		Copy ctor
+	/// </summary>
+	CLogMessage(const CLogMessage& copy);
+	/// <summary>
+	///		Move ctor
+	/// </summary>
+	/// <param name="move">
+	///		Rvalue reference
+	/// </param>
+	CLogMessage(CLogMessage&& move) noexcept;
 
 	~CLogMessage() noexcept;
-
+	
 	[[nodiscard]] ELogLevel GetLogLevel() const;
 	[[nodiscard]] unsigned GetLineNumber() const;
 	[[nodiscard]] std::string GetThreadId() const;
