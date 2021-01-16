@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "json.hpp"
 
 class CJSONFormatter
@@ -32,5 +34,6 @@ protected:
 
 private:
 	nlohmann::json m_formatted_data{};
+	std::optional<std::string> date_and_time;
 };
 

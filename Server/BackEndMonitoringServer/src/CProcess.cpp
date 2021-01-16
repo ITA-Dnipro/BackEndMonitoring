@@ -120,13 +120,17 @@ void CProcess::ComputeCpuUsage(const HANDLE& process)
         GetProcessTimes(process, &ftime, &ftime, &fsys, &fuser);
         memcpy(&kernel_cpu_time[i], &fsys, sizeof(FILETIME));
         memcpy(&user_cpu_time[i], &fuser, sizeof(FILETIME));
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
     m_cpu_usage = static_cast<double>(
-                  (kernel_cpu_time[1].QuadPart - kernel_cpu_time[0].QuadPart) +
-                  (user_cpu_time[1].QuadPart - user_cpu_time[0].QuadPart));
-    m_cpu_usage /= (system_time[1].QuadPart - system_time[0].QuadPart);
+                    (
+                    (kernel_cpu_time[1].QuadPart - kernel_cpu_time[0].QuadPart) 
+                    +
+                    (user_cpu_time[1].QuadPart - user_cpu_time[0].QuadPart)
+                    )
+                    /
+                    (system_time[1].QuadPart - system_time[0].QuadPart));
     m_cpu_usage /= m_count_of_processors;
     m_cpu_usage *= 100;
 }
