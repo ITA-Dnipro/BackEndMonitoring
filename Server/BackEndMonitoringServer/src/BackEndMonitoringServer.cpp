@@ -4,11 +4,11 @@
 #include <fstream>
 #include "CAcceptorWrapper.h"
 #include "CThreadPool.h"
-#include "..\..\CLogger\include\Log.h"
+#include "Log.h"
 int main( )
 {
 	std::fstream stream("Log.txt", std::ios_base::out);
-	CLogBuilder builder("Logger", ELogLevel::DEBUG);
+	CLogBuilder builder("Logger", ELogLevel::DEBUG_LEVEL);
 	builder.AddThreadUnsafeStream(stream).SetLogConfig(ELogConfig::CALL_TIME, 
 		ELogConfig::FILE_NAME, ELogConfig::FUNCTION_NAME, 
 		ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE, ELogConfig::PARAMS);
