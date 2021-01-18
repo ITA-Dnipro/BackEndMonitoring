@@ -1,4 +1,7 @@
 #include "stdafx.h"
+
+#pragma warning(disable : 4996)
+
 #include "Utils.h"
 
 bool Utils::GetCurrentDateAndTimeFormatted(std::string&

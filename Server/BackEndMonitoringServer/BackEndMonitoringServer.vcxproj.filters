@@ -18,15 +18,6 @@
     <ClInclude Include="include\stdafx.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\STaskInQueue.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CEvent.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CThreadPool.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
@@ -35,13 +26,22 @@
     <ClCompile Include="src\BackEndMonitoringServer.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CEvent.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CThreadPool.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="src\stdafx.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CEvent.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CThreadPool.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\Utils.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

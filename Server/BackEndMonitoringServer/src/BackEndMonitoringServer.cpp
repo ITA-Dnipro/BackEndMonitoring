@@ -1,10 +1,9 @@
 ﻿#include "stdafx.h"
 
-#include <iostream>
-#include <fstream>
-#include "CAcceptorWrapper.h"
+#include "Sockets/include/CAcceptorWrapper.h"
 #include "CThreadPool.h"
-#include "Log.h"
+#include "Clogger/include/Log.h"
+
 int main( )
 {
 	std::fstream stream("Log.txt", std::ios_base::out);

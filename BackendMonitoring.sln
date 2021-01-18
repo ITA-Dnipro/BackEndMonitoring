@@ -13,7 +13,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BackEndMonitoringClientTest
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CLogger", "CLogger\CLogger.vcxproj", "{1604205A-FBEB-45DC-B262-6C219FE87D8D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BackEndMonitoringSockets", "Sockets\BackEndMonitoringSockets\BackEndMonitoringSockets.vcxproj", "{91DD7F62-F437-4B75-B563-6750346F1B1C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BackEndMonitoringSockets", "Sockets\BackEndMonitoringSockets.vcxproj", "{91DD7F62-F437-4B75-B563-6750346F1B1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
