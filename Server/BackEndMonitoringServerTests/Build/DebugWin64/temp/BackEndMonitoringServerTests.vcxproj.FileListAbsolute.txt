@@ -1,3 +1,0 @@
-C:\Users\Sergei\source\repos\BackEndMonitoring\Server\BackEndMonitoringServerTests\Build\DebugWin64\out\gtest.pdb
-C:\Users\Sergei\source\repos\BackEndMonitoring\Server\BackEndMonitoringServerTests\Build\DebugWin64\out\gtest_main.pdb
-C:\Users\Sergei\source\repos\BackEndMonitoring\Server\BackEndMonitoringServerTests\Build\DebugWin64\temp\BackEndMonitoringServerTests.vcxproj.CopyComplete
