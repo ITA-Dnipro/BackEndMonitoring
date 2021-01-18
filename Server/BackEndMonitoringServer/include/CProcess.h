@@ -29,5 +29,6 @@ private:
 	size_t m_ram_usage;
 	size_t m_pagefile_usage;
 	EMemoryCountType m_count_type;
+	ULARGE_INTEGER last_sys_time, last_kernel_time, last_user_time;
 };
 
