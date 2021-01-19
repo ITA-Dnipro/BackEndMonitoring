@@ -11,4 +11,6 @@ namespace Utils
 
 	bool TrySetMonthAsNumber(std::string& p_month);
 
+	void DisplayError(const std::string& message);
+	void DisplayMessage(const std::string& message);
 }

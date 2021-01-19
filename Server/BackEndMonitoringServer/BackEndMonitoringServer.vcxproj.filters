@@ -18,6 +18,15 @@
     <ClInclude Include="include\stdafx.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CCommandLineHandler.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CService.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CServiceHandler.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
@@ -42,6 +51,15 @@
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\utils\include\Utils.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CCommandLineHandler.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CService.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CServiceHandler.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -168,6 +168,9 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\CCommandLineHandler.h" />
+    <ClInclude Include="include\CService.h" />
+    <ClInclude Include="include\CServiceHandler.h" />
     <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +183,9 @@
     <ClCompile Include="..\..\utils\include\CThreadPool.cpp" />
     <ClCompile Include="..\..\utils\include\Utils.cpp" />
     <ClCompile Include="src\BackEndMonitoringServer.cpp" />
+    <ClCompile Include="src\CCommandLineHandler.cpp" />
+    <ClCompile Include="src\CService.cpp" />
+    <ClCompile Include="src\CServiceHandler.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

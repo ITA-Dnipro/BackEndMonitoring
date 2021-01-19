@@ -4,7 +4,7 @@
 #include <fstream>
 
 #include "CLogger/include/Log.h"
-#include "Sockets/include/CConnectorWrapper.h"
+#include "Sockets/BackEndMonitoringSockets/include/CConnectorWrapper.h"
 
 int main()
 {

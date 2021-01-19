@@ -1,0 +1,4 @@
+E:\Git\BackEndMonitoring\Sockets\Build\DebugWin64\out\BackEndMonitoringSockets.pdb
+E:\Git\BackEndMonitoring\Sockets\Build\DebugWin64\temp\BackEndMonitoringSockets.pdb
+E:\Git\BackEndMonitoring\Sockets\BackEndMonitoringSockets\Build\DebugWin64\out\BackEndMonitoringSockets.pdb
+E:\Git\BackEndMonitoring\Sockets\BackEndMonitoringSockets\Build\DebugWin64\temp\BackEndMonitoringSockets.pdb
