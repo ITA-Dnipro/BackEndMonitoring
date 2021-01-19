@@ -44,7 +44,7 @@ Client/BackEndMonitoringClientTests/Build/**
 Server/BackEndMonitoringServer/Build/**
 Server/BackEndMonitoringServerTests/Build/**
 CLogger/Build/**
-Sockets/Build/**
+Sockets/BackEndMonitoringSockets/Build/**
 
 # Dont ingore files in "packages" dir
 !packages/**
