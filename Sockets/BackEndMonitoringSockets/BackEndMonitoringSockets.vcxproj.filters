@@ -111,4 +111,7 @@
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
+  </ItemGroup>
 </Project>

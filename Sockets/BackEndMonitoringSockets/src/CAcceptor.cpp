@@ -18,6 +18,11 @@ int CAcceptor::GetHandle() const
 	return m_peer_acceptor->GetHandle();
 }
 
+bool CAcceptor::CloseSocket()
+{
+	return m_peer_acceptor->CloseSocket();
+}
+
 std::unique_ptr<CAcceptorSocket> CAcceptor::InitAcceptor(const int port, 
 	const std::string& ip_address)
 {

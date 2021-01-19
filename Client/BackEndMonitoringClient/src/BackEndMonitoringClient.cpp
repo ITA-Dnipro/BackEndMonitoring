@@ -2,8 +2,9 @@
 
 #include <iostream>
 #include <fstream>
-#include "Log.h"
-#include "CConnectorWrapper.h"
+
+#include "CLogger/include/Log.h"
+#include "Sockets/BackEndMonitoringSockets/include/CConnectorWrapper.h"
 
 int main()
 {

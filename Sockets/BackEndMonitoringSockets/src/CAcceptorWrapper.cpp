@@ -15,19 +15,27 @@ void CAcceptorWrapper::StartServer()
 {
 	std::cout << "Start server" << std::endl;
 	int handle = SOCKET_ERROR;
-	while (true)
+	while (!m_event.WaitFor(std::chrono::nanoseconds(1)))
 	{
 		if ((handle = m_server_acceptor->GetConnectedHandle()) != SOCKET_ERROR)
 		{
 			WRITE_DEBUG_WITH_PARAMS(*m_logger, "Connected with a new socket ", 
 				handle);
-			m_pool->Enqueue([this, &handle]() {
-				m_service_handler->HandleEvent(handle, 
-					EventType::REQUEST_DATA);
-				});
-
+			m_pool->Enqueue([this, &handle]()
+			{
+				while (!m_event.WaitFor(std::chrono::nanoseconds(1)))
+				{
+					m_service_handler->HandleEvent(handle,
+						EventType::REQUEST_DATA);
+				}
+			});
 		}
 	}
+}
+
+bool CAcceptorWrapper::StopSocket()
+{
+	return m_server_acceptor->CloseSocket();
 }
 
 std::unique_ptr<CThreadPool> CAcceptorWrapper::InitThreadPool(int num_threads, 

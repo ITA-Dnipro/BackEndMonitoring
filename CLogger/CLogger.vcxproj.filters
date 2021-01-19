@@ -60,4 +60,7 @@
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\PropertySheets\CodeStylerSettings\.clang-format" />
+  </ItemGroup>
 </Project>

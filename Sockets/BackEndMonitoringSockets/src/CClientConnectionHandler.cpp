@@ -29,7 +29,6 @@ int CClientConnectionHandler::GetHandle() const
 void CClientConnectionHandler::HandleReadEvent(int socket)
 {
 	m_client_stream->Send(socket, "Request for data\n");
-	Sleep(1000);
 	HandleWriteEvent(socket);
 }
 

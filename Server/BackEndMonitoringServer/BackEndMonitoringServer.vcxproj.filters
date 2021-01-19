@@ -18,13 +18,13 @@
     <ClInclude Include="include\stdafx.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\STaskInQueue.h">
+    <ClInclude Include="include\CCommandLineHandler.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\CEvent.h">
+    <ClInclude Include="include\CService.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\CThreadPool.h">
+    <ClInclude Include="include\CServiceHandler.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,13 +35,31 @@
     <ClCompile Include="src\BackEndMonitoringServer.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CEvent.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CThreadPool.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="src\stdafx.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CEvent.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CThreadPool.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\Utils.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CCommandLineHandler.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CService.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CServiceHandler.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

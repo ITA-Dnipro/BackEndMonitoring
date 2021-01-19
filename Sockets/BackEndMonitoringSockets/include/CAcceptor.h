@@ -10,7 +10,7 @@ public:
 		std::shared_ptr<CLogger> logger);
 	int GetConnectedHandle();
 	int GetHandle() const;
-
+	bool CloseSocket();
 private:
 	std::unique_ptr<CAcceptorSocket> InitAcceptor(const int port, 
 		const std::string& ip_address);

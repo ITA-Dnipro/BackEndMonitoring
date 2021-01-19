@@ -12,7 +12,7 @@ public:
 	CAcceptorWrapper(int port, const std::string& ip_address, 
 		size_t num_threads, CEvent& event, std::shared_ptr<CLogger> logger);
 	void StartServer();
-
+	bool StopSocket();
 private:
 	std::unique_ptr<CThreadPool> InitThreadPool(int num_threads, CEvent& event);
 	std::unique_ptr<CAcceptor> InitAcceptor(int port, 
