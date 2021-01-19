@@ -4,7 +4,8 @@
 
 bool XMLParser::Initialize(const std::string& paht_to_configuration_file)
 {
-	return p_docfile->load_file(paht_to_configuration_file.c_str()))
+	p_docfile = std::move(std::make_unique<pugi::xml_document>());
+	return p_docfile->load_file(paht_to_configuration_file.c_str());
 }
 
 bool XMLParser::IsConfigurationEnabled(const std::string& data_path, bool& return_data) const
@@ -60,7 +61,8 @@ bool XMLParser::TryToGetStringDataFromFile(const std::string& data_path, std::st
 	}
 	catch (std::bad_alloc& e)
 	{
-		std::cerr << "Failed to find data!! with this path: " <<
+
+		std::cerr << e.what() << " Failed to find data!! with this path: " <<
 			data_path << std::endl;
 
 	}

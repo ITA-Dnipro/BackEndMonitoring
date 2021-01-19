@@ -1,5 +1,7 @@
 #pragma once
 
+#include "pugixml.hpp" //namespace pugi{ class xml_document; } didn't work
+
 class XMLParser
 {
 public:
