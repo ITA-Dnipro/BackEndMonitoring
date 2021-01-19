@@ -4,7 +4,10 @@
 CConnectorSocket::CConnectorSocket(const int port,
     const std::string& ip_address, std::shared_ptr<CLogger> logger) 
     : CSocket(port, ip_address, logger)
-{ }
+{ 
+    bool isReuse = true;
+    int k = setsockopt(m_socket, SOL_SOCKET, SO_REUSEADDR, (const char*)&isReuse, sizeof(isReuse));
+}
 
 bool CConnectorSocket::Connect()
 {

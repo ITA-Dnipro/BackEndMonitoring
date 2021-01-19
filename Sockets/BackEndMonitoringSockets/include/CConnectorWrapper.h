@@ -9,18 +9,17 @@ class CConnectorWrapper
 public:
 	CConnectorWrapper(int port, const std::string& ip_address, 
 		std::shared_ptr<CLogger> logger);
-	bool MakeRequest();
+	void MakeRequest();
 
 private:
 	bool GetRequestConfirmation();
-	bool Connect();
+	bool ConnectToServer(std::unique_ptr<CConnector> connector,
+		std::unique_ptr<CClientConnectionHandler> client_handler);
 	std::unique_ptr<CConnector> InitConnector(int port, 
 		const std::string& ip_address);
-	std::unique_ptr<CSocketWrapper> InitStream(int handle);
 	std::unique_ptr<CClientConnectionHandler> InitClientHandler(int handle);
 
-	std::unique_ptr<CConnector> m_connector;
-	std::unique_ptr<CClientConnectionHandler> m_client_handler;
-	std::unique_ptr<CSocketWrapper> m_stream;
+	int m_port;
+	std::string m_address;
 	std::shared_ptr<CLogger> m_logger;
 };
