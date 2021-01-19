@@ -72,6 +72,12 @@
 							logLevel, __LINE__, LogUtils::GetFileNameByPath(__FILE__), \
                             __FUNCTION__, __TIMESTAMP__, LogUtils::ThisThreadGetIdString())) \
 
+// Creates and prints CLogMessage that formed from variable creation of some CLogLevel via CLogger
+#define WRITE_LOG_VAR_CREATION(logger, var, logLevel) \
+	(logger).PrintLogMessage(CLogMessage(std::string("Created") + " " + GET_NAME(var) + ".", \
+							logLevel, __LINE__, LogUtils::GetFileNameByPath(__FILE__), \
+							__FUNCTION__, __TIMESTAMP__, LogUtils::ThisThreadGetIdString())) \
+
 // Creates and prints CLogMessage of PROD_LEVEL-level via CLogger
 #define WRITE_PROD(logger, messageString) \
 	WRITE_LOG(logger, messageString, ELogLevel::PROD_LEVEL) \
@@ -83,6 +89,10 @@
 // Creates and prints CLogMessage that formed from exception of PROD_LEVEL-level via CLogger
 #define WRITE_PROD_EXCEPTION(logger, exception) \
 	WRITE_LOG_EXCEPTION(logger, exception, ELogLevel::PROD_LEVEL) \
+
+// Creates and prints CLogMessage that formed from variable creation of PROD_LEVEL-level via CLogger
+#define WRITE_PROD_VAR_CREATION(logger, var) \
+	WRITE_LOG_VAR_CREATION(logger, var, ELogLevel::PROD_LEVEL) \
 
 // Creates and prints WARNING!! CLogMessage via CLogger
 #define WRITE_WARNING(logger, messageString) \
@@ -112,6 +122,10 @@
 #define WRITE_DEBUG_EXCEPTION(logger, exception) \
 	WRITE_LOG_EXCEPTION(logger, exception, ELogLevel::DEBUG_LEVEL) \
 
+// Creates and prints CLogMessage that formed from variable creation of DEBUG_LEVEL-level via CLogger
+#define WRITE_DEBUG_VAR_CREATION(logger, var) \
+	WRITE_LOG_VAR_CREATION(logger, var, ELogLevel::DEBUG_LEVEL) \
+
 // Creates and prints CLogMessage of TRACE_LEVEL-level via CLogger
 #define WRITE_TRACE(logger, messageString) \
 	WRITE_LOG(logger, messageString, ELogLevel::TRACE_LEVEL) \
@@ -123,3 +137,7 @@
 // Creates and prints CLogMessage that formed from exception of TRACE_LEVEL-level via CLogger
 #define WRITE_TRACE_EXCEPTION(logger, exception) \
 	WRITE_LOG_EXCEPTION(logger, exception, ELogLevel::TRACE_LEVEL) \
+
+// Creates and prints CLogMessage that formed from variable creation of TRACE_LEVEL-level via CLogger
+#define WRITE_TRACE_VAR_CREATION(logger, var) \
+	WRITE_LOG_VAR_CREATION(logger, var, ELogLevel::TRACE_LEVEL) \
