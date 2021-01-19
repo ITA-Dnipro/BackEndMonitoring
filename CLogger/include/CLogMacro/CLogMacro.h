@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include <typeinfo>
 
 #include "Utils/Utils.h"
 
@@ -37,17 +38,20 @@
 #define F_15(F, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o) F(a), F(b), F(c), F(d), F(e), F(f), F(g), F(h), F(i), F(j), F(k), F(l), F(m), F(n), F(o)
 
 // Returns var name
-#define GET_NAME(x) #x
+#define GET_NAME(x) #x \
+
+// Returns var type
+#define GET_TYPE(x) typeid(x).name() \
 
 // Concatenation of F_ and some var
-#define DISPATCH(N) F_ ## N
+#define DISPATCH(N) F_ ## N \
 
 // Macro foreach function
-#define FOR_EACH(F, ...) IDENTITY(APPLY(DISPATCH, COUNT(__VA_ARGS__)))(F, __VA_ARGS__)
+#define FOR_EACH(F, ...) IDENTITY(APPLY(DISPATCH, COUNT(__VA_ARGS__)))(F, __VA_ARGS__) \
 
 // Makes std::pair<std::const char*, Type> that contains
 // var's name and var's value
-#define MAKE_PAIR(x) std::make_pair(GET_NAME(x), x)
+#define MAKE_PAIR(x) std::make_pair(GET_TYPE(x) + " " + GET_NAME(x), x) \
 
 // Prints all info-configs of logger
 #define WRITE_INFO_LOG(logger) \
@@ -74,7 +78,7 @@
 
 // Creates and prints CLogMessage that formed from variable creation of some CLogLevel via CLogger
 #define WRITE_LOG_VAR_CREATION(logger, var, logLevel) \
-	(logger).PrintLogMessage(CLogMessage(std::string("Created") + " " + GET_NAME(var) + ".", \
+	(logger).PrintLogMessage(CLogMessage(std::string("Created") + " " + GET_TYPE(var) + " " + GET_NAME(var) + ".", \
 							logLevel, __LINE__, LogUtils::GetFileNameByPath(__FILE__), \
 							__FUNCTION__, __TIMESTAMP__, LogUtils::ThisThreadGetIdString())) \
 
