@@ -1,5 +1,6 @@
 #pragma once
-#include "Log.h"
+#include "CLogger/include/Log.h"
+
 // This class inherits logic work with sockets fom Windows or Linux 
 // according to the current OS
 #ifdef __linux__	// Linux

@@ -10,12 +10,12 @@ public:
 	CSocket(const int socket, std::shared_ptr<CLogger> logger);
 	virtual ~CSocket();
 	virtual int GetHandle() const;
+	bool CloseSocket();
 
 protected:
 	int InitSocket();
 	void SetSocketAddress(const int port, const std::string& ip_address);
 	bool IsValidSocket() const;
-	bool CloseSocket();
 
 	sockaddr_in m_address;
 };
