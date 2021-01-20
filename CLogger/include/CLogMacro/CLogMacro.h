@@ -61,26 +61,28 @@
 #define WRITE_LOG(logger, messageString, logLevel) \
     (logger).PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
                              LogUtils::GetFileNameByPath(__FILE__), __FUNCTION__, \
-                             __TIMESTAMP__, LogUtils::ThisThreadGetIdString())) \
+                             LogUtils::GetCurrentTimeString(), LogUtils::GetThisThreadIdString())) \
 
 // Creates and prints CLogMessage with variable parameters of some CLogLevel via CLogger
 #define WRITE_LOG_WITH_PARAMS(logger, messageString, logLevel, ...) \
     (logger).PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
                              LogUtils::GetFileNameByPath(__FILE__), __FUNCTION__, \
-                             __TIMESTAMP__, LogUtils::ThisThreadGetIdString(), \
+                             LogUtils::GetCurrentTimeString(), LogUtils::GetThisThreadIdString(), \
 							std::make_tuple(FOR_EACH(MAKE_PAIR, __VA_ARGS__)))) \
 
 // Creates and prints CLogMessage that formed from exception of some CLogLevel via CLogger
 #define WRITE_LOG_EXCEPTION(logger, exception, logLevel) \
 	    (logger).PrintLogMessage(CLogMessage(std::string("EXCEPTION!!!!") + " " + (exception).what(), \
 							logLevel, __LINE__, LogUtils::GetFileNameByPath(__FILE__), \
-                            __FUNCTION__, __TIMESTAMP__, LogUtils::ThisThreadGetIdString())) \
+                            __FUNCTION__, LogUtils::GetCurrentTimeString(), \
+                            LogUtils::GetThisThreadIdString())) \
 
 // Creates and prints CLogMessage that formed from variable creation of some CLogLevel via CLogger
 #define WRITE_LOG_VAR_CREATION(logger, var, logLevel) \
 	(logger).PrintLogMessage(CLogMessage(std::string("Created") + " " + GET_TYPE(var) + " " + GET_NAME(var) + ".", \
 							logLevel, __LINE__, LogUtils::GetFileNameByPath(__FILE__), \
-							__FUNCTION__, __TIMESTAMP__, LogUtils::ThisThreadGetIdString())) \
+							__FUNCTION__, LogUtils::GetCurrentTimeString(), \
+							LogUtils::GetThisThreadIdString())) \
 
 // Creates and prints CLogMessage of PROD_LEVEL-level via CLogger
 #define WRITE_PROD(logger, messageString) \

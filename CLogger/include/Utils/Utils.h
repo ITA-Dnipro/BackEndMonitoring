@@ -15,9 +15,9 @@ namespace LogUtils
 	///		String, that contains thread_id
 	/// </returns>
 	/// <example>
-	///		std::string thisThread = ThisThreadGetIdString();
+	///		std::string thisThread = GetThisThreadIdString();
 	/// </example>
-	inline std::string ThisThreadGetIdString()
+	inline std::string GetThisThreadIdString()
 	{
 		std::stringstream ss;
 		ss << std::this_thread::get_id();
