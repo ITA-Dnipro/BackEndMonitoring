@@ -354,8 +354,6 @@ template<typename... Args>
 std::ostream& CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message,
 	std::ostream& stream) const
 {
-	std::stringstream ss;
-
 	for (const auto& config : m_log_config_list)
 	{
 		switch (config)
@@ -365,55 +363,55 @@ std::ostream& CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message,
 			// TODO config flush
 		case ELogConfig::THREAD_ID:
 		{
-			ss << "Thread id:" << " " << "[" << log_message.GetThreadId()
+			stream << "Thread id:" << " " << "[" << log_message.GetThreadId()
 				<< "]" << " " << std::flush;
 			break;
 		}
 		case ELogConfig::CALL_TIME:
 		{
-			ss << "Time:" << " " << "[" << log_message.GetTimeString()
+			stream << "Time:" << " " << "[" << log_message.GetTimeString()
 				<< "]" << " " << std::flush;
 			break;
 		}
 		case ELogConfig::FUNCTION_NAME:
 		{
-			ss << "Function:" << " " << log_message.GetFunctionString()
+			stream << "Function:" << " " << log_message.GetFunctionString()
 				<< " " << std::flush;
 			break;
 		}
 		case ELogConfig::FILE_NAME:
 		{
-			ss << "File:" << " " << log_message.GetFileString()
+			stream << "File:" << " " << log_message.GetFileString()
 				<< " " << std::flush;
 			break;
 		}
 		case ELogConfig::LINE_NUMBER:
 		{
-			ss << "Line number:" << " " << log_message.GetLineNumber()
+			stream << "Line number:" << " " << log_message.GetLineNumber()
 				<< " " << std::flush;
 			break;
 		}
 		case ELogConfig::MESSAGE:
 		{
-			ss << "Message:" << " " << log_message.GetMessageString()
+			stream << "Message:" << " " << log_message.GetMessageString()
 				<< " " << std::flush;
 			break;
 		}
 		case ELogConfig::LOG_LEVEL:
 		{
-			ss << "[" << LogLevelToString(log_message.GetLogLevel())
+			stream << "[" << LogLevelToString(log_message.GetLogLevel())
 				<< "]" << " " << std::flush;
 			break;
 		}
 		case ELogConfig::PARAMS:
 		{
-			PrintParams(log_message, ss);
-			ss << std::flush;
+			PrintParams(log_message, stream);
+			stream << std::flush;
 			break;
 		}
 		case ELogConfig::LOG_NAME:
 		{
-			ss << m_log_name << " " << std::flush;
+			stream << m_log_name << " " << std::flush;
 			break;
 		}
 		case ELogConfig::NONE:
@@ -424,7 +422,7 @@ std::ostream& CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message,
 	}
 
 	// TODO remove last char " "
-	return stream << ss.str() << std::endl;
+	return stream << std::endl;
 }
 
 template<typename... Args>
