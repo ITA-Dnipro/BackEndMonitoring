@@ -22,8 +22,9 @@ void CService::RunServer()
     std::string ip_address = "127.0.0.1";
     WRITE_DEBUG(*logger, "Start server");
 
+    m_thread_pool = std::make_shared<CThreadPool>(num_threads, m_stop_event);
     m_acceptor_socket = std::make_unique<CAcceptorWrapper>(port, ip_address, 
-        num_threads, m_stop_event, logger);
+        m_stop_event, m_thread_pool, logger);
 
     m_acceptor_socket->StartServer();
 }

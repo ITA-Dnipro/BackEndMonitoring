@@ -2,13 +2,13 @@
 #include "CAcceptorWrapper.h"
 
 CAcceptorWrapper::CAcceptorWrapper(int port, const std::string& ip_address, 
-	size_t num_threads, CEvent& event, std::shared_ptr<CLogger> logger)
-	: m_event(event), m_logger(logger)
+	CEvent& event, std::shared_ptr<CThreadPool> pool, 
+	std::shared_ptr<CLogger> logger)
+	: m_event(event), m_pool(pool), m_logger(logger)
 {
 	m_server_acceptor = InitAcceptor(1111, "127.0.0.1");
 	m_stream = InitSocketWrapper(m_server_acceptor->GetHandle());
 	m_service_handler = InitServiceHandler(m_server_acceptor->GetHandle());
-	m_pool = InitThreadPool(num_threads, m_event);
 }
 
 void CAcceptorWrapper::StartServer()
@@ -36,12 +36,6 @@ void CAcceptorWrapper::StartServer()
 bool CAcceptorWrapper::StopSocket()
 {
 	return m_server_acceptor->CloseSocket();
-}
-
-std::unique_ptr<CThreadPool> CAcceptorWrapper::InitThreadPool(int num_threads, 
-	CEvent& event)
-{
-	return std::move(std::make_unique<CThreadPool>(num_threads, event));
 }
 
 std::unique_ptr<CAcceptor> CAcceptorWrapper::InitAcceptor(int port, 

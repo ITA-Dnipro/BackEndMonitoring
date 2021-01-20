@@ -59,5 +59,6 @@ private:
     SERVICE_STATUS_HANDLE m_status_handle;
     std::thread m_main_thread;
     CEvent m_stop_event;
+    std::shared_ptr<CThreadPool> m_thread_pool;
     std::unique_ptr<CAcceptorWrapper> m_acceptor_socket;
 };
