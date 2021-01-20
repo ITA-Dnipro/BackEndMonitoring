@@ -1,7 +1,0 @@
-﻿  CLogBuilder.cpp
-  CLogger.cpp
-  DllMain.cpp
-  ELogConfig.cpp
-  ELogLevel.cpp
-     Creating library .\Build\DebugWin64\out\CLogger.lib and object .\Build\DebugWin64\out\CLogger.exp
-  CLogger.vcxproj -> C:\Users\Sergei\source\repos\BackEndMonitoring\CLogger\Build\DebugWin64\out\CLogger.dll
