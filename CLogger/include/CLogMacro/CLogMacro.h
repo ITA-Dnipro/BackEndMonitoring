@@ -12,13 +12,12 @@
 #define COUNT(...) \
 	TAKE_15(__VA_ARGS__, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0) \
 
-//#define GET_VA_ARGS_SIZE(...) ((int)(sizeof((int[])(__VA_ARGS__ ))/sizeof(int)))
-
 // Returns var itself
 #define IDENTITY(var) var
 
 // Unites macro command and variable arguments args
-#define APPLY(macro, ...) IDENTITY(macro(__VA_ARGS__))
+#define APPLY(macro, ...) \
+	IDENTITY(macro(__VA_ARGS__)) \
 
 #define F_0(F)
 #define F_1(F, a) F(a)
@@ -41,17 +40,20 @@
 #define GET_NAME(x) #x \
 
 // Returns var type
-#define GET_TYPE(x) typeid(x).name() \
+#define GET_TYPE(x) \
+	typeid(x).name() \
 
 // Concatenation of F_ and some var
-#define DISPATCH(N) F_ ## N \
+#define DISPATCH(N) \
+	F_ ## N \
 
 // Macro foreach function
 #define FOR_EACH(F, ...) IDENTITY(APPLY(DISPATCH, COUNT(__VA_ARGS__)))(F, __VA_ARGS__) \
 
 // Makes std::pair<std::const char*, Type> that contains
 // var's name and var's value
-#define MAKE_PAIR(x) std::make_pair(GET_TYPE(x) + " " + GET_NAME(x), x) \
+#define MAKE_PAIR(x) \
+	std::make_pair(std::string(GET_TYPE(x)) + " " + GET_NAME(x), x) \
 
 // Prints all info-configs of logger
 #define WRITE_INFO_LOG(logger) \
