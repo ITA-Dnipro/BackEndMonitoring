@@ -6,6 +6,8 @@
 /// </summary>
 namespace LogUtils
 {
+	CLOGGER_API std::string GetCurrentTimeString();
+	
 	/// <summary>
 	///		Gets current thread's id in <c>std::string</c>
 	/// </summary>
@@ -35,7 +37,6 @@ namespace LogUtils
 	/// <example>
 	///		std::string fileName = GetFileNameByPath("file.txt");
 	/// </example>
-	inline std::string GetFileNameByPath(const std::string& path) {
-		return std::filesystem::path(path).filename().string();
-	}
+	inline std::string GetFileNameByPath(const std::string& path)
+	{ return std::filesystem::path(path).filename().string(); }
 }
