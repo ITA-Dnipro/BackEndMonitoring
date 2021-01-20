@@ -1,9 +1,5 @@
 #pragma once
 
-#include <queue>
-#include <condition_variable>
-#include <functional>
-
 #include "CEvent.h"
 #include "CThreadSafeVariable.h"
 #include "STaskInQueue.h"

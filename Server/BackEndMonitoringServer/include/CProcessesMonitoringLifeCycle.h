@@ -1,9 +1,9 @@
 #pragma once
 
-#include "CContainerOfProcesses.h"
 #include "CHardwareInfoLifeCycle.h"
 
 class CJSONFormatterProcess;
+class CContainerOfProcesses;
 
 class CProcessesMonitoringLifeCycle : CHardwareInfoLifeCycle
 {

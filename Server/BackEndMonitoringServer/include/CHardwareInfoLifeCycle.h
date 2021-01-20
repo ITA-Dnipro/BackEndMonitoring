@@ -1,12 +1,13 @@
 #pragma once
 
-#include "CEvent.h"
+class CEvent;
 
 class CHardwareInfoLifeCycle
 {
 public:
 	CHardwareInfoLifeCycle() = delete;
-	explicit CHardwareInfoLifeCycle(CEvent& stop_event) : m_stop_event(stop_event)
+	explicit CHardwareInfoLifeCycle(CEvent& stop_event) : 
+		m_stop_event(stop_event)
 	{ };
 	CHardwareInfoLifeCycle(const CHardwareInfoLifeCycle& orig) = delete;
 	CHardwareInfoLifeCycle(const CHardwareInfoLifeCycle&&) = delete;

@@ -11,16 +11,16 @@ bool CJSONFormatter::TryAddJSONFormattedData(const nlohmann::json&
         return false;
     }
 
-    if (date_and_time == std::nullopt)
+    if (m_date_and_time == std::nullopt)
     {
         std::string temp_date_and_time;
         if (!Utils::TryGetCurrentDateAndTimeFormatted(temp_date_and_time))
         {
             return false;
         }
-        date_and_time = temp_date_and_time;
+        m_date_and_time = temp_date_and_time;
     }
-    m_formatted_data[*date_and_time] += p_formatted_data;
+    m_formatted_data[*m_date_and_time] += p_formatted_data;
    
     return true;
 }
@@ -32,16 +32,16 @@ bool CJSONFormatter::TrySetJSONFormattedData(const nlohmann::json&
     {
         return false;
     }
-    if (date_and_time == std::nullopt)
+    if (m_date_and_time == std::nullopt)
     {
         std::string temp_date_and_time;
         if (!Utils::TryGetCurrentDateAndTimeFormatted(temp_date_and_time))
         {
             return false;
         }
-        date_and_time = temp_date_and_time;
+        m_date_and_time = temp_date_and_time;
     }
-    m_formatted_data[*date_and_time] = p_formatted_data;
+    m_formatted_data[*m_date_and_time] = p_formatted_data;
 
     return true;
 }
@@ -71,11 +71,17 @@ bool CJSONFormatter::TryEraseAllData()
 {
     nlohmann::json empty_json;
     m_formatted_data = empty_json;
-    date_and_time.reset( );
+    m_date_and_time.reset( );
     if (!m_formatted_data.is_null())
     {
         return false;
     }
 
     return true;
+}
+
+bool CJSONFormatter::TryReloadDateAndTime()
+{
+    // todo: check is work correct
+    return Utils::TryGetCurrentDateAndTimeFormatted(m_date_and_time.value());
 }

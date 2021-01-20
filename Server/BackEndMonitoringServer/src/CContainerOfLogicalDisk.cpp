@@ -10,17 +10,21 @@ CContainerOfLogicalDisk::CContainerOfLogicalDisk(
 	EMemoryCountType count_type) :
 	CHardwareStatusSpecification(period_of_checking_status,
 		path_to_file,
-		count_type)
+		count_type),
+	m_is_initialized(false)
 {};
 
-CContainerOfLogicalDisk::CContainerOfLogicalDisk(const CHardwareStatusSpecification& orig) :
-	CHardwareStatusSpecification(orig)
+CContainerOfLogicalDisk::CContainerOfLogicalDisk(
+	const CHardwareStatusSpecification& orig) :
+	CHardwareStatusSpecification(orig), m_is_initialized(false)
 {};
 
-CContainerOfLogicalDisk::CContainerOfLogicalDisk(const CContainerOfLogicalDisk& orig) :
+CContainerOfLogicalDisk::CContainerOfLogicalDisk(
+	const CContainerOfLogicalDisk& orig) :
 	CHardwareStatusSpecification(orig.m_pause_duration,
 		orig.m_path_to_file, orig.m_count_type),
-	m_p_container_all_logical_disks(orig.m_p_container_all_logical_disks)
+	m_p_container_all_logical_disks(orig.m_p_container_all_logical_disks),
+	m_is_initialized(orig.m_is_initialized)
 {};
 
 CContainerOfLogicalDisk::~CContainerOfLogicalDisk() noexcept
@@ -33,6 +37,11 @@ CContainerOfLogicalDisk::~CContainerOfLogicalDisk() noexcept
 
 bool CContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 {
+	if (!IsInitialized())
+	{
+		// will be changed after implementing an exception handler
+		return false;
+	}
 	const unsigned short c_size_of_buffer_for_api = 1024;
 	//We just skip some chars
 	const unsigned short number_of_chars_need_miss = 1U;
@@ -57,15 +66,15 @@ bool CContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 			{
 				return false;
 			}
-			CLogicalDiskStatus* is_created = 
-				CLogicalDiskStatus::FactoryLogicalDiskStatus(
-					name_of_disk, m_count_type);
+			CLogicalDiskStatus* created_disk = new CLogicalDiskStatus();
 
-			if (nullptr == is_created)
+			if (!created_disk->InitializeLogicalDiskStatus(
+				name_of_disk, m_count_type))
 			{
 				continue;
 			}
-			m_p_container_all_logical_disks.push_back(is_created);
+
+			m_p_container_all_logical_disks.push_back(created_disk);
 			//go to the next driver
 			variable_for_checking_names +=
 				strlen(variable_for_checking_names) +
@@ -80,21 +89,32 @@ bool CContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 	return true;
 }
 
-
-
-CContainerOfLogicalDisk* CContainerOfLogicalDisk::FactoryContainerOfLogicalDisk( 
-	const CHardwareStatusSpecification& specification)
+bool CContainerOfLogicalDisk::InitializeContainerOfLogicalDisk(
+	CHardwareStatusSpecification& specification)
 {
-	CContainerOfLogicalDisk* container = new
-		CContainerOfLogicalDisk(specification);
+	m_pause_duration = specification.GetPauseDuration();
+	m_path_to_file = *specification.GetPathToSaveFile();
+	m_pause_duration = specification.GetPauseDuration();
+	m_is_initialized = true;
 
-	if (!container->TryGetAllExistedLogicalDisksAndInfo())
+	if (!TryGetAllExistedLogicalDisksAndInfo())
 	{
-		return nullptr;
+		m_is_initialized = false;
+		return false;
 	}
 
-	return container;
+	return true;
 }
 
+bool CContainerOfLogicalDisk::IsInitialized() const
+{ return m_is_initialized; }
+
 std::vector<CLogicalDiskStatus*>* CContainerOfLogicalDisk::GetAllLogicalDisk()
-{ return &m_p_container_all_logical_disks; }
+{
+	if (!IsInitialized())
+	{
+		// will be changed after implementing an exception handler
+		return nullptr;
+	}
+	return &m_p_container_all_logical_disks; 
+}

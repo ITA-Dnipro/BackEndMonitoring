@@ -6,6 +6,7 @@
 #include "CLogicalDiskStatus.h"
 #include "CJSONFormatterLogicalDisk.h"
 #include "CLogicalDiskStatusLifeCycle.h"
+#include "CEvent.h"
 
 CLogicalDiskStatusLifeCycle::~CLogicalDiskStatusLifeCycle()
 {
@@ -15,8 +16,7 @@ CLogicalDiskStatusLifeCycle::~CLogicalDiskStatusLifeCycle()
 
 bool CLogicalDiskStatusLifeCycle::ThreadLifeCycle( )
 {
-	m_p_container_in_lifecircle = 
-		CContainerOfLogicalDisk::FactoryContainerOfLogicalDisk(
+	m_p_container_in_lifecircle->InitializeContainerOfLogicalDisk(
 		*m_p_specification);
 	CJSONFormatSaver json_saver(
 		*m_p_container_in_lifecircle->GetPathToSaveFile());

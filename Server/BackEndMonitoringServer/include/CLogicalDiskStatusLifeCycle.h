@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CHardwareInfoLifeCycle.h"
+#include "CThreadSafeVariable.h"
 
 class CContainerOfLogicalDisk;
 class CHardwareStatusSpecification;

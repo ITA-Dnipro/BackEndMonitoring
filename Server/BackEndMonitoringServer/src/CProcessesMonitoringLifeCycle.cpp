@@ -6,6 +6,7 @@
 #include "CJSONFormatSaver.h"
 #include "CProcess.h"
 #include "CProcessesMonitoringLifeCycle.h"
+#include "CEvent.h"
 
 CProcessesMonitoringLifeCycle::CProcessesMonitoringLifeCycle(
 	unsigned max_size,

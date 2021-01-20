@@ -3,24 +3,32 @@
 #include "EMemoryCountType.h"
 #include "CLogicalDiskStatus.h"
 
-CLogicalDiskStatus* CLogicalDiskStatus::FactoryLogicalDiskStatus(
+bool CLogicalDiskStatus::InitializeLogicalDiskStatus(
 	const std::string& disk_name,
 	EMemoryCountType count_type)
 {
-	CLogicalDiskStatus* p_created_object = new CLogicalDiskStatus(
-		disk_name, count_type);
+	m_disk_name = disk_name; 
+	m_count_type = count_type;
+	m_is_initialize = true;
 
-	if (!p_created_object->TryUpdateCurrentStatus())
+	if (!TryUpdateCurrentStatus())
 	{
-		delete p_created_object;
-		return nullptr;
+		m_is_initialize = false;
+		return false;
 	}
 
-	return p_created_object;
+	return true;
 }
+
+bool CLogicalDiskStatus::IsInitialized() const
+{ return m_is_initialize; }
 
 bool CLogicalDiskStatus::TryUpdateCurrentStatus()
 {
+	if (!IsInitialized())
+	{
+		return false;
+	}
 	//try-catch block for avoidind floppy disks
 	try
 	{
@@ -30,9 +38,9 @@ bool CLogicalDiskStatus::TryUpdateCurrentStatus()
 	{
 		return false;
 	}
-	if (m_disk_info.capacity == 0 &&
-		m_disk_info.available == 0 &&
-		m_disk_info.free == 0)
+	if (m_disk_info.capacity == NULL &&
+		m_disk_info.available == NULL &&
+		m_disk_info.free == NULL)
 	{
 		return false;
 	}
@@ -41,25 +49,64 @@ bool CLogicalDiskStatus::TryUpdateCurrentStatus()
 }
 
 std::string CLogicalDiskStatus::GetDiskName() const
-{ return m_disk_name; }
+{ 
+	if (!IsInitialized())
+	{
+		// will be changed after implementing an exception handler
+		return "";
+	}
+	return m_disk_name; 
+}
 
 long double CLogicalDiskStatus::GetCapacityOfDisk() const
-{ return RoundToDecimal(CalculateAsCountType(m_disk_info.capacity)); }
+{
+	if (!IsInitialized())
+	{
+		// will be changed after implementing an exception handler
+		return -1.0;
+	}
+	return RoundToDecimal(CalculateAsCountType(m_disk_info.capacity)); 
+}
 
 long double CLogicalDiskStatus::GetAvailableOfDisk() const
-{ return RoundToDecimal(CalculateAsCountType(m_disk_info.available)); }
+{
+	if (!IsInitialized())
+	{
+		// will be changed after implementing an exception handler
+		return -1.0;
+	}
+	return RoundToDecimal(CalculateAsCountType(m_disk_info.available)); 
+}
 
 long double CLogicalDiskStatus::GetFreeSpaceOfDisk() const
-{ return RoundToDecimal(CalculateAsCountType(m_disk_info.free)); }
+{
+	if (!IsInitialized())
+	{
+		// will be changed after implementing an exception handler
+		return -1.0;
+	}
+	return RoundToDecimal(CalculateAsCountType(m_disk_info.free)); }
 
 long double CLogicalDiskStatus::RoundToDecimal(
 	long double const value_to_round) const
-{ return round(value_to_round * 100.0) / 100.0; }
+{ 
+	if (!IsInitialized())
+	{
+		// will be changed after implementing an exception handler
+		return -1.0;
+	}
+	return round(value_to_round * 100.0) / 100.0; 
+}
 
 long double CLogicalDiskStatus::CalculateAsCountType(
-	long double const value_to_calculate) const
+	uintmax_t const value_to_calculate) const
 {
+	if (!IsInitialized())
+	{
+		// will be changed after implementing an exception handler
+		return -1.0;
+	}
 	return static_cast<long double>(value_to_calculate)
 		   /
-		   static_cast<unsigned>(m_count_type);
+		   static_cast<long double>(m_count_type);
 }

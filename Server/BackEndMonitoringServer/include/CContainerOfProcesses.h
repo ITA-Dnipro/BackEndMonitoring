@@ -1,7 +1,8 @@
 #pragma once
 
-#include "CProcess.h"
 #include "CHardwareStatusSpecification.h"
+
+class CProcess;
 
 class CContainerOfProcesses : public CHardwareStatusSpecification
 {

@@ -18,15 +18,17 @@ public:
 
 	~CContainerOfLogicalDisk() noexcept;
 
-	[[nodiscard]] static CContainerOfLogicalDisk* 
-		FactoryContainerOfLogicalDisk(
-			const CHardwareStatusSpecification& specification);
+	[[nodiscard]] bool InitializeContainerOfLogicalDisk(
+			CHardwareStatusSpecification& specification);
+
+	[[nodiscard]] bool IsInitialized() const;
 
 	[[nodiscard]] std::vector<CLogicalDiskStatus*>* GetAllLogicalDisk();
 
 private:
 	[[nodiscard]] bool TryGetAllExistedLogicalDisksAndInfo();
 
+	bool m_is_initialized;
 	std::vector<CLogicalDiskStatus*> m_p_container_all_logical_disks;
 };
 
