@@ -1,9 +1,13 @@
 #include "stdafx.h"
 #include "CConnectorWrapper.h"
-CConnectorWrapper::CConnectorWrapper(int port, const std::string& ip_address, 
-	std::shared_ptr<CLogger> logger)
-	: m_port(port), m_address(ip_address), m_logger(logger)
-{ }
+#include "CClientConnectionHandler.h"
+#include "CConnector.h"
+
+CConnectorWrapper::CConnectorWrapper(int port, const std::string& ip_address)
+	: m_port(port), m_address(ip_address)
+{ 
+	m_client_handler = InitClientHandler();
+}
 
 void CConnectorWrapper::MakeRequest()
 {
@@ -15,14 +19,12 @@ void CConnectorWrapper::MakeRequest()
 	while (GetRequestConfirmation())
 	{
 		connector = InitConnector(m_port, m_address);
-		client_handler = InitClientHandler(connector->GetHandle());
 
-		if (!ConnectToServer(std::move(connector), std::move(client_handler)))
+		if (!ConnectToServer(std::move(connector)))
 		{
 			std::cout << "Cannot connect to the server!" << std::endl;
 		}
 	}
-
 }
 
 bool CConnectorWrapper::GetRequestConfirmation()
@@ -49,11 +51,11 @@ bool CConnectorWrapper::GetRequestConfirmation()
 	return false;
 }
 
-bool CConnectorWrapper::ConnectToServer(std::unique_ptr<CConnector> connector, std::unique_ptr<CClientConnectionHandler> client_handler)
+bool CConnectorWrapper::ConnectToServer(std::unique_ptr<CConnector> connector)
 {
 	if (connector->Connect())
 	{
-		client_handler->HandleEvent(connector->GetHandle(),
+		m_client_handler->HandleEvent(connector->GetHandle(),
 			EventType::REQUEST_DATA);
 		return true;
 	}
@@ -64,12 +66,10 @@ bool CConnectorWrapper::ConnectToServer(std::unique_ptr<CConnector> connector, s
 std::unique_ptr<CConnector> CConnectorWrapper::InitConnector(
 	int port, const std::string& ip_address)
 {
-	return std::move(std::make_unique<CConnector>(port, ip_address, m_logger));
+	return std::move(std::make_unique<CConnector>(port, ip_address));
 }
 
-std::unique_ptr<CClientConnectionHandler> CConnectorWrapper::InitClientHandler
-	(int handle)
+std::unique_ptr<CServiceHandler> CConnectorWrapper::InitClientHandler()
 {
-	return std::move(std::make_unique<CClientConnectionHandler>(handle, 
-		m_logger));
+	return std::move(std::make_unique<CClientConnectionHandler>());
 }

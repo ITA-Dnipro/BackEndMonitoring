@@ -15,5 +15,4 @@ class CServiceHandler
 {
 public:
 	virtual void HandleEvent(int socket, EventType type) = 0;
-	virtual int GetHandle() const = 0;
 };

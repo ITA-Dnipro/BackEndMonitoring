@@ -1,33 +1,63 @@
 #include "stdafx.h"
 #include "CAcceptor.h"
+#include "CServiceConnectionHandler.h"
+#include "CServiceHandler.h"
 
-CAcceptor::CAcceptor(const int port, const std::string& ip_address,
-	std::shared_ptr<CLogger> logger)
-	: m_address(ip_address), m_port(port), m_logger(logger)
+CAcceptor::CAcceptor(const int port, const std::string& ip_address)
+	: m_ip_address(ip_address), m_port(port)
 {
-	m_peer_acceptor = InitAcceptor(port, ip_address);
+	m_socket_acceptor = InitSocket(port, ip_address);
+	OpenAcception();
 }
 
 int CAcceptor::GetConnectedHandle()
 {
-	return m_peer_acceptor->AcceptIncommingCalls();
+	return static_cast<int>(accept(m_socket_acceptor->GetHandle(), NULL, NULL));
 }
 
 int CAcceptor::GetHandle() const
 {
-	return m_peer_acceptor->GetHandle();
+	return m_socket_acceptor->GetHandle();
 }
 
 bool CAcceptor::CloseSocket()
 {
-	return m_peer_acceptor->CloseSocket();
+	return m_socket_acceptor->CloseSocket();
 }
 
-std::unique_ptr<CAcceptorSocket> CAcceptor::InitAcceptor(const int port, 
+bool CAcceptor::OpenAcception()
+{
+	if (BindSocket() && StartListening())
+	{
+		return true;
+	}
+	return false;
+}
+
+bool CAcceptor::BindSocket()
+{
+	sockaddr_in current_address = m_socket_acceptor->GetSocketAddress();
+	if (::bind(m_socket_acceptor->GetHandle(), (SOCKADDR*)&current_address, 
+		sizeof(current_address)) == SUCCESS)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool CAcceptor::StartListening()
+{
+	if (::listen(m_socket_acceptor->GetHandle(), SOMAXCONN) == SUCCESS)
+	{
+		return true;
+	}
+	return false;
+}
+
+std::unique_ptr<CSocket> CAcceptor::InitSocket(const int port,
 	const std::string& ip_address)
 {
-	return std::move(std::make_unique<CAcceptorSocket>(port, ip_address, 
-		m_logger));
+	return std::move(std::make_unique<CSocket>(port, ip_address));
 }
 
 

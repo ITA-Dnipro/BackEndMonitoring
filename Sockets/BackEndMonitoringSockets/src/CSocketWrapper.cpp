@@ -1,18 +1,16 @@
 #include "stdafx.h"
 #include "CSocketWrapper.h"
-#pragma warning(disable: 4996)
 
-CSocketWrapper::CSocketWrapper(const int socket, 
-	std::shared_ptr<CLogger> logger) : CSocket(socket, logger)
+CSocketWrapper::CSocketWrapper()
 { }
 
 std::string CSocketWrapper::Receive(const int socket)
 {
-	size_t msg_size = ReceiveMessageLength(socket);
+	int msg_size = ReceiveMessageLength(socket);
 	std::string received_line;
 
 	char* symb = new char[1];
-	size_t counter = msg_size;
+	int counter = msg_size;
 	while (true)
 	{
 		if (recv(socket, symb, 1, NULL) == CONNECTION_ERROR)
@@ -43,25 +41,26 @@ std::string CSocketWrapper::Receive(const int socket)
 
 bool CSocketWrapper::Send(const int socket, const std::string& line)
 {
-	if (!SendMessageLength(socket, line.length()))
+	int line_length = static_cast<int>(line.length());
+	if (!SendMessageLength(socket, line_length))
 	{
 		return false;
 	}
 
-	if (send(socket, line.c_str(), line.length(), 0) == CONNECTION_ERROR)
+	if (send(socket, line.c_str(), line_length, 0) == CONNECTION_ERROR)
 	{
 		return false;
 	}
 	return true;
 }
 
-bool CSocketWrapper::IsAllDataReceived(size_t msg_size,
-	size_t received_msg_size) const
+bool CSocketWrapper::IsAllDataReceived(int msg_size,
+	int received_msg_size) const
 {
 	return msg_size == received_msg_size;
 }
 
-bool CSocketWrapper::SendMessageLength(const int socket,  size_t length)
+bool CSocketWrapper::SendMessageLength(const int socket,  int length)
 {
 	if (send(socket, reinterpret_cast<char*>(&length),
 		sizeof(length), NULL) != CONNECTION_ERROR)
@@ -72,9 +71,9 @@ bool CSocketWrapper::SendMessageLength(const int socket,  size_t length)
 	return false;
 }
 
-size_t CSocketWrapper::ReceiveMessageLength(const int client_socket)
+int CSocketWrapper::ReceiveMessageLength(const int client_socket)
 {
-	size_t msg_size = 0;
+	int msg_size = 0;
 	if (recv(client_socket, reinterpret_cast<char*>(&msg_size), 
 		sizeof(msg_size), NULL) != CONNECTION_ERROR)
 	{

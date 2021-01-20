@@ -23,7 +23,7 @@ void CService::RunServer()
     WRITE_DEBUG(*logger, "Start server");
 
     m_acceptor_socket = std::make_unique<CAcceptorWrapper>(port, ip_address, 
-        num_threads, m_stop_event, logger);
+        num_threads, m_stop_event);
 
     m_acceptor_socket->StartServer();
 }

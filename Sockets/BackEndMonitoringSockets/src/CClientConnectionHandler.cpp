@@ -1,10 +1,9 @@
 #include "stdafx.h"
 #include "CClientConnectionHandler.h"
 
-CClientConnectionHandler::CClientConnectionHandler(int socket, 
-	std::shared_ptr<CLogger> logger) : m_socket(socket), m_logger(logger)
+CClientConnectionHandler::CClientConnectionHandler() 
 {
-	m_client_stream = InitClientStream(socket);
+	m_client_stream = InitClientStream();
 }
 
 void CClientConnectionHandler::HandleEvent(const int server_socket, 
@@ -21,11 +20,6 @@ void CClientConnectionHandler::HandleEvent(const int server_socket,
 	}
 }
 
-int CClientConnectionHandler::GetHandle() const
-{
-	return m_client_stream->GetHandle();
-}
-
 void CClientConnectionHandler::HandleReadEvent(int socket)
 {
 	m_client_stream->Send(socket, "Request for data\n");
@@ -37,8 +31,7 @@ void CClientConnectionHandler::HandleWriteEvent(int socket)
 	std::cout << m_client_stream->Receive(socket) << std::endl;
 }
 
-std::unique_ptr<CSocketWrapper> CClientConnectionHandler::InitClientStream
-	(int handle)
+std::unique_ptr<CSocketWrapper> CClientConnectionHandler::InitClientStream()
 {
-	return std::move(std::make_unique<CSocketWrapper>(handle, m_logger));
+	return std::move(std::make_unique<CSocketWrapper>());
 }

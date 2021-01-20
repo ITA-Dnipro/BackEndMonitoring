@@ -1,11 +1,9 @@
 #include "stdafx.h"
 #include "CServiceConnectionHandler.h"
 
-CServiceConnectionHandler::CServiceConnectionHandler(const int socket,
-	std::shared_ptr<CLogger> logger)
-	: m_server_socket(socket), m_logger(logger)
+CServiceConnectionHandler::CServiceConnectionHandler()
 {
-	m_peer_stream = InitPeerStream(socket);
+	m_peer_stream = InitPeerStream();
 }
 
 void CServiceConnectionHandler::HandleEvent(const int socket, EventType type)
@@ -21,27 +19,19 @@ void CServiceConnectionHandler::HandleEvent(const int socket, EventType type)
 	}
 }
 
-int CServiceConnectionHandler::GetHandle() const
-{
-	return m_peer_stream->GetHandle();
-}
-
 void CServiceConnectionHandler::HandleRequestEvent(const int socket)
 {
-	std::cout << "Request from the client " << socket << ": " << std::endl;
 	std::cout << m_peer_stream->Receive(socket);
 	HandleResponseEvent(socket);
 }
 
 void CServiceConnectionHandler::HandleResponseEvent(const int socket)
 {
-	std::cout << "The respone has been sent" << std::endl;
 	m_peer_stream->Send(socket, data.GetData());
 }
 
-std::unique_ptr<CSocketWrapper> CServiceConnectionHandler::InitPeerStream
-	(int handle)
+std::unique_ptr<CSocketWrapper> CServiceConnectionHandler::InitPeerStream()
 {
-	return std::move(std::make_unique<CSocketWrapper>(handle, m_logger));
+	return std::move(std::make_unique<CSocketWrapper>());
 }
 

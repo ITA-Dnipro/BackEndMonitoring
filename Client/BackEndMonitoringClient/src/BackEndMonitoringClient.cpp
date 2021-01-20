@@ -17,7 +17,7 @@ int main()
 	int port = 1111;
 	std::string ip_address = "127.0.0.1";
 
-	CConnectorWrapper connector(port, ip_address, logger);
+	CConnectorWrapper connector(port, ip_address);
 
 	connector.MakeRequest();
 

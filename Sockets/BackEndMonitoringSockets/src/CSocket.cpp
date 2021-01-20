@@ -1,19 +1,10 @@
 #include "stdafx.h"
 #include "CSocket.h"
-#pragma warning(disable: 4996)
 
-CSocket::CSocket(const int port, const std::string& ip_address, 
-	std::shared_ptr<CLogger> logger) : CBaseSocket(logger)
+CSocket::CSocket(const int port, const std::string& ip_address)
 {
 	SetSocketAddress(port, ip_address);
 	m_socket = InitSocket();
-}
-
-CSocket::CSocket(const int socket, std::shared_ptr<CLogger> logger)
-	: CBaseSocket(logger)
-{
-	m_socket = socket;
-	m_address = { 0 };
 }
 
 CSocket::~CSocket()
@@ -23,7 +14,7 @@ CSocket::~CSocket()
 	}
 	else
 	{
-		// LOG WSAGetLastError()
+		// LOG + WSAGetLastError()
 	}
 }
 
@@ -34,13 +25,13 @@ int CSocket::GetHandle() const
 
 int CSocket::InitSocket()
 {
-	SOCKET new_socket = socket(AF_INET, SOCK_STREAM, NULL);
+	int new_socket = static_cast<int>(socket(AF_INET, SOCK_STREAM, NULL));
 	if (!IsValidSocket())
 	{
-		// LOGGER + EXCEPTIOn
+		// LOGGER + WSAGetLastError()
 	}
 
-	return static_cast<int>(new_socket);
+	return new_socket;
 }
 
 void CSocket::SetSocketAddress(const int port,
@@ -48,7 +39,7 @@ void CSocket::SetSocketAddress(const int port,
 {
 	m_address.sin_family = AF_INET;
 	m_address.sin_port = htons(port);
-	m_address.sin_addr.s_addr = inet_addr(ip_address.c_str());
+	inet_pton(AF_INET, ip_address.c_str(), &(m_address.sin_addr.s_addr));
 }
 
 bool CSocket::IsValidSocket() const
@@ -70,4 +61,9 @@ bool CSocket::CloseSocket()
 		}
 	}
 	return false;
+}
+
+sockaddr_in CSocket::GetSocketAddress() const
+{
+	return m_address;
 }
