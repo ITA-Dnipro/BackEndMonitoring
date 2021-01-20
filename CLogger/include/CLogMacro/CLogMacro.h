@@ -72,17 +72,11 @@
 
 // Creates and prints CLogMessage that formed from exception of some CLogLevel via CLogger
 #define WRITE_LOG_EXCEPTION(logger, exception, logLevel) \
-	    (logger).PrintLogMessage(CLogMessage(std::string("EXCEPTION!!!!") + " " + (exception).what(), \
-							logLevel, __LINE__, LogUtils::GetFileNameByPath(__FILE__), \
-                            __FUNCTION__, LogUtils::GetCurrentTimeString(), \
-                            LogUtils::GetThisThreadIdString())) \
+	WRITE_LOG(logger, std::string("EXCEPTION!!!!") + " " + (exception).what(), logLevel) \
 
 // Creates and prints CLogMessage that formed from variable creation of some CLogLevel via CLogger
 #define WRITE_LOG_VAR_CREATION(logger, var, logLevel) \
-	(logger).PrintLogMessage(CLogMessage(std::string("Created") + " " + GET_TYPE(var) + " " + GET_NAME(var) + ".", \
-							logLevel, __LINE__, LogUtils::GetFileNameByPath(__FILE__), \
-							__FUNCTION__, LogUtils::GetCurrentTimeString(), \
-							LogUtils::GetThisThreadIdString())) \
+	WRITE_LOG(logger, std::string("Created") + " " + GET_TYPE(var) + " " + GET_NAME(var) + ".", logLevel) \
 
 // Creates and prints CLogMessage of PROD_LEVEL-level via CLogger
 #define WRITE_PROD(logger, messageString) \
