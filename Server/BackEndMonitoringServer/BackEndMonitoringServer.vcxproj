@@ -158,9 +158,6 @@
     <ClInclude Include="include\CThreadPool.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="src\BackEndMonitoringServer.cpp" />
     <ClCompile Include="src\CEvent.cpp" />
     <ClCompile Include="src\CThreadPool.cpp" />
