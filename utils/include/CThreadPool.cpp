@@ -30,11 +30,6 @@ void CThreadPool::ThreadWork()
 	{
 		Task task;
 
-		if (m_stop_event.WaitFor(std::chrono::nanoseconds(1))) 
-		{
-			break;
-		}
-
 		{
 			auto [queue, mtx] = m_tasks_queue.GetAccess();
 
@@ -43,6 +38,11 @@ void CThreadPool::ThreadWork()
 				mtx.unlock();
 				m_event.Wait();
 				mtx.lock();
+			}
+
+			if (m_stop_event.WaitFor(std::chrono::nanoseconds(1)))
+			{
+				break;
 			}
 
 			task = std::move(queue.front());
