@@ -119,7 +119,7 @@ protected:
 	std::string m_function_string;
 	std::string m_time_string;
 	std::string m_message_string;
-	std::tuple<std::pair<const char*, Args>...> m_param_tuple;
+	std::tuple<std::pair<std::string, Args>...> m_param_tuple;
 };
 
 template<typename... Args>
