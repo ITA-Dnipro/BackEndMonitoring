@@ -1,9 +1,8 @@
 #include "stdafx.h"
 
-#include "json.hpp"
-
-#include "CJSONFormatSaver.h"
 #include "Utils.h"
+#include "CJSONFormatter.h"
+#include "CJSONFormatSaver.h"
 
 bool CJSONFormatSaver::TrySaveToFile(CJSONFormatter& formatted_data)
 {

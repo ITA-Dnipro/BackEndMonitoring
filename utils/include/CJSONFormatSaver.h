@@ -1,8 +1,6 @@
 #pragma once
 
-#include "json.hpp"
-
-#include "CJSONFormatter.h"
+class CJSONFormatter;
 
 class CJSONFormatSaver
 {

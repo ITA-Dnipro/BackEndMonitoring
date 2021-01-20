@@ -162,10 +162,9 @@
     <ClInclude Include="include\CLogicalDiskStatusLifeCycle.h" />
     <ClInclude Include="include\CProcess.h" />
     <ClInclude Include="include\CProcessesMonitoringLifeCycle.h" />
-    <ClInclude Include="include\EConvertValueFromBytes.h" />
     <ClInclude Include="include\EMemoryCountType.h" />
     <ClInclude Include="include\stdafx.h" />
-    <ClInclude Include="include\СContainerOfLogicalDisk.h" />
+    <ClInclude Include="include\CContainerOfLogicalDisk.h" />
     <ClInclude Include="include\CHardwareStatusSpecification.h" />
   </ItemGroup>
   <ItemGroup>
@@ -189,8 +188,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\СContainerOfLogicalDisk.cpp" />
-    <ClCompile Include="src\СHardwareStatusSpecification.cpp" />
+    <ClCompile Include="src\CContainerOfLogicalDisk.cpp" />
+    <ClCompile Include="src\CHardwareStatusSpecification.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

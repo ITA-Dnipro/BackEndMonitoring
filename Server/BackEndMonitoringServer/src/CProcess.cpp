@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "EConvertValueFromBytes.h"
+#include "EMemoryCountType.h"
 #include "CProcess.h"
 
 CProcess::CProcess(unsigned PID, unsigned count_of_processors, 
@@ -8,22 +8,9 @@ CProcess::CProcess(unsigned PID, unsigned count_of_processors,
     m_PID(PID),
     m_count_of_processors(count_of_processors),
     m_count_type(type), m_cpu_usage(0), m_ram_usage(0), m_pagefile_usage(0),
-    last_sys_time{0, 0}, last_kernel_time{ 0, 0 }, last_user_time{ 0, 0 }
-{ 
-    HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
-        FALSE, PID);
-    if (NULL != process)
-    {
-        FILETIME ftime, fsys, fuser;
-        GetSystemTimeAsFileTime(&ftime);
-        memcpy(&last_sys_time, &ftime, sizeof(FILETIME));
-
-        GetProcessTimes(process, &ftime, &ftime, &fsys, &fuser);
-        memcpy(&last_kernel_time, &fsys, sizeof(FILETIME));
-        memcpy(&last_user_time, &fuser, sizeof(FILETIME));
-        CloseHandle(process);
-    }
-}
+    last_sys_time{0, 0}, last_kernel_time{ 0, 0 }, last_user_time{ 0, 0 },
+    m_is_initialized(false)
+{ }
 
 CProcess::CProcess(const CProcess& other) : m_PID(other.m_PID), 
         m_count_of_processors(other.m_count_of_processors),
@@ -44,7 +31,8 @@ CProcess::CProcess(CProcess&& other) noexcept: m_PID(other.m_PID),
         m_count_type(other.m_count_type),
         last_kernel_time(other.last_kernel_time),
         last_sys_time(other.last_sys_time),
-        last_user_time(other.last_user_time)
+        last_user_time(other.last_user_time),
+        m_is_initialized(other.m_is_initialized)
 { }
 
 CProcess& CProcess::operator=(const CProcess& other)
@@ -58,11 +46,40 @@ CProcess& CProcess::operator=(const CProcess& other)
     last_kernel_time = other.last_kernel_time;
     last_sys_time = other.last_sys_time;
     last_user_time = other.last_user_time;
+    m_is_initialized = other.m_is_initialized;
     return *this;
+}
+
+bool CProcess::Initialize()
+{
+    if(m_is_initialized)
+    {
+        return false;
+    }
+    bool success;
+    HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
+        FALSE, m_PID);
+    if (success = (process != 0))
+    {
+        FILETIME ftime, fsys, fuser;
+        GetSystemTimeAsFileTime(&ftime);
+        memcpy(&last_sys_time, &ftime, sizeof(FILETIME));
+
+        GetProcessTimes(process, &ftime, &ftime, &fsys, &fuser);
+        memcpy(&last_kernel_time, &fsys, sizeof(FILETIME));
+        memcpy(&last_user_time, &fuser, sizeof(FILETIME));
+        CloseHandle(process);
+    }
+    m_is_initialized = true;
+    return success;
 }
 
 bool CProcess::TryToUpdateCurrentStatus()
 {
+    if(!m_is_initialized)
+    {
+        return false;
+    }
     HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
                                  FALSE, m_PID);
 
@@ -77,55 +94,63 @@ bool CProcess::TryToUpdateCurrentStatus()
 
 bool CProcess::IsActive() const
 {
+    if (!m_is_initialized)
+    {
+        return false;
+    }
     HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION |PROCESS_VM_READ,
                                  FALSE, m_PID);
 
-    bool success = (NULL != process);
-    if (success)
+    bool success;
+    if (success = (process != 0))
     {
         CloseHandle(process);
     }
     return success;
 }
 
-unsigned CProcess::GetPID() const
-{ return m_PID;}
-
-double CProcess::GetCpuUsage() const
-{ return m_cpu_usage;}
-
-long double CProcess::GetRamUsage() const
-{
-    switch (m_count_type)
+bool CProcess::GetPID(unsigned& value) const
+{   
+    if (m_is_initialized)
     {
-    case (EMemoryCountType::BYTES):
-        return static_cast<long double>(m_ram_usage);
-    case (EMemoryCountType::MEGABYTES):
-        return static_cast<long double>(m_ram_usage) /
-               static_cast<int>(EConvertValueFromBytes::INTO_MEGABYTES);
-    case (EMemoryCountType::GIGABYTES):
-        return static_cast<long double>(m_ram_usage) /
-               static_cast<int>(EConvertValueFromBytes::INTO_GIGABYTES);
-    default:
-        return static_cast<long double>(m_ram_usage);
+        value = m_PID;
+        return true;
     }
+    return false;
 }
 
-long double CProcess::GetPagefileUsage() const
+bool CProcess::GetCpuUsage(double& value) const
 {
-    switch (m_count_type)
+    if (m_is_initialized)
     {
-    case (EMemoryCountType::BYTES):
-        return static_cast<long double>(m_pagefile_usage);
-    case (EMemoryCountType::MEGABYTES):
-        return static_cast<long double>(m_pagefile_usage) /
-            static_cast<int>(EConvertValueFromBytes::INTO_MEGABYTES);
-    case (EMemoryCountType::GIGABYTES):
-        return static_cast<long double>(m_pagefile_usage) /
-            static_cast<int>(EConvertValueFromBytes::INTO_GIGABYTES);
-    default:
-        return static_cast<long double>(m_pagefile_usage);
+        value = m_cpu_usage;
+        return true;
     }
+    return false;
+}
+
+bool CProcess::GetRamUsage(long double& value) const
+{
+    if (m_is_initialized)
+    {
+        value = static_cast<long double>(m_ram_usage)
+                /
+                static_cast<unsigned>(m_count_type);
+        return true;
+    }
+    return false;
+}
+
+bool CProcess::GetPagefileUsage(long double& value) const
+{
+    if (m_is_initialized)
+    {
+        value = static_cast<long double>(m_pagefile_usage)
+                /
+                static_cast<unsigned>(m_count_type);
+        return true;
+    }
+    return false;
 }
 
 EMemoryCountType CProcess::GetMemoryCountType() const

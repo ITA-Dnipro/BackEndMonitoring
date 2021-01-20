@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EMemoryCountType.h"
+enum class EMemoryCountType;
 
 class CProcess {
 public:
@@ -11,18 +11,20 @@ public:
 	CProcess(CProcess&&) noexcept;
 	CProcess& operator= (const CProcess&);
 
+	bool Initialize();
 	bool TryToUpdateCurrentStatus();
 	bool IsActive() const;
-	unsigned GetPID() const;
-	double GetCpuUsage() const;
-	long double GetRamUsage() const;
-	long double GetPagefileUsage() const;
+	bool GetPID(unsigned&) const;
+	bool GetCpuUsage(double&) const;
+	bool GetRamUsage(long double&) const;
+	bool GetPagefileUsage(long double&) const;
 	EMemoryCountType GetMemoryCountType() const;
 private:
 	void ComputeCpuUsage(const HANDLE& process);
 	void SetMemoryUsage(const HANDLE& process);
 
 private:
+	bool m_is_initialized;
 	unsigned m_PID;
 	unsigned m_count_of_processors;
 	double m_cpu_usage;

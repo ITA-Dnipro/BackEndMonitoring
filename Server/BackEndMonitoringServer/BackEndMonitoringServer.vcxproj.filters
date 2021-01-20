@@ -42,13 +42,7 @@
     <ClInclude Include="include\CProcessesMonitoringLifeCycle.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\EConvertValueFromBytes.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="include\EMemoryCountType.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\СContainerOfLogicalDisk.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\utils\include\CEvent.h">
@@ -73,6 +67,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="include\CHardwareStatusSpecification.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CContainerOfLogicalDisk.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -104,12 +101,6 @@
     <ClCompile Include="src\CProcessesMonitoringLifeCycle.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="src\СContainerOfLogicalDisk.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\СHardwareStatusSpecification.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="src\CProcess.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -126,6 +117,12 @@
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\utils\include\Utils.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CContainerOfLogicalDisk.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CHardwareStatusSpecification.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

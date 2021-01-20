@@ -1,9 +1,5 @@
 #pragma once
 
-#include <optional>
-
-#include "json.hpp"
-
 class CJSONFormatter
 {
 public:

@@ -1,7 +1,6 @@
 #pragma once
 
-#include "EMemoryCountType.h"
-#include "EConvertValueFromBytes.h"
+enum class EMemoryCountType;
 
 class CLogicalDiskStatus
 {
@@ -9,13 +8,14 @@ public:
 	CLogicalDiskStatus() = delete;
 	explicit CLogicalDiskStatus(const CLogicalDiskStatus& orig) : 
 		m_disk_name(orig.m_disk_name),
-		m_disk_info(orig.m_disk_info)
+		m_disk_info(orig.m_disk_info),
+		m_count_type(orig.m_count_type)
 	{ };
 	CLogicalDiskStatus(const CLogicalDiskStatus&&) noexcept = delete;
 
 	[[nodiscard]] static CLogicalDiskStatus* FactoryLogicalDiskStatus(
 		const std::string& disk_name,
-		EMemoryCountType count_type = EMemoryCountType::BYTES);
+		EMemoryCountType count_type);
 
 	[[nodiscard]] bool TryUpdateCurrentStatus();
 
@@ -39,7 +39,7 @@ private:
 
 	std::string m_disk_name;
 	std::filesystem::space_info m_disk_info{};
-	EMemoryCountType m_count_type = EMemoryCountType::BYTES;
+	EMemoryCountType m_count_type;
 };
 
 

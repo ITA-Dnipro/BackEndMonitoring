@@ -1,8 +1,10 @@
 #include "stdafx.h"
 
-#include <thread>
-
+#include "CContainerOfProcesses.h"
+#include "CJSONFormatterProcess.h"
+#include "CThreadSafeVariable.h"
 #include "CJSONFormatSaver.h"
+#include "CProcess.h"
 #include "CProcessesMonitoringLifeCycle.h"
 
 CProcessesMonitoringLifeCycle::CProcessesMonitoringLifeCycle(
@@ -14,11 +16,27 @@ CProcessesMonitoringLifeCycle::CProcessesMonitoringLifeCycle(
 	CThreadSafeVariable<CJSONFormatterProcess>& json_formatter) :
 		m_container(max_size, pause_duration, path_to_file, count_type),
 		m_json_formatter(json_formatter),
-		CHardwareInfoLifeCycle(stop_event)
+		CHardwareInfoLifeCycle(stop_event),
+		m_is_initialized(false)
 { }
 
-void CProcessesMonitoringLifeCycle::ThreadLifeCycle( )
+bool CProcessesMonitoringLifeCycle::Initialize()
 {
+	bool success;
+	if (success = m_container.Initialize())
+	{
+		m_is_initialized = true;
+	}
+	return success;
+}
+
+bool CProcessesMonitoringLifeCycle::ThreadLifeCycle( )
+{
+	if(!m_is_initialized)
+	{
+		return false;
+	}
+
 	CJSONFormatSaver json_saver(*m_container.GetPathToSaveFile( ));
 	while (!m_stop_event.WaitFor(m_container.GetPauseDuration( )))
 	{
@@ -29,21 +47,24 @@ void CProcessesMonitoringLifeCycle::ThreadLifeCycle( )
 			{
 				continue;
 			}
-			auto processes = m_container.GetAllProcesses( );
-
-			for (auto& process : processes)
+			std::vector<CProcess> processes;
+			if (m_container.GetAllProcesses(processes))
 			{
-				if (!json_formatter.TryAddProcessData(process))
+				for (auto& process : processes)
 				{
-					continue;
-				}
-				if (!json_saver.TrySaveToFile(json_formatter))
-				{
-					//exception handler
-					continue;
+					if (!json_formatter.TryAddProcessData(process))
+					{
+						continue;
+					}
+					if (!json_saver.TrySaveToFile(json_formatter))
+					{
+						//exception handler
+						continue;
+					}
 				}
 			}
 		}
 		m_container.TryToUpdateCurrentStatus( );
 	}
+	return true;
 }

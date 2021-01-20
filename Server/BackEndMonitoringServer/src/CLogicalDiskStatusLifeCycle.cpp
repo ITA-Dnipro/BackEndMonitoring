@@ -1,14 +1,22 @@
 #include "stdafx.h"
 
-#include "CLogicalDiskStatusLifeCycle.h"
-#include "CJSONFormatterLogicalDisk.h"
+#include "CThreadSafeVariable.h"
 #include "CJSONFormatSaver.h"
-#include "CEvent.h"
+#include "CContainerOfLogicalDisk.h"
+#include "CLogicalDiskStatus.h"
+#include "CJSONFormatterLogicalDisk.h"
+#include "CLogicalDiskStatusLifeCycle.h"
 
-void CLogicalDiskStatusLifeCycle::ThreadLifeCycle( )
+CLogicalDiskStatusLifeCycle::~CLogicalDiskStatusLifeCycle()
+{
+	delete m_p_specification;
+	delete m_p_container_in_lifecircle;
+}
+
+bool CLogicalDiskStatusLifeCycle::ThreadLifeCycle( )
 {
 	m_p_container_in_lifecircle = 
-		ÑContainerOfLogicalDisk::FactoryContainerOfLogicalDisk(
+		CContainerOfLogicalDisk::FactoryContainerOfLogicalDisk(
 		*m_p_specification);
 	CJSONFormatSaver json_saver(
 		*m_p_container_in_lifecircle->GetPathToSaveFile());
@@ -16,7 +24,7 @@ void CLogicalDiskStatusLifeCycle::ThreadLifeCycle( )
 	if (nullptr == m_p_container_in_lifecircle)
 	{
 		std::cout << "Problem with creating container!";
-		return;
+		return false;
 	}
 	while (!m_stop_event.WaitFor(m_p_specification->GetPauseDuration()))
 	{
@@ -27,7 +35,7 @@ void CLogicalDiskStatusLifeCycle::ThreadLifeCycle( )
 			continue;
 		}
 
-		size_t disk_number = 0;
+		unsigned short disk_number = 0;
 
 		for (const auto& disk :
 			*(m_p_container_in_lifecircle->GetAllLogicalDisk()))
@@ -52,4 +60,5 @@ void CLogicalDiskStatusLifeCycle::ThreadLifeCycle( )
 			}
 		}
 	}
+	return true;
 }

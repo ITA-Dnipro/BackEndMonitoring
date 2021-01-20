@@ -1,9 +1,7 @@
 #include "stdafx.h"
 
-#include "json.hpp"
-
-#include "CJSONFormatter.h"
 #include "Utils.h"
+#include "CJSONFormatter.h"
 
 bool CJSONFormatter::TryAddJSONFormattedData(const nlohmann::json& 
     p_formatted_data)

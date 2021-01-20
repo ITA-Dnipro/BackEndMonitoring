@@ -1,9 +1,9 @@
 #pragma once
 
-#include "CHardwareInfoLifeCycle.h"
 #include "CContainerOfProcesses.h"
-#include "CJSONFormatterProcess.h"
-#include "CThreadSafeVariable.h"
+#include "CHardwareInfoLifeCycle.h"
+
+class CJSONFormatterProcess;
 
 class CProcessesMonitoringLifeCycle : CHardwareInfoLifeCycle
 {
@@ -21,9 +21,11 @@ public:
 		noexcept = delete;
 	~CProcessesMonitoringLifeCycle() noexcept = default;
 
-	void ThreadLifeCycle() override;
+	bool Initialize();
+	bool ThreadLifeCycle() override;
 
 private:
+	bool m_is_initialized;
 	CContainerOfProcesses m_container;
 	CThreadSafeVariable<CJSONFormatterProcess>& m_json_formatter;
 };

@@ -1,9 +1,37 @@
 #include "stdafx.h"
 
-#include "ÑContainerOfLogicalDisk.h"
 #include "Utils.h"
+#include "CLogicalDiskStatus.h"
+#include "CContainerOfLogicalDisk.h"
 
-bool ÑContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
+CContainerOfLogicalDisk::CContainerOfLogicalDisk(
+	std::chrono::duration<int> period_of_checking_status,
+	const std::string& path_to_file,
+	EMemoryCountType count_type) :
+	CHardwareStatusSpecification(period_of_checking_status,
+		path_to_file,
+		count_type)
+{};
+
+CContainerOfLogicalDisk::CContainerOfLogicalDisk(const CHardwareStatusSpecification& orig) :
+	CHardwareStatusSpecification(orig)
+{};
+
+CContainerOfLogicalDisk::CContainerOfLogicalDisk(const CContainerOfLogicalDisk& orig) :
+	CHardwareStatusSpecification(orig.m_pause_duration,
+		orig.m_path_to_file, orig.m_count_type),
+	m_p_container_all_logical_disks(orig.m_p_container_all_logical_disks)
+{};
+
+CContainerOfLogicalDisk::~CContainerOfLogicalDisk() noexcept
+{
+	for (const auto& disk : m_p_container_all_logical_disks)
+	{
+		delete disk;
+	}
+}
+
+bool CContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 {
 	const unsigned short c_size_of_buffer_for_api = 1024;
 	//We just skip some chars
@@ -52,12 +80,13 @@ bool ÑContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 	return true;
 }
 
-ÑContainerOfLogicalDisk* 
-ÑContainerOfLogicalDisk::FactoryContainerOfLogicalDisk( 
-	const ÑHardwareStatusSpecification& specification)
+
+
+CContainerOfLogicalDisk* CContainerOfLogicalDisk::FactoryContainerOfLogicalDisk( 
+	const CHardwareStatusSpecification& specification)
 {
-	ÑContainerOfLogicalDisk* container = new
-		ÑContainerOfLogicalDisk(specification);
+	CContainerOfLogicalDisk* container = new
+		CContainerOfLogicalDisk(specification);
 
 	if (!container->TryGetAllExistedLogicalDisksAndInfo())
 	{
@@ -67,5 +96,5 @@ bool ÑContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 	return container;
 }
 
-std::vector<CLogicalDiskStatus*>* ÑContainerOfLogicalDisk::GetAllLogicalDisk()
+std::vector<CLogicalDiskStatus*>* CContainerOfLogicalDisk::GetAllLogicalDisk()
 { return &m_p_container_all_logical_disks; }

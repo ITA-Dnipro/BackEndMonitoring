@@ -1,16 +1,27 @@
 #include "stdafx.h"
 
+#include "CProcess.h"
 #include "CJSONFormatterProcess.h"
 
 bool CJSONFormatterProcess::TryAddProcessData(const CProcess& process_to_json)
 {
     nlohmann::json json_format_data;
 
-    json_format_data["PID " + std::to_string(process_to_json.GetPID())] = {
-        CreatePair<unsigned>("CPU_usage", process_to_json.GetCpuUsage()),
-        CreatePair<unsigned>("RAM_usage", process_to_json.GetRamUsage()),
-        CreatePair<unsigned>("Pagefile_usage", 
-        process_to_json.GetPagefileUsage())
+    unsigned PID;
+    double cpu_usage;
+    long double ram_usage;
+    long double pagefile_usage;
+    if (!process_to_json.GetPID(PID) ||
+        !process_to_json.GetCpuUsage(cpu_usage) ||
+        !process_to_json.GetRamUsage(ram_usage) ||
+        !process_to_json.GetPagefileUsage(pagefile_usage))
+    {
+        return false;
+    }
+    json_format_data["PID " + std::to_string(PID)] = {
+        CreatePair<double>("CPU_usage", cpu_usage),
+        CreatePair<long double>("RAM_usage", ram_usage),
+        CreatePair<long double>("Pagefile_usage",pagefile_usage)
     };
     if (json_format_data.is_null())
     {

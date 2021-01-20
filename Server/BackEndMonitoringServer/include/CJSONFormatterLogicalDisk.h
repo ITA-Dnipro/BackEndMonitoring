@@ -1,7 +1,8 @@
 #pragma once
 
 #include "CJSONFormatter.h"
-#include "CLogicalDiskStatus.h"
+
+class CLogicalDiskStatus;
 
 class CJSONFormatterLogicalDisk :
     public CJSONFormatter

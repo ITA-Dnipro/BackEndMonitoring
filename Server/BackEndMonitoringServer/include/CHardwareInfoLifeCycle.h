@@ -1,6 +1,5 @@
 #pragma once
 
-#include "CHardwareStatusSpecification.h"
 #include "CEvent.h"
 
 class CHardwareInfoLifeCycle
@@ -17,7 +16,7 @@ public:
 	/// infinite loop with timer.
 	/// </summary>
 	/// <returns></returns>
-	virtual void ThreadLifeCycle( ) = 0;
+	virtual bool ThreadLifeCycle( ) = 0;
 
 protected:
 	CEvent& m_stop_event;

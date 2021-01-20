@@ -1,37 +1,49 @@
 #include "stdafx.h"
 
-#include <windows.h>
-#include <psapi.h>
-#include <algorithm>
-
+#include "CProcess.h"
 #include "CContainerOfProcesses.h"
 
 CContainerOfProcesses::CContainerOfProcesses(
 	unsigned m_max_process_count, std::chrono::duration<int> 
 	pause_duration, std::string path_to_file, EMemoryCountType count_type) :
-	m_max_process_count(m_max_process_count),
-	ÑHardwareStatusSpecification(pause_duration, path_to_file, count_type)
+	m_max_process_count(m_max_process_count), m_processors_count(0),
+	CHardwareStatusSpecification(pause_duration, path_to_file, count_type),
+	m_is_initialized(false)
+{ }
+
+bool CContainerOfProcesses::Initialize()
 {
 	SYSTEM_INFO sysInfo;
 	GetSystemInfo(&sysInfo);
 	m_processors_count = sysInfo.dwNumberOfProcessors;
 
 	std::list<DWORD> list_of_PIDs;
-	if (GetListOfProcessIds(list_of_PIDs))
+	bool success;
+	if (success = GetListOfProcessIds(list_of_PIDs))
 	{
 		for (auto PID : list_of_PIDs)
 		{
 			CProcess temp(PID, m_processors_count, m_count_type);
-			if (temp.TryToUpdateCurrentStatus())
+			success = temp.Initialize();
+			if (success = temp.TryToUpdateCurrentStatus())
 			{
-				m_container.push_back(temp);
+				m_container.push_back(std::move(temp));
 			}
 		}
 	}
+	if (success)
+	{
+		m_is_initialized = true;
+	}
+	return success;
 }
 
 bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 {
+	if (!m_is_initialized) {
+		return false;
+	}
+
 	std::list<DWORD> list_of_PIDs;
 	bool success = GetListOfProcessIds(list_of_PIDs);
 
@@ -42,17 +54,24 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 			auto it = std::find_if(m_container.begin(), m_container.end(),
 								   [PID](const CProcess& proc)
 			{
-				return proc.GetPID() == PID;
+				unsigned val;
+				return  proc.GetPID(val) ? val == PID : false;
 			});
 
 			if (it == m_container.end())
 			{
-				m_container.push_back(CProcess(PID, m_processors_count, 
-													m_count_type));
+				CProcess temp(PID, m_processors_count, m_count_type);
+				if (temp.Initialize())
+				{
+					m_container.push_back(std::move(temp));
+				}
 			}
 			else
 			{
-				it->TryToUpdateCurrentStatus();
+				if (!it->TryToUpdateCurrentStatus())
+				{
+					m_container.erase(it);
+				}
 			}
 		}
 
@@ -84,7 +103,7 @@ const
 	DWORD cb = m_max_process_count * sizeof(DWORD);
 	DWORD bytes_returned = 0;
 
-	if (::EnumProcesses(p_process_ids, cb, &bytes_returned))
+	if (::EnumProcesses(p_process_ids, cb, &bytes_returned) != 0)
 	{
 		const int size = bytes_returned / sizeof(DWORD);
 		for (int index = 0; index < size; index++)
@@ -101,5 +120,12 @@ const
 	return success == NO_ERROR;
 }
 
-std::vector<CProcess> CContainerOfProcesses::GetAllProcesses()
-{return m_container;};
+bool CContainerOfProcesses::GetAllProcesses(std::vector<CProcess>& to_vector)
+{
+	if (m_is_initialized)
+	{
+		to_vector = m_container;
+		return true;
+	}
+	return false;
+};

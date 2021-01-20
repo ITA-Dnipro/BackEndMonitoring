@@ -1,7 +1,8 @@
 #pragma once
 
 #include "CJSONFormatter.h"
-#include "CProcess.h"
+
+class CProcess;
 
 class CJSONFormatterProcess :
     public CJSONFormatter

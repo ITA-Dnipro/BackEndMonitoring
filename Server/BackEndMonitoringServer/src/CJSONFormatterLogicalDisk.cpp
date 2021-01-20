@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#include "CJSONFormatter.h"
+#include "CLogicalDiskStatus.h"
 #include "CJSONFormatterLogicalDisk.h"
 
 bool CJSONFormatterLogicalDisk::TryAddLogicalDiskData(

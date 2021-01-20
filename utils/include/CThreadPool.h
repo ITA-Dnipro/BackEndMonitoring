@@ -1,6 +1,5 @@
 #pragma once
 
-#include <future>
 #include <queue>
 #include <condition_variable>
 #include <functional>

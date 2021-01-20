@@ -1,9 +1,10 @@
 #pragma once
 
 #include "CHardwareInfoLifeCycle.h"
-#include "ÑContainerOfLogicalDisk.h"
-#include "CJSONFormatterLogicalDisk.h"
-#include "CThreadSafeVariable.h"
+
+class CContainerOfLogicalDisk;
+class CHardwareStatusSpecification;
+class CJSONFormatterLogicalDisk;
 
 class CLogicalDiskStatusLifeCycle :
     public CHardwareInfoLifeCycle
@@ -16,7 +17,7 @@ public:
     /// <param name="specification"> must be in dynamic memory </param>
     explicit CLogicalDiskStatusLifeCycle(
         CEvent& stop_event,
-        ÑHardwareStatusSpecification* specification,
+        CHardwareStatusSpecification* specification,
         CThreadSafeVariable<CJSONFormatterLogicalDisk>& json_formatter) :
         CHardwareInfoLifeCycle(stop_event), 
         m_p_specification(specification),
@@ -25,8 +26,8 @@ public:
     { };
 
     explicit CLogicalDiskStatusLifeCycle(
-        ÑHardwareStatusSpecification* specification,
-        ÑContainerOfLogicalDisk* container_in_lifecircle,
+        CHardwareStatusSpecification* specification,
+        CContainerOfLogicalDisk* container_in_lifecircle,
         CEvent& stop_event, 
         CThreadSafeVariable<CJSONFormatterLogicalDisk>& json_formatter) : 
         m_p_specification(specification), 
@@ -40,19 +41,15 @@ public:
     CLogicalDiskStatusLifeCycle(CLogicalDiskStatusLifeCycle&&) 
         noexcept = delete;
 
-    ~CLogicalDiskStatusLifeCycle()
-    {
-        delete m_p_specification;
-        delete m_p_container_in_lifecircle;
-    }
+    ~CLogicalDiskStatusLifeCycle();
     /// <summary>
     /// infinite loop. Stoped only if stop-event
     /// </summary>
-    virtual void ThreadLifeCycle() override;
+    virtual bool ThreadLifeCycle() override;
 
 private:
-    ÑHardwareStatusSpecification* m_p_specification;
-    ÑContainerOfLogicalDisk* m_p_container_in_lifecircle;
+    CHardwareStatusSpecification* m_p_specification;
+    CContainerOfLogicalDisk* m_p_container_in_lifecircle;
     CThreadSafeVariable<CJSONFormatterLogicalDisk>& m_json_formatter;
 };
 
