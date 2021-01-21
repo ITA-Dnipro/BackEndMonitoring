@@ -15,6 +15,13 @@ bool CXMLParser::TryToGetConfiguration(const std::string& data_path,
     if (TryToGetStringDataFromFile(data_path, tmp_answer))
     {
         return_data = tmp_answer == "enable";
+        if (!return_data && tmp_answer != "disable")
+        {
+            std::cerr << "Failed to convert data to bool! with data path: "
+                + data_path << std::endl;
+            return false;
+        }
+
         return true;
     }
 
@@ -59,18 +66,22 @@ bool CXMLParser::TryToGetStringDataFromFile(const std::string& data_path,
 {
     try
     {
+        if (!p_docfile)
+            throw std::invalid_argument("xml file pointer is empty!!!");
+
         const auto point = p_docfile->select_node(data_path.c_str());
         return_data = point.node().child_value();
+
         if ("" == return_data)
-            throw std::exception("Empty string ");
+            throw std::invalid_argument("Empty string. Failed to find data!! with this path: " + data_path);
+
         FormConfigurationString(return_data);
         return true;
     }
     catch (const std::exception& e)
     {
 
-        std::cerr << e.what() << " Failed to find data!! with this path: " <<
-            data_path << std::endl;
+        std::cerr << e.what() << std::endl;
     }
 
     return false;
