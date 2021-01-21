@@ -1,22 +1,77 @@
 #include "stdafx.h"
 #include "CConfiguration.h"
 
-CConfiguration::CConfiguration(std::unique_ptr<IParser> p_parser)
+CConfiguration::CConfiguration(std::unique_ptr<IParser> p_parser) : p_parser_(std::move(p_parser))
 {
-	p_parser_ = std::move(p_parser);
+	
 }
 
-bool CConfiguration::TryToGetConfiguration(const std::string& request, bool& return_data) const
+SServer& CConfiguration::GetDefaultServerConfiguration()
 {
-	return p_parser_->TryToGetConfiguration(request, return_data);
+    return p_parser_->GetDefaultServerConfiguration();
 }
 
-bool CConfiguration::TryToGetConfiguration(const std::string& request, int& return_data) const
+SComunicationSettings& CConfiguration::GetDefaultComunicationConfiguration()
 {
-	return p_parser_->TryToGetConfiguration(request, return_data);;
+    return p_parser_->GetDefaultComunicationConfiguration();
 }
 
-bool CConfiguration::TryToGetConfiguration(const std::string& request, std::string& return_data) const
+SLogging& CConfiguration::GetDefaultLoggingConfiguration()
 {
-	return p_parser_->TryToGetConfiguration(request, return_data);;
+    return p_parser_->GetDefaultLoggingConfiguration();
+}
+
+STime& CConfiguration::GetDefaultTimeConfiguration()
+{
+    return p_parser_->GetDefaultTimeConfiguration();
+}
+
+SThreadPool& CConfiguration::GetDefaultThreadPoolConfiguration()
+{
+    return p_parser_->GetDefaultThreadPoolConfiguration();
+}
+
+SHDDInfo& CConfiguration::GetDefaultHDDInfoConfiguration()
+{
+    return p_parser_->GetDefaultHDDInfoConfiguration();
+}
+
+SProcessesInfo& CConfiguration::GetDefaultProcessInfoConfiguration()
+{
+    return p_parser_->GetDefaultProcessInfoConfiguration();
+}
+
+SServer& CConfiguration::TryToGetServerConfigurationFromFile()
+{
+    return p_parser_->TryToGetServerConfigurationFromFile();
+}
+
+SComunicationSettings& CConfiguration::TryToGetComunicationConfigurationFromFile()
+{
+    return p_parser_->TryToGetComunicationConfigurationFromFile();
+}
+
+SLogging& CConfiguration::TryToGetLoggingConfigurationFromFile()
+{
+    return p_parser_->TryToGetLoggingConfigurationFromFile();
+}
+
+STime& CConfiguration::TryToGetTimeConfigurationFromFile()
+{
+    return p_parser_->TryToGetTimeConfigurationFromFile();
+}
+
+SThreadPool& CConfiguration::TryToGetThreadPoolConfigurationFromFile()
+{
+    return p_parser_->TryToGetThreadPoolConfigurationFromFile();
+}
+
+SHDDInfo& CConfiguration::TryToGetHDDInfoConfigurationFromFile()
+{
+    return p_parser_->TryToGetHDDInfoConfigurationFromFile();
+}
+
+SProcessesInfo& CConfiguration::TryToGetProcessInfoConfigurationFromFile()
+{
+    return p_parser_->TryToGetProcessInfoConfigurationFromFile();
 }

@@ -31,6 +31,9 @@
     <Filter Include="Utils\CXML Parser">
       <UniqueIdentifier>{d5d41a88-b9a2-403f-abf5-04359048a9ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\SStructs">
+      <UniqueIdentifier>{2ca59a07-7c7e-42fb-90fa-6e7f689c1a0f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\stdafx.h">
@@ -59,6 +62,9 @@
     </ClInclude>
     <ClInclude Include="..\..\utils\include\CConfiguration.h">
       <Filter>Utils\CConfiguration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\SConfigurationStructures.h">
+      <Filter>Utils\SStructs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="..\..\utils\include\CConfiguration.cpp">
       <Filter>Utils\CConfiguration</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\IParser.cpp">
+      <Filter>Utils\IParser</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

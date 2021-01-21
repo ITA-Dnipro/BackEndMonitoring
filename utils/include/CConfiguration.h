@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IParser.h"
+#include "SConfigurationStructures.h"
 
 class CConfiguration
 {
@@ -9,14 +10,25 @@ public:
 	CConfiguration(CConfiguration&) = delete;
 	CConfiguration(CConfiguration&&) = delete;
 
-	CConfiguration(std::unique_ptr<IParser> p_parser);
 
-	bool TryToGetConfiguration(const std::string& request,
-		bool& return_data) const;
-	bool TryToGetConfiguration(const std::string& request,
-		int& return_data) const;
-	bool TryToGetConfiguration(const std::string& request,
-		std::string& return_data) const;
+
+	explicit CConfiguration(std::unique_ptr<IParser> p_parser);
+
+	SServer& GetDefaultServerConfiguration();
+	SComunicationSettings& GetDefaultComunicationConfiguration();
+	SLogging& GetDefaultLoggingConfiguration();
+	STime& GetDefaultTimeConfiguration();
+	SThreadPool& GetDefaultThreadPoolConfiguration();
+	SHDDInfo& GetDefaultHDDInfoConfiguration();
+	SProcessesInfo& GetDefaultProcessInfoConfiguration();
+
+	SServer& TryToGetServerConfigurationFromFile();
+	SComunicationSettings& TryToGetComunicationConfigurationFromFile();
+	SLogging& TryToGetLoggingConfigurationFromFile();
+	STime& TryToGetTimeConfigurationFromFile();
+	SThreadPool& TryToGetThreadPoolConfigurationFromFile();
+	SHDDInfo& TryToGetHDDInfoConfigurationFromFile();
+	SProcessesInfo& TryToGetProcessInfoConfigurationFromFile();
 
 private:
 	std::unique_ptr<IParser> p_parser_;

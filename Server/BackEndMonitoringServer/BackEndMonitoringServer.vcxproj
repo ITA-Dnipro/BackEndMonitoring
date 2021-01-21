@@ -171,6 +171,7 @@
     <ClInclude Include="..\..\3rdParty\include\pugiconfig.hpp" />
     <ClInclude Include="..\..\3rdParty\include\pugixml.hpp" />
     <ClInclude Include="..\..\utils\include\CConfiguration.h" />
+    <ClInclude Include="..\..\utils\include\SConfigurationStructures.h" />
     <ClInclude Include="..\..\utils\include\IParser.h" />
     <ClInclude Include="..\..\utils\include\CXMLParser.h" />
     <ClInclude Include="include\CCommandLineHandler.h" />
@@ -191,6 +192,7 @@
     <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp" />
     <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp" />
     <ClCompile Include="..\..\utils\include\CThreadPool.cpp" />
+    <ClCompile Include="..\..\utils\include\IParser.cpp" />
     <ClCompile Include="..\..\utils\include\Utils.cpp" />
     <ClCompile Include="..\..\utils\include\CXMLParser.cpp" />
     <ClCompile Include="src\BackEndMonitoringServer.cpp" />
