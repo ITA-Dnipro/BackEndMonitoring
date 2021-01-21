@@ -23,11 +23,10 @@ namespace LogUtils
 
 		localtime_s(time.get(), &current_time);
 
-		std::stringstream ss;
-		ss.imbue(std::locale());
-		ss << std::put_time(time.get(), "%c");
-
-		return ss.str();
+		std::string str;
+		str.reserve(50u);
+		std::strftime(str.data(), str.capacity(), "%c", time.get());
+		return str;
 	}
 	
 	/// <summary>
