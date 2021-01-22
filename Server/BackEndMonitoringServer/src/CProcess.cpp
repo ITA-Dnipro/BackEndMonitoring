@@ -1,14 +1,15 @@
 #include "stdafx.h"
 
 #include "EMemoryCountType.h"
+#include "PlatformUtils.h"
 #include "CProcess.h"
 
 CProcess::CProcess(unsigned PID, unsigned count_of_processors, 
                    EMemoryCountType type) :
     m_PID(PID),
-    m_count_of_processors(count_of_processors),
-    m_count_type(type), m_cpu_usage(0), m_ram_usage(0), m_pagefile_usage(0),
-    last_sys_time{0, 0}, last_kernel_time{ 0, 0 }, last_user_time{ 0, 0 },
+    m_count_of_processors(count_of_processors),m_count_type(type), 
+    m_cpu_usage(0.0), m_ram_usage(00ULL), m_pagefile_usage(00ULL),
+    m_last_sys_time(0ULL), m_last_kernel_time(0ULL), m_last_user_time(0ULL),
     m_is_initialized(false)
 { }
 
@@ -18,9 +19,10 @@ CProcess::CProcess(const CProcess& other) : m_PID(other.m_PID),
         m_ram_usage(other.m_ram_usage),
         m_pagefile_usage(other.m_pagefile_usage),
         m_count_type(other.m_count_type),
-        last_kernel_time(other.last_kernel_time),
-        last_sys_time(other.last_sys_time),
-        last_user_time(other.last_user_time)
+        m_last_kernel_time(other.m_last_kernel_time),
+        m_last_sys_time(other.m_last_sys_time),
+        m_last_user_time(other.m_last_user_time),
+        m_is_initialized(other.m_is_initialized)
 { }
 
 CProcess::CProcess(CProcess&& other) noexcept: m_PID(other.m_PID),
@@ -29,9 +31,9 @@ CProcess::CProcess(CProcess&& other) noexcept: m_PID(other.m_PID),
         m_ram_usage(other.m_ram_usage),
         m_pagefile_usage(other.m_pagefile_usage),
         m_count_type(other.m_count_type),
-        last_kernel_time(other.last_kernel_time),
-        last_sys_time(other.last_sys_time),
-        last_user_time(other.last_user_time),
+        m_last_kernel_time(other.m_last_kernel_time),
+        m_last_sys_time(other.m_last_sys_time),
+        m_last_user_time(other.m_last_user_time),
         m_is_initialized(other.m_is_initialized)
 { }
 
@@ -43,9 +45,9 @@ CProcess& CProcess::operator=(const CProcess& other)
     m_ram_usage = other.m_ram_usage;
     m_pagefile_usage = other.m_pagefile_usage;
     m_count_type = other.m_count_type;
-    last_kernel_time = other.last_kernel_time;
-    last_sys_time = other.last_sys_time;
-    last_user_time = other.last_user_time;
+    m_last_kernel_time = other.m_last_kernel_time;
+    m_last_sys_time = other.m_last_sys_time;
+    m_last_user_time = other.m_last_user_time;
     m_is_initialized = other.m_is_initialized;
     return *this;
 }
@@ -57,20 +59,16 @@ bool CProcess::Initialize()
         return false;
     }
     bool success;
-    HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
-        FALSE, m_PID);
-    if (success = (process != 0))
-    {
-        FILETIME ftime, fsys, fuser;
-        GetSystemTimeAsFileTime(&ftime);
-        memcpy(&last_sys_time, &ftime, sizeof(FILETIME));
+    
+    success = PlatformUtils::GetProcessTimes(m_PID, m_last_sys_time, 
+                                             m_last_kernel_time,
+                                             m_last_user_time);
+    if (!success)
+    { return success;}
 
-        GetProcessTimes(process, &ftime, &ftime, &fsys, &fuser);
-        memcpy(&last_kernel_time, &fsys, sizeof(FILETIME));
-        memcpy(&last_user_time, &fuser, sizeof(FILETIME));
-        CloseHandle(process);
-    }
-    m_is_initialized = true;
+    success = PlatformUtils::GetProcessMemoryUsage(m_PID, m_ram_usage, 
+                                                   m_pagefile_usage);
+    m_is_initialized = success;
     return success;
 }
 
@@ -80,15 +78,14 @@ bool CProcess::TryToUpdateCurrentStatus()
     {
         return false;
     }
-    HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
-                                 FALSE, m_PID);
+    bool success;
 
-    bool success = (NULL != process);
-    if (success) {
-        ComputeCpuUsage(process);
-        SetMemoryUsage(process);
-        CloseHandle(process);
-    }
+    success = ComputeCpuUsage();
+    if (!success)
+    { return success;}
+
+    success = PlatformUtils::GetProcessMemoryUsage(m_PID, m_ram_usage,
+                                                   m_pagefile_usage);
     return success;
 }
 
@@ -98,15 +95,8 @@ bool CProcess::IsActive() const
     {
         return false;
     }
-    HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION |PROCESS_VM_READ,
-                                 FALSE, m_PID);
 
-    bool success;
-    if (success = (process != 0))
-    {
-        CloseHandle(process);
-    }
-    return success;
+    return PlatformUtils::CheckIsProcessActive(m_PID);
 }
 
 bool CProcess::GetPID(unsigned& value) const
@@ -157,46 +147,41 @@ EMemoryCountType CProcess::GetMemoryCountType() const
 { return m_count_type;}
 
 
-void CProcess::ComputeCpuUsage(const HANDLE& process)
+bool CProcess::ComputeCpuUsage()
 {
-    ULARGE_INTEGER sys_time, kernel_time, user_time;
+    bool success;
 
-    FILETIME ftime, fsys, fuser;
-    GetSystemTimeAsFileTime(&ftime);
-    memcpy(&sys_time, &ftime, sizeof(FILETIME));
+    unsigned long long cur_sys_time, cur_kernel_time, cur_user_time;
+    cur_sys_time = cur_kernel_time = cur_user_time = 0;
+    success = PlatformUtils::GetProcessTimes(m_PID, cur_sys_time,
+                                             cur_kernel_time, cur_user_time);
+    if (!success)
+    { return success;}
 
-    GetProcessTimes(process, &ftime, &ftime, &fsys, &fuser);
-    memcpy(&kernel_time, &fsys, sizeof(FILETIME));
-    memcpy(&user_time, &fuser, sizeof(FILETIME));
-
-    if (sys_time.QuadPart <= last_sys_time.QuadPart)
+    if (cur_sys_time <= m_last_sys_time)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        GetSystemTimeAsFileTime(&ftime);
-        memcpy(&sys_time, &ftime, sizeof(FILETIME));
+        success = PlatformUtils::GetProcessTimes(m_PID, cur_sys_time,
+                                                 cur_kernel_time, cur_user_time);
+        if (!success)
+        { return success;}
     }
 
-    size_t kern_div = (kernel_time.QuadPart - last_kernel_time.QuadPart);
-    size_t usr_div = (user_time.QuadPart - last_user_time.QuadPart);
+    size_t kernel_div = (cur_kernel_time - m_last_kernel_time);
+    size_t user_div = (cur_user_time - m_last_user_time);
 
     m_cpu_usage = (
-                    static_cast<double>(kern_div + usr_div)
+                    static_cast<double>(kernel_div + user_div)
                     /
-                    static_cast<double>(sys_time.QuadPart - last_sys_time.QuadPart)
+                    static_cast<double>(cur_sys_time - m_last_sys_time)
                   ) * 100;
     m_cpu_usage /= m_count_of_processors;
 
-    last_sys_time = sys_time;
-    last_kernel_time = kernel_time;
-    last_user_time = user_time;
-}
+    m_last_sys_time = cur_sys_time;
+    m_last_kernel_time = cur_kernel_time;
+    m_last_user_time = cur_user_time;
 
-void CProcess::SetMemoryUsage(const HANDLE& process)
-{
-    PROCESS_MEMORY_COUNTERS pmc;
-    GetProcessMemoryInfo(process, &pmc, sizeof(pmc));
-    m_pagefile_usage = pmc.PagefileUsage;
-    m_ram_usage = pmc.WorkingSetSize;
+    return success;
 }
 
 

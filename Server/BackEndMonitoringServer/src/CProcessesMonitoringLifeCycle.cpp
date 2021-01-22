@@ -9,13 +9,12 @@
 #include "CEvent.h"
 
 CProcessesMonitoringLifeCycle::CProcessesMonitoringLifeCycle(
-	unsigned max_size,
 	std::chrono::duration<int> pause_duration,
 	std::string path_to_file,
 	EMemoryCountType count_type,
 	CEvent& stop_event,
 	CThreadSafeVariable<CJSONFormatterProcess>& json_formatter) :
-		m_container(max_size, pause_duration, path_to_file, count_type),
+		m_container(pause_duration, path_to_file, count_type),
 		m_json_formatter(json_formatter),
 		CHardwareInfoLifeCycle(stop_event),
 		m_is_initialized(false)

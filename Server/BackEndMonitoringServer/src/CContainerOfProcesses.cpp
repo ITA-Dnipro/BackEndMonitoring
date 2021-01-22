@@ -2,24 +2,25 @@
 
 #include "CProcess.h"
 #include "CContainerOfProcesses.h"
+#include "PlatformUtils.h"
 
-CContainerOfProcesses::CContainerOfProcesses(
-	unsigned m_max_process_count, std::chrono::duration<int> 
+CContainerOfProcesses::CContainerOfProcesses(std::chrono::duration<int> 
 	pause_duration, std::string path_to_file, EMemoryCountType count_type) :
-	m_max_process_count(m_max_process_count), m_processors_count(0),
+	m_processors_count(0),
 	CHardwareStatusSpecification(pause_duration, path_to_file, count_type),
 	m_is_initialized(false)
 { }
 
 bool CContainerOfProcesses::Initialize()
 {
-	SYSTEM_INFO sysInfo;
-	GetSystemInfo(&sysInfo);
-	m_processors_count = sysInfo.dwNumberOfProcessors;
+	m_processors_count = std::thread::hardware_concurrency( );
+	
+	if(m_processors_count == 0)
+	{ return false;}
 
-	std::list<DWORD> list_of_PIDs;
+	std::list<unsigned> list_of_PIDs;
 	bool success;
-	if (success = GetListOfProcessIds(list_of_PIDs))
+	if (success = PlatformUtils::GetListOfProcessIds(list_of_PIDs))
 	{
 		for (auto PID : list_of_PIDs)
 		{
@@ -44,8 +45,8 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 		return false;
 	}
 
-	std::list<DWORD> list_of_PIDs;
-	bool success = GetListOfProcessIds(list_of_PIDs);
+	std::list<unsigned> list_of_PIDs;
+	bool success = PlatformUtils::GetListOfProcessIds(list_of_PIDs);
 
 	if (success)
 	{
@@ -93,31 +94,6 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 		}
 	}
 	return success;
-}
-
-bool CContainerOfProcesses::GetListOfProcessIds(std::list<DWORD>& list_of_PIDs)
-const
-{
-	DWORD success = NO_ERROR;
-	DWORD* p_process_ids = new DWORD[m_max_process_count];
-	DWORD cb = m_max_process_count * sizeof(DWORD);
-	DWORD bytes_returned = 0;
-
-	if (::EnumProcesses(p_process_ids, cb, &bytes_returned) != 0)
-	{
-		const int size = bytes_returned / sizeof(DWORD);
-		for (int index = 0; index < size; index++)
-		{
-			list_of_PIDs.push_back(p_process_ids[index]);
-		}
-	}
-	else
-	{
-		success = ::GetLastError();
-	}
-	delete[] p_process_ids;
-
-	return success == NO_ERROR;
 }
 
 bool CContainerOfProcesses::GetAllProcesses(std::vector<CProcess>& to_vector)

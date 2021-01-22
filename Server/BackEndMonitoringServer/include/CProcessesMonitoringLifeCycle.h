@@ -10,7 +10,7 @@ class CProcessesMonitoringLifeCycle : CHardwareInfoLifeCycle
 public:
 	CProcessesMonitoringLifeCycle() = delete;
 	explicit CProcessesMonitoringLifeCycle(
-		unsigned max_size, std::chrono::duration<int> pause_duration,
+		std::chrono::duration<int> pause_duration,
 		std::string path_to_file, EMemoryCountType count_type, 
 		CEvent& stop_event,
 		CThreadSafeVariable<CJSONFormatterProcess>& json_formatter);

@@ -1,23 +1,22 @@
 ﻿#include "stdafx.h"
 
-#include "CService.h"
-#include "CCommandLineHandler.h"
-#include "CServiceHandler.h"
-#include "Utils.h"
+#include "CEvent.h"
+#include "EMemoryCountType.h"
+#include "CProcess.h"
+#include "CContainerOfProcesses.h"
+#include "CThreadSafeVariable.h"
+#include "CJSONFormatter.h"
+#include "CJSONFormatterProcess.h"
+#include "CProcessesMonitoringLifeCycle.h"
 
 int main(int argc, char** argv)
 {
-    auto parser = std::make_unique<CommandLineHandler>();
-
-    bool success = parser->Parse(argc, argv);
-
-    if (!success)
-    {
-        Utils::DisplayMessage("Invalid parameters");
-        return EXIT_FAILURE;
-    }
-
-    const int return_code = success ? 0 : 1;
-
-    return return_code;
+    CEvent stop;
+    CThreadSafeVariable<CJSONFormatterProcess> jsonf;
+    CProcessesMonitoringLifeCycle processes(std::chrono::seconds(10),
+                                  "F:\\Git\\BackEndMonitoring\\log.json",
+                                  EMemoryCountType::KILOBYTES, stop, jsonf);
+    processes.Initialize( );
+    processes.ThreadLifeCycle( );
+    return 0;
 }

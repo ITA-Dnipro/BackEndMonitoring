@@ -1,0 +1,4389 @@
+{
+   "22.1.2021  22:24:48 ": [
+      {
+         "PID 3024": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 23388.0
+            },
+            {
+               "Pagefile_usage": 7280.0
+            }
+         ]
+      },
+      {
+         "PID 3032": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 71092.0
+            },
+            {
+               "Pagefile_usage": 60836.0
+            }
+         ]
+      },
+      {
+         "PID 9808": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 27092.0
+            },
+            {
+               "Pagefile_usage": 6936.0
+            }
+         ]
+      },
+      {
+         "PID 8712": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 24552.0
+            },
+            {
+               "Pagefile_usage": 9620.0
+            }
+         ]
+      },
+      {
+         "PID 11160": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 35884.0
+            },
+            {
+               "Pagefile_usage": 9100.0
+            }
+         ]
+      },
+      {
+         "PID 1280": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 3664.0
+            },
+            {
+               "Pagefile_usage": 24156.0
+            }
+         ]
+      },
+      {
+         "PID 6588": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 18636.0
+            },
+            {
+               "Pagefile_usage": 8524.0
+            }
+         ]
+      },
+      {
+         "PID 10028": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 176828.0
+            },
+            {
+               "Pagefile_usage": 135920.0
+            }
+         ]
+      },
+      {
+         "PID 7464": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5108.0
+            },
+            {
+               "Pagefile_usage": 2752.0
+            }
+         ]
+      },
+      {
+         "PID 9228": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 30668.0
+            },
+            {
+               "Pagefile_usage": 8168.0
+            }
+         ]
+      },
+      {
+         "PID 1432": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 4140.0
+            },
+            {
+               "Pagefile_usage": 95376.0
+            }
+         ]
+      },
+      {
+         "PID 2924": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 73092.0
+            },
+            {
+               "Pagefile_usage": 51872.0
+            }
+         ]
+      },
+      {
+         "PID 10448": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 24160.0
+            },
+            {
+               "Pagefile_usage": 5816.0
+            }
+         ]
+      },
+      {
+         "PID 5956": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 30932.0
+            },
+            {
+               "Pagefile_usage": 7896.0
+            }
+         ]
+      },
+      {
+         "PID 9656": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 43020.0
+            },
+            {
+               "Pagefile_usage": 41272.0
+            }
+         ]
+      },
+      {
+         "PID 5136": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 11212.0
+            },
+            {
+               "Pagefile_usage": 31904.0
+            }
+         ]
+      },
+      {
+         "PID 6172": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 1080.0
+            },
+            {
+               "Pagefile_usage": 6508.0
+            }
+         ]
+      },
+      {
+         "PID 3848": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 12116.0
+            },
+            {
+               "Pagefile_usage": 4504.0
+            }
+         ]
+      },
+      {
+         "PID 948": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 6912.0
+            },
+            {
+               "Pagefile_usage": 1988.0
+            }
+         ]
+      },
+      {
+         "PID 4004": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 30884.0
+            },
+            {
+               "Pagefile_usage": 6732.0
+            }
+         ]
+      },
+      {
+         "PID 4988": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 13976.0
+            },
+            {
+               "Pagefile_usage": 2664.0
+            }
+         ]
+      },
+      {
+         "PID 6916": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 45720.0
+            },
+            {
+               "Pagefile_usage": 18972.0
+            }
+         ]
+      },
+      {
+         "PID 6708": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 31128.0
+            },
+            {
+               "Pagefile_usage": 40752.0
+            }
+         ]
+      },
+      {
+         "PID 12332": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 65704.0
+            },
+            {
+               "Pagefile_usage": 62400.0
+            }
+         ]
+      },
+      {
+         "PID 12552": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 95332.0
+            },
+            {
+               "Pagefile_usage": 131776.0
+            }
+         ]
+      },
+      {
+         "PID 13172": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 28000.0
+            },
+            {
+               "Pagefile_usage": 8524.0
+            }
+         ]
+      },
+      {
+         "PID 13180": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 340.0
+            },
+            {
+               "Pagefile_usage": 37228.0
+            }
+         ]
+      },
+      {
+         "PID 13292": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 19508.0
+            },
+            {
+               "Pagefile_usage": 5412.0
+            }
+         ]
+      },
+      {
+         "PID 2296": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 8720.0
+            },
+            {
+               "Pagefile_usage": 1868.0
+            }
+         ]
+      },
+      {
+         "PID 7716": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 20456.0
+            },
+            {
+               "Pagefile_usage": 6708.0
+            }
+         ]
+      },
+      {
+         "PID 11212": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 10380.0
+            },
+            {
+               "Pagefile_usage": 34008.0
+            }
+         ]
+      },
+      {
+         "PID 12232": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 6956.0
+            },
+            {
+               "Pagefile_usage": 1420.0
+            }
+         ]
+      },
+      {
+         "PID 5616": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 43860.0
+            },
+            {
+               "Pagefile_usage": 84240.0
+            }
+         ]
+      },
+      {
+         "PID 10304": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 32952.0
+            },
+            {
+               "Pagefile_usage": 10900.0
+            }
+         ]
+      },
+      {
+         "PID 12152": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 54448.0
+            },
+            {
+               "Pagefile_usage": 33712.0
+            }
+         ]
+      },
+      {
+         "PID 5612": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 62508.0
+            },
+            {
+               "Pagefile_usage": 42060.0
+            }
+         ]
+      },
+      {
+         "PID 5364": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 23556.0
+            },
+            {
+               "Pagefile_usage": 4688.0
+            }
+         ]
+      },
+      {
+         "PID 13152": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 17092.0
+            },
+            {
+               "Pagefile_usage": 3748.0
+            }
+         ]
+      },
+      {
+         "PID 6684": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 10628.0
+            },
+            {
+               "Pagefile_usage": 3500.0
+            }
+         ]
+      },
+      {
+         "PID 1228": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 61252.0
+            },
+            {
+               "Pagefile_usage": 118516.0
+            }
+         ]
+      },
+      {
+         "PID 4308": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 273888.0
+            },
+            {
+               "Pagefile_usage": 200616.0
+            }
+         ]
+      },
+      {
+         "PID 12020": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 6436.0
+            },
+            {
+               "Pagefile_usage": 1700.0
+            }
+         ]
+      },
+      {
+         "PID 12748": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 167400.0
+            },
+            {
+               "Pagefile_usage": 357356.0
+            }
+         ]
+      },
+      {
+         "PID 4700": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 49488.0
+            },
+            {
+               "Pagefile_usage": 32244.0
+            }
+         ]
+      },
+      {
+         "PID 11476": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 64844.0
+            },
+            {
+               "Pagefile_usage": 82520.0
+            }
+         ]
+      },
+      {
+         "PID 8852": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 66844.0
+            },
+            {
+               "Pagefile_usage": 27776.0
+            }
+         ]
+      },
+      {
+         "PID 6804": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 61408.0
+            },
+            {
+               "Pagefile_usage": 33192.0
+            }
+         ]
+      },
+      {
+         "PID 6028": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 160732.0
+            },
+            {
+               "Pagefile_usage": 135956.0
+            }
+         ]
+      },
+      {
+         "PID 9804": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 17756.0
+            },
+            {
+               "Pagefile_usage": 6752.0
+            }
+         ]
+      },
+      {
+         "PID 5168": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 184564.0
+            },
+            {
+               "Pagefile_usage": 334088.0
+            }
+         ]
+      },
+      {
+         "PID 1196": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 74124.0
+            },
+            {
+               "Pagefile_usage": 94912.0
+            }
+         ]
+      },
+      {
+         "PID 3872": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 51508.0
+            },
+            {
+               "Pagefile_usage": 26148.0
+            }
+         ]
+      },
+      {
+         "PID 3016": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 65512.0
+            },
+            {
+               "Pagefile_usage": 26812.0
+            }
+         ]
+      },
+      {
+         "PID 2128": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 53988.0
+            },
+            {
+               "Pagefile_usage": 96660.0
+            }
+         ]
+      },
+      {
+         "PID 12116": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 23816.0
+            },
+            {
+               "Pagefile_usage": 13516.0
+            }
+         ]
+      },
+      {
+         "PID 8756": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 77328.0
+            },
+            {
+               "Pagefile_usage": 56436.0
+            }
+         ]
+      },
+      {
+         "PID 8664": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 25972.0
+            },
+            {
+               "Pagefile_usage": 21292.0
+            }
+         ]
+      },
+      {
+         "PID 6424": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 553888.0
+            },
+            {
+               "Pagefile_usage": 460120.0
+            }
+         ]
+      },
+      {
+         "PID 8432": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 53644.0
+            },
+            {
+               "Pagefile_usage": 40836.0
+            }
+         ]
+      },
+      {
+         "PID 1676": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 62024.0
+            },
+            {
+               "Pagefile_usage": 50248.0
+            }
+         ]
+      },
+      {
+         "PID 8028": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5516.0
+            },
+            {
+               "Pagefile_usage": 6508.0
+            }
+         ]
+      },
+      {
+         "PID 14004": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 58900.0
+            },
+            {
+               "Pagefile_usage": 121896.0
+            }
+         ]
+      },
+      {
+         "PID 5236": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5648.0
+            },
+            {
+               "Pagefile_usage": 6508.0
+            }
+         ]
+      },
+      {
+         "PID 9660": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 26612.0
+            },
+            {
+               "Pagefile_usage": 31104.0
+            }
+         ]
+      },
+      {
+         "PID 9760": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 26564.0
+            },
+            {
+               "Pagefile_usage": 31060.0
+            }
+         ]
+      },
+      {
+         "PID 13736": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 26640.0
+            },
+            {
+               "Pagefile_usage": 31376.0
+            }
+         ]
+      },
+      {
+         "PID 9968": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5480.0
+            },
+            {
+               "Pagefile_usage": 6500.0
+            }
+         ]
+      },
+      {
+         "PID 944": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 52176.0
+            },
+            {
+               "Pagefile_usage": 67092.0
+            }
+         ]
+      },
+      {
+         "PID 11444": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5476.0
+            },
+            {
+               "Pagefile_usage": 6504.0
+            }
+         ]
+      },
+      {
+         "PID 10468": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5480.0
+            },
+            {
+               "Pagefile_usage": 6496.0
+            }
+         ]
+      },
+      {
+         "PID 9904": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5652.0
+            },
+            {
+               "Pagefile_usage": 6504.0
+            }
+         ]
+      },
+      {
+         "PID 12028": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 67008.0
+            },
+            {
+               "Pagefile_usage": 61068.0
+            }
+         ]
+      },
+      {
+         "PID 8800": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5528.0
+            },
+            {
+               "Pagefile_usage": 6500.0
+            }
+         ]
+      },
+      {
+         "PID 3456": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 91480.0
+            },
+            {
+               "Pagefile_usage": 128196.0
+            }
+         ]
+      },
+      {
+         "PID 14192": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5532.0
+            },
+            {
+               "Pagefile_usage": 6508.0
+            }
+         ]
+      },
+      {
+         "PID 14068": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 61424.0
+            },
+            {
+               "Pagefile_usage": 603712.0
+            }
+         ]
+      },
+      {
+         "PID 13472": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5532.0
+            },
+            {
+               "Pagefile_usage": 6504.0
+            }
+         ]
+      },
+      {
+         "PID 9892": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 67196.0
+            },
+            {
+               "Pagefile_usage": 161564.0
+            }
+         ]
+      },
+      {
+         "PID 988": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5644.0
+            },
+            {
+               "Pagefile_usage": 6504.0
+            }
+         ]
+      },
+      {
+         "PID 11832": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 48876.0
+            },
+            {
+               "Pagefile_usage": 63680.0
+            }
+         ]
+      },
+      {
+         "PID 6012": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5652.0
+            },
+            {
+               "Pagefile_usage": 6496.0
+            }
+         ]
+      },
+      {
+         "PID 13628": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 72392.0
+            },
+            {
+               "Pagefile_usage": 38280.0
+            }
+         ]
+      },
+      {
+         "PID 7440": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 56944.0
+            },
+            {
+               "Pagefile_usage": 50376.0
+            }
+         ]
+      },
+      {
+         "PID 7832": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 39912.0
+            },
+            {
+               "Pagefile_usage": 26424.0
+            }
+         ]
+      },
+      {
+         "PID 9568": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 81268.0
+            },
+            {
+               "Pagefile_usage": 84892.0
+            }
+         ]
+      },
+      {
+         "PID 11020": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5168.0
+            },
+            {
+               "Pagefile_usage": 6504.0
+            }
+         ]
+      },
+      {
+         "PID 9148": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 57076.0
+            },
+            {
+               "Pagefile_usage": 48460.0
+            }
+         ]
+      },
+      {
+         "PID 5232": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 56220.0
+            },
+            {
+               "Pagefile_usage": 40996.0
+            }
+         ]
+      },
+      {
+         "PID 14972": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 48328.0
+            },
+            {
+               "Pagefile_usage": 42972.0
+            }
+         ]
+      },
+      {
+         "PID 7004": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 49120.0
+            },
+            {
+               "Pagefile_usage": 230588.0
+            }
+         ]
+      },
+      {
+         "PID 2092": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 65948.0
+            },
+            {
+               "Pagefile_usage": 254532.0
+            }
+         ]
+      },
+      {
+         "PID 3392": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 47260.0
+            },
+            {
+               "Pagefile_usage": 221724.0
+            }
+         ]
+      },
+      {
+         "PID 12924": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 139024.0
+            },
+            {
+               "Pagefile_usage": 245960.0
+            }
+         ]
+      },
+      {
+         "PID 14644": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 76248.0
+            },
+            {
+               "Pagefile_usage": 39884.0
+            }
+         ]
+      },
+      {
+         "PID 14732": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 56008.0
+            },
+            {
+               "Pagefile_usage": 42924.0
+            }
+         ]
+      },
+      {
+         "PID 7900": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 109976.0
+            },
+            {
+               "Pagefile_usage": 77008.0
+            }
+         ]
+      },
+      {
+         "PID 8316": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 102416.0
+            },
+            {
+               "Pagefile_usage": 67164.0
+            }
+         ]
+      },
+      {
+         "PID 1412": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 101964.0
+            },
+            {
+               "Pagefile_usage": 66092.0
+            }
+         ]
+      },
+      {
+         "PID 2076": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 88532.0
+            },
+            {
+               "Pagefile_usage": 48516.0
+            }
+         ]
+      },
+      {
+         "PID 732": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 71220.0
+            },
+            {
+               "Pagefile_usage": 233968.0
+            }
+         ]
+      },
+      {
+         "PID 9728": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 23208.0
+            },
+            {
+               "Pagefile_usage": 11616.0
+            }
+         ]
+      },
+      {
+         "PID 9692": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 34700.0
+            },
+            {
+               "Pagefile_usage": 35916.0
+            }
+         ]
+      },
+      {
+         "PID 11856": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 45388.0
+            },
+            {
+               "Pagefile_usage": 30776.0
+            }
+         ]
+      },
+      {
+         "PID 16380": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 11144.0
+            },
+            {
+               "Pagefile_usage": 6516.0
+            }
+         ]
+      },
+      {
+         "PID 14468": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 55708.0
+            },
+            {
+               "Pagefile_usage": 28144.0
+            }
+         ]
+      },
+      {
+         "PID 14576": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 22936.0
+            },
+            {
+               "Pagefile_usage": 8112.0
+            }
+         ]
+      },
+      {
+         "PID 2204": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 35204.0
+            },
+            {
+               "Pagefile_usage": 23068.0
+            }
+         ]
+      },
+      {
+         "PID 15992": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5632.0
+            },
+            {
+               "Pagefile_usage": 1816.0
+            }
+         ]
+      },
+      {
+         "PID 5600": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 16164.0
+            },
+            {
+               "Pagefile_usage": 7272.0
+            }
+         ]
+      },
+      {
+         "PID 5912": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5384.0
+            },
+            {
+               "Pagefile_usage": 1960.0
+            }
+         ]
+      }
+   ],
+   "22.1.2021  22:25:05 ": [
+      {
+         "PID 3024": [
+            {
+               "CPU_usage": 0.06510095610451477
+            },
+            {
+               "RAM_usage": 23392.0
+            },
+            {
+               "Pagefile_usage": 7280.0
+            }
+         ]
+      },
+      {
+         "PID 3032": [
+            {
+               "CPU_usage": 0.3257037974415461
+            },
+            {
+               "RAM_usage": 71140.0
+            },
+            {
+               "Pagefile_usage": 60920.0
+            }
+         ]
+      },
+      {
+         "PID 9808": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 27092.0
+            },
+            {
+               "Pagefile_usage": 6936.0
+            }
+         ]
+      },
+      {
+         "PID 8712": [
+            {
+               "CPU_usage": 0.4130632892072425
+            },
+            {
+               "RAM_usage": 24488.0
+            },
+            {
+               "Pagefile_usage": 9476.0
+            }
+         ]
+      },
+      {
+         "PID 11160": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 36016.0
+            },
+            {
+               "Pagefile_usage": 9336.0
+            }
+         ]
+      },
+      {
+         "PID 1280": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 3664.0
+            },
+            {
+               "Pagefile_usage": 24156.0
+            }
+         ]
+      },
+      {
+         "PID 6588": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 18632.0
+            },
+            {
+               "Pagefile_usage": 8524.0
+            }
+         ]
+      },
+      {
+         "PID 10028": [
+            {
+               "CPU_usage": 5.731382080471493
+            },
+            {
+               "RAM_usage": 177032.0
+            },
+            {
+               "Pagefile_usage": 135932.0
+            }
+         ]
+      },
+      {
+         "PID 7464": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5108.0
+            },
+            {
+               "Pagefile_usage": 2752.0
+            }
+         ]
+      },
+      {
+         "PID 9228": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 30588.0
+            },
+            {
+               "Pagefile_usage": 8012.0
+            }
+         ]
+      },
+      {
+         "PID 1432": [
+            {
+               "CPU_usage": 0.06549758409139457
+            },
+            {
+               "RAM_usage": 4144.0
+            },
+            {
+               "Pagefile_usage": 95376.0
+            }
+         ]
+      },
+      {
+         "PID 2924": [
+            {
+               "CPU_usage": 0.02184595583666868
+            },
+            {
+               "RAM_usage": 73184.0
+            },
+            {
+               "Pagefile_usage": 51940.0
+            }
+         ]
+      },
+      {
+         "PID 10448": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 24160.0
+            },
+            {
+               "Pagefile_usage": 5816.0
+            }
+         ]
+      },
+      {
+         "PID 5956": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 30932.0
+            },
+            {
+               "Pagefile_usage": 7896.0
+            }
+         ]
+      },
+      {
+         "PID 9656": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 43020.0
+            },
+            {
+               "Pagefile_usage": 41272.0
+            }
+         ]
+      },
+      {
+         "PID 5136": [
+            {
+               "CPU_usage": 0.021899864317551032
+            },
+            {
+               "RAM_usage": 11228.0
+            },
+            {
+               "Pagefile_usage": 31904.0
+            }
+         ]
+      },
+      {
+         "PID 6172": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 1080.0
+            },
+            {
+               "Pagefile_usage": 6508.0
+            }
+         ]
+      },
+      {
+         "PID 3848": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 12116.0
+            },
+            {
+               "Pagefile_usage": 4504.0
+            }
+         ]
+      },
+      {
+         "PID 948": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 6912.0
+            },
+            {
+               "Pagefile_usage": 1988.0
+            }
+         ]
+      },
+      {
+         "PID 4004": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 30884.0
+            },
+            {
+               "Pagefile_usage": 6732.0
+            }
+         ]
+      },
+      {
+         "PID 4988": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 13976.0
+            },
+            {
+               "Pagefile_usage": 2664.0
+            }
+         ]
+      },
+      {
+         "PID 6916": [
+            {
+               "CPU_usage": 0.06593957492324169
+            },
+            {
+               "RAM_usage": 45736.0
+            },
+            {
+               "Pagefile_usage": 19004.0
+            }
+         ]
+      },
+      {
+         "PID 6708": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 31128.0
+            },
+            {
+               "Pagefile_usage": 40752.0
+            }
+         ]
+      },
+      {
+         "PID 12332": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 65792.0
+            },
+            {
+               "Pagefile_usage": 62400.0
+            }
+         ]
+      },
+      {
+         "PID 12552": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 95332.0
+            },
+            {
+               "Pagefile_usage": 131776.0
+            }
+         ]
+      },
+      {
+         "PID 13172": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 28000.0
+            },
+            {
+               "Pagefile_usage": 8524.0
+            }
+         ]
+      },
+      {
+         "PID 13180": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 340.0
+            },
+            {
+               "Pagefile_usage": 37228.0
+            }
+         ]
+      },
+      {
+         "PID 13292": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 19508.0
+            },
+            {
+               "Pagefile_usage": 5412.0
+            }
+         ]
+      },
+      {
+         "PID 2296": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 8720.0
+            },
+            {
+               "Pagefile_usage": 1868.0
+            }
+         ]
+      },
+      {
+         "PID 7716": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 20456.0
+            },
+            {
+               "Pagefile_usage": 6708.0
+            }
+         ]
+      },
+      {
+         "PID 11212": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 10380.0
+            },
+            {
+               "Pagefile_usage": 34008.0
+            }
+         ]
+      },
+      {
+         "PID 12232": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 6956.0
+            },
+            {
+               "Pagefile_usage": 1420.0
+            }
+         ]
+      },
+      {
+         "PID 5616": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 43860.0
+            },
+            {
+               "Pagefile_usage": 84240.0
+            }
+         ]
+      },
+      {
+         "PID 10304": [
+            {
+               "CPU_usage": 0.022142170619163393
+            },
+            {
+               "RAM_usage": 32952.0
+            },
+            {
+               "Pagefile_usage": 10900.0
+            }
+         ]
+      },
+      {
+         "PID 12152": [
+            {
+               "CPU_usage": 0.08862391092628231
+            },
+            {
+               "RAM_usage": 54448.0
+            },
+            {
+               "Pagefile_usage": 33712.0
+            }
+         ]
+      },
+      {
+         "PID 5612": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 62508.0
+            },
+            {
+               "Pagefile_usage": 42060.0
+            }
+         ]
+      },
+      {
+         "PID 5364": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 23540.0
+            },
+            {
+               "Pagefile_usage": 4620.0
+            }
+         ]
+      },
+      {
+         "PID 13152": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 17092.0
+            },
+            {
+               "Pagefile_usage": 3748.0
+            }
+         ]
+      },
+      {
+         "PID 6684": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 10628.0
+            },
+            {
+               "Pagefile_usage": 3500.0
+            }
+         ]
+      },
+      {
+         "PID 1228": [
+            {
+               "CPU_usage": 0.04444479007873728
+            },
+            {
+               "RAM_usage": 61252.0
+            },
+            {
+               "Pagefile_usage": 118516.0
+            }
+         ]
+      },
+      {
+         "PID 4308": [
+            {
+               "CPU_usage": 0.2001266693303734
+            },
+            {
+               "RAM_usage": 273920.0
+            },
+            {
+               "Pagefile_usage": 200628.0
+            }
+         ]
+      },
+      {
+         "PID 12020": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 6436.0
+            },
+            {
+               "Pagefile_usage": 1700.0
+            }
+         ]
+      },
+      {
+         "PID 12748": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 167400.0
+            },
+            {
+               "Pagefile_usage": 357356.0
+            }
+         ]
+      },
+      {
+         "PID 4700": [
+            {
+               "CPU_usage": 0.0445562911435644
+            },
+            {
+               "RAM_usage": 49564.0
+            },
+            {
+               "Pagefile_usage": 32384.0
+            }
+         ]
+      },
+      {
+         "PID 11476": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 64844.0
+            },
+            {
+               "Pagefile_usage": 82520.0
+            }
+         ]
+      },
+      {
+         "PID 8852": [
+            {
+               "CPU_usage": 0.022306133446919448
+            },
+            {
+               "RAM_usage": 66856.0
+            },
+            {
+               "Pagefile_usage": 27756.0
+            }
+         ]
+      },
+      {
+         "PID 6804": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 61396.0
+            },
+            {
+               "Pagefile_usage": 33192.0
+            }
+         ]
+      },
+      {
+         "PID 6028": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 160732.0
+            },
+            {
+               "Pagefile_usage": 135956.0
+            }
+         ]
+      },
+      {
+         "PID 9804": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 17756.0
+            },
+            {
+               "Pagefile_usage": 6752.0
+            }
+         ]
+      },
+      {
+         "PID 5168": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 184564.0
+            },
+            {
+               "Pagefile_usage": 334088.0
+            }
+         ]
+      },
+      {
+         "PID 1196": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 74124.0
+            },
+            {
+               "Pagefile_usage": 94912.0
+            }
+         ]
+      },
+      {
+         "PID 3872": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 51508.0
+            },
+            {
+               "Pagefile_usage": 26148.0
+            }
+         ]
+      },
+      {
+         "PID 3016": [
+            {
+               "CPU_usage": 0.02240464646987802
+            },
+            {
+               "RAM_usage": 65516.0
+            },
+            {
+               "Pagefile_usage": 26812.0
+            }
+         ]
+      },
+      {
+         "PID 2128": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 53988.0
+            },
+            {
+               "Pagefile_usage": 96660.0
+            }
+         ]
+      },
+      {
+         "PID 12116": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 23816.0
+            },
+            {
+               "Pagefile_usage": 13516.0
+            }
+         ]
+      },
+      {
+         "PID 8756": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 77328.0
+            },
+            {
+               "Pagefile_usage": 56436.0
+            }
+         ]
+      },
+      {
+         "PID 8664": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 25972.0
+            },
+            {
+               "Pagefile_usage": 21292.0
+            }
+         ]
+      },
+      {
+         "PID 6424": [
+            {
+               "CPU_usage": 0.7416930593122284
+            },
+            {
+               "RAM_usage": 552924.0
+            },
+            {
+               "Pagefile_usage": 459452.0
+            }
+         ]
+      },
+      {
+         "PID 8432": [
+            {
+               "CPU_usage": 0.08995398449260089
+            },
+            {
+               "RAM_usage": 53708.0
+            },
+            {
+               "Pagefile_usage": 40992.0
+            }
+         ]
+      },
+      {
+         "PID 1676": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 61548.0
+            },
+            {
+               "Pagefile_usage": 49556.0
+            }
+         ]
+      },
+      {
+         "PID 8028": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5516.0
+            },
+            {
+               "Pagefile_usage": 6508.0
+            }
+         ]
+      },
+      {
+         "PID 14004": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 58928.0
+            },
+            {
+               "Pagefile_usage": 121968.0
+            }
+         ]
+      },
+      {
+         "PID 5236": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5648.0
+            },
+            {
+               "Pagefile_usage": 6508.0
+            }
+         ]
+      },
+      {
+         "PID 9660": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 26612.0
+            },
+            {
+               "Pagefile_usage": 31104.0
+            }
+         ]
+      },
+      {
+         "PID 9760": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 26564.0
+            },
+            {
+               "Pagefile_usage": 31060.0
+            }
+         ]
+      },
+      {
+         "PID 13736": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 26640.0
+            },
+            {
+               "Pagefile_usage": 31376.0
+            }
+         ]
+      },
+      {
+         "PID 9968": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5480.0
+            },
+            {
+               "Pagefile_usage": 6500.0
+            }
+         ]
+      },
+      {
+         "PID 944": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 52176.0
+            },
+            {
+               "Pagefile_usage": 67092.0
+            }
+         ]
+      },
+      {
+         "PID 11444": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5476.0
+            },
+            {
+               "Pagefile_usage": 6504.0
+            }
+         ]
+      },
+      {
+         "PID 10468": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5480.0
+            },
+            {
+               "Pagefile_usage": 6496.0
+            }
+         ]
+      },
+      {
+         "PID 9904": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5652.0
+            },
+            {
+               "Pagefile_usage": 6504.0
+            }
+         ]
+      },
+      {
+         "PID 12028": [
+            {
+               "CPU_usage": 0.022675175431555825
+            },
+            {
+               "RAM_usage": 67092.0
+            },
+            {
+               "Pagefile_usage": 61284.0
+            }
+         ]
+      },
+      {
+         "PID 8800": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5528.0
+            },
+            {
+               "Pagefile_usage": 6500.0
+            }
+         ]
+      },
+      {
+         "PID 3456": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 91420.0
+            },
+            {
+               "Pagefile_usage": 128048.0
+            }
+         ]
+      },
+      {
+         "PID 14192": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5532.0
+            },
+            {
+               "Pagefile_usage": 6508.0
+            }
+         ]
+      },
+      {
+         "PID 14068": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 61388.0
+            },
+            {
+               "Pagefile_usage": 603636.0
+            }
+         ]
+      },
+      {
+         "PID 13472": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5532.0
+            },
+            {
+               "Pagefile_usage": 6504.0
+            }
+         ]
+      },
+      {
+         "PID 9892": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 66840.0
+            },
+            {
+               "Pagefile_usage": 160884.0
+            }
+         ]
+      },
+      {
+         "PID 988": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5644.0
+            },
+            {
+               "Pagefile_usage": 6504.0
+            }
+         ]
+      },
+      {
+         "PID 11832": [
+            {
+               "CPU_usage": 0.022790258969862327
+            },
+            {
+               "RAM_usage": 48744.0
+            },
+            {
+               "Pagefile_usage": 63440.0
+            }
+         ]
+      },
+      {
+         "PID 6012": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5652.0
+            },
+            {
+               "Pagefile_usage": 6496.0
+            }
+         ]
+      },
+      {
+         "PID 13628": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 72424.0
+            },
+            {
+               "Pagefile_usage": 38280.0
+            }
+         ]
+      },
+      {
+         "PID 7440": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 56944.0
+            },
+            {
+               "Pagefile_usage": 50376.0
+            }
+         ]
+      },
+      {
+         "PID 7832": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 39912.0
+            },
+            {
+               "Pagefile_usage": 26424.0
+            }
+         ]
+      },
+      {
+         "PID 9568": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 81268.0
+            },
+            {
+               "Pagefile_usage": 84892.0
+            }
+         ]
+      },
+      {
+         "PID 11020": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5168.0
+            },
+            {
+               "Pagefile_usage": 6504.0
+            }
+         ]
+      },
+      {
+         "PID 9148": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 57076.0
+            },
+            {
+               "Pagefile_usage": 48460.0
+            }
+         ]
+      },
+      {
+         "PID 5232": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 56248.0
+            },
+            {
+               "Pagefile_usage": 40996.0
+            }
+         ]
+      },
+      {
+         "PID 14972": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 48328.0
+            },
+            {
+               "Pagefile_usage": 42972.0
+            }
+         ]
+      },
+      {
+         "PID 7004": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 49120.0
+            },
+            {
+               "Pagefile_usage": 230588.0
+            }
+         ]
+      },
+      {
+         "PID 2092": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 65948.0
+            },
+            {
+               "Pagefile_usage": 254532.0
+            }
+         ]
+      },
+      {
+         "PID 3392": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 47260.0
+            },
+            {
+               "Pagefile_usage": 221724.0
+            }
+         ]
+      },
+      {
+         "PID 12924": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 139024.0
+            },
+            {
+               "Pagefile_usage": 245960.0
+            }
+         ]
+      },
+      {
+         "PID 14644": [
+            {
+               "CPU_usage": 0.02299552693806257
+            },
+            {
+               "RAM_usage": 76280.0
+            },
+            {
+               "Pagefile_usage": 39884.0
+            }
+         ]
+      },
+      {
+         "PID 14732": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 56008.0
+            },
+            {
+               "Pagefile_usage": 42924.0
+            }
+         ]
+      },
+      {
+         "PID 7900": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 109976.0
+            },
+            {
+               "Pagefile_usage": 77008.0
+            }
+         ]
+      },
+      {
+         "PID 8316": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 102416.0
+            },
+            {
+               "Pagefile_usage": 67164.0
+            }
+         ]
+      },
+      {
+         "PID 1412": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 101964.0
+            },
+            {
+               "Pagefile_usage": 66092.0
+            }
+         ]
+      },
+      {
+         "PID 2076": [
+            {
+               "CPU_usage": 0.023070224381017093
+            },
+            {
+               "RAM_usage": 88564.0
+            },
+            {
+               "Pagefile_usage": 48516.0
+            }
+         ]
+      },
+      {
+         "PID 732": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 71220.0
+            },
+            {
+               "Pagefile_usage": 233968.0
+            }
+         ]
+      },
+      {
+         "PID 9728": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 23208.0
+            },
+            {
+               "Pagefile_usage": 11616.0
+            }
+         ]
+      },
+      {
+         "PID 9692": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 34700.0
+            },
+            {
+               "Pagefile_usage": 35916.0
+            }
+         ]
+      },
+      {
+         "PID 11856": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 45332.0
+            },
+            {
+               "Pagefile_usage": 30632.0
+            }
+         ]
+      },
+      {
+         "PID 16380": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 11144.0
+            },
+            {
+               "Pagefile_usage": 6516.0
+            }
+         ]
+      },
+      {
+         "PID 14468": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 55708.0
+            },
+            {
+               "Pagefile_usage": 28144.0
+            }
+         ]
+      },
+      {
+         "PID 14576": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 23588.0
+            },
+            {
+               "Pagefile_usage": 8172.0
+            }
+         ]
+      },
+      {
+         "PID 2204": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 35132.0
+            },
+            {
+               "Pagefile_usage": 22840.0
+            }
+         ]
+      },
+      {
+         "PID 15992": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5632.0
+            },
+            {
+               "Pagefile_usage": 1816.0
+            }
+         ]
+      },
+      {
+         "PID 5600": [
+            {
+               "CPU_usage": 0.046433896924249575
+            },
+            {
+               "RAM_usage": 16180.0
+            },
+            {
+               "Pagefile_usage": 7268.0
+            }
+         ]
+      },
+      {
+         "PID 5912": [
+            {
+               "CPU_usage": 9.943351015661971
+            },
+            {
+               "RAM_usage": 6484.0
+            },
+            {
+               "Pagefile_usage": 2720.0
+            }
+         ]
+      },
+      {
+         "PID 16144": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 160444.0
+            },
+            {
+               "Pagefile_usage": 153888.0
+            }
+         ]
+      },
+      {
+         "PID 820": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 11088.0
+            },
+            {
+               "Pagefile_usage": 6604.0
+            }
+         ]
+      },
+      {
+         "PID 15856": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 8044.0
+            },
+            {
+               "Pagefile_usage": 2116.0
+            }
+         ]
+      }
+   ],
+   "22.1.2021  22:25:35 ": [
+      {
+         "PID 3024": [
+            {
+               "CPU_usage": 0.012799404195393868
+            },
+            {
+               "RAM_usage": 23392.0
+            },
+            {
+               "Pagefile_usage": 7280.0
+            }
+         ]
+      },
+      {
+         "PID 3032": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 71140.0
+            },
+            {
+               "Pagefile_usage": 60920.0
+            }
+         ]
+      },
+      {
+         "PID 9808": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 27092.0
+            },
+            {
+               "Pagefile_usage": 6936.0
+            }
+         ]
+      },
+      {
+         "PID 8712": [
+            {
+               "CPU_usage": 0.3199851048848467
+            },
+            {
+               "RAM_usage": 24668.0
+            },
+            {
+               "Pagefile_usage": 9568.0
+            }
+         ]
+      },
+      {
+         "PID 11160": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 36016.0
+            },
+            {
+               "Pagefile_usage": 9336.0
+            }
+         ]
+      },
+      {
+         "PID 1280": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 3660.0
+            },
+            {
+               "Pagefile_usage": 24156.0
+            }
+         ]
+      },
+      {
+         "PID 6588": [
+            {
+               "CPU_usage": 0.012799822929420444
+            },
+            {
+               "RAM_usage": 18632.0
+            },
+            {
+               "Pagefile_usage": 8524.0
+            }
+         ]
+      },
+      {
+         "PID 10028": [
+            {
+               "CPU_usage": 4.415938910650053
+            },
+            {
+               "RAM_usage": 177092.0
+            },
+            {
+               "Pagefile_usage": 135956.0
+            }
+         ]
+      },
+      {
+         "PID 7464": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5096.0
+            },
+            {
+               "Pagefile_usage": 2752.0
+            }
+         ]
+      },
+      {
+         "PID 9228": [
+            {
+               "CPU_usage": 0.012799822929420444
+            },
+            {
+               "RAM_usage": 30540.0
+            },
+            {
+               "Pagefile_usage": 7856.0
+            }
+         ]
+      },
+      {
+         "PID 1432": [
+            {
+               "CPU_usage": 0.14078882423088812
+            },
+            {
+               "RAM_usage": 4144.0
+            },
+            {
+               "Pagefile_usage": 95376.0
+            }
+         ]
+      },
+      {
+         "PID 2924": [
+            {
+               "CPU_usage": 0.012797306575906263
+            },
+            {
+               "RAM_usage": 73240.0
+            },
+            {
+               "Pagefile_usage": 51940.0
+            }
+         ]
+      },
+      {
+         "PID 10448": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 24172.0
+            },
+            {
+               "Pagefile_usage": 5884.0
+            }
+         ]
+      },
+      {
+         "PID 5956": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 30932.0
+            },
+            {
+               "Pagefile_usage": 7896.0
+            }
+         ]
+      },
+      {
+         "PID 9656": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 43020.0
+            },
+            {
+               "Pagefile_usage": 41272.0
+            }
+         ]
+      },
+      {
+         "PID 5136": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 11216.0
+            },
+            {
+               "Pagefile_usage": 31904.0
+            }
+         ]
+      },
+      {
+         "PID 6172": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 1080.0
+            },
+            {
+               "Pagefile_usage": 6508.0
+            }
+         ]
+      },
+      {
+         "PID 3848": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 12116.0
+            },
+            {
+               "Pagefile_usage": 4504.0
+            }
+         ]
+      },
+      {
+         "PID 948": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 6912.0
+            },
+            {
+               "Pagefile_usage": 1988.0
+            }
+         ]
+      },
+      {
+         "PID 4004": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 30884.0
+            },
+            {
+               "Pagefile_usage": 6732.0
+            }
+         ]
+      },
+      {
+         "PID 4988": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 13976.0
+            },
+            {
+               "Pagefile_usage": 2664.0
+            }
+         ]
+      },
+      {
+         "PID 6916": [
+            {
+               "CPU_usage": 0.06398862837915859
+            },
+            {
+               "RAM_usage": 45720.0
+            },
+            {
+               "Pagefile_usage": 18972.0
+            }
+         ]
+      },
+      {
+         "PID 6708": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 31112.0
+            },
+            {
+               "Pagefile_usage": 40720.0
+            }
+         ]
+      },
+      {
+         "PID 12332": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 65552.0
+            },
+            {
+               "Pagefile_usage": 62460.0
+            }
+         ]
+      },
+      {
+         "PID 12552": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 95332.0
+            },
+            {
+               "Pagefile_usage": 131776.0
+            }
+         ]
+      },
+      {
+         "PID 13172": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 28000.0
+            },
+            {
+               "Pagefile_usage": 8524.0
+            }
+         ]
+      },
+      {
+         "PID 13180": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 340.0
+            },
+            {
+               "Pagefile_usage": 37228.0
+            }
+         ]
+      },
+      {
+         "PID 13292": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 19508.0
+            },
+            {
+               "Pagefile_usage": 5412.0
+            }
+         ]
+      },
+      {
+         "PID 2296": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 8720.0
+            },
+            {
+               "Pagefile_usage": 1868.0
+            }
+         ]
+      },
+      {
+         "PID 7716": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 20456.0
+            },
+            {
+               "Pagefile_usage": 6708.0
+            }
+         ]
+      },
+      {
+         "PID 11212": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 10380.0
+            },
+            {
+               "Pagefile_usage": 34008.0
+            }
+         ]
+      },
+      {
+         "PID 12232": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 6956.0
+            },
+            {
+               "Pagefile_usage": 1420.0
+            }
+         ]
+      },
+      {
+         "PID 5616": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 43860.0
+            },
+            {
+               "Pagefile_usage": 84240.0
+            }
+         ]
+      },
+      {
+         "PID 10304": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 32952.0
+            },
+            {
+               "Pagefile_usage": 10900.0
+            }
+         ]
+      },
+      {
+         "PID 12152": [
+            {
+               "CPU_usage": 0.06398653120251574
+            },
+            {
+               "RAM_usage": 54448.0
+            },
+            {
+               "Pagefile_usage": 33712.0
+            }
+         ]
+      },
+      {
+         "PID 5612": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 62508.0
+            },
+            {
+               "Pagefile_usage": 42060.0
+            }
+         ]
+      },
+      {
+         "PID 5364": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 23540.0
+            },
+            {
+               "Pagefile_usage": 4620.0
+            }
+         ]
+      },
+      {
+         "PID 13152": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 17092.0
+            },
+            {
+               "Pagefile_usage": 3748.0
+            }
+         ]
+      },
+      {
+         "PID 6684": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 10628.0
+            },
+            {
+               "Pagefile_usage": 3500.0
+            }
+         ]
+      },
+      {
+         "PID 1228": [
+            {
+               "CPU_usage": 0.08958408002431897
+            },
+            {
+               "RAM_usage": 61252.0
+            },
+            {
+               "Pagefile_usage": 118516.0
+            }
+         ]
+      },
+      {
+         "PID 4308": [
+            {
+               "CPU_usage": 0.3839192035659965
+            },
+            {
+               "RAM_usage": 273928.0
+            },
+            {
+               "Pagefile_usage": 200660.0
+            }
+         ]
+      },
+      {
+         "PID 12020": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 6436.0
+            },
+            {
+               "Pagefile_usage": 1700.0
+            }
+         ]
+      },
+      {
+         "PID 12748": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 167388.0
+            },
+            {
+               "Pagefile_usage": 357324.0
+            }
+         ]
+      },
+      {
+         "PID 4700": [
+            {
+               "CPU_usage": 0.025594613571066432
+            },
+            {
+               "RAM_usage": 49768.0
+            },
+            {
+               "Pagefile_usage": 32592.0
+            }
+         ]
+      },
+      {
+         "PID 11476": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 64844.0
+            },
+            {
+               "Pagefile_usage": 82520.0
+            }
+         ]
+      },
+      {
+         "PID 8852": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 66896.0
+            },
+            {
+               "Pagefile_usage": 27804.0
+            }
+         ]
+      },
+      {
+         "PID 6804": [
+            {
+               "CPU_usage": 0.03839192035659965
+            },
+            {
+               "RAM_usage": 63608.0
+            },
+            {
+               "Pagefile_usage": 35364.0
+            }
+         ]
+      },
+      {
+         "PID 6028": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 160732.0
+            },
+            {
+               "Pagefile_usage": 135956.0
+            }
+         ]
+      },
+      {
+         "PID 9804": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 17756.0
+            },
+            {
+               "Pagefile_usage": 6752.0
+            }
+         ]
+      },
+      {
+         "PID 5168": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 184584.0
+            },
+            {
+               "Pagefile_usage": 334088.0
+            }
+         ]
+      },
+      {
+         "PID 1196": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 74124.0
+            },
+            {
+               "Pagefile_usage": 94912.0
+            }
+         ]
+      },
+      {
+         "PID 3872": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 51508.0
+            },
+            {
+               "Pagefile_usage": 26148.0
+            }
+         ]
+      },
+      {
+         "PID 3016": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 65516.0
+            },
+            {
+               "Pagefile_usage": 26812.0
+            }
+         ]
+      },
+      {
+         "PID 2128": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 53988.0
+            },
+            {
+               "Pagefile_usage": 96660.0
+            }
+         ]
+      },
+      {
+         "PID 12116": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 23804.0
+            },
+            {
+               "Pagefile_usage": 13492.0
+            }
+         ]
+      },
+      {
+         "PID 8756": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 77328.0
+            },
+            {
+               "Pagefile_usage": 56436.0
+            }
+         ]
+      },
+      {
+         "PID 8664": [
+            {
+               "CPU_usage": 0.012796887587274567
+            },
+            {
+               "RAM_usage": 25972.0
+            },
+            {
+               "Pagefile_usage": 21292.0
+            }
+         ]
+      },
+      {
+         "PID 6424": [
+            {
+               "CPU_usage": 0.6142506041891793
+            },
+            {
+               "RAM_usage": 553256.0
+            },
+            {
+               "Pagefile_usage": 460688.0
+            }
+         ]
+      },
+      {
+         "PID 8432": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 53320.0
+            },
+            {
+               "Pagefile_usage": 40488.0
+            }
+         ]
+      },
+      {
+         "PID 1676": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 61548.0
+            },
+            {
+               "Pagefile_usage": 49556.0
+            }
+         ]
+      },
+      {
+         "PID 8028": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5516.0
+            },
+            {
+               "Pagefile_usage": 6508.0
+            }
+         ]
+      },
+      {
+         "PID 14004": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 58928.0
+            },
+            {
+               "Pagefile_usage": 121968.0
+            }
+         ]
+      },
+      {
+         "PID 5236": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5648.0
+            },
+            {
+               "Pagefile_usage": 6508.0
+            }
+         ]
+      },
+      {
+         "PID 9660": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 26612.0
+            },
+            {
+               "Pagefile_usage": 31104.0
+            }
+         ]
+      },
+      {
+         "PID 9760": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 26564.0
+            },
+            {
+               "Pagefile_usage": 31060.0
+            }
+         ]
+      },
+      {
+         "PID 13736": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 26640.0
+            },
+            {
+               "Pagefile_usage": 31376.0
+            }
+         ]
+      },
+      {
+         "PID 9968": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5480.0
+            },
+            {
+               "Pagefile_usage": 6500.0
+            }
+         ]
+      },
+      {
+         "PID 944": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 52224.0
+            },
+            {
+               "Pagefile_usage": 67164.0
+            }
+         ]
+      },
+      {
+         "PID 11444": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5476.0
+            },
+            {
+               "Pagefile_usage": 6504.0
+            }
+         ]
+      },
+      {
+         "PID 10468": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5480.0
+            },
+            {
+               "Pagefile_usage": 6496.0
+            }
+         ]
+      },
+      {
+         "PID 9904": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5652.0
+            },
+            {
+               "Pagefile_usage": 6504.0
+            }
+         ]
+      },
+      {
+         "PID 12028": [
+            {
+               "CPU_usage": 0.012796887587274567
+            },
+            {
+               "RAM_usage": 67092.0
+            },
+            {
+               "Pagefile_usage": 61284.0
+            }
+         ]
+      },
+      {
+         "PID 8800": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5528.0
+            },
+            {
+               "Pagefile_usage": 6500.0
+            }
+         ]
+      },
+      {
+         "PID 3456": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 91388.0
+            },
+            {
+               "Pagefile_usage": 127972.0
+            }
+         ]
+      },
+      {
+         "PID 14192": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5532.0
+            },
+            {
+               "Pagefile_usage": 6508.0
+            }
+         ]
+      },
+      {
+         "PID 14068": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 61388.0
+            },
+            {
+               "Pagefile_usage": 603636.0
+            }
+         ]
+      },
+      {
+         "PID 13472": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5532.0
+            },
+            {
+               "Pagefile_usage": 6504.0
+            }
+         ]
+      },
+      {
+         "PID 9892": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 66840.0
+            },
+            {
+               "Pagefile_usage": 160884.0
+            }
+         ]
+      },
+      {
+         "PID 988": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5644.0
+            },
+            {
+               "Pagefile_usage": 6504.0
+            }
+         ]
+      },
+      {
+         "PID 11832": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 48728.0
+            },
+            {
+               "Pagefile_usage": 63404.0
+            }
+         ]
+      },
+      {
+         "PID 6012": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5652.0
+            },
+            {
+               "Pagefile_usage": 6496.0
+            }
+         ]
+      },
+      {
+         "PID 13628": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 72488.0
+            },
+            {
+               "Pagefile_usage": 38280.0
+            }
+         ]
+      },
+      {
+         "PID 7440": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 56944.0
+            },
+            {
+               "Pagefile_usage": 50376.0
+            }
+         ]
+      },
+      {
+         "PID 7832": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 39912.0
+            },
+            {
+               "Pagefile_usage": 26424.0
+            }
+         ]
+      },
+      {
+         "PID 9568": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 81272.0
+            },
+            {
+               "Pagefile_usage": 84892.0
+            }
+         ]
+      },
+      {
+         "PID 11020": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5168.0
+            },
+            {
+               "Pagefile_usage": 6504.0
+            }
+         ]
+      },
+      {
+         "PID 9148": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 57076.0
+            },
+            {
+               "Pagefile_usage": 48460.0
+            }
+         ]
+      },
+      {
+         "PID 5232": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 56300.0
+            },
+            {
+               "Pagefile_usage": 40996.0
+            }
+         ]
+      },
+      {
+         "PID 14972": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 48328.0
+            },
+            {
+               "Pagefile_usage": 42972.0
+            }
+         ]
+      },
+      {
+         "PID 7004": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 49120.0
+            },
+            {
+               "Pagefile_usage": 230588.0
+            }
+         ]
+      },
+      {
+         "PID 2092": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 65948.0
+            },
+            {
+               "Pagefile_usage": 254532.0
+            }
+         ]
+      },
+      {
+         "PID 3392": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 47260.0
+            },
+            {
+               "Pagefile_usage": 221724.0
+            }
+         ]
+      },
+      {
+         "PID 12924": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 139024.0
+            },
+            {
+               "Pagefile_usage": 245960.0
+            }
+         ]
+      },
+      {
+         "PID 14644": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 76348.0
+            },
+            {
+               "Pagefile_usage": 39884.0
+            }
+         ]
+      },
+      {
+         "PID 14732": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 56008.0
+            },
+            {
+               "Pagefile_usage": 42924.0
+            }
+         ]
+      },
+      {
+         "PID 7900": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 109976.0
+            },
+            {
+               "Pagefile_usage": 77008.0
+            }
+         ]
+      },
+      {
+         "PID 8316": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 102412.0
+            },
+            {
+               "Pagefile_usage": 67164.0
+            }
+         ]
+      },
+      {
+         "PID 1412": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 101964.0
+            },
+            {
+               "Pagefile_usage": 66092.0
+            }
+         ]
+      },
+      {
+         "PID 2076": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 88624.0
+            },
+            {
+               "Pagefile_usage": 48516.0
+            }
+         ]
+      },
+      {
+         "PID 732": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 71220.0
+            },
+            {
+               "Pagefile_usage": 233968.0
+            }
+         ]
+      },
+      {
+         "PID 9728": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 23208.0
+            },
+            {
+               "Pagefile_usage": 11616.0
+            }
+         ]
+      },
+      {
+         "PID 9692": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 34700.0
+            },
+            {
+               "Pagefile_usage": 35916.0
+            }
+         ]
+      },
+      {
+         "PID 11856": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 45260.0
+            },
+            {
+               "Pagefile_usage": 30472.0
+            }
+         ]
+      },
+      {
+         "PID 16380": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 11144.0
+            },
+            {
+               "Pagefile_usage": 6516.0
+            }
+         ]
+      },
+      {
+         "PID 14468": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 55708.0
+            },
+            {
+               "Pagefile_usage": 28144.0
+            }
+         ]
+      },
+      {
+         "PID 14576": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 23620.0
+            },
+            {
+               "Pagefile_usage": 8196.0
+            }
+         ]
+      },
+      {
+         "PID 2204": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 35132.0
+            },
+            {
+               "Pagefile_usage": 22840.0
+            }
+         ]
+      },
+      {
+         "PID 15992": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 5632.0
+            },
+            {
+               "Pagefile_usage": 1816.0
+            }
+         ]
+      },
+      {
+         "PID 5600": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 16204.0
+            },
+            {
+               "Pagefile_usage": 7296.0
+            }
+         ]
+      },
+      {
+         "PID 5912": [
+            {
+               "CPU_usage": 15.856382943538916
+            },
+            {
+               "RAM_usage": 6912.0
+            },
+            {
+               "Pagefile_usage": 2960.0
+            }
+         ]
+      },
+      {
+         "PID 16144": [
+            {
+               "CPU_usage": 23.419839214427938
+            },
+            {
+               "RAM_usage": 307544.0
+            },
+            {
+               "Pagefile_usage": 304880.0
+            }
+         ]
+      },
+      {
+         "PID 820": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 11052.0
+            },
+            {
+               "Pagefile_usage": 6516.0
+            }
+         ]
+      },
+      {
+         "PID 15856": [
+            {
+               "CPU_usage": 0.012797726346681934
+            },
+            {
+               "RAM_usage": 8020.0
+            },
+            {
+               "Pagefile_usage": 2012.0
+            }
+         ]
+      },
+      {
+         "PID 14948": [
+            {
+               "CPU_usage": 0.0
+            },
+            {
+               "RAM_usage": 216.0
+            },
+            {
+               "Pagefile_usage": 944.0
+            }
+         ]
+      }
+   ]
+}

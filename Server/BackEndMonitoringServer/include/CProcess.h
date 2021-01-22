@@ -20,8 +20,7 @@ public:
 	bool GetPagefileUsage(long double&) const;
 	EMemoryCountType GetMemoryCountType() const;
 private:
-	void ComputeCpuUsage(const HANDLE& process);
-	void SetMemoryUsage(const HANDLE& process);
+	bool ComputeCpuUsage();
 
 private:
 	bool m_is_initialized;
@@ -31,6 +30,6 @@ private:
 	size_t m_ram_usage;
 	size_t m_pagefile_usage;
 	EMemoryCountType m_count_type;
-	ULARGE_INTEGER last_sys_time, last_kernel_time, last_user_time;
+	unsigned long long m_last_sys_time, m_last_kernel_time, m_last_user_time;
 };
 
