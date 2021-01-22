@@ -27,6 +27,39 @@
     <ClInclude Include="include\CServiceHandler.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CContainerOfLogicalDisk.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CContainerOfProcesses.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CHardwareInfoLifeCycle.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CHardwareStatusSpecification.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CJSONFormatterLogicalDisk.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CJSONFormatterProcess.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CLogicalDiskStatus.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CLogicalDiskStatusLifeCycle.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CProcess.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CProcessesMonitoringLifeCycle.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EMemoryCountType.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
@@ -60,6 +93,33 @@
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="src\CServiceHandler.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CContainerOfLogicalDisk.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CContainerOfProcesses.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CHardwareStatusSpecification.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CJSONFormatterLogicalDisk.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CJSONFormatterProcess.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CLogicalDiskStatus.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CLogicalDiskStatusLifeCycle.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CProcess.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CProcessesMonitoringLifeCycle.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
