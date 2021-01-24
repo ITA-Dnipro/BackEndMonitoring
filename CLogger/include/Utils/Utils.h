@@ -19,12 +19,12 @@ namespace LogUtils
 	{
 		const auto time = std::make_unique<tm>();
 		auto current_time = std::chrono::system_clock::to_time_t
-		(std::chrono::system_clock::now());
+			(std::chrono::system_clock::now());
 
 		localtime_s(time.get(), &current_time);
 
 		std::string str;
-		str.reserve(50u);
+		str.resize(50u);
 		std::strftime(str.data(), str.capacity(), "%c", time.get());
 		return str;
 	}
