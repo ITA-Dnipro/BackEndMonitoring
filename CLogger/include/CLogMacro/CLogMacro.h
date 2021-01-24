@@ -56,90 +56,90 @@
 	std::make_pair(std::string(GET_TYPE(x)) + " " + GET_NAME(x), x) \
 
 // Prints all info-configs of logger
-#define WRITE_INFO_LOG(logger) \
+#define CLOG_INFO(logger) \
 	(logger).PrintLogInfo() \
 
 // Creates and prints CLogMessage of some CLogLevel via CLogger
-#define WRITE_LOG(logger, messageString, logLevel) \
+#define CLOG_WRITE(logger, messageString, logLevel) \
     (logger).PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
                              LogUtils::GetFileNameByPath(__FILE__), __FUNCTION__, \
                              LogUtils::GetCurrentTimeString(), LogUtils::GetThisThreadIdString())) \
 
 // Creates and prints CLogMessage with variable parameters of some CLogLevel via CLogger
-#define WRITE_LOG_WITH_PARAMS(logger, messageString, logLevel, ...) \
+#define CLOG_WRITE_WITH_PARAMS(logger, messageString, logLevel, ...) \
     (logger).PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
                              LogUtils::GetFileNameByPath(__FILE__), __FUNCTION__, \
                              LogUtils::GetCurrentTimeString(), LogUtils::GetThisThreadIdString(), \
 							std::make_tuple(FOR_EACH(MAKE_PAIR, __VA_ARGS__)))) \
 
 // Creates and prints CLogMessage that formed from exception of some CLogLevel via CLogger
-#define WRITE_LOG_EXCEPTION(logger, exception, logLevel) \
+#define CLOG_WRITE_EXCEPTION(logger, exception, logLevel) \
 	WRITE_LOG(logger, std::string("EXCEPTION!!!!") + " " + (exception).what(), logLevel) \
 
 // Creates and prints CLogMessage that formed from variable creation of some CLogLevel via CLogger
-#define WRITE_LOG_VAR_CREATION(logger, var, logLevel) \
+#define CLOG_WRITE_VAR_CREATION(logger, var, logLevel) \
 	WRITE_LOG(logger, std::string("Created") + " " + GET_TYPE(var) + " " + GET_NAME(var) + ".", logLevel) \
 
 // Creates and prints CLogMessage of PROD_LEVEL-level via CLogger
-#define WRITE_PROD(logger, messageString) \
+#define CLOG_PROD(logger, messageString) \
 	WRITE_LOG(logger, messageString, ELogLevel::PROD_LEVEL) \
 
 // Creates and prints CLogMessage of PROD_LEVEL-level via CLogger with variable parameters 
-#define WRITE_PROD_WITH_PARAMS(logger, messageString, ...) \
+#define CLOG_PROD_WITH_PARAMS(logger, messageString, ...) \
 	WRITE_LOG_WITH_PARAMS(logger, messageString, ELogLevel::PROD_LEVEL, __VA_ARGS__) \
 
 // Creates and prints CLogMessage that formed from exception of PROD_LEVEL-level via CLogger
-#define WRITE_PROD_EXCEPTION(logger, exception) \
+#define CLOG_PROD_EXCEPTION(logger, exception) \
 	WRITE_LOG_EXCEPTION(logger, exception, ELogLevel::PROD_LEVEL) \
 
 // Creates and prints CLogMessage that formed from variable creation of PROD_LEVEL-level via CLogger
-#define WRITE_PROD_VAR_CREATION(logger, var) \
+#define CLOG_PROD_VAR_CREATION(logger, var) \
 	WRITE_LOG_VAR_CREATION(logger, var, ELogLevel::PROD_LEVEL) \
 
 // Creates and prints WARNING!! CLogMessage via CLogger
-#define WRITE_WARNING(logger, messageString) \
+#define CLOG_WARNING(logger, messageString) \
 	WRITE_PROD(logger, std::string("WARNING!!") + " " + (messageString)) \
 
 // Creates and prints WARNING!! CLogMessage via CLogger with variable parameters
-#define WRITE_WARNING_WITH_PARAMS(logger, messageString, ...) \
+#define CLOG_WARNING_WITH_PARAMS(logger, messageString, ...) \
 	WRITE_PROD(logger, std::string("WARNING!!") + " " + (messageString), __VA_ARGS__) \
 
 // Creates and prints ERROR!!! CLogMessage via CLogger
-#define WRITE_ERROR(logger, messageString) \
+#define CLOG_ERROR(logger, messageString) \
 	WRITE_PROD(logger, std::string("ERROR!!!") + " " + (messageString)) \
 
 // Creates and prints ERROR!!! CLogMessage via CLogger with variable parameters
-#define WRITE_ERROR_WITH_PARAMS(logger, messageString, ...) \
+#define CLOG_ERROR_WITH_PARAMS(logger, messageString, ...) \
 	WRITE_PROD(logger, std::string("ERROR!!!") + " " + (messageString), __VA_ARGS__) \
 
 // Creates and prints CLogMessage of DEBUG_LEVEL-level via CLogger
-#define WRITE_DEBUG(logger, messageString) \
+#define CLOG_DEBUG(logger, messageString) \
 	WRITE_LOG(logger, messageString, ELogLevel::DEBUG_LEVEL) \
 
 // Creates and prints CLogMessage of DEBUG_LEVEL-level via CLogger with variable parameters
-#define WRITE_DEBUG_WITH_PARAMS(logger, messageString, ...) \
+#define CLOG_DEBUG_WITH_PARAMS(logger, messageString, ...) \
 	WRITE_LOG_WITH_PARAMS(logger, messageString, ELogLevel::DEBUG_LEVEL, __VA_ARGS__) \
 
 // Creates and prints CLogMessage that formed from exception of DEBUG_LEVEL-level via CLogger
-#define WRITE_DEBUG_EXCEPTION(logger, exception) \
+#define CLOG_DEBUG_EXCEPTION(logger, exception) \
 	WRITE_LOG_EXCEPTION(logger, exception, ELogLevel::DEBUG_LEVEL) \
 
 // Creates and prints CLogMessage that formed from variable creation of DEBUG_LEVEL-level via CLogger
-#define WRITE_DEBUG_VAR_CREATION(logger, var) \
+#define CLOG_DEBUG_VAR_CREATION(logger, var) \
 	WRITE_LOG_VAR_CREATION(logger, var, ELogLevel::DEBUG_LEVEL) \
 
 // Creates and prints CLogMessage of TRACE_LEVEL-level via CLogger
-#define WRITE_TRACE(logger, messageString) \
+#define CLOG_TRACE(logger, messageString) \
 	WRITE_LOG(logger, messageString, ELogLevel::TRACE_LEVEL) \
 
 // Creates and prints CLogMessage of TRACE_LEVEL-level via CLogger with variable parameters
-#define WRITE_TRACE_WITH_PARAMS(logger, messageString, ...) \
+#define CLOG_TRACE_WITH_PARAMS(logger, messageString, ...) \
 	WRITE_LOG_WITH_PARAMS(logger, messageString, ELogLevel::TRACE_LEVEL, __VA_ARGS__) \
 
 // Creates and prints CLogMessage that formed from exception of TRACE_LEVEL-level via CLogger
-#define WRITE_TRACE_EXCEPTION(logger, exception) \
+#define CLOG_TRACE_EXCEPTION(logger, exception) \
 	WRITE_LOG_EXCEPTION(logger, exception, ELogLevel::TRACE_LEVEL) \
 
 // Creates and prints CLogMessage that formed from variable creation of TRACE_LEVEL-level via CLogger
-#define WRITE_TRACE_VAR_CREATION(logger, var) \
+#define CLOG_TRACE_VAR_CREATION(logger, var) \
 	WRITE_LOG_VAR_CREATION(logger, var, ELogLevel::TRACE_LEVEL) \

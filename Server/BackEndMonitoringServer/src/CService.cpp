@@ -20,7 +20,7 @@ void CService::RunServer()
     size_t num_threads = 20;
     int port = 1111;
     std::string ip_address = "127.0.0.1";
-    WRITE_DEBUG(*logger, "Start server");
+    CLOG_DEBUG(*logger, "Start server");
 
     m_acceptor_socket = std::make_unique<CAcceptorWrapper>(port, ip_address, 
         num_threads, m_stop_event, logger);
