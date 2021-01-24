@@ -143,3 +143,57 @@
 // Creates and prints CLogMessage that formed from variable creation of TRACE_LEVEL-level via CLogger
 #define CLOG_TRACE_VAR_CREATION(logger, var) \
 	WRITE_LOG_VAR_CREATION(logger, var, ELogLevel::TRACE_LEVEL) \
+
+#define CLOG_WRITE_START_FUNCTION(logger, logLevel) \
+	CLOG_WRITE(logger, std::string(__FUNCTION__) + " " + "started", logLevel) \
+	try { \
+
+#define CLOG_WRITE_START_FUNCTION_WITH_PARAMS(logger, logLevel, ...) \
+	CLOG_WRITE_WITH_PARAMS(logger, std::string(__FUNCTION__) + " " + "started", logLevel, __VA_ARGS__) \
+	try { \
+
+#define CLOG_WRITE_END_FUNCTION(logger, logLevel) \
+	CLOG_WRITE(logger, std::string(__FUNCTION__) + " " + "ended", logLevel) \
+	} catch (const std::exception& exception) { \
+	CLOG_WRITE_EXCEPTION(logger, exception, logLevel) } \
+
+#define CLOG_WRITE_END_FUNCTION_WITH_PARAMS(logger, logLevel, ...) \
+	CLOG_WRITE(logger, std::string(__FUNCTION__) + " " + "ended", logLevel, __VA_ARGS__) \
+	} catch (const std::exception& exception) { \
+	CLOG_WRITE_EXCEPTION(logger, exception, logLevel) } \
+
+#define CLOG_PROD_START_FUNCTION(logger) \
+	CLOG_WRITE_START_FUNCTION(logger, ELogLevel::PROD_LEVEL) \
+
+#define CLOG_PROD_START_FUNCTION_WITH_PARAMS(logger, ...) \
+	CLOG_PROD_START_FUNCTION_WITH_PARAMS(logger, ELogLevel::PROD_LEVEL, __VA_ARGS__) \
+
+#define CLOG_PROD_END_FUNCTION(logger) \
+	CLOG_WRITE_END_FUNCTION(logger, ELogLevel::PROD_LEVEL) \
+
+#define CLOG_PROD_END_FUNCTION_WITH_PARAMS(logger, ...) \
+	CLOG_PROD_END_FUNCTION_WITH_PARAMS(logger, ELogLevel::PROD_LEVEL, __VA_ARGS__)
+
+#define CLOG_DEBUG_START_FUNCTION(logger) \
+	CLOG_WRITE_START_FUNCTION(logger, ELogLevel::DEBUG_LEVEL) \
+
+#define CLOG_DEBUG_START_FUNCTION_WITH_PARAMS(logger, ...) \
+	CLOG_PROD_START_FUNCTION_WITH_PARAMS(logger, ELogLevel::DEBUG_LEVEL, __VA_ARGS__) \
+
+#define CLOG_DEBUG_END_FUNCTION(logger) \
+	CLOG_WRITE_END_FUNCTION(logger, ELogLevel::DEBUG_LEVEL) \
+
+#define CLOG_DEBUG_END_FUNCTION_WITH_PARAMS(logger, ...) \
+	CLOG_PROD_END_FUNCTION_WITH_PARAMS(logger, ELogLevel::DEBUG_LEVEL, __VA_ARGS__)
+
+#define CLOG_TRACE_START_FUNCTION(logger) \
+	CLOG_WRITE_START_FUNCTION(logger, ELogLevel::TRACE_LEVEL) \
+
+#define CLOG_TRACE_START_FUNCTION_WITH_PARAMS(logger, ...) \
+	CLOG_PROD_START_FUNCTION_WITH_PARAMS(logger, ELogLevel::TRACE_LEVEL, __VA_ARGS__) \
+
+#define CLOG_TRACE_END_FUNCTION(logger) \
+	CLOG_WRITE_END_FUNCTION(logger, ELogLevel::TRACE_LEVEL) \
+
+#define CLOG_TRACE_END_FUNCTION_WITH_PARAMS(logger, ...) \
+	CLOG_PROD_END_FUNCTION_WITH_PARAMS(logger, ELogLevel::TRACE_LEVEL, __VA_ARGS__)
