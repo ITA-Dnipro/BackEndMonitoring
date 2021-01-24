@@ -7,7 +7,7 @@
 // Takes fifteenth argument from parameter pack
 #define TAKE_15(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, N, ...) \
 	N \
-	
+
 // Size of template parameter pack that less than fifteen
 #define COUNT(...) \
 	TAKE_15(__VA_ARGS__, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0) \
@@ -78,7 +78,7 @@
 
 // Creates and prints CLogMessage that formed from variable creation of some CLogLevel via CLogger
 #define CLOG_WRITE_VAR_CREATION(logger, var, logLevel) \
-	CLOG_WRITE(logger, std::string("Created") + " " + GET_TYPE(var) + " " + GET_NAME(var) + ".", logLevel) \
+	CLOG_WRITE(logger, std::string("Created var") + " " + GET_TYPE(var) + " " + GET_NAME(var) + ".", logLevel) \
 
 // Creates and prints CLogMessage of PROD_LEVEL-level via CLogger
 #define CLOG_PROD(logger, messageString) \
@@ -145,20 +145,20 @@
 	CLOG_WRITE_VAR_CREATION(logger, var, ELogLevel::TRACE_LEVEL) \
 
 #define CLOG_WRITE_START_FUNCTION(logger, logLevel) \
-	CLOG_WRITE(logger, std::string(__FUNCTION__) + " " + "started", logLevel); \
+	CLOG_WRITE(logger, std::string(__FUNCTION__) + " " + "function started", logLevel); \
 	try { \
 
 #define CLOG_WRITE_START_FUNCTION_WITH_PARAMS(logger, logLevel, ...) \
-	CLOG_WRITE_WITH_PARAMS(logger, std::string(__FUNCTION__) + " " + "started", logLevel, __VA_ARGS__); \
+	CLOG_WRITE_WITH_PARAMS(logger, std::string(__FUNCTION__) + " " + "function started", logLevel, __VA_ARGS__); \
 	try { \
 
 #define CLOG_WRITE_END_FUNCTION(logger, logLevel) \
-	CLOG_WRITE(logger, std::string(__FUNCTION__) + " " + "ended", logLevel); \
+	CLOG_WRITE(logger, std::string(__FUNCTION__) + " " + "function ended", logLevel); \
 	} catch (const std::exception& exception) { \
 	CLOG_WRITE_EXCEPTION(logger, exception, logLevel); } \
 
 #define CLOG_WRITE_END_FUNCTION_WITH_PARAMS(logger, logLevel, ...) \
-	CLOG_WRITE(logger, std::string(__FUNCTION__) + " " + "ended", logLevel, __VA_ARGS__); \
+	CLOG_WRITE(logger, std::string(__FUNCTION__) + " " + "function ended", logLevel, __VA_ARGS__); \
 	} catch (const std::exception& exception) { \
 	CLOG_WRITE_EXCEPTION(logger, exception, logLevel); } \
 
