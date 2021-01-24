@@ -26,6 +26,9 @@ namespace LogUtils
 		std::string str;
 		str.resize(50u);
 		std::strftime(str.data(), str.capacity(), "%c", time.get());
+		// Clean redundant \0 symbols, that fills resized string
+		str.erase(std::remove(str.begin(), str.end(), '\0'), str.end());
+		
 		return str;
 	}
 	
