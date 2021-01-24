@@ -168,20 +168,21 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="include\CCommandLineHandler.h" />
     <ClInclude Include="include\CContainerOfLogicalDisk.h" />
     <ClInclude Include="include\CContainerOfProcesses.h" />
-    <ClInclude Include="include\CHardwareInfoLifeCycle.h" />
+    <ClInclude Include="include\IHardwareInfoMonitoring.h" />
     <ClInclude Include="include\CHardwareStatusSpecification.h" />
     <ClInclude Include="include\CJSONFormatterLogicalDisk.h" />
     <ClInclude Include="include\CJSONFormatterProcess.h" />
-    <ClInclude Include="include\CLogicalDiskStatus.h" />
-    <ClInclude Include="include\CLogicalDiskStatusLifeCycle.h" />
-    <ClInclude Include="include\CProcess.h" />
-    <ClInclude Include="include\CProcessesMonitoringLifeCycle.h" />
+    <ClInclude Include="include\CLogicalDiskInfo.h" />
+    <ClInclude Include="include\CLogicalDiskInfoMonitoring.h" />
+    <ClInclude Include="include\CProcessInfo.h" />
+    <ClInclude Include="include\CProcessesInfoMonitoring.h" />
     <ClInclude Include="include\CService.h" />
     <ClInclude Include="include\CServiceHandler.h" />
-    <ClInclude Include="include\EMemoryCountType.h" />
+    <ClInclude Include="include\EMemoryConvertType.h" />
     <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -201,10 +202,10 @@
     <ClCompile Include="src\CHardwareStatusSpecification.cpp" />
     <ClCompile Include="src\CJSONFormatterLogicalDisk.cpp" />
     <ClCompile Include="src\CJSONFormatterProcess.cpp" />
-    <ClCompile Include="src\CLogicalDiskStatus.cpp" />
-    <ClCompile Include="src\CLogicalDiskStatusLifeCycle.cpp" />
-    <ClCompile Include="src\CProcess.cpp" />
-    <ClCompile Include="src\CProcessesMonitoringLifeCycle.cpp" />
+    <ClCompile Include="src\CLogicalDiskInfo.cpp" />
+    <ClCompile Include="src\CLogicalDiskInfoMonitoring.cpp" />
+    <ClCompile Include="src\CProcessInfo.cpp" />
+    <ClCompile Include="src\CProcessesInfoMonitoring.cpp" />
     <ClCompile Include="src\CService.cpp" />
     <ClCompile Include="src\CServiceHandler.cpp" />
     <ClCompile Include="src\stdafx.cpp">

@@ -1,11 +1,11 @@
 #include "stdafx.h"
 
-#include "CProcess.h"
+#include "CProcessInfo.h"
 #include "CContainerOfProcesses.h"
 #include "PlatformUtils.h"
 
 CContainerOfProcesses::CContainerOfProcesses(std::chrono::duration<int> 
-	pause_duration, std::string path_to_file, EMemoryCountType count_type) :
+	pause_duration, std::string path_to_file, EMemoryConvertType count_type) :
 	m_processors_count(0),
 	CHardwareStatusSpecification(pause_duration, path_to_file, count_type),
 	m_is_initialized(false)
@@ -24,7 +24,7 @@ bool CContainerOfProcesses::Initialize()
 	{
 		for (auto PID : list_of_PIDs)
 		{
-			CProcess temp(PID, m_processors_count, m_count_type);
+			CProcessInfo temp(PID, m_processors_count, m_count_type);
 			success = temp.Initialize();
 			if (success = temp.TryToUpdateCurrentStatus())
 			{
@@ -53,7 +53,7 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 		for (auto PID : list_of_PIDs)
 		{
 			auto it = std::find_if(m_container.begin(), m_container.end(),
-								   [PID](const CProcess& proc)
+								   [PID](const CProcessInfo& proc)
 			{
 				unsigned val;
 				return  proc.GetPID(val) ? val == PID : false;
@@ -61,7 +61,7 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 
 			if (it == m_container.end())
 			{
-				CProcess temp(PID, m_processors_count, m_count_type);
+				CProcessInfo temp(PID, m_processors_count, m_count_type);
 				if (temp.Initialize())
 				{
 					m_container.push_back(std::move(temp));
@@ -78,7 +78,7 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 
 		auto dead_process = std::find_if(m_container.begin(), 
 										 m_container.end(), 
-										 [](const CProcess& proc)
+										 [](const CProcessInfo& proc)
 		{
 			return !proc.IsActive();
 		});
@@ -87,7 +87,7 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 		{
 			m_container.erase(dead_process);
 			dead_process = std::find_if(m_container.begin(), m_container.end(),
-									    [](const CProcess& proc)
+									    [](const CProcessInfo& proc)
 			{
 				return !proc.IsActive();
 			});
@@ -96,7 +96,7 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 	return success;
 }
 
-bool CContainerOfProcesses::GetAllProcesses(std::vector<CProcess>& to_vector)
+bool CContainerOfProcesses::GetAllProcesses(std::vector<CProcessInfo>& to_vector)
 {
 	if (m_is_initialized)
 	{

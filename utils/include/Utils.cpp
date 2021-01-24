@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include "Utils.h"
-
+#include "EMemoryConvertType.h"
 //in order to use ctime
 #pragma warning(disable:4996)
 
@@ -119,4 +119,13 @@ void Utils::DisplayError(const std::string& message)
 void Utils::DisplayMessage(const std::string& message)
 {
     std::cout << message << ". " << std::endl;
+}
+
+
+long double Utils::ConvertToCountType(
+    uintmax_t const value_to_calculate, EMemoryConvertType convert_type)
+{
+    return static_cast<long double>(value_to_calculate)
+        /
+        static_cast<long double>(convert_type);
 }

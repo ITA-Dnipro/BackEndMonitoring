@@ -1,11 +1,22 @@
 #include "stdafx.h"
 
-#include "EMemoryCountType.h"
-#include "CLogicalDiskStatus.h"
+#include "EMemoryConvertType.h"
+#include "CLogicalDiskInfo.h"
+#include "Utils.h"
 
-bool CLogicalDiskStatus::InitializeLogicalDiskStatus(
+CLogicalDiskInfo::CLogicalDiskInfo() : m_is_initialize(false)
+{ };
+
+CLogicalDiskInfo::CLogicalDiskInfo(const CLogicalDiskInfo& orig) :
+	m_disk_name(orig.m_disk_name),
+	m_disk_info(orig.m_disk_info),
+	m_count_type(orig.m_count_type),
+	m_is_initialize(orig.m_is_initialize)
+{ };
+
+bool CLogicalDiskInfo::InitializeLogicalDiskStatus(
 	const std::string& disk_name,
-	EMemoryCountType count_type)
+	EMemoryConvertType count_type)
 {
 	m_disk_name = disk_name; 
 	m_count_type = count_type;
@@ -20,10 +31,10 @@ bool CLogicalDiskStatus::InitializeLogicalDiskStatus(
 	return true;
 }
 
-bool CLogicalDiskStatus::IsInitialized() const
+bool CLogicalDiskInfo::IsInitialized() const
 { return m_is_initialize; }
 
-bool CLogicalDiskStatus::TryUpdateCurrentStatus()
+bool CLogicalDiskInfo::TryUpdateCurrentStatus()
 {
 	if (!IsInitialized())
 	{
@@ -48,7 +59,7 @@ bool CLogicalDiskStatus::TryUpdateCurrentStatus()
 	return true;
 }
 
-std::string CLogicalDiskStatus::GetDiskName() const
+std::string CLogicalDiskInfo::GetDiskName() const
 { 
 	if (!IsInitialized())
 	{
@@ -58,36 +69,39 @@ std::string CLogicalDiskStatus::GetDiskName() const
 	return m_disk_name; 
 }
 
-long double CLogicalDiskStatus::GetCapacityOfDisk() const
+long double CLogicalDiskInfo::GetCapacityOfDisk() const
 {
 	if (!IsInitialized())
 	{
 		// will be changed after implementing an exception handler
 		return -1.0;
 	}
-	return RoundToDecimal(CalculateAsCountType(m_disk_info.capacity)); 
+	return RoundToDecimal(Utils::ConvertToCountType(m_disk_info.capacity,
+													m_count_type));
 }
 
-long double CLogicalDiskStatus::GetAvailableOfDisk() const
+long double CLogicalDiskInfo::GetAvailableOfDisk() const
 {
 	if (!IsInitialized())
 	{
 		// will be changed after implementing an exception handler
 		return -1.0;
 	}
-	return RoundToDecimal(CalculateAsCountType(m_disk_info.available)); 
+	return RoundToDecimal(Utils::ConvertToCountType(m_disk_info.available, 
+													m_count_type));
 }
 
-long double CLogicalDiskStatus::GetFreeSpaceOfDisk() const
+long double CLogicalDiskInfo::GetFreeSpaceOfDisk() const
 {
 	if (!IsInitialized())
 	{
 		// will be changed after implementing an exception handler
 		return -1.0;
 	}
-	return RoundToDecimal(CalculateAsCountType(m_disk_info.free)); }
+	return RoundToDecimal(Utils::ConvertToCountType(m_disk_info.free, 
+													m_count_type)); }
 
-long double CLogicalDiskStatus::RoundToDecimal(
+long double CLogicalDiskInfo::RoundToDecimal(
 	long double const value_to_round) const
 { 
 	if (!IsInitialized())
@@ -96,17 +110,4 @@ long double CLogicalDiskStatus::RoundToDecimal(
 		return -1.0;
 	}
 	return round(value_to_round * 100.0) / 100.0; 
-}
-
-long double CLogicalDiskStatus::CalculateAsCountType(
-	uintmax_t const value_to_calculate) const
-{
-	if (!IsInitialized())
-	{
-		// will be changed after implementing an exception handler
-		return -1.0;
-	}
-	return static_cast<long double>(value_to_calculate)
-		   /
-		   static_cast<long double>(m_count_type);
 }

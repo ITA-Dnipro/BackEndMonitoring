@@ -1,13 +1,14 @@
 #include "stdafx.h"
 
 #include "Utils.h"
-#include "CLogicalDiskStatus.h"
+#include "PlatformUtils.h"
+#include "CLogicalDiskInfo.h"
 #include "CContainerOfLogicalDisk.h"
 
 CContainerOfLogicalDisk::CContainerOfLogicalDisk(
 	std::chrono::duration<int> period_of_checking_status,
 	const std::string& path_to_file,
-	EMemoryCountType count_type) :
+	EMemoryConvertType count_type) :
 	CHardwareStatusSpecification(period_of_checking_status,
 		path_to_file,
 		count_type),
@@ -45,15 +46,11 @@ bool CContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 	const unsigned short c_size_of_buffer_for_api = 1024;
 	//We just skip some chars
 	const unsigned short number_of_chars_need_miss = 1U;
-	DWORD buffer_size = c_size_of_buffer_for_api;
 	char container_all_disks_names[c_size_of_buffer_for_api + 
 								   c_size_of_buffer_for_api] = {};
 
-	DWORD is_created_correct = GetLogicalDriveStrings(buffer_size,
-		LPSTR(container_all_disks_names));
-
-	if (is_created_correct > 0 &&
-		is_created_correct <= c_size_of_buffer_for_api)
+	if (PlatformUtils::TryGetLogicalDisksNames(container_all_disks_names,
+		c_size_of_buffer_for_api))
 	{
 		char* variable_for_checking_names = container_all_disks_names;
 
@@ -66,7 +63,7 @@ bool CContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 			{
 				return false;
 			}
-			CLogicalDiskStatus* created_disk = new CLogicalDiskStatus();
+			CLogicalDiskInfo* created_disk = new CLogicalDiskInfo();
 
 			if (!created_disk->InitializeLogicalDiskStatus(
 				name_of_disk, m_count_type))
@@ -92,10 +89,9 @@ bool CContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 bool CContainerOfLogicalDisk::InitializeContainerOfLogicalDisk(
 	CHardwareStatusSpecification& specification)
 {
-	m_pause_duration = specification.GetPauseDuration();
+	m_is_initialized = true;
 	m_path_to_file = *specification.GetPathToSaveFile();
 	m_pause_duration = specification.GetPauseDuration();
-	m_is_initialized = true;
 
 	if (!TryGetAllExistedLogicalDisksAndInfo())
 	{
@@ -109,7 +105,7 @@ bool CContainerOfLogicalDisk::InitializeContainerOfLogicalDisk(
 bool CContainerOfLogicalDisk::IsInitialized() const
 { return m_is_initialized; }
 
-std::vector<CLogicalDiskStatus*>* CContainerOfLogicalDisk::GetAllLogicalDisk()
+std::vector<CLogicalDiskInfo*>* CContainerOfLogicalDisk::GetAllLogicalDisk()
 {
 	if (!IsInitialized())
 	{

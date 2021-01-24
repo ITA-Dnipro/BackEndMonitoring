@@ -2,15 +2,13 @@
 
 #include "CJSONFormatter.h"
 
-class CLogicalDiskStatus;
+class CLogicalDiskInfo;
 
 class CJSONFormatterLogicalDisk :
     public CJSONFormatter
 {
 public:
-    CJSONFormatterLogicalDisk() : CJSONFormatter()
-    { };
-
-    bool TryAddLogicalDiskData(const CLogicalDiskStatus& data_to_json,
+    CJSONFormatterLogicalDisk();
+    bool TryAddLogicalDiskData(const CLogicalDiskInfo& data_to_json,
                                unsigned short disk_number);
 };

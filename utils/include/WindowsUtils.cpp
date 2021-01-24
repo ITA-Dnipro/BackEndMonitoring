@@ -99,4 +99,19 @@ namespace PlatformUtils
 		return success;
 	}
 
+	bool TryGetLogicalDisksNames(char* array_to_write, 
+		const unsigned short c_size_of_buffer_for_api)
+	{
+		DWORD buffer_size = c_size_of_buffer_for_api;
+		DWORD is_created_correct = GetLogicalDriveStrings(buffer_size,
+			LPSTR(array_to_write));
+		if (is_created_correct > 0 &&
+			is_created_correct <= c_size_of_buffer_for_api)
+		{
+			return true;
+		}
+
+		// exception
+		return false;
+	}
 }

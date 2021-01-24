@@ -4,23 +4,23 @@
 #include "CJSONFormatterProcess.h"
 #include "CThreadSafeVariable.h"
 #include "CJSONFormatSaver.h"
-#include "CProcess.h"
-#include "CProcessesMonitoringLifeCycle.h"
+#include "CProcessInfo.h"
+#include "CProcessesInfoMonitoring.h"
 #include "CEvent.h"
 
-CProcessesMonitoringLifeCycle::CProcessesMonitoringLifeCycle(
+CProcessesInfoMonitoring::CProcessesInfoMonitoring(
 	std::chrono::duration<int> pause_duration,
 	std::string path_to_file,
-	EMemoryCountType count_type,
+	EMemoryConvertType count_type,
 	CEvent& stop_event,
 	CThreadSafeVariable<CJSONFormatterProcess>& json_formatter) :
 		m_container(pause_duration, path_to_file, count_type),
 		m_json_formatter(json_formatter),
-		CHardwareInfoLifeCycle(stop_event),
+		IHardwareInfoMonitoring(stop_event),
 		m_is_initialized(false)
 { }
 
-bool CProcessesMonitoringLifeCycle::Initialize()
+bool CProcessesInfoMonitoring::Initialize()
 {
 	bool success;
 	if (success = m_container.Initialize())
@@ -30,7 +30,7 @@ bool CProcessesMonitoringLifeCycle::Initialize()
 	return success;
 }
 
-bool CProcessesMonitoringLifeCycle::ThreadLifeCycle( )
+bool CProcessesInfoMonitoring::StartMonitoringInfo( )
 {
 	if(!m_is_initialized)
 	{
@@ -47,7 +47,7 @@ bool CProcessesMonitoringLifeCycle::ThreadLifeCycle( )
 			{
 				continue;
 			}
-			std::vector<CProcess> processes;
+			std::vector<CProcessInfo> processes;
 			if (m_container.GetAllProcesses(processes))
 			{
 				for (auto& process : processes)

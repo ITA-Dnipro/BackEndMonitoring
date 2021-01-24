@@ -1,9 +1,13 @@
 #include "stdafx.h"
 
-#include "CProcess.h"
+#include "CProcessInfo.h"
 #include "CJSONFormatterProcess.h"
 
-bool CJSONFormatterProcess::TryAddProcessData(const CProcess& process_to_json)
+CJSONFormatterProcess::CJSONFormatterProcess() : CJSONFormatter()
+{};
+
+bool CJSONFormatterProcess::TryAddProcessData(
+    const CProcessInfo& process_to_json)
 {
     nlohmann::json json_format_data;
 

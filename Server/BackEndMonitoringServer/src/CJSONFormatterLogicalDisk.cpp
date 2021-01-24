@@ -1,11 +1,14 @@
 #include "stdafx.h"
 
 #include "CJSONFormatter.h"
-#include "CLogicalDiskStatus.h"
+#include "CLogicalDiskInfo.h"
 #include "CJSONFormatterLogicalDisk.h"
 
+CJSONFormatterLogicalDisk::CJSONFormatterLogicalDisk() : CJSONFormatter()
+{ };
+
 bool CJSONFormatterLogicalDisk::TryAddLogicalDiskData(
-    const CLogicalDiskStatus& data_to_json, unsigned short disk_number)
+    const CLogicalDiskInfo& data_to_json, unsigned short disk_number)
 {
     nlohmann::json json_format_data;
     constexpr size_t num_of_letter = 10ULL;

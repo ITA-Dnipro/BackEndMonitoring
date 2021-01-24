@@ -1,15 +1,15 @@
 #pragma once
 
-enum class EMemoryCountType;
+enum class EMemoryConvertType;
 
-class CProcess {
+class CProcessInfo {
 public:
-	CProcess() = default;
-	explicit CProcess(unsigned PID, unsigned count_of_processors, 
-					  EMemoryCountType type);
-	CProcess(const CProcess&);
-	CProcess(CProcess&&) noexcept;
-	CProcess& operator= (const CProcess&);
+	CProcessInfo() = default;
+	explicit CProcessInfo(unsigned PID, unsigned count_of_processors, 
+					  EMemoryConvertType type);
+	CProcessInfo(const CProcessInfo&);
+	CProcessInfo(CProcessInfo&&) noexcept;
+	CProcessInfo& operator= (const CProcessInfo&);
 
 	bool Initialize();
 	bool TryToUpdateCurrentStatus();
@@ -18,9 +18,9 @@ public:
 	bool GetCpuUsage(double&) const;
 	bool GetRamUsage(long double&) const;
 	bool GetPagefileUsage(long double&) const;
-	EMemoryCountType GetMemoryCountType() const;
+	EMemoryConvertType GetMemoryCountType() const;
 private:
-	bool ComputeCpuUsage();
+	bool CountCpuUsage();
 
 private:
 	bool m_is_initialized;
@@ -29,7 +29,7 @@ private:
 	double m_cpu_usage;
 	size_t m_ram_usage;
 	size_t m_pagefile_usage;
-	EMemoryCountType m_count_type;
+	EMemoryConvertType m_count_type;
 	unsigned long long m_last_sys_time, m_last_kernel_time, m_last_user_time;
 };
 

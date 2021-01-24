@@ -1,11 +1,12 @@
 #include "stdafx.h"
 
-#include "EMemoryCountType.h"
+#include "EMemoryConvertType.h"
 #include "PlatformUtils.h"
-#include "CProcess.h"
+#include "CProcessInfo.h"
+#include "Utils.h"
 
-CProcess::CProcess(unsigned PID, unsigned count_of_processors, 
-                   EMemoryCountType type) :
+CProcessInfo::CProcessInfo(unsigned PID, unsigned count_of_processors, 
+                   EMemoryConvertType type) :
     m_PID(PID),
     m_count_of_processors(count_of_processors),m_count_type(type), 
     m_cpu_usage(0.0), m_ram_usage(00ULL), m_pagefile_usage(00ULL),
@@ -13,7 +14,7 @@ CProcess::CProcess(unsigned PID, unsigned count_of_processors,
     m_is_initialized(false)
 { }
 
-CProcess::CProcess(const CProcess& other) : m_PID(other.m_PID), 
+CProcessInfo::CProcessInfo(const CProcessInfo& other) : m_PID(other.m_PID), 
         m_count_of_processors(other.m_count_of_processors),
         m_cpu_usage(other.m_cpu_usage),
         m_ram_usage(other.m_ram_usage),
@@ -25,7 +26,7 @@ CProcess::CProcess(const CProcess& other) : m_PID(other.m_PID),
         m_is_initialized(other.m_is_initialized)
 { }
 
-CProcess::CProcess(CProcess&& other) noexcept: m_PID(other.m_PID),
+CProcessInfo::CProcessInfo(CProcessInfo&& other) noexcept: m_PID(other.m_PID),
         m_count_of_processors(other.m_count_of_processors),
         m_cpu_usage(other.m_cpu_usage),
         m_ram_usage(other.m_ram_usage),
@@ -37,7 +38,7 @@ CProcess::CProcess(CProcess&& other) noexcept: m_PID(other.m_PID),
         m_is_initialized(other.m_is_initialized)
 { }
 
-CProcess& CProcess::operator=(const CProcess& other)
+CProcessInfo& CProcessInfo::operator=(const CProcessInfo& other)
 {
     m_PID = other.m_PID;
     m_count_of_processors = other.m_count_of_processors;
@@ -52,7 +53,7 @@ CProcess& CProcess::operator=(const CProcess& other)
     return *this;
 }
 
-bool CProcess::Initialize()
+bool CProcessInfo::Initialize()
 {
     if(m_is_initialized)
     {
@@ -72,7 +73,7 @@ bool CProcess::Initialize()
     return success;
 }
 
-bool CProcess::TryToUpdateCurrentStatus()
+bool CProcessInfo::TryToUpdateCurrentStatus()
 {
     if(!m_is_initialized)
     {
@@ -80,7 +81,7 @@ bool CProcess::TryToUpdateCurrentStatus()
     }
     bool success;
 
-    success = ComputeCpuUsage();
+    success = CountCpuUsage();
     if (!success)
     { return success;}
 
@@ -89,7 +90,7 @@ bool CProcess::TryToUpdateCurrentStatus()
     return success;
 }
 
-bool CProcess::IsActive() const
+bool CProcessInfo::IsActive() const
 {
     if (!m_is_initialized)
     {
@@ -99,7 +100,7 @@ bool CProcess::IsActive() const
     return PlatformUtils::CheckIsProcessActive(m_PID);
 }
 
-bool CProcess::GetPID(unsigned& value) const
+bool CProcessInfo::GetPID(unsigned& value) const
 {   
     if (m_is_initialized)
     {
@@ -109,7 +110,7 @@ bool CProcess::GetPID(unsigned& value) const
     return false;
 }
 
-bool CProcess::GetCpuUsage(double& value) const
+bool CProcessInfo::GetCpuUsage(double& value) const
 {
     if (m_is_initialized)
     {
@@ -119,35 +120,32 @@ bool CProcess::GetCpuUsage(double& value) const
     return false;
 }
 
-bool CProcess::GetRamUsage(long double& value) const
+bool CProcessInfo::GetRamUsage(long double& value) const
 {
     if (m_is_initialized)
     {
-        value = static_cast<long double>(m_ram_usage)
-                /
-                static_cast<unsigned>(m_count_type);
+        value = Utils::ConvertToCountType(m_ram_usage, m_count_type);
         return true;
     }
     return false;
 }
 
-bool CProcess::GetPagefileUsage(long double& value) const
+bool CProcessInfo::GetPagefileUsage(long double& value) const
 {
     if (m_is_initialized)
     {
-        value = static_cast<long double>(m_pagefile_usage)
-                /
-                static_cast<unsigned>(m_count_type);
+        value = Utils::ConvertToCountType(m_pagefile_usage, m_count_type);
         return true;
+
     }
     return false;
 }
 
-EMemoryCountType CProcess::GetMemoryCountType() const
+EMemoryConvertType CProcessInfo::GetMemoryCountType() const
 { return m_count_type;}
 
 
-bool CProcess::ComputeCpuUsage()
+bool CProcessInfo::CountCpuUsage()
 {
     bool success;
 
@@ -162,7 +160,8 @@ bool CProcess::ComputeCpuUsage()
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
         success = PlatformUtils::GetProcessTimes(m_PID, cur_sys_time,
-                                                 cur_kernel_time, cur_user_time);
+                                                 cur_kernel_time, 
+                                                 cur_user_time);
         if (!success)
         { return success;}
     }

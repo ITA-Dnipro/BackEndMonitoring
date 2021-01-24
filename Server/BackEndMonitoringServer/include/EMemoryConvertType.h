@@ -1,6 +1,6 @@
 #pragma once
 
-enum class EMemoryCountType
+enum class EMemoryConvertType
 {
 	BYTES = 1,
 	KILOBYTES = BYTES * 1024,

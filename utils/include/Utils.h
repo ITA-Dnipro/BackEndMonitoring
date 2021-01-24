@@ -1,5 +1,7 @@
 #pragma once
 
+#include "EMemoryConvertType.h"
+
 namespace Utils
 {
 	/// <summary>
@@ -18,4 +20,8 @@ namespace Utils
 
 	void DisplayError(const std::string& message);
 	void DisplayMessage(const std::string& message);
+
+	[[nodiscard]] long double ConvertToCountType(
+		uintmax_t const value_to_calculate, EMemoryConvertType convert_type);
+
 }

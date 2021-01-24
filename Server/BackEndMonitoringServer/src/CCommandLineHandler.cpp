@@ -1,20 +1,18 @@
 #include "stdafx.h"
 
 #include "CCommandLineHandler.h"
-
 #include "CServiceHandler.h"
 #include "Utils.h"
 
 Task CommandLineHandler::GetTask()
-{
-    return task;
-}
+{ return task; }
 
 bool CommandLineHandler::Parse(int argc, char** argv)
 {
     ServiceParameters parameters;
     auto service = std::make_unique<CService>(parameters);
-    auto service_handler = std::make_unique<ServiceHandler>(std::move(service));
+    auto service_handler = 
+        std::make_unique<ServiceHandler>(std::move(service));
 
     bool success = true;
 

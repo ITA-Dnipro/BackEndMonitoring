@@ -1,22 +1,38 @@
 ﻿#include "stdafx.h"
 
 #include "CEvent.h"
-#include "EMemoryCountType.h"
-#include "CProcess.h"
+#include "EMemoryConvertType.h"
+#include "CProcessInfo.h"
 #include "CContainerOfProcesses.h"
 #include "CThreadSafeVariable.h"
 #include "CJSONFormatter.h"
 #include "CJSONFormatterProcess.h"
-#include "CProcessesMonitoringLifeCycle.h"
+#include "CJSONFormatterLogicalDisk.h"
+#include "CProcessesInfoMonitoring.h"
+#include "CLogicalDiskInfoMonitoring.h"
 
 int main(int argc, char** argv)
 {
+    /*
     CEvent stop;
     CThreadSafeVariable<CJSONFormatterProcess> jsonf;
-    CProcessesMonitoringLifeCycle processes(std::chrono::seconds(10),
+    CProcessesInfoMonitoring processes(std::chrono::seconds(10),
                                   "F:\\Git\\BackEndMonitoring\\log.json",
-                                  EMemoryCountType::KILOBYTES, stop, jsonf);
+                                  EMemoryConvertType::KILOBYTES, stop, jsonf);
     processes.Initialize( );
-    processes.ThreadLifeCycle( );
+    processes.StartMonitoringInfo( );
+    */
+
+    /*
+    CEvent stop;
+    CThreadSafeVariable<CJSONFormatterLogicalDisk> jsonf;
+    CHardwareStatusSpecification specification_from_xml(
+        std::chrono::duration<int>(5), "info.json",
+        EMemoryConvertType::GIGABYTES);
+    CLogicalDiskInfoMonitoring logical_disks(stop, &specification_from_xml, jsonf);
+
+    logical_disks.StartMonitoringInfo();
+    */
+
     return 0;
 }
