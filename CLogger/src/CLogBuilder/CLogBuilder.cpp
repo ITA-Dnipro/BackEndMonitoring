@@ -2,8 +2,6 @@
 
 #include "CLogBuilder/CLogBuilder.h"
 
-CLOGGER_API extern auto loggerBuilder = std::unique_ptr<CLogBuilder>(nullptr);
-
 CLogBuilder::CLogBuilder(const std::string& log_name, const ELogLevel log_level)
 	: m_log_level(log_level), m_log_name(log_name)
 {}
