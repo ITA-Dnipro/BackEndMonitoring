@@ -86,7 +86,7 @@ bool Utils::TryGetFormattedDiskName(std::string& name_of_disk)
     return true;
 }
 
-bool Utils::TryCreateFileIfNotExist(std::string& path_to_file)
+bool Utils::TryCreateFileIfNotExist(const std::string& path_to_file)
 {
     if (!std::filesystem::exists(path_to_file))
     {
