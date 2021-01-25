@@ -23,20 +23,15 @@ public:
 	[[nodiscard]] long double GetFreeSpaceOfDisk() const;
 
 private:
-	explicit CLogicalDiskInfo( 
+	explicit CLogicalDiskInfo(
 		const std::string& disk_name,
-		EMemoryConvertType count_type) :
-		m_disk_name(disk_name), m_count_type(count_type), 
-		m_is_initialize(true)
-	{ };
+		EMemoryConvertType count_type);
 	
-	[[nodiscard]] long double RoundToDecimal(long double const value_to_round) 
-		const;
-
-	bool m_is_initialize;
-	std::string m_disk_name;
+private:
 	std::filesystem::space_info m_disk_info{};
+	std::string m_disk_name;
 	EMemoryConvertType m_count_type;
+	bool m_is_initialize;
 };
 
 

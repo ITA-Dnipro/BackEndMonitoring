@@ -22,23 +22,21 @@ CProcessesInfoMonitoring::CProcessesInfoMonitoring(
 
 bool CProcessesInfoMonitoring::Initialize()
 {
-	bool success;
-	if (success = m_container.Initialize())
-	{
-		m_is_initialized = true;
-	}
-	return success;
+	m_is_initialized = m_container.Initialize() 
+					   && m_container.TryToUpdateCurrentStatus();
+	return m_is_initialized;
 }
 
 bool CProcessesInfoMonitoring::StartMonitoringInfo( )
 {
 	if(!m_is_initialized)
-	{
-		return false;
-	}
+	{ return false;}
 
-	CJSONFormatSaver json_saver(*m_container.GetPathToSaveFile( ));
-	while (!m_stop_event.WaitFor(m_container.GetPauseDuration( )))
+
+	CJSONFormatSaver json_saver(
+		*m_container.GetSpecification()->GetPathToSaveFile( ));
+	while (!m_stop_event.WaitFor(
+		m_container.GetSpecification()->GetPauseDuration( )))
 	{
 		{
 			auto [json_formatter, mtx] = m_json_formatter.GetAccess( );

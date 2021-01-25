@@ -17,13 +17,15 @@ public:
 
 	[[nodiscard]] std::chrono::duration<int> GetPauseDuration() const;
 	[[nodiscard]] EMemoryConvertType GetCountType() const;
-	[[nodiscard]] std::string* GetPathToSaveFile();
+	[[nodiscard]] const std::string* GetPathToSaveFile() const;
+
+	[[nodiscard]] bool CloneObject(const CHardwareStatusSpecification& orig);
 
 protected:
-	// duration is used as seconds
-	std::chrono::duration<int> m_pause_duration{};
 	// path to file where status of hardware will be storaged
 	std::string m_path_to_file;
+	// duration is used as seconds
+	std::chrono::duration<int> m_pause_duration{};
 	// Bytes - Megabytes - Gigabytes
 	EMemoryConvertType m_count_type;
 };

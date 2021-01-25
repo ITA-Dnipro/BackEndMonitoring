@@ -79,8 +79,8 @@ namespace PlatformUtils
 		return success;
 	}
 
-	bool GetProcessMemoryUsage(unsigned PID, size_t& ram_usage, 
-							   size_t& pagefile_usage)
+	bool GetProcessMemoryUsage(unsigned PID, unsigned long long& ram_usage, 
+		unsigned long long& pagefile_usage)
 	{
 		HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
 									 FALSE, PID);

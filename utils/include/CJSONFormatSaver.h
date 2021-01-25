@@ -16,7 +16,7 @@ protected:
 	[[nodiscard]] bool TryWriteToFile(std::ofstream& JSON_file_to_save, CJSONFormatter& formatted_data);
 
 private:
-	std::string m_path_to_file;
+	const std::string m_path_to_file;
 	const unsigned short m_number_of_spaces;
 };
 

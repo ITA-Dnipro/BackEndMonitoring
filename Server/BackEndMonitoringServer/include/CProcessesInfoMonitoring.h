@@ -25,8 +25,8 @@ public:
 	bool StartMonitoringInfo() override;
 
 private:
-	bool m_is_initialized;
 	CContainerOfProcesses m_container;
 	CThreadSafeVariable<CJSONFormatterProcess>& m_json_formatter;
+	bool m_is_initialized;
 };
 

@@ -27,7 +27,7 @@ int main(int argc, char** argv)
     CEvent stop;
     CThreadSafeVariable<CJSONFormatterLogicalDisk> jsonf;
     CHardwareStatusSpecification specification_from_xml(
-        std::chrono::duration<int>(5), "info.json",
+        std::chrono::duration<int>(1), "info.json",
         EMemoryConvertType::GIGABYTES);
     CLogicalDiskInfoMonitoring logical_disks(stop, &specification_from_xml, jsonf);
 

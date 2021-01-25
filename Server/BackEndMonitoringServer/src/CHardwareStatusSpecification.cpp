@@ -25,5 +25,15 @@ CHardwareStatusSpecification::GetPauseDuration() const
 EMemoryConvertType CHardwareStatusSpecification::GetCountType() const
 { return m_count_type; }
 
-std::string* CHardwareStatusSpecification::GetPathToSaveFile()
+const std::string* CHardwareStatusSpecification::GetPathToSaveFile() const
 { return &m_path_to_file; }
+
+bool CHardwareStatusSpecification::CloneObject(
+	const CHardwareStatusSpecification& orig)
+{
+	m_count_type = orig.m_count_type;
+	m_path_to_file = orig.m_path_to_file;
+	m_pause_duration = orig.m_pause_duration;
+
+	return true;
+}

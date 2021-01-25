@@ -160,3 +160,7 @@ long double Utils::ConvertToCountType(
         /
         static_cast<long double>(convert_type);
 }
+
+long double Utils::RoundToDecimal(
+    long double const value_to_round)
+{ return round(value_to_round * 100.0) / 100.0; }

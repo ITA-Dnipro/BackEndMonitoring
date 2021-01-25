@@ -4,10 +4,10 @@
 #include "CContainerOfProcesses.h"
 #include "PlatformUtils.h"
 
-CContainerOfProcesses::CContainerOfProcesses(std::chrono::duration<int> 
+CContainerOfProcesses::CContainerOfProcesses(std::chrono::duration<int>
 	pause_duration, std::string path_to_file, EMemoryConvertType count_type) :
 	m_processors_count(0),
-	CHardwareStatusSpecification(pause_duration, path_to_file, count_type),
+	m_specification(pause_duration, path_to_file, count_type),
 	m_is_initialized(false)
 { }
 
@@ -19,12 +19,13 @@ bool CContainerOfProcesses::Initialize()
 	{ return false;}
 
 	std::list<unsigned> list_of_PIDs;
-	bool success;
+	bool success = true;
 	if (success = PlatformUtils::GetListOfProcessIds(list_of_PIDs))
 	{
 		for (auto PID : list_of_PIDs)
 		{
-			CProcessInfo temp(PID, m_processors_count, m_count_type);
+			CProcessInfo temp(PID, m_processors_count,
+				m_specification.GetCountType());
 			success = temp.Initialize();
 			if (success = temp.TryToUpdateCurrentStatus())
 			{
@@ -32,10 +33,7 @@ bool CContainerOfProcesses::Initialize()
 			}
 		}
 	}
-	if (success)
-	{
-		m_is_initialized = true;
-	}
+	m_is_initialized = success;
 	return success;
 }
 
@@ -61,7 +59,8 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 
 			if (it == m_container.end())
 			{
-				CProcessInfo temp(PID, m_processors_count, m_count_type);
+				CProcessInfo temp(PID, m_processors_count,
+					m_specification.GetCountType());
 				if (temp.Initialize())
 				{
 					m_container.push_back(std::move(temp));
@@ -101,7 +100,10 @@ bool CContainerOfProcesses::GetAllProcesses(std::vector<CProcessInfo>& to_vector
 	if (m_is_initialized)
 	{
 		to_vector = m_container;
-		return true;
 	}
-	return false;
+	return m_is_initialized;
 };
+
+const CHardwareStatusSpecification* CContainerOfProcesses::GetSpecification()
+const
+{ return &m_specification; }

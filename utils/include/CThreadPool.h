@@ -48,10 +48,8 @@ private:
 	void ThreadWork();
 
 private:
-	std::vector<std::thread> m_threads;
 	CEvent m_event;
 	CThreadSafeVariable<std::queue<Task>> m_tasks_queue;
-
+	std::vector<std::thread> m_threads;
 	CEvent& m_stop_event;
-
 };
