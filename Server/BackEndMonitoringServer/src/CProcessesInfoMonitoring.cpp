@@ -23,7 +23,9 @@ CProcessesInfoMonitoring::CProcessesInfoMonitoring(
 bool CProcessesInfoMonitoring::Initialize()
 {
 	bool success;
-	if (success = m_container.Initialize())
+	success = m_container.Initialize();
+	success = m_container.TryToUpdateCurrentStatus();
+	if (success)
 	{
 		m_is_initialized = true;
 	}
@@ -36,6 +38,7 @@ bool CProcessesInfoMonitoring::StartMonitoringInfo( )
 	{
 		return false;
 	}
+
 
 	CJSONFormatSaver json_saver(*m_container.GetPathToSaveFile( ));
 	while (!m_stop_event.WaitFor(m_container.GetPauseDuration( )))

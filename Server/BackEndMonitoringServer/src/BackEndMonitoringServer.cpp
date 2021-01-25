@@ -13,16 +13,18 @@
 
 int main(int argc, char** argv)
 {
-    /*
+    //______________ProcessesInfoMonitoring Test___________________
+    
     CEvent stop;
     CThreadSafeVariable<CJSONFormatterProcess> jsonf;
     CProcessesInfoMonitoring processes(std::chrono::seconds(10),
-                                  "F:\\Git\\BackEndMonitoring\\log.json",
+                                  "C:\\Git\\BackEndMonitoring\\log.json",
                                   EMemoryConvertType::KILOBYTES, stop, jsonf);
     processes.Initialize( );
     processes.StartMonitoringInfo( );
-    */
+    
 
+    //___________LogicalDiskInfoMonitoring Test___________________
     /*
     CEvent stop;
     CThreadSafeVariable<CJSONFormatterLogicalDisk> jsonf;
