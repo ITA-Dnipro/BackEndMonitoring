@@ -3,8 +3,9 @@
 #include "CHardwareStatusSpecification.h"
 
 class CLogicalDiskInfo;
+class CJSONFormatterLogicalDisk;
 
-class CContainerOfLogicalDisk : public CHardwareStatusSpecification
+class CContainerOfLogicalDisk
 {
 public:
 	CContainerOfLogicalDisk() = delete;
@@ -18,17 +19,22 @@ public:
 
 	~CContainerOfLogicalDisk() noexcept;
 
-	[[nodiscard]] bool InitializeContainerOfLogicalDisk(
-			CHardwareStatusSpecification& specification);
+	[[nodiscard]] bool InitializeContainerOfLogicalDisk();
 
 	[[nodiscard]] bool IsInitialized() const;
 
-	[[nodiscard]] std::vector<CLogicalDiskInfo*>* GetAllLogicalDisk();
+	[[nodiscard]] bool TryUpdateInfoLogicalDiskToJSON(
+		CJSONFormatterLogicalDisk& json_formatter);
+
+	[[nodiscard]] const std::vector<CLogicalDiskInfo*>* GetAllLogicalDisk() 
+		const;
+	[[nodiscard]] const CHardwareStatusSpecification* GetSpecification() const;
 
 private:
 	[[nodiscard]] bool TryGetAllExistedLogicalDisksAndInfo();
 
 private:
+	CHardwareStatusSpecification m_specification;
 	std::vector<CLogicalDiskInfo*> m_p_container_all_logical_disks;
 	bool m_is_initialized;
 };

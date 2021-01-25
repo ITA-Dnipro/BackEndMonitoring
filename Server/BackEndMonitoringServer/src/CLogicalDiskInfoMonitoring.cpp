@@ -31,24 +31,29 @@ CLogicalDiskInfoMonitoring::CLogicalDiskInfoMonitoring(
 
 CLogicalDiskInfoMonitoring::~CLogicalDiskInfoMonitoring()
 {
-	delete m_p_specification;
-	delete m_p_container;
+	if (nullptr != m_p_specification)
+	{
+		delete m_p_specification;
+	}
+	if (nullptr != m_p_container)
+	{
+		delete m_p_container;
+	}
 }
 
-bool CLogicalDiskInfoMonitoring::StartMonitoringInfo( )
+bool CLogicalDiskInfoMonitoring::StartMonitoringInfo()
 {
 	if (nullptr == m_p_container)
 	{
 		m_p_container = new CContainerOfLogicalDisk(*m_p_specification);
 	}
-	if (!m_p_container->InitializeContainerOfLogicalDisk(
-		*m_p_specification))
+	if (!m_p_container->InitializeContainerOfLogicalDisk())
 	{
 		// error
 		return false;
 	}
 	CJSONFormatSaver json_saver(
-		*m_p_container->GetPathToSaveFile());
+		*m_p_container->GetSpecification()->GetPathToSaveFile());
 
 	if (nullptr == m_p_container)
 	{
@@ -57,36 +62,18 @@ bool CLogicalDiskInfoMonitoring::StartMonitoringInfo( )
 	}
 	while (!m_stop_event.WaitFor(m_p_specification->GetPauseDuration()))
 	{
-		auto [json_formatter, mtx] = m_json_formatter.GetAccess( );
+		auto [json_formatter, mtx] = m_json_formatter.GetAccess();
 		
-		if (!json_formatter.TryEraseAllData( ))
+		if (!json_formatter.TryEraseAllData())
 		{
 			continue;
 		}
-
-		unsigned short disk_number = 0;
-
-		for (const auto& disk :
-			*(m_p_container->GetAllLogicalDisk()))
+		m_p_container->TryUpdateInfoLogicalDiskToJSON(json_formatter);
+		if (!json_saver.TrySaveToFile(json_formatter))
 		{
+			//exception handler
+			continue;
 
-			if (!disk->TryUpdateCurrentStatus())
-			{
-				std::cout << "Enable to update!" << std::endl;
-				break;
-			}
-			if (!json_formatter.TryAddLogicalDiskData(*disk, disk_number))
-			{
-				//exception handler
-				continue;
-			}
-			disk_number++;
-			if (!json_saver.TrySaveToFile(json_formatter))
-			{
-				//exception handler
-				continue;
-
-			}
 		}
 	}
 	return true;

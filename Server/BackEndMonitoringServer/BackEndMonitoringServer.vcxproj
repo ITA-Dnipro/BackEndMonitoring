@@ -168,6 +168,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="include\CCommandLineHandler.h" />
     <ClInclude Include="include\CContainerOfLogicalDisk.h" />

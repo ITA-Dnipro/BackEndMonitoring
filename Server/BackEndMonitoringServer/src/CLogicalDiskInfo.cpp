@@ -14,6 +14,13 @@ CLogicalDiskInfo::CLogicalDiskInfo(const CLogicalDiskInfo& orig) :
 	m_is_initialize(orig.m_is_initialize)
 { };
 
+CLogicalDiskInfo::CLogicalDiskInfo(
+	const std::string& disk_name,
+	EMemoryConvertType count_type) :
+	m_disk_name(disk_name), m_count_type(count_type),
+	m_is_initialize(true)
+{ };
+
 bool CLogicalDiskInfo::InitializeLogicalDiskStatus(
 	const std::string& disk_name,
 	EMemoryConvertType count_type)
@@ -76,7 +83,7 @@ long double CLogicalDiskInfo::GetCapacityOfDisk() const
 		// will be changed after implementing an exception handler
 		return -1.0;
 	}
-	return RoundToDecimal(Utils::ConvertToCountType(m_disk_info.capacity,
+	return Utils::RoundToDecimal(Utils::ConvertToCountType(m_disk_info.capacity,
 													m_count_type));
 }
 
@@ -87,7 +94,7 @@ long double CLogicalDiskInfo::GetAvailableOfDisk() const
 		// will be changed after implementing an exception handler
 		return -1.0;
 	}
-	return RoundToDecimal(Utils::ConvertToCountType(m_disk_info.available, 
+	return Utils::RoundToDecimal(Utils::ConvertToCountType(m_disk_info.available,
 													m_count_type));
 }
 
@@ -98,16 +105,6 @@ long double CLogicalDiskInfo::GetFreeSpaceOfDisk() const
 		// will be changed after implementing an exception handler
 		return -1.0;
 	}
-	return RoundToDecimal(Utils::ConvertToCountType(m_disk_info.free, 
-													m_count_type)); }
-
-long double CLogicalDiskInfo::RoundToDecimal(
-	long double const value_to_round) const
-{ 
-	if (!IsInitialized())
-	{
-		// will be changed after implementing an exception handler
-		return -1.0;
-	}
-	return round(value_to_round * 100.0) / 100.0; 
+	return Utils::RoundToDecimal(Utils::ConvertToCountType(m_disk_info.free,
+													m_count_type)); 
 }

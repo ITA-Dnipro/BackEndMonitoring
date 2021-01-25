@@ -33,8 +33,10 @@ bool CProcessesInfoMonitoring::StartMonitoringInfo( )
 	{ return false;}
 
 
-	CJSONFormatSaver json_saver(*m_container.GetPathToSaveFile( ));
-	while (!m_stop_event.WaitFor(m_container.GetPauseDuration( )))
+	CJSONFormatSaver json_saver(
+		*m_container.GetSpecification()->GetPathToSaveFile( ));
+	while (!m_stop_event.WaitFor(
+		m_container.GetSpecification()->GetPauseDuration( )))
 	{
 		{
 			auto [json_formatter, mtx] = m_json_formatter.GetAccess( );

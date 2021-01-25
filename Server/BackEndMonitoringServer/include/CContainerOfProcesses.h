@@ -4,7 +4,7 @@
 
 class CProcessInfo;
 
-class CContainerOfProcesses : public CHardwareStatusSpecification
+class CContainerOfProcesses
 {
 public:
 	CContainerOfProcesses() = delete;
@@ -14,11 +14,15 @@ public:
 	CContainerOfProcesses(CContainerOfProcesses&&) noexcept = delete;
 	~CContainerOfProcesses() noexcept = default;
 
-	bool Initialize();
-	bool TryToUpdateCurrentStatus();
-	bool GetAllProcesses(std::vector<CProcessInfo>& to_vector);
+	[[nodiscard]]bool Initialize();
+
+	[[nodiscard]]bool TryToUpdateCurrentStatus();
+
+	[[nodiscard]]bool GetAllProcesses(std::vector<CProcessInfo>& to_vector);
+	[[nodiscard]]const CHardwareStatusSpecification* GetSpecification() const;
 
 private:
+	CHardwareStatusSpecification m_specification;
 	std::vector<CProcessInfo> m_container;
 	unsigned m_processors_count;
 	bool m_is_initialized;
