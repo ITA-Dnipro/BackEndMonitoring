@@ -23,7 +23,7 @@ int main(int argc, char** argv)
     processes.StartMonitoringInfo( );
     */
 
-
+    /*
     CEvent stop;
     CThreadSafeVariable<CJSONFormatterLogicalDisk> jsonf;
     CHardwareStatusSpecification specification_from_xml(
@@ -32,7 +32,7 @@ int main(int argc, char** argv)
     CLogicalDiskInfoMonitoring logical_disks(stop, &specification_from_xml, jsonf);
 
     logical_disks.StartMonitoringInfo();
-
+    */
 
     return 0;
 }

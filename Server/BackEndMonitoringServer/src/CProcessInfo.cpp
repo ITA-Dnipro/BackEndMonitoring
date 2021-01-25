@@ -114,7 +114,8 @@ bool CProcessInfo::GetRamUsage(long double& value) const
 {
     if (m_is_initialized)
     {
-        value = Utils::ConvertToCountType(m_ram_usage, m_count_type);
+        value = Utils::RoundToDecimal(
+            Utils::ConvertToCountType(m_ram_usage, m_count_type));
     }
     return m_is_initialized;
 }
@@ -123,7 +124,8 @@ bool CProcessInfo::GetPagefileUsage(long double& value) const
 {
     if (m_is_initialized)
     {
-        value = Utils::ConvertToCountType(m_pagefile_usage, m_count_type);
+        value = Utils::RoundToDecimal(
+            Utils::ConvertToCountType(m_pagefile_usage, m_count_type));
     }
     return m_is_initialized;
 }

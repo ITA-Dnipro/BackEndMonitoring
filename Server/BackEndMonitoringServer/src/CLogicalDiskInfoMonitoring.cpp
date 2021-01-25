@@ -68,7 +68,9 @@ bool CLogicalDiskInfoMonitoring::StartMonitoringInfo()
 		{
 			continue;
 		}
+		
 		m_p_container->TryUpdateInfoLogicalDiskToJSON(json_formatter);
+
 		if (!json_saver.TrySaveToFile(json_formatter))
 		{
 			//exception handler

@@ -46,8 +46,8 @@ bool CContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 	const unsigned short c_size_of_buffer_for_api = 1024;
 	//We just skip some chars
 	const unsigned short number_of_chars_need_miss = 1U;
-	char container_all_disks_names[c_size_of_buffer_for_api + 
-								   c_size_of_buffer_for_api] = {};
+	char container_all_disks_names[c_size_of_buffer_for_api +
+		c_size_of_buffer_for_api] = {};
 
 	if (PlatformUtils::TryGetLogicalDisksNames(container_all_disks_names,
 		c_size_of_buffer_for_api))
@@ -75,7 +75,7 @@ bool CContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 			//go to the next driver
 			variable_for_checking_names +=
 				strlen(variable_for_checking_names) +
-					   number_of_chars_need_miss;
+				number_of_chars_need_miss;
 		}
 	}
 	else
@@ -86,10 +86,10 @@ bool CContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 	return true;
 }
 
-bool CContainerOfLogicalDisk::InitializeContainerOfLogicalDisk( )
+bool CContainerOfLogicalDisk::InitializeContainerOfLogicalDisk()
 {
 	m_is_initialized = true;
-	
+
 	if (!TryGetAllExistedLogicalDisksAndInfo())
 	{
 		m_is_initialized = false;
@@ -100,7 +100,9 @@ bool CContainerOfLogicalDisk::InitializeContainerOfLogicalDisk( )
 }
 
 bool CContainerOfLogicalDisk::IsInitialized() const
-{ return m_is_initialized; }
+{
+	return m_is_initialized;
+}
 
 bool CContainerOfLogicalDisk::TryUpdateInfoLogicalDiskToJSON(
 	CJSONFormatterLogicalDisk& json_formatter)
@@ -133,8 +135,10 @@ const std::vector<CLogicalDiskInfo*>* CContainerOfLogicalDisk::GetAllLogicalDisk
 		// will be changed after implementing an exception handler
 		return nullptr;
 	}
-	return &m_p_container_all_logical_disks; 
+	return &m_p_container_all_logical_disks;
 }
 
 const CHardwareStatusSpecification* CContainerOfLogicalDisk::GetSpecification() const
-{ return &m_specification; }
+{
+	return &m_specification;
+}
