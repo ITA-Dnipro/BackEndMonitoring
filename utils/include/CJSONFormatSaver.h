@@ -6,13 +6,14 @@ class CJSONFormatSaver
 {
 public:
 	CJSONFormatSaver() = delete;
-	CJSONFormatSaver(const std::string& path_to_file) :
-		m_path_to_file(path_to_file), m_number_of_spaces(3)
-	{ };
+	CJSONFormatSaver(const std::string& path_to_file);
 	CJSONFormatSaver(const CJSONFormatSaver&) = delete;
 	CJSONFormatSaver(const CJSONFormatSaver&&) = delete;
 	
 	[[nodiscard]] bool TrySaveToFile(CJSONFormatter& formatted_data);
+
+protected:
+	[[nodiscard]] bool TryWriteToFile(std::ofstream& JSON_file_to_save, CJSONFormatter& formatted_data);
 
 private:
 	std::string m_path_to_file;

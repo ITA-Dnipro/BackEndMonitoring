@@ -56,11 +56,11 @@ bool CProcessesInfoMonitoring::StartMonitoringInfo( )
 					{
 						continue;
 					}
-					if (!json_saver.TrySaveToFile(json_formatter))
-					{
-						//exception handler
-						continue;
-					}
+				}
+				if (!json_saver.TrySaveToFile(json_formatter))
+				{
+					//exception handler
+					continue;
 				}
 			}
 		}

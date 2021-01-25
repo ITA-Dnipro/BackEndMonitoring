@@ -63,6 +63,9 @@
     <ClInclude Include="..\..\utils\include\PlatformUtils.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />

@@ -81,12 +81,11 @@ bool CLogicalDiskInfoMonitoring::StartMonitoringInfo( )
 				continue;
 			}
 			disk_number++;
-			if (!json_saver.TrySaveToFile(json_formatter))
-			{
-				//exception handler
-				continue;
-
-			}
+		}
+		if (!json_saver.TrySaveToFile(json_formatter))
+		{
+			//exception handler
+			continue;
 		}
 	}
 	return true;
