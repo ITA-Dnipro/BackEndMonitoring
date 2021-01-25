@@ -65,13 +65,13 @@ bool CContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 			}
 			CLogicalDiskInfo* created_disk = new CLogicalDiskInfo();
 
-			if (!created_disk->InitializeLogicalDiskStatus(
+			//avoid floppy disk or another logical disk without capacity
+			if (created_disk->InitializeLogicalDiskStatus(
 				name_of_disk, m_specification.GetCountType()))
 			{
-				continue;
+				m_p_container_all_logical_disks.push_back(created_disk);
 			}
 
-			m_p_container_all_logical_disks.push_back(created_disk);
 			//go to the next driver
 			variable_for_checking_names +=
 				strlen(variable_for_checking_names) +
