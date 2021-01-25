@@ -53,13 +53,16 @@
     <ClInclude Include="include\CLogger\CLogger.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\CLogMacro\CLogMacro.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Log.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="include\Utils\Utils.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CLogMacro\CLogCreationMacro.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CLogMacro\CLogUsageMacro.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

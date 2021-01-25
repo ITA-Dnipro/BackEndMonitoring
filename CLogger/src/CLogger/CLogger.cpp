@@ -2,6 +2,8 @@
 
 #include "CLogger/CLogger.h"
 
+CLOGGER_API extern auto logger = std::unique_ptr<CLogger>(nullptr);
+
 CLogger::CLogger(const std::string& log_name, const ELogLevel log_level)
 	: m_log_level(log_level), m_log_name(log_name)
 {}
