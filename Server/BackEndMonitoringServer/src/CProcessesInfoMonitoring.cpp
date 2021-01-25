@@ -45,7 +45,7 @@ bool CProcessesInfoMonitoring::StartMonitoringInfo( )
 			{
 				continue;
 			}
-			std::vector<CProcessInfo> processes;
+			std::list<CProcessInfo> processes;
 			if (m_container.GetAllProcesses(processes))
 			{
 				for (auto& process : processes)
@@ -54,11 +54,11 @@ bool CProcessesInfoMonitoring::StartMonitoringInfo( )
 					{
 						continue;
 					}
-					if (!json_saver.TrySaveToFile(json_formatter))
-					{
-						//exception handler
-						continue;
-					}
+				}
+				if (!json_saver.TrySaveToFile(json_formatter))
+				{
+					//exception handler
+					continue;
 				}
 			}
 		}

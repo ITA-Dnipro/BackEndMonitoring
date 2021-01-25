@@ -2,7 +2,7 @@
 
 namespace PlatformUtils
 {
-	bool GetListOfProcessIds(std::list<unsigned>& list_of_PIDs);
+	bool GetExistingProcessIds(std::vector<unsigned>& container_of_PIDs);
 	bool CheckIsProcessActive(unsigned PID);
 	bool GetProcessTimes(unsigned PID, unsigned long long& system_time,
 						 unsigned long long& kernel_time,

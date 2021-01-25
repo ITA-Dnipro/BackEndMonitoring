@@ -6,22 +6,18 @@
 
 namespace PlatformUtils
 {
-	bool GetListOfProcessIds(std::list<unsigned>& list_of_PIDs)
+	bool GetExistingProcessIds(std::vector<unsigned>& container_of_PIDs)
 	{
-		bool success;
-		short m_max_process_count = 1024;
+		unsigned short m_max_process_count = 1024;
 		DWORD* p_process_ids = new DWORD[m_max_process_count];
 		DWORD cb = m_max_process_count * sizeof(DWORD);
 		DWORD bytes_returned = 0;
 
-		success = (EnumProcesses(p_process_ids, cb, &bytes_returned) != 0);
+		bool success = (EnumProcesses(p_process_ids, cb, &bytes_returned) != 0);
 		if (success)
 		{
 			const int size = bytes_returned / sizeof(DWORD);
-			for (int index = 0; index < size; index++)
-			{
-				list_of_PIDs.push_back(p_process_ids[index]);
-			}
+			container_of_PIDs.assign(p_process_ids, p_process_ids + size);
 		}
 		delete[] p_process_ids;
 
@@ -31,10 +27,10 @@ namespace PlatformUtils
 	bool CheckIsProcessActive(unsigned PID)
 	{
 		HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
-									 FALSE, PID);
+			FALSE, PID);
 
-		bool success;
-		if (success = (process != 0))
+		bool success = (process != 0);
+		if (success)
 		{
 			CloseHandle(process);
 		}
@@ -46,10 +42,10 @@ namespace PlatformUtils
 						 unsigned long long& user_time)
 	{
 		HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
-									 FALSE, PID);
+			FALSE, PID);
 
-		bool success;
-		if (success = (process != 0))
+		bool success = (process != 0);
+		if (success)
 		{
 			FILETIME ftime, fsys, fuser;
 			GetSystemTimeAsFileTime(&ftime);
@@ -59,8 +55,8 @@ namespace PlatformUtils
 				system_time = system_time_uli.QuadPart;
 			}
 
-			success = (GetProcessTimes(process, &ftime, &ftime, &fsys, &fuser) 
-					   != 0);
+			success = (GetProcessTimes(process, &ftime, &ftime, &fsys, &fuser)
+				!= 0);
 			if (success)
 			{
 				{
@@ -79,13 +75,13 @@ namespace PlatformUtils
 		return success;
 	}
 
-	bool GetProcessMemoryUsage(unsigned PID, unsigned long long& ram_usage, 
+	bool GetProcessMemoryUsage(unsigned PID, unsigned long long& ram_usage,
 		unsigned long long& pagefile_usage)
 	{
 		HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
-									 FALSE, PID);
-		bool success;
-		if (success = (process != 0))
+			FALSE, PID);
+		bool success = (process != 0);
+		if (success)
 		{
 			PROCESS_MEMORY_COUNTERS pmc;
 			success = (GetProcessMemoryInfo(process, &pmc, sizeof(pmc)) != 0);
