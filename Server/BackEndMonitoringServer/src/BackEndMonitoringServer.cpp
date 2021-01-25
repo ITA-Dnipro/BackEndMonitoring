@@ -17,7 +17,5 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    const int return_code = success ? 0 : 1;
-
-    return return_code;
+    return EXIT_SUCCESS;
 }
