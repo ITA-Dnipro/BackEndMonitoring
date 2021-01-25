@@ -28,7 +28,8 @@ public:
 private:
 	[[nodiscard]] bool TryGetAllExistedLogicalDisksAndInfo();
 
-	bool m_is_initialized;
+private:
 	std::vector<CLogicalDiskInfo*> m_p_container_all_logical_disks;
+	bool m_is_initialized;
 };
 

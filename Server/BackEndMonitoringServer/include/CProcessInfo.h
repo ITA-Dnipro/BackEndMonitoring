@@ -23,13 +23,12 @@ private:
 	bool CountCpuUsage();
 
 private:
-	bool m_is_initialized;
+	double m_cpu_usage;
+	unsigned long long m_ram_usage, m_pagefile_usage;
+	unsigned long long m_last_sys_time, m_last_kernel_time, m_last_user_time;
 	unsigned m_PID;
 	unsigned m_count_of_processors;
-	double m_cpu_usage;
-	size_t m_ram_usage;
-	size_t m_pagefile_usage;
 	EMemoryConvertType m_count_type;
-	unsigned long long m_last_sys_time, m_last_kernel_time, m_last_user_time;
+	bool m_is_initialized;
 };
 

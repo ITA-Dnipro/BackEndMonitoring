@@ -19,8 +19,8 @@ public:
 	bool GetAllProcesses(std::vector<CProcessInfo>& to_vector);
 
 private:
-	bool m_is_initialized;
 	std::vector<CProcessInfo> m_container;
 	unsigned m_processors_count;
+	bool m_is_initialized;
 };
 

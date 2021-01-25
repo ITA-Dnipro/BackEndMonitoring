@@ -33,10 +33,11 @@ private:
 	[[nodiscard]] long double RoundToDecimal(long double const value_to_round) 
 		const;
 
-	bool m_is_initialize;
-	std::string m_disk_name;
+private:
 	std::filesystem::space_info m_disk_info{};
+	std::string m_disk_name;
 	EMemoryConvertType m_count_type;
+	bool m_is_initialize;
 };
 
 

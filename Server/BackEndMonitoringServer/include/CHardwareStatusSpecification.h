@@ -20,10 +20,10 @@ public:
 	[[nodiscard]] std::string* GetPathToSaveFile();
 
 protected:
-	// duration is used as seconds
-	std::chrono::duration<int> m_pause_duration{};
 	// path to file where status of hardware will be storaged
 	std::string m_path_to_file;
+	// duration is used as seconds
+	std::chrono::duration<int> m_pause_duration{};
 	// Bytes - Megabytes - Gigabytes
 	EMemoryConvertType m_count_type;
 };
