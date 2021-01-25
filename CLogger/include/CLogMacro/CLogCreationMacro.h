@@ -4,8 +4,8 @@
 extern auto loggerBuilder = std::unique_ptr<CLogBuilder>(nullptr);
 extern auto logger = std::unique_ptr<CLogger>(nullptr);
 
-#define CLOG_START_CREATION(loggerName, logLevel) \
-	loggerBuilder = std::move(std::make_unique<CLogBuilder>(loggerName, logLevel)) \
+#define CLOG_START_CREATION() \
+	loggerBuilder = std::move(std::make_unique<CLogBuilder>("", ELogLevel::NONE_LEVEL)) \
 
 #define CLOG_END_CREATION() \
 	loggerBuilder.reset() \
@@ -18,6 +18,9 @@ extern auto logger = std::unique_ptr<CLogger>(nullptr);
 
 #define CLOG_SET_LOG_NAME(logName) \
 	loggerBuilder->SetLogName(logName) \
+
+#define CLOG_SET_LOG_LEVEL(logLevel) \
+	loggerBuilder->SetLogLevel(logLevel) \
 
 #define CLOG_SET_LOG_CONFIG(...) \
 	loggerBuilder->SetLogConfig(__VA_ARGS__) \
