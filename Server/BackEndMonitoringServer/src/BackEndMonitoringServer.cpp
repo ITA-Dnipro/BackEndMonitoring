@@ -1,40 +1,21 @@
 ﻿#include "stdafx.h"
 
-#include "CEvent.h"
-#include "EMemoryConvertType.h"
-#include "CProcessInfo.h"
-#include "CContainerOfProcesses.h"
-#include "CThreadSafeVariable.h"
-#include "CJSONFormatter.h"
-#include "CJSONFormatterProcess.h"
-#include "CJSONFormatterLogicalDisk.h"
-#include "CProcessesInfoMonitoring.h"
-#include "CLogicalDiskInfoMonitoring.h"
+#include "CService.h"
+#include "CCommandLineHandler.h"
+#include "CServiceHandler.h"
+#include "Utils.h"
 
 int main(int argc, char** argv)
 {
-    //______________ProcessesInfoMonitoring Test___________________
-    
-    CEvent stop;
-    CThreadSafeVariable<CJSONFormatterProcess> jsonf;
-    CProcessesInfoMonitoring processes(std::chrono::seconds(10),
-                                  "C:\\Git\\BackEndMonitoring\\log.json",
-                                  EMemoryConvertType::KILOBYTES, stop, jsonf);
-    processes.Initialize( );
-    processes.StartMonitoringInfo( );
-    
+    auto parser = std::make_unique<CommandLineHandler>();
 
-    //___________LogicalDiskInfoMonitoring Test___________________
-    /*
-    CEvent stop;
-    CThreadSafeVariable<CJSONFormatterLogicalDisk> jsonf;
-    CHardwareStatusSpecification specification_from_xml(
-        std::chrono::duration<int>(5), "info.json",
-        EMemoryConvertType::GIGABYTES);
-    CLogicalDiskInfoMonitoring logical_disks(stop, &specification_from_xml, jsonf);
+    bool success = parser->Parse(argc, argv);
 
-    logical_disks.StartMonitoringInfo();
-    */
+    if (!success)
+    {
+        Utils::DisplayMessage("Invalid parameters");
+        return EXIT_FAILURE;
+    }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
