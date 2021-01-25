@@ -19,7 +19,7 @@ bool CContainerOfProcesses::Initialize()
 	{ return false;}
 
 	std::list<unsigned> list_of_PIDs;
-	bool success;
+	bool success = true;
 	if (success = PlatformUtils::GetListOfProcessIds(list_of_PIDs))
 	{
 		for (auto PID : list_of_PIDs)
@@ -32,10 +32,7 @@ bool CContainerOfProcesses::Initialize()
 			}
 		}
 	}
-	if (success)
-	{
-		m_is_initialized = true;
-	}
+	m_is_initialized = success;
 	return success;
 }
 
@@ -101,7 +98,6 @@ bool CContainerOfProcesses::GetAllProcesses(std::vector<CProcessInfo>& to_vector
 	if (m_is_initialized)
 	{
 		to_vector = m_container;
-		return true;
 	}
-	return false;
+	return m_is_initialized;
 };

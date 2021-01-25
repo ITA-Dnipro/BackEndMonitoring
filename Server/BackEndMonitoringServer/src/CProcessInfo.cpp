@@ -56,12 +56,9 @@ CProcessInfo& CProcessInfo::operator=(const CProcessInfo& other)
 bool CProcessInfo::Initialize()
 {
     if(m_is_initialized)
-    {
-        return false;
-    }
-    bool success;
-    
-    success = PlatformUtils::GetProcessTimes(m_PID, m_last_sys_time, 
+    { return false;}
+ 
+    bool success = PlatformUtils::GetProcessTimes(m_PID, m_last_sys_time,
                                              m_last_kernel_time,
                                              m_last_user_time);
     if (!success)
@@ -76,12 +73,9 @@ bool CProcessInfo::Initialize()
 bool CProcessInfo::TryToUpdateCurrentStatus()
 {
     if(!m_is_initialized)
-    {
-        return false;
-    }
-    bool success;
+    { return false;}
 
-    success = CountCpuUsage();
+    bool success = CountCpuUsage();
     if (!success)
     { return success;}
 
@@ -93,9 +87,7 @@ bool CProcessInfo::TryToUpdateCurrentStatus()
 bool CProcessInfo::IsActive() const
 {
     if (!m_is_initialized)
-    {
-        return false;
-    }
+    { return false;}
 
     return PlatformUtils::CheckIsProcessActive(m_PID);
 }
@@ -105,9 +97,8 @@ bool CProcessInfo::GetPID(unsigned& value) const
     if (m_is_initialized)
     {
         value = m_PID;
-        return true;
     }
-    return false;
+    return m_is_initialized;
 }
 
 bool CProcessInfo::GetCpuUsage(double& value) const
@@ -115,9 +106,8 @@ bool CProcessInfo::GetCpuUsage(double& value) const
     if (m_is_initialized)
     {
         value = m_cpu_usage;
-        return true;
     }
-    return false;
+    return m_is_initialized;
 }
 
 bool CProcessInfo::GetRamUsage(long double& value) const
@@ -125,9 +115,8 @@ bool CProcessInfo::GetRamUsage(long double& value) const
     if (m_is_initialized)
     {
         value = Utils::ConvertToCountType(m_ram_usage, m_count_type);
-        return true;
     }
-    return false;
+    return m_is_initialized;
 }
 
 bool CProcessInfo::GetPagefileUsage(long double& value) const
@@ -135,10 +124,8 @@ bool CProcessInfo::GetPagefileUsage(long double& value) const
     if (m_is_initialized)
     {
         value = Utils::ConvertToCountType(m_pagefile_usage, m_count_type);
-        return true;
-
     }
-    return false;
+    return m_is_initialized;
 }
 
 EMemoryConvertType CProcessInfo::GetMemoryCountType() const
@@ -147,11 +134,9 @@ EMemoryConvertType CProcessInfo::GetMemoryCountType() const
 
 bool CProcessInfo::CountCpuUsage()
 {
-    bool success;
-
     unsigned long long cur_sys_time, cur_kernel_time, cur_user_time;
     cur_sys_time = cur_kernel_time = cur_user_time = 0;
-    success = PlatformUtils::GetProcessTimes(m_PID, cur_sys_time,
+    bool success = PlatformUtils::GetProcessTimes(m_PID, cur_sys_time,
                                              cur_kernel_time, cur_user_time);
     if (!success)
     { return success;}
