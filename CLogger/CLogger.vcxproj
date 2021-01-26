@@ -175,6 +175,7 @@
     <ClCompile Include="src\CLogger\CLogger.cpp" />
     <ClCompile Include="src\DllMain.cpp" />
     <ClCompile Include="src\ELogConfig\ELogConfig.cpp" />
+    <ClCompile Include="src\ELogFlush\ELogFlush.cpp" />
     <ClCompile Include="src\ELogLevel\ELogLevel.cpp" />
     <ClCompile Include="src\Utils\Utils.cpp" />
   </ItemGroup>
@@ -185,6 +186,7 @@
     <ClInclude Include="include\CLogMacro\CLogUsageMacro.h" />
     <ClInclude Include="include\CLogMessage\CLogMessage.h" />
     <ClInclude Include="include\ELogConfig\ELogConfig.h" />
+    <ClInclude Include="include\ELogFlush\ELogFlush.h" />
     <ClInclude Include="include\ELogLevel\ELogLevel.h" />
     <ClInclude Include="include\Log.h" />
     <ClInclude Include="include\stdafx.h" />
