@@ -1,16 +1,28 @@
 #pragma once
 
+#include "EMemoryConvertType.h"
+
 namespace Utils
 {
 	/// <summary>
 	/// Return current date and time in system
 	/// </summary>
 	/// <returns>format: dd.mm.yyyy hh:mm:ss</returns>
-	bool GetCurrentDateAndTimeFormatted(std::string& 
-		date_time_var_to_save);
+	[[nodiscard]] bool TryGetCurrentDateAndTimeFormatted(std::string&
+														 date_time_var_to_save);
 
-	bool TrySetMonthAsNumber(std::string& p_month);
+	[[nodiscard]] bool TrySetMonthAsNumber(std::string& p_month);
+
+	[[nodiscard]] bool TryGetFormattedDiskName(std::string& name_of_disk);
+
+	[[nodiscard]] bool IsFileEmpty(std::ifstream& file);
+	[[nodiscard]] bool IsFileEmpty(std::fstream& file);
 
 	void DisplayError(const std::string& message);
 	void DisplayMessage(const std::string& message);
+
+	[[nodiscard]] long double ConvertToCountType(
+		uintmax_t const value_to_calculate, EMemoryConvertType convert_type);
+	[[nodiscard]] long double RoundToDecimal(long double const value_to_round);
+
 }
