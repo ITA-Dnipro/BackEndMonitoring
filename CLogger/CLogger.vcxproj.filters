@@ -30,9 +30,6 @@
     <ClCompile Include="src\CLogger\CLogger.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utils\Utils.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ELogFlush\ELogFlush.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
