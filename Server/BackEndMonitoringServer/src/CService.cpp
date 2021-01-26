@@ -17,18 +17,20 @@ void CService::RunServer()
         ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE, ELogConfig::PARAMS);
     auto logger = builder.BuildSharedLog();
 
+    //TODO Add XML Configuration interaction
     size_t num_threads = 20;
     int port = 1111;
     std::string ip_address = "127.0.0.1";
     CLOG_DEBUG(*logger, "Start server");
 
-    m_acceptor_socket = std::make_unique<CAcceptorWrapper>(port, ip_address, 
-        num_threads, m_stop_event, logger);
+    m_p_thread_pool = std::make_shared<CThreadPool>(num_threads, m_stop_event);
+    m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(port, ip_address, 
+        m_stop_event, m_p_thread_pool, logger);
 
-    m_acceptor_socket->StartServer();
+    m_p_acceptor_socket->StartServer();
 }
 
-CService* CService::m_service = nullptr;
+CService* CService::m_p_service = nullptr;
 
 CService::CService(const ServiceParameters& parameters)
   : m_name(parameters.name),
@@ -61,7 +63,7 @@ DWORD WINAPI CService::ServiceCtrlHandler(
 {
     if (control_code == SERVICE_CONTROL_STOP)
     {
-        m_service->Stop();
+        m_p_service->Stop();
     }
 
     return 0;
@@ -69,23 +71,23 @@ DWORD WINAPI CService::ServiceCtrlHandler(
 
 void WINAPI CService::SvcMain(DWORD argc, CHAR** argv) 
 {
-    assert(m_service);
+    assert(m_p_service);
 
-    m_service->m_status_handle = ::RegisterServiceCtrlHandlerEx(
-        m_service->GetName(),
+    m_p_service->m_status_handle = ::RegisterServiceCtrlHandlerEx(
+        m_p_service->GetName(),
         ServiceCtrlHandler, NULL);
 
-    if (!m_service->m_status_handle)
+    if (!m_p_service->m_status_handle)
     {
         return;
     }
 
-    m_service->Start(argc, argv);
+    m_p_service->Start(argc, argv);
 }
 
 bool CService::Run()
 {
-    m_service = this;
+    m_p_service = this;
 
     CHAR* name = const_cast<CString&>(m_name).GetBuffer();
 
@@ -99,24 +101,16 @@ bool CService::Run()
 }
 
 const CString& CService::GetName() const 
-{ 
-    return m_name; 
-}
+{ return m_name;}
 
 const CString& CService::GetDisplayName() const 
-{ 
-    return m_display_name;
-}
+{ return m_display_name;}
 
 const DWORD CService::GetStartType() const
-{ 
-    return m_start_type;
-}
+{ return m_start_type;}
 
 const DWORD CService::GetErrorControlType() const
-{
-    return m_error_control_type;
-}
+{ return m_error_control_type;}
 
 void CService::OnStart(DWORD, CHAR**)
 {
@@ -129,7 +123,7 @@ void CService::OnStart(DWORD, CHAR**)
 void CService::OnStop() 
 {
     m_stop_event.Set();
-    m_acceptor_socket->StopSocket();
+    m_p_acceptor_socket->StopSocket();
     m_main_thread.join();
 }
 

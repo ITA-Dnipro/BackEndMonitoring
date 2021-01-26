@@ -9,9 +9,12 @@ public:
     explicit ServiceHandle(SC_HANDLE handle)
       : m_handle(handle) {}
 
+    ServiceHandle(const ServiceHandle&) = delete;
+    ServiceHandle(ServiceHandle&&) = delete;
+
     ~ServiceHandle() 
     {
-        if (m_handle != nullptr) 
+        if (nullptr != m_handle)
         {
             if(::CloseServiceHandle(m_handle) == 0)
             {
@@ -30,7 +33,7 @@ private:
 };
 
 ServiceHandler::ServiceHandler(std::unique_ptr<CService> service)
-  : m_service(std::move(service))
+  : m_p_service(std::move(service))
 { }
 
 bool ServiceHandler::Install() const
@@ -73,12 +76,12 @@ bool ServiceHandler::Install() const
         auto service = std::make_unique<ServiceHandle>(
             ::CreateService(
                 service_control_manager->GetHandle(),
-                m_service->GetName(),
-                m_service->GetDisplayName(),
+                m_p_service->GetName(),
+                m_p_service->GetDisplayName(),
                 SERVICE_QUERY_STATUS | SERVICE_START,
                 SERVICE_WIN32_OWN_PROCESS,
-                m_service->GetStartType(),
-                m_service->GetErrorControlType(),
+                m_p_service->GetStartType(),
+                m_p_service->GetErrorControlType(),
                 escaped_path,
                 nullptr,
                 nullptr,
@@ -125,7 +128,7 @@ bool ServiceHandler::Uninstall() const
         auto service = std::make_unique<ServiceHandle>(
             ::OpenService(
                 service_control_manager->GetHandle(), 
-                m_service->GetName(),
+                m_p_service->GetName(),
                 SERVICE_QUERY_STATUS | 
                 DELETE));
 
@@ -175,7 +178,7 @@ bool ServiceHandler::Start() const
         auto service = std::make_unique<ServiceHandle>(
             ::OpenService(
                 service_control_manager->GetHandle(), 
-                m_service->GetName(),
+                m_p_service->GetName(),
                 SERVICE_QUERY_STATUS | 
                 SERVICE_START));
 
@@ -223,7 +226,7 @@ bool ServiceHandler::Stop() const
         auto service = std::make_unique<ServiceHandle>(
             ::OpenService(
                 service_control_manager->GetHandle(), 
-                m_service->GetName(),
+                m_p_service->GetName(),
                 SERVICE_QUERY_STATUS | 
                 SERVICE_STOP));
 
@@ -283,5 +286,5 @@ bool ServiceHandler::Restart() const
 
 bool ServiceHandler::Run() const
 {
-    return m_service->Run();
+    return m_p_service->Run();
 }
