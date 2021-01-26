@@ -19,6 +19,9 @@ extern auto logger = std::unique_ptr<CLogger>(nullptr);
 #define CLOG_SET_LOG_NAME(logName) \
 	loggerBuilder->SetLogName(logName) \
 
+#define CLOG_SET_LOG_FLUSH(logFlush) \
+	loggerBuilder->SetLogFlush(logFlush) \
+
 #define CLOG_SET_LOG_LEVEL(logLevel) \
 	loggerBuilder->SetLogLevel(logLevel) \
 
