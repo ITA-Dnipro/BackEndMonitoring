@@ -16,36 +16,35 @@ bool CommandLineHandler::Parse(int argc, char** argv)
 
     bool success = true;
 
-    do
+    switch(argc)
     {
-        if (argc == 1)
+    case (1):
+        success = service_handler->Run();
+        break;
+
+    case (2):
+        if (strcmp(argv[1], "install") == 0)
         {
-            success = service_handler->Run();
+            success = service_handler->Install();
             break;
         }
 
-	    if (argc == 2)
+        if (strcmp(argv[1], "uninstall") == 0)
         {
-            if (strcmp(argv[1], "install") == 0)
-            {
-                success = service_handler->Install();
-                break;
-            }
-
-            if (strcmp(argv[1], "uninstall") == 0)
-            {
-                success = service_handler->Uninstall();
-                break;
-            }
-
-            if (strcmp(argv[1], "help") == 0)
-            {
-                // Show help
-                break;
-            }
+            success = service_handler->Uninstall();
+            break;
         }
+
+        if (strcmp(argv[1], "help") == 0)
+        {
+            // Show help
+            break;
+        }
+
+    default :
+        // Show help
+        break;
     }
-    while (false);
 
     return success;
 }
