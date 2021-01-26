@@ -65,6 +65,9 @@
     <ClInclude Include="include\ELogFlush\ELogFlush.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Utils\Utils.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\PropertySheets\CodeStylerSettings\.clang-format" />

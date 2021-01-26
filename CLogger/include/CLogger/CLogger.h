@@ -43,7 +43,7 @@ public:
 	///		const auto* testLogger2 = new CLogger(std::move(*testLogger1));
 	/// </example>
 	CLogger(CLogger&& move) noexcept;
-	
+
 	/// <summary>
 	///		Default dtor of <c>CLogger</c>
 	/// </summary>
@@ -143,7 +143,7 @@ public:
 	///		testLogger->SetLogFlush(ELogLevel::NOT_FLUSH);
 	/// </example>
 	CLogger& SetLogFlush(ELogFlush log_flush);
-	
+
 	/// <summary>
 	///		Name of <c>CLogger</c> getter
 	/// </summary>
@@ -332,7 +332,7 @@ private:
 	///		String to print
 	/// </param>
 	void PrintToAllStreams(const std::string& info) const;
-	
+
 	std::ostream& PrintLogInfo(const std::string& info,
 		std::ostream& stream) const;
 
@@ -344,7 +344,7 @@ CLogger& CLogger::SetLogConfig(Args... args)
 {
 	m_log_config_list.clear();
 	AddLogConfig(args...);
-	
+
 	return *this;
 }
 
@@ -381,7 +381,7 @@ void CLogger::PrintToAllStreams(const CLogMessage<Args...>& log_message) const
 		auto unique_lock = nullptr == mutex ?
 			std::unique_lock<std::mutex>() :
 			std::unique_lock<std::mutex>(*mutex);
-		
+
 		PrintLogMessage(log_message, stream);
 	}
 }
@@ -398,54 +398,53 @@ std::ostream& CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message,
 		case ELogConfig::THREAD_ID:
 		{
 			stream << "Thread id:" << " " << "[" << log_message.GetThreadId()
-				<< "]" << " " << FlushFunction;
+				<< "]" << " ";
 			break;
 		}
 		case ELogConfig::CALL_TIME:
 		{
 			stream << "Time:" << " " << "[" << log_message.GetTimeString()
-				<< "]" << " " << FlushFunction;
+				<< "]" << " ";
 			break;
 		}
 		case ELogConfig::FUNCTION_NAME:
 		{
 			stream << "Function:" << " " << log_message.GetFunctionString()
-				<< " " << FlushFunction;
+				<< " ";
 			break;
 		}
 		case ELogConfig::FILE_NAME:
 		{
 			stream << "File:" << " " << log_message.GetFileString()
-				<< " " << FlushFunction;
+				<< " ";
 			break;
 		}
 		case ELogConfig::LINE_NUMBER:
 		{
 			stream << "Line number:" << " " << log_message.GetLineNumber()
-				<< " " << FlushFunction;
+				<< " ";
 			break;
 		}
 		case ELogConfig::MESSAGE:
 		{
-			stream << "Message:" << " " << '/"' << log_message.GetMessageString()
-				<< '/"' << " " << FlushFunction;
+			stream << "Message:" << " " << "\"" << log_message.GetMessageString()
+				<< '\"' << " ";
 			break;
 		}
 		case ELogConfig::LOG_LEVEL:
 		{
 			stream << "[" << LogLevelToString(log_message.GetLogLevel())
-				<< "]" << " " << FlushFunction;
+				<< "]" << " ";
 			break;
 		}
 		case ELogConfig::PARAMS:
 		{
 			PrintParams(log_message, stream);
-			stream << FlushFunction;
 			break;
 		}
 		case ELogConfig::LOG_NAME:
 		{
-			stream << m_log_name << " " << FlushFunction;
+			stream << m_log_name << " ";
 			break;
 		}
 		case ELogConfig::NONE:
@@ -453,6 +452,8 @@ std::ostream& CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message,
 			break;
 		}
 		}
+
+		FlushFunction(stream);
 	}
 
 	// TODO remove last char " "
