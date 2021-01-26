@@ -36,11 +36,11 @@ bool CJSONFormatSaver::TrySaveToFile(CJSONFormatter& formatted_data)
 	JSON_file_to_save.seekp(0, JSON_file_to_save.end);
 
 	std::streampos position = JSON_file_to_save.tellp();
+	constexpr unsigned short num_of_bities_to_last_data = 5;
 
-	JSON_file_to_save.seekp(position - static_cast<std::streampos>(5));
-	char a[] = { ',' };
+	JSON_file_to_save.seekp(position - 
+		static_cast<std::streampos>(num_of_bities_to_last_data));
 
-	JSON_file_to_save.write(a, 1);
 	position = JSON_file_to_save.tellp();
 	if (!TryWriteToFile(JSON_file_to_save, formatted_data))
 	{
@@ -48,10 +48,10 @@ bool CJSONFormatSaver::TrySaveToFile(CJSONFormatter& formatted_data)
 		// exception
 		return false;
 	}
-	char b[] = { ' ' };
-
+	constexpr char symbol_instead_brace[] = { ',' };
+	
 	JSON_file_to_save.seekp(position);
-	JSON_file_to_save.write(b, 1);
+	JSON_file_to_save.write(symbol_instead_brace, 1);
 	JSON_file_to_save.close();
     return true;
 }
