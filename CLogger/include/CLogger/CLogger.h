@@ -358,7 +358,6 @@ std::ostream& CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message,
 	{
 		switch (config)
 		{
-			// TODO different delimiters and scopes
 			// TODO remove repeat-code
 			// TODO config flush
 		case ELogConfig::THREAD_ID:
@@ -393,8 +392,8 @@ std::ostream& CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message,
 		}
 		case ELogConfig::MESSAGE:
 		{
-			stream << "Message:" << " " << log_message.GetMessageString()
-				<< " " << std::flush;
+			stream << "Message:" << " " << '/"' << log_message.GetMessageString()
+				<< '/"' << " " << std::flush;
 			break;
 		}
 		case ELogConfig::LOG_LEVEL:
