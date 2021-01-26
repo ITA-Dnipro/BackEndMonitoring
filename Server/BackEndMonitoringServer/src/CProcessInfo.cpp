@@ -105,7 +105,7 @@ bool CProcessInfo::GetCpuUsage(double& value) const
 {
     if (m_is_initialized)
     {
-        value = m_cpu_usage;
+        value = Utils::RoundToDecimal(m_cpu_usage);
     }
     return m_is_initialized;
 }

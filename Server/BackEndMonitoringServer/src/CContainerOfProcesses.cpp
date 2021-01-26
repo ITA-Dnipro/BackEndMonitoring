@@ -18,11 +18,11 @@ bool CContainerOfProcesses::Initialize()
 	if(m_processors_count == 0)
 	{ return false;}
 
-	std::list<unsigned> list_of_PIDs;
+	std::vector<unsigned> PIDs;
 	bool success = true;
-	if (success = PlatformUtils::GetListOfProcessIds(list_of_PIDs))
+	if (success = PlatformUtils::GetExistingProcessIds(PIDs))
 	{
-		for (auto PID : list_of_PIDs)
+		for (auto PID : PIDs)
 		{
 			CProcessInfo temp(PID, m_processors_count,
 				m_specification.GetCountType());
@@ -39,16 +39,15 @@ bool CContainerOfProcesses::Initialize()
 
 bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 {
-	if (!m_is_initialized) {
-		return false;
-	}
+	if (!m_is_initialized)
+	{ return false;}
 
-	std::list<unsigned> list_of_PIDs;
-	bool success = PlatformUtils::GetListOfProcessIds(list_of_PIDs);
+	std::vector<unsigned> PIDs;
+	bool success = PlatformUtils::GetExistingProcessIds(PIDs);
 
 	if (success)
 	{
-		for (auto PID : list_of_PIDs)
+		for (auto PID : PIDs)
 		{
 			auto it = std::find_if(m_container.begin(), m_container.end(),
 								   [PID](const CProcessInfo& proc)
@@ -95,11 +94,11 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 	return success;
 }
 
-bool CContainerOfProcesses::GetAllProcesses(std::vector<CProcessInfo>& to_vector)
+bool CContainerOfProcesses::GetAllProcesses(std::list<CProcessInfo>& to_list)  
 {
 	if (m_is_initialized)
 	{
-		to_vector = m_container;
+		to_list = m_container;
 	}
 	return m_is_initialized;
 };
