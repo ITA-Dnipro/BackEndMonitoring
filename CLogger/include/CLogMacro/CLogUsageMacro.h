@@ -1,7 +1,8 @@
 #pragma once
 #include "stdafx.h"
 
-#include "Utils/Utils.h"
+//#include "Utils/Utils.h"
+#include "utils/include/Utils.h"
 
 // Takes fifteenth argument from parameter pack
 #define TAKE_15(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, N, ...) \
@@ -60,15 +61,17 @@
 
 // Creates and prints CLogMessage of some CLogLevel via CLogger
 #define CLOG_WRITE(messageString, logLevel) \
+	std::string time_buffer; Utils::GetCurrentDateAndTimeFormatted(time_buffer); \
     logger->PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
-                             LogUtils::GetFileNameByPath(__FILE__), __FUNCTION__, \
-                             LogUtils::GetCurrentTimeString(), LogUtils::GetThisThreadIdString())) \
+                            Utils::GetFileNameByPath(__FILE__), __FUNCTION__, \
+                            time_buffer, Utils::GetThisThreadIdString())) \
 
 // Creates and prints CLogMessage with variable parameters of some CLogLevel via CLogger
 #define CLOG_WRITE_WITH_PARAMS(messageString, logLevel, ...) \
+	std::string time_buffer; Utils::GetCurrentDateAndTimeFormatted(time_buffer); \
     logger->PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
-                             LogUtils::GetFileNameByPath(__FILE__), __FUNCTION__, \
-                             LogUtils::GetCurrentTimeString(), LogUtils::GetThisThreadIdString(), \
+                            Utils::GetFileNameByPath(__FILE__), __FUNCTION__, \
+                            time_buffer, Utils::GetThisThreadIdString(), \
 							std::make_tuple(FOR_EACH(MAKE_PAIR, __VA_ARGS__)))) \
 
 // Creates and prints CLogMessage that formed from exception of some CLogLevel via CLogger
