@@ -3,7 +3,11 @@
 #include "CLogBuilder/CLogBuilder.h"
 
 CLogBuilder::CLogBuilder(const std::string& log_name, const ELogLevel log_level)
-	: m_log_level(log_level), m_log_name(log_name)
+	: CLogBuilder(log_name, log_level, ELogFlush::FLUSH)
+{}
+
+CLogBuilder::CLogBuilder(const std::string& log_name, const ELogLevel log_level, const ELogFlush log_flush)
+	: m_log_level(log_level), m_log_flush(log_flush), m_log_name(log_name)
 {}
 
 CLogBuilder::CLogBuilder(CLogBuilder&& move) noexcept = default;
@@ -37,6 +41,20 @@ CLogBuilder& CLogBuilder::SetLogName(const std::string& log_name)
 		m_log_name = log_name;
 	}
 
+	return *this;
+}
+
+ELogFlush CLogBuilder::GetLogFlush() const
+{
+	return m_log_flush;
+}
+
+CLogBuilder& CLogBuilder::SetLogFlush(const ELogFlush log_flush)
+{
+	if (m_log_flush != log_flush)
+	{
+		m_log_flush = log_flush;
+	}
 	return *this;
 }
 
