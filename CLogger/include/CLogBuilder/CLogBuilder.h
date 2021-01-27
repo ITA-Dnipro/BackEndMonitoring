@@ -2,9 +2,9 @@
 #include "stdafx.h"
 
 #include "ELogConfig/ELogConfig.h"
-#include "CLogger/CLogger.h"
 #include "ELogLevel/ELogLevel.h"
-
+#include "ELogFlush/ELogFlush.h"
+#include "CLogger/CLogger.h"
 /// <summary>
 ///		Class, that sets basic configuration of <c>CLogger</c> and creates it
 /// </summary>
@@ -26,6 +26,7 @@ public:
 	///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL));
 	/// </example>
 	explicit CLogBuilder(const std::string& log_name, ELogLevel log_level);
+	explicit CLogBuilder(const std::string& log_name, ELogLevel log_level, ELogFlush log_flush);
 	CLogBuilder(const CLogBuilder& copy) = delete;
 	/// <summary>
 	///		Default move ctor for <c>CLogBuilder</c>
@@ -122,6 +123,35 @@ public:
 	CLogBuilder& SetLogName(const std::string& log_name);
 
 	/// <summary>
+	///		<c>ELogFlush</c> getter
+	/// </summary>
+	/// <returns>
+	///		<c>ELogFlush</c>, which indicates if output stream flushes
+	/// </returns>
+	/// <example>
+	///		const auto* testLoggerBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL,
+	///			ELogFlush::FLUSH);
+	///		ELogFlush test = testLoggerBuilder->GetLogFlush();
+	/// </example>
+	[[nodiscard]] ELogFlush GetLogFlush() const;
+	/// <summary>
+	///		<c>ELogFlush</c> setter
+	/// </summary>
+	/// <param name="log_flush">
+	///		<c>ELogFlush</c> to set
+	///	</param>
+	/// <returns>
+	///		Reference to <c>this</c> object
+	///		to continue work with class methods in one line
+	/// </returns>
+	/// <example>
+	///		const auto* testLoggerBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL,
+	///			ELogFlush::FLUSH);
+	///		testLoggerBuilder->SetLogFlush(ELogLevel::NOT_FLUSH);
+	/// </example>
+	CLogBuilder& SetLogFlush(ELogFlush log_flush);
+	
+	/// <summary>
 	///		Adds thread safe (with <c>std::mutex</c>) output stream of future <c>CLogger</c>.
 	///		Neither <c>CLogger</c> nor the <c>CLogBuilder</c> owns the stream,
 	///		so they won't call there dtors
@@ -217,6 +247,7 @@ public:
 
 private:
 	ELogLevel m_log_level;
+	ELogFlush m_log_flush;
 	std::string m_log_name;
 	std::list<ELogConfig> m_log_config_list;
 	

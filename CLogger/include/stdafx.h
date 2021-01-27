@@ -13,8 +13,10 @@
 #include <filesystem>
 #include <list>
 #include <map>
+#include <memory>
 #include <mutex>
 #include <ostream>
 #include <sstream>
 #include <string>
 #include <thread>
+#include <typeinfo>

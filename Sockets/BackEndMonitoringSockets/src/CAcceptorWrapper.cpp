@@ -19,7 +19,7 @@ void CAcceptorWrapper::StartServer()
 	{
 		if ((handle = m_server_acceptor->GetConnectedHandle()) != SOCKET_ERROR)
 		{
-			WRITE_DEBUG_WITH_PARAMS(*m_logger, "Connected with a new socket ", 
+			CLOG_DEBUG_WITH_PARAMS(*m_logger, "Connected with a new socket ", 
 				handle);
 			m_pool->Enqueue([this, &handle]()
 			{

@@ -83,7 +83,7 @@ public:
 		unsigned lineNumber, const std::string& fileString,
 		const std::string& functionString, const std::string& timeString,
 		const std::string& threadId,
-		const std::tuple<std::pair<const char*, Args>...>& args);
+		const std::tuple<std::pair<std::string, Args>...>& args);
 
 	/// <summary>
 	///		Copy ctor
@@ -106,7 +106,7 @@ public:
 	[[nodiscard]] std::string GetFunctionString() const;
 	[[nodiscard]] std::string GetTimeString() const;
 	[[nodiscard]] std::string GetMessageString() const;
-	[[nodiscard]] std::tuple<std::pair<const char*, Args>...> GetParams() const;
+	[[nodiscard]] std::tuple<std::pair<std::string, Args>...> GetParams() const;
 
 	CLogMessage& operator=(const CLogMessage&);
 	CLogMessage& operator=(CLogMessage&&) noexcept;
@@ -119,7 +119,7 @@ protected:
 	std::string m_function_string;
 	std::string m_time_string;
 	std::string m_message_string;
-	std::tuple<std::pair<const char*, Args>...> m_param_tuple;
+	std::tuple<std::pair<std::string, Args>...> m_param_tuple;
 };
 
 template<typename... Args>
@@ -135,7 +135,7 @@ template<typename... Args>
 CLogMessage<Args...>::CLogMessage(const std::string& messageString, const ELogLevel logLevel,
 	const unsigned lineNumber, const std::string& fileString,
 	const std::string& functionString, const std::string& timeString,
-	const std::string& threadId, const std::tuple<std::pair<const char*, Args>...>& args)
+	const std::string& threadId, const std::tuple<std::pair<std::string, Args>...>& args)
 	: m_log_level(logLevel), m_line_number(lineNumber), m_thread_id(threadId),
 	m_file_string(fileString), m_function_string(functionString),
 	m_time_string(timeString), m_message_string(messageString),
@@ -193,7 +193,7 @@ std::string CLogMessage<Args...>::GetMessageString() const
 }
 
 template<typename... Args>
-std::tuple<std::pair<const char*, Args>...> CLogMessage<Args...>::GetParams() const
+std::tuple<std::pair<std::string, Args>...> CLogMessage<Args...>::GetParams() const
 {
 	return m_param_tuple;
 }
