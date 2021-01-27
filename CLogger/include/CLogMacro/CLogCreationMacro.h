@@ -1,38 +1,36 @@
 #pragma once
 #include "CLogBuilder/CLogBuilder.h"
-
-extern auto loggerBuilder = std::unique_ptr<CLogBuilder>(nullptr);
-extern auto logger = std::unique_ptr<CLogger>(nullptr);
+#include "GlobalLogger.h"
 
 #define CLOG_START_CREATION() \
-	loggerBuilder = std::move(std::make_unique<CLogBuilder>("", ELogLevel::NONE_LEVEL)) \
+	CLog::SetBuilder(std::move(std::make_unique<CLogBuilder>("", ELogLevel::NONE_LEVEL))) \
 
 #define CLOG_END_CREATION() \
-	loggerBuilder.reset() \
+	CLog::GetBuilder().reset() \
 
 #define CLOG_ADD_SAFE_STREAM(stream) \
-	loggerBuilder->AddThreadSafeStream(stream) \
+	CLog::GetBuilder()->AddThreadSafeStream(stream) \
 
 #define CLOG_ADD_UNSAFE_STREAM(stream) \
-	loggerBuilder->AddThreadUnsafeStream(stream) \
+	CLog::GetBuilder()->AddThreadUnsafeStream(stream) \
 
 #define CLOG_SET_LOG_NAME(logName) \
-	loggerBuilder->SetLogName(logName) \
+	CLog::GetBuilder()->SetLogName(logName) \
 
 #define CLOG_SET_LOG_FLUSH(logFlush) \
-	loggerBuilder->SetLogFlush(logFlush) \
+	CLog::GetBuilder()->SetLogFlush(logFlush) \
 
 #define CLOG_SET_LOG_LEVEL(logLevel) \
-	loggerBuilder->SetLogLevel(logLevel) \
+	CLog::GetBuilder()->SetLogLevel(logLevel) \
 
 #define CLOG_SET_LOG_CONFIG(...) \
-	loggerBuilder->SetLogConfig(__VA_ARGS__) \
+	CLog::GetBuilder()->SetLogConfig(__VA_ARGS__) \
 
 #define CLOG_ADD_LOG_CONFIG(logConfig) \
-	loggerBuilder->AddLogConfig(logConfig) \
+	CLog::GetBuilder()->AddLogConfig(logConfig) \
 
 #define CLOG_BUILD() \
-	logger = std::move(loggerBuilder->BuildUniqueLog()) \
+	CLog::SetLogger(std::move(CLog::GetBuilder()->BuildUniqueLog())) \
 
 #define CLOG_DESTROY() \
-	logger.reset() \
+	CLog::GetLogger().reset() \

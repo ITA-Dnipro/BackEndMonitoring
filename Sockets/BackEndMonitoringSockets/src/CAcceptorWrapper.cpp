@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CAcceptorWrapper.h"
+#include "CLogger/include/Log.h"
 
 CAcceptorWrapper::CAcceptorWrapper(int port, const std::string& ip_address, 
 	CEvent& event, std::shared_ptr<CThreadPool> pool, 
@@ -19,7 +20,7 @@ void CAcceptorWrapper::StartServer()
 	{
 		if ((handle = m_server_acceptor->GetConnectedHandle()) != SOCKET_ERROR)
 		{
-			CLOG_DEBUG_WITH_PARAMS(*m_logger, "Connected with a new socket ", 
+			CLOG_DEBUG_WITH_PARAMS("Connected with a new socket ", 
 				handle);
 			m_pool->Enqueue([this, &handle]()
 			{
