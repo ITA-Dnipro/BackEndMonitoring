@@ -15,6 +15,8 @@
 // Returns var itself
 #define IDENTITY(var) var
 
+#define RIGHT_COUNT(...) IDENTITY(COUNT(__VA_ARGS__))
+
 // Unites macro command and variable arguments args
 #define APPLY(macro, ...) \
 	IDENTITY(macro(__VA_ARGS__)) \
@@ -48,7 +50,7 @@
 	F_ ## N \
 
 // Macro foreach function
-#define FOR_EACH(F, ...) IDENTITY(APPLY(DISPATCH, COUNT(__VA_ARGS__)))(F, __VA_ARGS__) \
+#define FOR_EACH(F, ...) IDENTITY(APPLY(DISPATCH, RIGHT_COUNT(__VA_ARGS__)))(F, __VA_ARGS__) \
 
 // Makes std::pair<std::const char*, Type> that contains
 // var's name and var's value
