@@ -4,6 +4,7 @@
 
 #include "CJSONFormatSaver.h"
 
+// Chupakabra: maybe const method of class
 bool CJSONFormatSaver::TrySaveToFile(CJSONFormatter& formatted_data)
 {
 	std::ifstream json_file_to_read;

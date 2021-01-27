@@ -27,10 +27,55 @@
 #include "stdafx.h"
 #include "../BackEndMonitoring/Sockets/BackEndMonitoringSockets/include/CAcceptorWrapper.h"
 #include "CThreadPool.h"
+#include "CLogger/include/Log.h"
+// Chupakabra: unused header
 #include "CThreadSafeVariable.h"
+
+void VoidFunc() {
+	CLOG_DEBUG_START_FUNCTION();
+
+	CLOG_DEBUG("Function works");
+	
+	CLOG_DEBUG_END_FUNCTION();
+}
+
+int IntFunc() {
+	auto value = 12;
+	try {
+		CLOG_DEBUG_START_FUNCTION();
+
+		CLOG_DEBUG("Function works");
+		(++value)++;
+
+		throw std::runtime_error("Error");
+	}
+	catch (...) {
+		
+	}
+	CLOG_DEBUG_END_FUNCTION_WITH_RETURN(value);
+	return value;
+}
 
 int main()
 {
+	std::fstream stream("Log.txt", std::ios_base::out);
+
+	CLOG_START_CREATION();
+	
+	CLOG_SET_LOG_NAME("Logger");
+	CLOG_SET_LOG_LEVEL(ELogLevel::DEBUG_LEVEL);
+	CLOG_SET_LOG_CONFIG(ELogConfig::LOG_NAME, ELogConfig::LOG_LEVEL,
+		ELogConfig::CALL_TIME, ELogConfig::THREAD_ID, ELogConfig::FILE_NAME,
+		ELogConfig::FUNCTION_NAME, ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE,
+		ELogConfig::PARAMS);
+
+	CLOG_ADD_SAFE_STREAM(stream);
+	CLOG_ADD_SAFE_STREAM(std::cout);
+
+	CLOG_BUILD();
+
+	CLOG_END_CREATION();
+
 	CEvent event;
 	size_t num_threads = 3;
 	int port = 1111;
@@ -40,7 +85,22 @@ int main()
 	std::unique_ptr<CAcceptorWrapper>m_acceptor_socket = std::make_unique<CAcceptorWrapper>(port, ip_address,
 		m_stop_event, m_thread_pool, false, 5);
 
+	// ------------ TESTING LOGGER -------------------//
+	CLOG_PROD("FUCK PROD WORKS PERFECTLY!");
+	CLOG_DEBUG("FUCK DEBUG WORKS PERFECTLY!");
+	CLOG_TRACE("It won't be outputted...");
+
+	CLOG_DEBUG_WITH_PARAMS("And works with params", num_threads, ip_address);
+	auto i = IntFunc();
+	VoidFunc();
+
+	// ----------------------------------------------//
+
+	
 	m_acceptor_socket->StartServer();
 	system("pause");
+
+	CLOG_DESTROY();
+	
 	return 0;
 }

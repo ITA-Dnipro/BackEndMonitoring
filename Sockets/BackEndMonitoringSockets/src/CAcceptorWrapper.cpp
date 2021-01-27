@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "CAcceptorWrapper.h"
+// Chupakabra: unused header below
 #include "DataReceiver.h"
 #include "CServiceConnectionHandler.h"
 #include "CEvent.h"
 #include "PlatformUtils.h"
+#include "CLogger/include/Log.h"
 
 CAcceptorWrapper::CAcceptorWrapper(int port, const std::string& ip_address, 
 	CEvent& event, std::shared_ptr<CThreadPool> pool, bool is_blocked, 
@@ -20,7 +22,8 @@ CAcceptorWrapper::~CAcceptorWrapper()
 
 void CAcceptorWrapper::StartServer()
 {
-	std::cout << "Start server" << std::endl;
+	//std::cout << "Start server" << std::endl;
+	CLOG_DEBUG(std::string(10u, '*') + " START SERVER " + std::string(10u, '*'));
 	if (m_is_socket_blocked)
 	{
 		HandleBlockingEvents();
