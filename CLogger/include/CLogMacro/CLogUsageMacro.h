@@ -1,8 +1,8 @@
 #pragma once
 #include "stdafx.h"
 
-//#include "Utils/Utils.h"
 #include "Utils/Utils.h"
+#include "GlobalLogger.h"
 
 // Takes fifteenth argument from parameter pack
 #define TAKE_15(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, N, ...) \
@@ -59,17 +59,17 @@
 
 // Prints all info-configs of logger
 #define CLOG_INFO() \
-	logger->PrintLogInfo() \
+	CLog::GetLogger()->PrintLogInfo() \
 
 // Creates and prints CLogMessage of some CLogLevel via CLogger
 #define CLOG_WRITE(messageString, logLevel) \
-    logger->PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
+    CLog::GetLogger()->PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
                             LogUtils::GetFileNameByPath(__FILE__), __FUNCTION__, \
                             LogUtils::GetTime(), LogUtils::GetThisThreadIdString())) \
 
 // Creates and prints CLogMessage with variable parameters of some CLogLevel via CLogger
 #define CLOG_WRITE_WITH_PARAMS(messageString, logLevel, ...) \
-    logger->PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
+    CLog::GetLogger()->PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
                             LogUtils::GetFileNameByPath(__FILE__), __FUNCTION__, \
                             LogUtils::GetTime(), LogUtils::GetThisThreadIdString(), \
 							std::make_tuple(FOR_EACH(MAKE_PAIR, __VA_ARGS__)))) \
@@ -160,10 +160,10 @@
 	CLOG_WRITE_EXCEPTION(exception, logLevel); } \
 
 #define CLOG_WRITE_END_FUNCTION_RETURN(logLevel, value) \
-	CLOG_WRITE(std::string(__FUNCTION__) + " " + "function ended", logLevel); \
-	return value; \
+	CLOG_WRITE_WITH_PARAMS(std::string(__FUNCTION__) + " " + "function ended", logLevel, value); \
 	} catch (const std::exception& exception) { \
-	CLOG_WRITE_EXCEPTION(exception, logLevel); } \
+	CLOG_WRITE_EXCEPTION(exception, logLevel); \
+	throw exception; } \
 
 #define CLOG_PROD_START_FUNCTION() \
 	CLOG_WRITE_START_FUNCTION(ELogLevel::PROD_LEVEL) \
