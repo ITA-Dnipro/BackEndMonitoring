@@ -5,11 +5,11 @@
 
 struct ServiceParameters
 {
-    const CString& name         = "BackendMonitoringService";
+    const CString& name = "BackendMonitoringService";
     const CString& display_name = "Backend monitoring";
-    DWORD start_type            = SERVICE_DEMAND_START;
-    DWORD err_ctrl_type         = SERVICE_ERROR_NORMAL;
-    DWORD accepted_cmds         = SERVICE_ACCEPT_STOP;
+    DWORD start_type = SERVICE_DEMAND_START;
+    DWORD err_ctrl_type = SERVICE_ERROR_NORMAL;
+    DWORD accepted_cmds = SERVICE_ACCEPT_STOP;
 };
 
 class CService
@@ -50,7 +50,7 @@ private:
     void OnStop();
     void RunServer();
 private:
-    static CService* m_service;
+    static CService* m_p_service;
     CString m_name;
     CString m_display_name;
     DWORD m_start_type;
@@ -59,6 +59,6 @@ private:
     SERVICE_STATUS_HANDLE m_status_handle;
     std::thread m_main_thread;
     CEvent m_stop_event;
-    std::unique_ptr<CAcceptorWrapper> m_acceptor_socket;
-    std::shared_ptr<CThreadPool> m_thread_pool;
+    std::shared_ptr<CThreadPool> m_p_thread_pool;
+    std::unique_ptr<CAcceptorWrapper> m_p_acceptor_socket;
 };

@@ -23,5 +23,5 @@ private:
 	bool Restart() const;
 
 private:
-	std::unique_ptr<CService> m_service;
+	std::unique_ptr<CService> m_p_service;
 };

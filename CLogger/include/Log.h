@@ -7,5 +7,6 @@
 #include "ELogConfig/ELogConfig.h"
 #include "ELogLevel/ELogLevel.h"
 #include "CLogMessage/CLogMessage.h"
-#include "CLogMacro/CLogMacro.h"
+#include "CLogMacro/CLogCreationMacro.h"
+#include "CLogMacro/CLogUsageMacro.h"
 #include "CLogger/CLogger.h"
