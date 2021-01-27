@@ -15,6 +15,8 @@
 // Returns var itself
 #define IDENTITY(var) var
 
+#define RIGHT_COUNT(...) IDENTITY(COUNT(__VA_ARGS__))
+
 // Unites macro command and variable arguments args
 #define APPLY(macro, ...) \
 	IDENTITY(macro(__VA_ARGS__)) \
@@ -48,7 +50,7 @@
 	F_ ## N \
 
 // Macro foreach function
-#define FOR_EACH(F, ...) IDENTITY(APPLY(DISPATCH, COUNT(__VA_ARGS__)))(F, __VA_ARGS__) \
+#define FOR_EACH(F, ...) IDENTITY(APPLY(DISPATCH, RIGHT_COUNT(__VA_ARGS__)))(F, __VA_ARGS__) \
 
 // Makes std::pair<std::const char*, Type> that contains
 // var's name and var's value
@@ -157,8 +159,9 @@
 	} catch (const std::exception& exception) { \
 	CLOG_WRITE_EXCEPTION(exception, logLevel); } \
 
-#define CLOG_WRITE_END_FUNCTION_WITH_PARAMS(logLevel, ...) \
-	CLOG_WRITE(std::string(__FUNCTION__) + " " + "function ended", logLevel, __VA_ARGS__); \
+#define CLOG_WRITE_END_FUNCTION_RETURN(logLevel, value) \
+	CLOG_WRITE(std::string(__FUNCTION__) + " " + "function ended", logLevel); \
+	return value; \
 	} catch (const std::exception& exception) { \
 	CLOG_WRITE_EXCEPTION(exception, logLevel); } \
 
@@ -166,34 +169,34 @@
 	CLOG_WRITE_START_FUNCTION(ELogLevel::PROD_LEVEL) \
 
 #define CLOG_PROD_START_FUNCTION_WITH_PARAMS(...) \
-	CLOG_PROD_START_FUNCTION_WITH_PARAMS(ELogLevel::PROD_LEVEL, __VA_ARGS__) \
+	CLOG_WRITE_START_FUNCTION_WITH_PARAMS(ELogLevel::PROD_LEVEL, __VA_ARGS__) \
 
 #define CLOG_PROD_END_FUNCTION() \
 	CLOG_WRITE_END_FUNCTION(ELogLevel::PROD_LEVEL) \
 
-#define CLOG_PROD_END_FUNCTION_WITH_PARAMS(...) \
-	CLOG_PROD_END_FUNCTION_WITH_PARAMS(ELogLevel::PROD_LEVEL, __VA_ARGS__)
+#define CLOG_PROD_END_FUNCTION_WITH_RETURN(value) \
+	CLOG_WRITE_END_FUNCTION_RETURN(ELogLevel::PROD_LEVEL, value)
 
 #define CLOG_DEBUG_START_FUNCTION() \
 	CLOG_WRITE_START_FUNCTION(ELogLevel::DEBUG_LEVEL) \
 
 #define CLOG_DEBUG_START_FUNCTION_WITH_PARAMS(...) \
-	CLOG_PROD_START_FUNCTION_WITH_PARAMS(ELogLevel::DEBUG_LEVEL, __VA_ARGS__) \
+	CLOG_WRITE_START_FUNCTION_WITH_PARAMS(ELogLevel::DEBUG_LEVEL, __VA_ARGS__) \
 
 #define CLOG_DEBUG_END_FUNCTION() \
 	CLOG_WRITE_END_FUNCTION(ELogLevel::DEBUG_LEVEL) \
 
-#define CLOG_DEBUG_END_FUNCTION_WITH_PARAMS(...) \
-	CLOG_PROD_END_FUNCTION_WITH_PARAMS(ELogLevel::DEBUG_LEVEL, __VA_ARGS__)
+#define CLOG_DEBUG_END_FUNCTION_WITH_RETURN(value) \
+	CLOG_WRITE_END_FUNCTION_RETURN(ELogLevel::DEBUG_LEVEL, value) \
 
 #define CLOG_TRACE_START_FUNCTION() \
 	CLOG_WRITE_START_FUNCTION(ELogLevel::TRACE_LEVEL) \
 
 #define CLOG_TRACE_START_FUNCTION_WITH_PARAMS(...) \
-	CLOG_PROD_START_FUNCTION_WITH_PARAMS(ELogLevel::TRACE_LEVEL, __VA_ARGS__) \
+	CLOG_WRITE_START_FUNCTION_WITH_PARAMS(ELogLevel::TRACE_LEVEL, __VA_ARGS__) \
 
 #define CLOG_TRACE_END_FUNCTION() \
 	CLOG_WRITE_END_FUNCTION(ELogLevel::TRACE_LEVEL) \
 
-#define CLOG_TRACE_END_FUNCTION_WITH_PARAMS(...) \
-	CLOG_PROD_END_FUNCTION_WITH_PARAMS(ELogLevel::TRACE_LEVEL, __VA_ARGS__)
+#define CLOG_TRACE_END_FUNCTION_WITH_RETURN(value) \
+	CLOG_WRITE_END_FUNCTION_RETURN(ELogLevel::TRACE_LEVEL, value) \
