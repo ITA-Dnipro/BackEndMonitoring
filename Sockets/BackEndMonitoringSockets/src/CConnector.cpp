@@ -10,7 +10,7 @@ bool CConnector::Connect()
 {
 	sockaddr_in current_address = m_socket_connector->GetSocketAddress();
 
-	if (PlatformUtils::Connect(m_socket_connector->GetHandle(), 
+	if (PlatformUtils::Connect(m_socket_connector->GetSocket_fd(), 
 		current_address))
     {
 		std::cout << "Success connection to the server" << std::endl;
@@ -22,7 +22,7 @@ bool CConnector::Connect()
 
 int CConnector::GetSocket_fd() const
 {
-	return m_socket_connector->GetHandle();
+	return m_socket_connector->GetSocket_fd();
 }
 
 std::unique_ptr<CSocket> CConnector::InitSocketConnector

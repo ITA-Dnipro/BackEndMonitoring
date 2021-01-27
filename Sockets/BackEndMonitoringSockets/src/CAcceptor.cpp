@@ -13,17 +13,27 @@ CAcceptor::CAcceptor(const int port, const std::string& ip_address,
 
 int CAcceptor::GetConnectedFD()
 {
-	return PlatformUtils::Accept(m_socket_acceptor->GetHandle());
+	//CLOG_DEBUG_WITH_PARAMS("In the class CAcceptor was accepted socket ",
+		//socket_fd);
+	
+	return PlatformUtils::Accept(m_socket_acceptor->GetSocket_fd());
 }
 
 int CAcceptor::GetHandle() const
 {
-	return m_socket_acceptor->GetHandle();
+	return m_socket_acceptor->GetSocket_fd();
 }
 
 bool CAcceptor::CloseSocket()
 {
-	return m_socket_acceptor->CloseSocket();
+	//CLOG_DEBUG_WITH_PARAMS("Hello with args", m_socket_acceptor->GetSocket_fd());
+	if (m_socket_acceptor->CloseSocket())
+	{
+		//CLOG_DEBUG("Socket was succesfully closed");
+		return true;
+	}
+	//CLOG_DEBUG("Cannot close socket");
+	return false;
 }
 
 void CAcceptor::Initialize()
@@ -41,7 +51,7 @@ void CAcceptor::Initialize()
 
 	if (!m_is_socked_blocked)
 	{
-		PlatformUtils::SetUnblockingSocket(m_socket_acceptor->GetHandle());
+		PlatformUtils::SetUnblockingSocket(m_socket_acceptor->GetSocket_fd());
 	}
 }
 
@@ -57,18 +67,18 @@ bool CAcceptor::OpenAcception()
 bool CAcceptor::BindSocket()
 {
 	sockaddr_in current_address = m_socket_acceptor->GetSocketAddress();
-	return PlatformUtils::BindSocket(m_socket_acceptor->GetHandle(), current_address);
+	return PlatformUtils::BindSocket(m_socket_acceptor->GetSocket_fd(), current_address);
 }
 
 bool CAcceptor::StartListening()
 {
-	return PlatformUtils::Listen(m_socket_acceptor->GetHandle());
+	return PlatformUtils::Listen(m_socket_acceptor->GetSocket_fd());
 }
 
 bool CAcceptor::MakeSocketMulticonnected()
 {
 	int on = 1;
-	if (setsockopt(m_socket_acceptor->GetHandle(), SOL_SOCKET, SO_REUSEADDR,
+	if (setsockopt(m_socket_acceptor->GetSocket_fd(), SOL_SOCKET, SO_REUSEADDR,
 		(char*)&on, sizeof(on)) != ERROR_SOCKET)
 	{
 		return true;

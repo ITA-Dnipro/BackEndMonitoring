@@ -2,6 +2,7 @@
 #include "CServiceHandler.h"
 #include "CSocketWrapper.h"
 #include "CClientConnectionHandler.h"
+
 class CConnector;
 
 // This class is the window for the user to send requests to the server and 

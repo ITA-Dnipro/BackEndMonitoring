@@ -4,7 +4,6 @@
 #include "CServiceConnectionHandler.h"
 #include "CEvent.h"
 #include "PlatformUtils.h"
-
 CAcceptorWrapper::CAcceptorWrapper(int port, const std::string& ip_address, 
 	CEvent& event, std::shared_ptr<CThreadPool> pool, bool is_blocked, 
 	int socket_timeout)	: m_event(event), m_is_socket_blocked(is_blocked), 
@@ -23,10 +22,12 @@ void CAcceptorWrapper::StartServer()
 	std::cout << "Start server" << std::endl;
 	if (m_is_socket_blocked)
 	{
+		//CLOG_DEBUG("Start handling events with blocked server socket");
 		HandleBlockingEvents();
 	}
 	else
 	{
+		//CLOG_DEBUG("Start handling events with unblocked server socket");
 		HandleNonBlockingEvents();
 	}
 }
@@ -39,7 +40,7 @@ bool CAcceptorWrapper::StopSocket()
 void CAcceptorWrapper::Initialize(int port, const std::string& ip_address)
 {
 	PlatformUtils::InitializeWinLibrary();
-	m_server_acceptor = InitAcceptor(1111, "127.0.0.1");
+	m_server_acceptor = InitAcceptor(port, ip_address);
 	m_stream = InitSocketWrapper();
 	m_service_handler = InitServiceHandler();
 }
@@ -99,6 +100,7 @@ void CAcceptorWrapper::AddClientToThread(int& socket_fd)
 {
 	if ((socket_fd = m_server_acceptor->GetConnectedFD()) > 0)
 	{
+		//CLOG_DEBUG_WITH_PARAMS("Accept a new client with a socket ", socket_fd);
 		m_pool->Enqueue([this, &socket_fd]()
 			{
 				while (!m_event.WaitFor(std::chrono::nanoseconds(1000)))

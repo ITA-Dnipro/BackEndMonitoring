@@ -25,6 +25,7 @@ void CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
 	std::string message = m_peer_stream->Receive(socket_fd);
 	if (message == "Request for data\n")
 	{
+		//CLOG_DEBUG_WITH_PARAMS("Data request from the socket ", socket_fd);
 		std::cout << message << " " << std::to_string(++count) << std::endl;
 		HandleResponseEvent(socket_fd);
 	}

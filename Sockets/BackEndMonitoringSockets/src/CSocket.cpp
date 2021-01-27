@@ -6,7 +6,7 @@ CSocket::CSocket(const int port, const std::string& ip_address)
 	SetSocketAddress(port, ip_address);
 }
 
-int CSocket::GetHandle() const
+int CSocket::GetSocket_fd() const
 {
 	return static_cast<int>(m_socket);
 }
