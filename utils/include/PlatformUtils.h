@@ -11,19 +11,12 @@
 	#include <unistd.h>
 	#include <stdio.h>
 	#include <stdlib.h>
+	#include <arpa/inet.h>
 #endif
 
-class WindowsLibraryInititializator
-{
-public:
-	static void StartLibrary();
-	static void CloseLibrary();
-
-private:
-	static const int SUCCESS = 0;
-	static bool s_is_started_library;
-	static bool s_is_stopped_library;
-};
+constexpr int ERROR_SOCKET = -1;
+constexpr int SOCKET_INVALID = 0;
+constexpr int SUCCESS = 0;
 
 class CBaseSocket
 {
@@ -33,17 +26,29 @@ public:
 
 protected:
 #ifdef _WIN64
+	SOCKET InitSocket();
+
 	SOCKET m_socket;
 #elif _linux_
+	int InitSocket();
+
 	int m_socket;
 #endif
 
+	sockaddr_in m_address;
 };
 
 namespace PlatformUtils
 {
-	bool SetBlockingSocket();
-	bool SetUnblockingSocket();
+	bool InitializeWinLibrary();
+	bool FinalizeWinLibrary();
+
+	bool BindSocket(int socket, sockaddr_in& current_address);
+	bool Listen(int socket);
+	int Accept(int socket);
+	bool Connect(int socket, sockaddr_in& current_address);
+	bool SetUnblockingSocket(int socket);
+	bool CloseSocket(int socket);
 
 }
 

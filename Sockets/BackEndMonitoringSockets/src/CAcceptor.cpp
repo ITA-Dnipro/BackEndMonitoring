@@ -3,16 +3,17 @@
 #include "CServiceConnectionHandler.h"
 #include "CServiceHandler.h"
 
-CAcceptor::CAcceptor(const int port, const std::string& ip_address)
-	: m_ip_address(ip_address), m_port(port)
+CAcceptor::CAcceptor(const int port, const std::string& ip_address, 
+	bool is_blocked) : m_ip_address(ip_address), m_port(port),
+	m_is_socked_blocked(is_blocked)
 {
-	m_socket_acceptor = InitSocket(port, ip_address);
-	OpenAcception();
+	Initialize();
+	MakeSocketMulticonnected();
 }
 
-int CAcceptor::GetConnectedHandle()
+int CAcceptor::GetConnectedFD()
 {
-	return static_cast<int>(accept(m_socket_acceptor->GetHandle(), NULL, NULL));
+	return PlatformUtils::Accept(m_socket_acceptor->GetHandle());
 }
 
 int CAcceptor::GetHandle() const
@@ -23,6 +24,25 @@ int CAcceptor::GetHandle() const
 bool CAcceptor::CloseSocket()
 {
 	return m_socket_acceptor->CloseSocket();
+}
+
+void CAcceptor::Initialize()
+{
+	m_socket_acceptor = InitSocket(m_port, m_ip_address);
+
+	if (OpenAcception())
+	{
+		// log pos
+	}
+	else
+	{
+		//log neg
+	}
+
+	if (!m_is_socked_blocked)
+	{
+		PlatformUtils::SetUnblockingSocket(m_socket_acceptor->GetHandle());
+	}
 }
 
 bool CAcceptor::OpenAcception()
@@ -37,17 +57,19 @@ bool CAcceptor::OpenAcception()
 bool CAcceptor::BindSocket()
 {
 	sockaddr_in current_address = m_socket_acceptor->GetSocketAddress();
-	if (::bind(m_socket_acceptor->GetHandle(), (SOCKADDR*)&current_address, 
-		sizeof(current_address)) == SUCCESS)
-	{
-		return true;
-	}
-	return false;
+	return PlatformUtils::BindSocket(m_socket_acceptor->GetHandle(), current_address);
 }
 
 bool CAcceptor::StartListening()
 {
-	if (::listen(m_socket_acceptor->GetHandle(), SOMAXCONN) == SUCCESS)
+	return PlatformUtils::Listen(m_socket_acceptor->GetHandle());
+}
+
+bool CAcceptor::MakeSocketMulticonnected()
+{
+	int on = 1;
+	if (setsockopt(m_socket_acceptor->GetHandle(), SOL_SOCKET, SO_REUSEADDR,
+		(char*)&on, sizeof(on)) != ERROR_SOCKET)
 	{
 		return true;
 	}

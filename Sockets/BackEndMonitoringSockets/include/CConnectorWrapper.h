@@ -1,7 +1,7 @@
 #pragma once
 #include "CServiceHandler.h"
 #include "CSocketWrapper.h"
-
+#include "CClientConnectionHandler.h"
 class CConnector;
 
 // This class is the window for the user to send requests to the server and 
@@ -10,16 +10,18 @@ class CConnectorWrapper
 {
 public:
 	CConnectorWrapper(int port, const std::string& ip_address);
+	~CConnectorWrapper();
 	void MakeRequest();
 
 private:
 	bool GetRequestConfirmation();
-	bool ConnectToServer(std::unique_ptr<CConnector> connector);
+	bool ConnectToServer();
 	std::unique_ptr<CConnector> InitConnector(int port, 
 		const std::string& ip_address);
-	std::unique_ptr<CServiceHandler> InitClientHandler();
+	std::unique_ptr<CClientConnectionHandler> InitClientHandler();
 
-	int m_port;
+	std::unique_ptr<CClientConnectionHandler> m_client_handler;
+	std::unique_ptr<CConnector> m_connector;
 	std::string m_address;
-	std::unique_ptr<CServiceHandler> m_client_handler;
+	int m_port;
 };

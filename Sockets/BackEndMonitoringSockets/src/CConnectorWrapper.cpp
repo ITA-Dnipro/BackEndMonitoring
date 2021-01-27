@@ -2,29 +2,43 @@
 #include "CConnectorWrapper.h"
 #include "CClientConnectionHandler.h"
 #include "CConnector.h"
+#include "PlatformUtils.h"
 
 CConnectorWrapper::CConnectorWrapper(int port, const std::string& ip_address)
 	: m_port(port), m_address(ip_address)
 { 
+	PlatformUtils::InitializeWinLibrary();
 	m_client_handler = InitClientHandler();
+	m_connector = InitConnector(m_port, m_address);
+}
+
+CConnectorWrapper::~CConnectorWrapper()
+{
+	PlatformUtils::FinalizeWinLibrary();
 }
 
 void CConnectorWrapper::MakeRequest()
 {
 	std::cout << "\t\tClient" << std::endl << std::endl;
 
-	std::unique_ptr<CConnector> connector;
-	std::unique_ptr<CClientConnectionHandler> client_handler;
-
-	while (GetRequestConfirmation())
+	if (ConnectToServer())
 	{
-		connector = InitConnector(m_port, m_address);
-
-		if (!ConnectToServer(std::move(connector)))
+		//while (GetRequestConfirmation())
+		//{
+		//	m_client_handler->HandleEvent(m_connector->GetSocket_fd(),
+		//		EventType::REQUEST_DATA);
+		//}
+		int counter = 0;
+		while (true)
 		{
-			std::cout << "Cannot connect to the server!" << std::endl;
+			m_client_handler->HandleEvent(m_connector->GetSocket_fd(),
+				EventType::REQUEST_DATA);
+			Sleep(100);
+			std::cout << "------------ " << ++counter << " ------------" << std::endl;
 		}
 	}
+
+	std::cout << "Cannot connect to the server!" << std::endl;
 }
 
 bool CConnectorWrapper::GetRequestConfirmation()
@@ -51,16 +65,9 @@ bool CConnectorWrapper::GetRequestConfirmation()
 	return false;
 }
 
-bool CConnectorWrapper::ConnectToServer(std::unique_ptr<CConnector> connector)
+bool CConnectorWrapper::ConnectToServer()
 {
-	if (connector->Connect())
-	{
-		m_client_handler->HandleEvent(connector->GetHandle(),
-			EventType::REQUEST_DATA);
-		return true;
-	}
-
-	return false;
+	return m_connector->Connect();
 }
 
 std::unique_ptr<CConnector> CConnectorWrapper::InitConnector(
@@ -69,7 +76,7 @@ std::unique_ptr<CConnector> CConnectorWrapper::InitConnector(
 	return std::move(std::make_unique<CConnector>(port, ip_address));
 }
 
-std::unique_ptr<CServiceHandler> CConnectorWrapper::InitClientHandler()
+std::unique_ptr<CClientConnectionHandler> CConnectorWrapper::InitClientHandler()
 {
 	return std::move(std::make_unique<CClientConnectionHandler>());
 }

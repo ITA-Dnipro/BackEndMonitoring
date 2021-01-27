@@ -4,34 +4,11 @@
 CSocket::CSocket(const int port, const std::string& ip_address)
 {
 	SetSocketAddress(port, ip_address);
-	m_socket = InitSocket();
-}
-
-CSocket::~CSocket()
-{
-	if (CloseSocket()) {
-		// log pos
-	}
-	else
-	{
-		// LOG + WSAGetLastError()
-	}
 }
 
 int CSocket::GetHandle() const
 {
 	return static_cast<int>(m_socket);
-}
-
-int CSocket::InitSocket()
-{
-	int new_socket = static_cast<int>(socket(AF_INET, SOCK_STREAM, NULL));
-	if (!IsValidSocket())
-	{
-		// LOGGER + WSAGetLastError()
-	}
-
-	return new_socket;
 }
 
 void CSocket::SetSocketAddress(const int port,
@@ -44,7 +21,7 @@ void CSocket::SetSocketAddress(const int port,
 
 bool CSocket::IsValidSocket() const
 {
-	if (m_socket == INVALID_SOCKET)
+	if (m_socket == SOCKET_INVALID)
 	{
 		return false;
 	}
@@ -53,14 +30,7 @@ bool CSocket::IsValidSocket() const
 
 bool CSocket::CloseSocket()
 {
-	if (m_socket != INVALID_SOCKET)
-	{
-		if (closesocket(m_socket) != INVALID_SOCKET)
-		{
-			return true;
-		}
-	}
-	return false;
+	return PlatformUtils::CloseSocket(static_cast<int>(m_socket));
 }
 
 sockaddr_in CSocket::GetSocketAddress() const

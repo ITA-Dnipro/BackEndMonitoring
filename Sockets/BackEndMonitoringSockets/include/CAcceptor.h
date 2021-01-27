@@ -8,21 +8,22 @@ class CServiceHandler;
 class CAcceptor
 {
 public:
-	CAcceptor(const int port, const std::string& ip_address);
-	int GetConnectedHandle();
+	CAcceptor(const int port, const std::string& ip_address, bool is_blocked);
+	int GetConnectedFD();
 	int GetHandle() const;
 	bool CloseSocket();
 private:
-	const int SUCCESS = 0;
-
+	void Initialize();
 	bool OpenAcception();
 	bool BindSocket();
 	bool StartListening();
+	bool MakeSocketMulticonnected();
 	std::unique_ptr<CSocket> InitSocket(const int port, 
 		const std::string& ip_address);
 
-	const int m_port;
-	std::string m_ip_address;
 	std::unique_ptr<CSocket> m_socket_acceptor;
+	std::string m_ip_address;
+	const int m_port;
+	bool m_is_socked_blocked;
 };
 

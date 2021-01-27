@@ -10,18 +10,17 @@ bool CConnector::Connect()
 {
 	sockaddr_in current_address = m_socket_connector->GetSocketAddress();
 
-	if (connect(m_socket_connector->GetHandle(), (sockaddr*)&current_address,
-		sizeof(current_address)) == SOCKET_ERROR)
+	if (PlatformUtils::Connect(m_socket_connector->GetHandle(), 
+		current_address))
     {
-        std::cout << "Fail connection to the server" << std::endl;
-        return false;
+		std::cout << "Success connection to the server" << std::endl;
+		return true;
     }
-    std::cout << "Success connection to the server" << std::endl;
-
-    return true;
+	std::cout << "Fail connection to the server" << std::endl;
+	return false;
 }
 
-int CConnector::GetHandle() const
+int CConnector::GetSocket_fd() const
 {
 	return m_socket_connector->GetHandle();
 }

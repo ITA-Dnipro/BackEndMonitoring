@@ -10,8 +10,8 @@ public:
 	void HandleEvent(const int socket, EventType type) override;
 
 private:
-	void HandleReadEvent(int socket);
-	void HandleWriteEvent(int socket);
+	void HandleReadEvent(const int socket);
+	void HandleWriteEvent(const int socket);
 	std::unique_ptr<CSocketWrapper> InitClientStream();
 
 	std::unique_ptr<CSocketWrapper> m_client_stream;

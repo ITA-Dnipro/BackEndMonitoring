@@ -6,29 +6,29 @@ CClientConnectionHandler::CClientConnectionHandler()
 	m_client_stream = InitClientStream();
 }
 
-void CClientConnectionHandler::HandleEvent(const int server_socket, 
+void CClientConnectionHandler::HandleEvent(const int socket_fd, 
 	EventType type)
 {
 
 	if (type == EventType::REQUEST_DATA)
 	{
-		HandleReadEvent(server_socket);
+		HandleReadEvent(socket_fd);
 	}
 	else if (type == EventType::RESPONSE_DATA)
 	{
-		HandleReadEvent(server_socket);
+		HandleReadEvent(socket_fd);
 	}
 }
 
-void CClientConnectionHandler::HandleReadEvent(int socket)
+void CClientConnectionHandler::HandleReadEvent(const int socket_fd)
 {
-	m_client_stream->Send(socket, "Request for data\n");
-	HandleWriteEvent(socket);
+	m_client_stream->Send(socket_fd, "Request for data\n");
+	HandleWriteEvent(socket_fd);
 }
 
-void CClientConnectionHandler::HandleWriteEvent(int socket)
+void CClientConnectionHandler::HandleWriteEvent(const int socket_fd)
 {
-	std::cout << m_client_stream->Receive(socket) << std::endl;
+	std::cout << m_client_stream->Receive(socket_fd) << std::endl;
 }
 
 std::unique_ptr<CSocketWrapper> CClientConnectionHandler::InitClientStream()

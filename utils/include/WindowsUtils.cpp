@@ -3,50 +3,93 @@
 
 #ifdef _WIN64
 
-bool WindowsLibraryInititializator::s_is_started_library = false;
-bool WindowsLibraryInititializator::s_is_stopped_library = false;
-
-void WindowsLibraryInititializator::StartLibrary()
-{
-	WSADATA info;
-	if (s_is_started_library == false && 
-		WSAStartup(MAKEWORD(2, 1), &info) == SUCCESS)
-	{
-		s_is_started_library = true;
-	}
-}
-
-void WindowsLibraryInititializator::CloseLibrary()
-{
-	if (s_is_stopped_library == false && WSACleanup() == SUCCESS)
-	{
-		s_is_stopped_library = true;
-		s_is_started_library = false;
-	}
-}
-
 CBaseSocket::CBaseSocket()
 {
-	m_socket = SOCKET_ERROR;
-	WindowsLibraryInititializator::StartLibrary();
+	m_socket = InitSocket();
 }
 
 CBaseSocket::~CBaseSocket()
 {
-	WindowsLibraryInititializator::CloseLibrary();
+	PlatformUtils::CloseSocket(static_cast<int>(m_socket));
 }
+
+SOCKET CBaseSocket::InitSocket()
+{
+	return socket(AF_INET, SOCK_STREAM, NULL);
+}
+
 
 namespace PlatformUtils
 {
-	bool SetBlockingSocket()
+	bool InitializeWinLibrary()
 	{
-		// TODO add function
-		return true;
+		WSADATA info;
+		if(WSAStartup(MAKEWORD(2, 1), &info) == SUCCESS)
+		{
+			return true;
+		}
+		return false;
 	}
-	bool SetUnblockingSocket()
+
+	bool FinalizeWinLibrary()
 	{
-		// TODO add function
-		return true;
+		if (WSACleanup() == SUCCESS)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	bool BindSocket(int socket, sockaddr_in& current_address)
+	{
+		if (::bind(socket, (SOCKADDR*)&current_address,
+			sizeof(current_address)) == SUCCESS)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	bool Listen(int socket)
+	{
+		if (listen(socket, SOMAXCONN) == SUCCESS)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	int Accept(int socket)
+	{
+		return static_cast<int>(accept(socket, NULL, NULL));
+	}
+
+	bool Connect(int socket, sockaddr_in& current_address)
+	{
+		return connect(socket, (sockaddr*)&current_address,
+			sizeof(current_address)) == SUCCESS;
+	}
+
+	bool SetUnblockingSocket(int socket)
+	{
+		u_long iMode = 1UL;
+		if (ioctlsocket(socket, FIONBIO, &iMode) == SUCCESS)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	bool CloseSocket(int socket)
+	{
+		if (socket != SOCKET_INVALID)
+		{
+			if (closesocket(socket) != ERROR_SOCKET)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }
 #endif

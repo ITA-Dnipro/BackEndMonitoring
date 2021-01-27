@@ -12,7 +12,8 @@ public:
 private:
 	const int CONNECTION_ERROR = -1;
 
+	std::string CreateHeader(const int size);
+	int GetSizeFromHeader(const int socket) const;
 	bool IsAllDataReceived(int msg_size, int received_msg_size) const;
-	bool SendMessageLength(const int client_socket, int length);
-	int ReceiveMessageLength(const int client_socket);
+	int ConvertDataToInt(const std::string& data) const;
 };

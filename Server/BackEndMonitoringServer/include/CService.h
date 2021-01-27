@@ -60,4 +60,5 @@ private:
     std::thread m_main_thread;
     CEvent m_stop_event;
     std::unique_ptr<CAcceptorWrapper> m_acceptor_socket;
+    std::shared_ptr<CThreadPool> m_thread_pool;
 };
