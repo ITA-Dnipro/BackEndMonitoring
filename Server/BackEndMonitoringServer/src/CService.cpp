@@ -31,10 +31,13 @@ void CService::RunServer()
     std::string ip_address = "127.0.0.1";
 
     m_p_thread_pool = std::make_shared<CThreadPool>(num_threads, m_stop_event);
-    m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(port, ip_address, 
-        m_stop_event, m_p_thread_pool);
+    m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(port, ip_address,
+        m_stop_event, m_p_thread_pool, true, 5);
 
     m_p_acceptor_socket->StartServer();
+
+    // I'm not sure that it should be here
+    CLOG_DESTROY();
 }
 
 CService* CService::m_p_service = nullptr;
@@ -66,7 +69,7 @@ void CService::SetStatus(DWORD state, DWORD error_code, DWORD wait_hint)
 
 DWORD WINAPI CService::ServiceCtrlHandler(
     DWORD control_code, DWORD event_type,
-    void* event_data, void* context) 
+    void* event_data, void* context)
 {
     if (control_code == SERVICE_CONTROL_STOP)
     {
@@ -76,7 +79,7 @@ DWORD WINAPI CService::ServiceCtrlHandler(
     return 0;
 }
 
-void WINAPI CService::SvcMain(DWORD argc, CHAR** argv) 
+void WINAPI CService::SvcMain(DWORD argc, CHAR** argv)
 {
     assert(m_p_service);
 
@@ -110,12 +113,14 @@ bool CService::Run()
 const CString& CService::GetName() const
 { return m_name;}
 
-const CString& CService::GetDisplayName() const 
+const CString& CService::GetDisplayName() const
 { return m_display_name;}
 
+// Chupakabra: returning copy of var, const redundant
 const DWORD CService::GetStartType() const
 { return m_start_type;}
 
+// Chupakabra: returning copy of var, const redundant
 const DWORD CService::GetErrorControlType() const
 { return m_error_control_type;}
 
@@ -127,7 +132,7 @@ void CService::OnStart(DWORD, CHAR**)
     });
 }
 
-void CService::OnStop() 
+void CService::OnStop()
 {
     m_stop_event.Set();
     m_p_acceptor_socket->StopSocket();
@@ -144,7 +149,7 @@ void CService::Start(DWORD argc, CHAR** argv)
     SetStatus(SERVICE_RUNNING);
 }
 
-void CService::Stop() 
+void CService::Stop()
 {
     SetStatus(SERVICE_STOP_PENDING);
     OnStop();
