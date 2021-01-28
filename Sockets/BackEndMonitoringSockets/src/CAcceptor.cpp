@@ -4,6 +4,7 @@
 #include "CServiceHandler.h"
 #include "CLogger/include/Log.h"
 
+
 CAcceptor::CAcceptor(const int port, const std::string& ip_address, 
 	bool is_blocked) : m_ip_address(ip_address), m_port(port),
 	m_is_socked_blocked(is_blocked)
@@ -66,7 +67,7 @@ bool CAcceptor::OpenAcception()
 
 bool CAcceptor::BindSocket()
 {
-	sockaddr_in current_address = m_socket_acceptor->GetSocketAddress();
+	sockaddress current_address = m_socket_acceptor->GetSocketAddress();
 	return PlatformUtils::BindSocket(m_socket_acceptor->GetSocketFD(), current_address);
 }
 

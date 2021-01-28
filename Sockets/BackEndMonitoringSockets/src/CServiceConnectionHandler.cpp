@@ -1,44 +1,56 @@
 #include "stdafx.h"
 #include "CServiceConnectionHandler.h"
 #include "CLogger/include/Log.h"
+#include "PlatformUtils.h"
 
 CServiceConnectionHandler::CServiceConnectionHandler()
 {
 	m_peer_stream = InitPeerStream();
 }
 
-void CServiceConnectionHandler::HandleEvent(const int socket_fd, EventType type)
+bool CServiceConnectionHandler::HandleEvent(const int socket_fd, EventType type)
 {
+	bool can_continue = true;
+	switch (type) {
+	case EventType::REQUEST_DATA:
+		can_continue = HandleRequestEvent(socket_fd);
+		break;
+	case EventType::CLOSE_EVENT:
+		can_continue = HandleResponseExitEvent(socket_fd);
+		break;
+	}
+	return can_continue;
 
-	if (type == EventType::REQUEST_DATA)
-	{
-		HandleRequestEvent(socket_fd);
-	}
-	else if (type == EventType::RESPONSE_DATA)
-	{
-		HandleResponseEvent(socket_fd);
-	}
 }
 
-void CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
+bool CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
 {
-	static std::atomic<int> count{0};
-
+	bool can_continue = true;
 	if (m_peer_stream->CanReceiveData(socket_fd))
 	{
 		std::string message = m_peer_stream->Receive(socket_fd);
 		if (message == "Request for data\n")
 		{
-			CLOG_DEBUG_WITH_PARAMS("Data request from the socket ", socket_fd, 
-				" number of the request ", count.load());
+			CLOG_DEBUG_WITH_PARAMS("Data request from the socket ", socket_fd);
 			HandleResponseEvent(socket_fd);
 		}
+		else if (message == "Exit")
+		{
+			HandleEvent(socket_fd, EventType::CLOSE_EVENT);
+			can_continue = false;
+		}
 	}
+	return can_continue;
 }
 
-void CServiceConnectionHandler::HandleResponseEvent(const int socket_fd)
+bool CServiceConnectionHandler::HandleResponseEvent(const int socket_fd)
 {
-	m_peer_stream->Send(socket_fd, data.GetData());
+	return m_peer_stream->Send(socket_fd, data.GetData());
+}
+
+bool CServiceConnectionHandler::HandleResponseExitEvent(const int socket_fd)
+{
+	return m_peer_stream->Send(socket_fd, "Disconnect");
 }
 
 std::unique_ptr<CSocketWrapper> CServiceConnectionHandler::InitPeerStream()

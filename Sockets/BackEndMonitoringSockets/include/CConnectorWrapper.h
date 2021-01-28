@@ -2,6 +2,7 @@
 #include "CServiceHandler.h"
 #include "CSocketWrapper.h"
 #include "CClientConnectionHandler.h"
+#include "CServerResponseHolder.h"
 
 class CConnector;
 
@@ -12,17 +13,19 @@ class CConnectorWrapper
 public:
 	CConnectorWrapper(int port, const std::string& ip_address);
 	~CConnectorWrapper();
-	void MakeRequest();
+
+	std::string MakeRequest() const;
+	bool ConnectToServer() const;
+	void Exit();
 
 private:
-	bool GetRequestConfirmation();
-	bool ConnectToServer();
 	std::unique_ptr<CConnector> InitConnector(int port, 
 		const std::string& ip_address);
 	std::unique_ptr<CClientConnectionHandler> InitClientHandler();
 
+	std::string m_address;
 	std::unique_ptr<CClientConnectionHandler> m_client_handler;
 	std::unique_ptr<CConnector> m_connector;
-	std::string m_address;
+	CServerResponseHolder m_response_holder;
 	int m_port;
 };

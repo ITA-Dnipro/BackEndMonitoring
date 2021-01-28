@@ -21,8 +21,8 @@ private:
 	std::unique_ptr<CSocket> InitSocket(const int port, 
 		const std::string& ip_address);
 
-	std::unique_ptr<CSocket> m_socket_acceptor;
 	std::string m_ip_address;
+	std::unique_ptr<CSocket> m_socket_acceptor;
 	const int m_port;
 	bool m_is_socked_blocked;
 };

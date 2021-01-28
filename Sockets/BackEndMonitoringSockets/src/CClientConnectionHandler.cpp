@@ -6,29 +6,50 @@ CClientConnectionHandler::CClientConnectionHandler()
 	m_client_stream = InitClientStream();
 }
 
-void CClientConnectionHandler::HandleEvent(const int socket_fd, 
+bool CClientConnectionHandler::HandleEvent(const int socket_fd, 
 	EventType type)
 {
 
-	if (type == EventType::REQUEST_DATA)
-	{
-		HandleReadEvent(socket_fd);
+	switch (type) {
+	case EventType::REQUEST_DATA:
+		HandleRequestEvent(socket_fd);
+		break;
+	case EventType::RESPONSE_DATA:
+		HandleRequestEvent(socket_fd);
+		break;
+	case EventType::CLOSE_EVENT:
+		HandleExitEvent(socket_fd);
+		return false;
 	}
-	else if (type == EventType::RESPONSE_DATA)
-	{
-		HandleReadEvent(socket_fd);
-	}
+	return true;
 }
 
-void CClientConnectionHandler::HandleReadEvent(const int socket_fd)
+bool CClientConnectionHandler::HandleRequestEvent(const int socket_fd)
 {
 	m_client_stream->Send(socket_fd, "Request for data\n");
-	HandleWriteEvent(socket_fd);
+	return HandleResponseEvent(socket_fd);
 }
 
-void CClientConnectionHandler::HandleWriteEvent(const int socket_fd)
+bool CClientConnectionHandler::HandleResponseEvent(const int socket_fd)
 {
-	std::cout << m_client_stream->Receive(socket_fd) << std::endl;
+	std::cout << m_client_stream->Receive(socket_fd);
+	return true;
+	//TODO send data to client
+	//m_response_holder.SetResponse(m_client_stream->Receive(socket_fd));
+}
+
+bool CClientConnectionHandler::HandleExitEvent(const int socket_fd)
+{
+	m_client_stream->Send(socket_fd, "Exit");
+
+	while (true)
+	{
+		if (m_client_stream->Receive(socket_fd) != "Disconnect")
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 std::unique_ptr<CSocketWrapper> CClientConnectionHandler::InitClientStream()

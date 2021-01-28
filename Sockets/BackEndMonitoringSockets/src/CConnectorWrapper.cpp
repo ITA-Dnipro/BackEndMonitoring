@@ -5,6 +5,14 @@
 #include "PlatformUtils.h"
 #include "CLogger/include/Log.h"
 
+#include <memory>
+#include <string>
+#include <future>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <deque>
+
 CConnectorWrapper::CConnectorWrapper(int port, const std::string& ip_address)
 	: m_port(port), m_address(ip_address)
 { 
@@ -15,62 +23,33 @@ CConnectorWrapper::CConnectorWrapper(int port, const std::string& ip_address)
 
 CConnectorWrapper::~CConnectorWrapper()
 {
+	PlatformUtils::CloseSocket(m_connector->GetSocketFD());
 	PlatformUtils::FinalizeWinLibrary();
 }
 
-void CConnectorWrapper::MakeRequest()
+std::string CConnectorWrapper::MakeRequest() const
 {
-	std::cout << "\t\tClient" << std::endl << std::endl;
-
-	if (ConnectToServer())
+	while (true)	
 	{
-		//while (GetRequestConfirmation())
-		//{
-		//	m_client_handler->HandleEvent(m_connector->GetSocket_fd(),
-		//		EventType::REQUEST_DATA);
-		//}
-		int counter = 0;
-		while (true)
+		if((m_client_handler->HandleEvent(m_connector->GetSocketFD(),
+			EventType::REQUEST_DATA)))
 		{
-			m_client_handler->HandleEvent(m_connector->GetSocketFD(),
-				EventType::REQUEST_DATA);
-			CLOG_DEBUG_WITH_PARAMS("Requset to the server for the data ", counter);
-
-			Sleep(1000);
-			std::cout << "------------ " << ++counter << " ------------" << std::endl;
+			break;
 		}
 	}
 
-	std::cout << "Cannot connect to the server!" << std::endl;
+	return "";//m_response_holder.GetResponse();
 }
 
-bool CConnectorWrapper::GetRequestConfirmation()
-{
-	std::cout << "\t\tMenu" << std::endl
-		<< "\t[1] - get current status from the server" << std::endl
-		<< "\t[0] - exit" << std::endl;
-	std::string choice;
-	std::cin >> choice;
-
-	if (choice == "1")
-	{
-		return true;
-	}
-	else if (choice == "0")
-	{
-		std::cout << "Goodbay!" << std::endl;
-	}
-	else
-	{
-		std::cout << "The wrong parameter has been passed, exit!" << std::endl;
-	}
-
-	return false;
-}
-
-bool CConnectorWrapper::ConnectToServer()
+bool CConnectorWrapper::ConnectToServer() const
 {
 	return m_connector->Connect();
+}
+
+void CConnectorWrapper::Exit()
+{
+	m_client_handler->HandleEvent(m_connector->GetSocketFD(),
+		EventType::CLOSE_EVENT);
 }
 
 std::unique_ptr<CConnector> CConnectorWrapper::InitConnector(

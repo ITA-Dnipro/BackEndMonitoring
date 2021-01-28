@@ -52,7 +52,7 @@ std::unique_ptr<CAcceptor> CAcceptorWrapper::InitAcceptor(int port,
 		m_is_socket_blocked));
 }
 
-std::unique_ptr<CServiceHandler> CAcceptorWrapper::InitServiceHandler()
+std::unique_ptr<CServiceConnectionHandler> CAcceptorWrapper::InitServiceHandler()
 {
 	return std::move(std::make_unique<CServiceConnectionHandler>());
 }
@@ -102,11 +102,11 @@ void CAcceptorWrapper::AddClientToThread(int& socket_fd)
 	{
 		m_pool->Enqueue([this, socket_fd]()
 			{
-				while (!m_event.WaitFor(std::chrono::nanoseconds(1000)))
-				{
+				while (
 					m_service_handler->HandleEvent(socket_fd,
-						EventType::REQUEST_DATA);
-				}
+						EventType::REQUEST_DATA) && 
+						!m_event.WaitFor(std::chrono::nanoseconds(1000)))
+				{ }
 			});
 	}
 }

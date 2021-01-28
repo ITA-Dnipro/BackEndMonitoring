@@ -14,5 +14,5 @@ enum class EventType
 class CServiceHandler
 {
 public:
-	virtual void HandleEvent(const int socket_fd, EventType type) = 0;
+	virtual bool HandleEvent(const int socket_fd, EventType type) = 0;
 };

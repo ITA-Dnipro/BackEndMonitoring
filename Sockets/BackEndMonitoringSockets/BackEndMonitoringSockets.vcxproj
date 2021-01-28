@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\CLogger\include\Log.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="include\CAcceptor.h" />
     <ClInclude Include="include\CAcceptorWrapper.h" />
@@ -40,6 +41,7 @@
     <ClCompile Include="src\CClientConnectionHandler.cpp" />
     <ClCompile Include="src\CConnector.cpp" />
     <ClCompile Include="src\CConnectorWrapper.cpp" />
+    <ClCompile Include="src\CServerResponseHolder.cpp" />
     <ClCompile Include="src\CServiceConnectionHandler.cpp" />
     <ClCompile Include="src\CSocket.cpp" />
     <ClCompile Include="src\CSocketWrapper.cpp" />

@@ -21,9 +21,15 @@
     <ClCompile Include="src\stdafx.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="CClient.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\stdafx.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="CClient.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

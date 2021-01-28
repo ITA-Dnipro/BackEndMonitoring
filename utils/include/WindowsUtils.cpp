@@ -40,7 +40,7 @@ namespace PlatformUtils
 		return false;
 	}
 
-	bool BindSocket(int socket, sockaddr_in& current_address)
+	bool BindSocket(int socket, sockaddress& current_address)
 	{
 		if (::bind(socket, (SOCKADDR*)&current_address,
 			sizeof(current_address)) == SUCCESS)
@@ -64,7 +64,7 @@ namespace PlatformUtils
 		return static_cast<int>(accept(socket, NULL, NULL));
 	}
 
-	bool Connect(int socket, sockaddr_in& current_address)
+	bool Connect(int socket, sockaddress& current_address)
 	{
 		return connect(socket, (sockaddr*)&current_address,
 			sizeof(current_address)) == SUCCESS;

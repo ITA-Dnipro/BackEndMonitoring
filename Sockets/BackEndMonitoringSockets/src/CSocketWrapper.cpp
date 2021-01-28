@@ -9,7 +9,7 @@ std::string CSocketWrapper::Receive(const int socket)
 	std::string received_line;
 
 	int msg_size = GetSizeFromHeader(socket);
-	CLOG_DEBUG_WITH_PARAMS("Receive data from the socket ", socket, ", header size ", msg_size);
+	//CLOG_DEBUG_WITH_PARAMS("Receive data from the socket ", socket, ", header size ", msg_size);
 	if (msg_size == 0)
 	{
 		return "-1";
@@ -34,7 +34,7 @@ bool CSocketWrapper::Send(const int socket, const std::string& line)
 {
 	std::string buff = CreateHeader(static_cast<int>(line.length()));
 	buff += line;
-	CLOG_DEBUG_WITH_PARAMS("Send data to the socket ", socket, ", size ", buff.length());
+	//CLOG_DEBUG_WITH_PARAMS("Send data to the socket ", socket, ", size ", buff.length());
 	if (send(socket, buff.c_str(), static_cast<int>(buff.length()), 0) == CONNECTION_ERROR)
 	{
 		return false;
