@@ -5,7 +5,7 @@ class CSocket : public CBaseSocket
 {
 public:
 	CSocket(const int port, const std::string& ip_address);
-	virtual int GetSocket_fd() const;
+	virtual int GetSocketFD() const;
 	bool CloseSocket();
 	sockaddr_in GetSocketAddress() const;
 protected:

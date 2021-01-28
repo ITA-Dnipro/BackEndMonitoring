@@ -3,6 +3,7 @@
 #include "CClientConnectionHandler.h"
 #include "CConnector.h"
 #include "PlatformUtils.h"
+#include "CLogger/include/Log.h"
 
 CConnectorWrapper::CConnectorWrapper(int port, const std::string& ip_address)
 	: m_port(port), m_address(ip_address)
@@ -31,9 +32,11 @@ void CConnectorWrapper::MakeRequest()
 		int counter = 0;
 		while (true)
 		{
-			m_client_handler->HandleEvent(m_connector->GetSocket_fd(),
+			m_client_handler->HandleEvent(m_connector->GetSocketFD(),
 				EventType::REQUEST_DATA);
-			Sleep(100);
+			CLOG_DEBUG_WITH_PARAMS("Requset to the server for the data ", counter);
+
+			Sleep(1000);
 			std::cout << "------------ " << ++counter << " ------------" << std::endl;
 		}
 	}

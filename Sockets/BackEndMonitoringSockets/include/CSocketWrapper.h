@@ -8,6 +8,7 @@ public:
 
 	std::string Receive(const int client_socket);
 	bool Send(const int client_socket, const std::string& line);
+	bool CanReceiveData(const int socket) const;
 
 private:
 	const int CONNECTION_ERROR = -1;

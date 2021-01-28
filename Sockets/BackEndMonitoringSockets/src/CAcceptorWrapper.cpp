@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "CAcceptorWrapper.h"
-#include "DataReceiver.h"
 #include "CServiceConnectionHandler.h"
 #include "CEvent.h"
 #include "PlatformUtils.h"
+#include "CLogger/include/Log.h"
+
 CAcceptorWrapper::CAcceptorWrapper(int port, const std::string& ip_address, 
 	CEvent& event, std::shared_ptr<CThreadPool> pool, bool is_blocked, 
 	int socket_timeout)	: m_event(event), m_is_socket_blocked(is_blocked), 
@@ -19,15 +20,13 @@ CAcceptorWrapper::~CAcceptorWrapper()
 
 void CAcceptorWrapper::StartServer()
 {
-	std::cout << "Start server" << std::endl;
+	CLOG_DEBUG(std::string(10u, '*') + " START SERVER " + std::string(10u, '*'));
 	if (m_is_socket_blocked)
 	{
-		//CLOG_DEBUG("Start handling events with blocked server socket");
 		HandleBlockingEvents();
 	}
 	else
 	{
-		//CLOG_DEBUG("Start handling events with unblocked server socket");
 		HandleNonBlockingEvents();
 	}
 }
@@ -98,10 +97,10 @@ void CAcceptorWrapper::HandleBlockingEvents()
 
 void CAcceptorWrapper::AddClientToThread(int& socket_fd)
 {
+	static int num = 0;
 	if ((socket_fd = m_server_acceptor->GetConnectedFD()) > 0)
 	{
-		//CLOG_DEBUG_WITH_PARAMS("Accept a new client with a socket ", socket_fd);
-		m_pool->Enqueue([this, &socket_fd]()
+		m_pool->Enqueue([this, socket_fd]()
 			{
 				while (!m_event.WaitFor(std::chrono::nanoseconds(1000)))
 				{

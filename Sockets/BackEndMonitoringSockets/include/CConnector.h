@@ -8,7 +8,7 @@ public:
 	CConnector(const int port, const std::string& address);
 
 	bool Connect();
-	int GetSocket_fd() const;
+	int GetSocketFD() const;
 private:
 	std::unique_ptr<CSocket> InitSocketConnector(const int port, 
 		const std::string& ip_address);

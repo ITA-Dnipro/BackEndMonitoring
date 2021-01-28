@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CServiceConnectionHandler.h"
+#include "CLogger/include/Log.h"
 
 CServiceConnectionHandler::CServiceConnectionHandler()
 {
@@ -21,17 +22,17 @@ void CServiceConnectionHandler::HandleEvent(const int socket_fd, EventType type)
 
 void CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
 {
-	static int count = 0;
-	std::string message = m_peer_stream->Receive(socket_fd);
-	if (message == "Request for data\n")
+	static std::atomic<int> count{0};
+
+	if (m_peer_stream->CanReceiveData(socket_fd))
 	{
-		//CLOG_DEBUG_WITH_PARAMS("Data request from the socket ", socket_fd);
-		std::cout << message << " " << std::to_string(++count) << std::endl;
-		HandleResponseEvent(socket_fd);
-	}
-	else
-	{
-		HandleResponseEvent(socket_fd);
+		std::string message = m_peer_stream->Receive(socket_fd);
+		if (message == "Request for data\n")
+		{
+			CLOG_DEBUG_WITH_PARAMS("Data request from the socket ", socket_fd, 
+				" number of the request ", count.load());
+			HandleResponseEvent(socket_fd);
+		}
 	}
 }
 
