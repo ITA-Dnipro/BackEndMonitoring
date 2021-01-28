@@ -4,6 +4,7 @@
 #include "CServiceConnectionHandler.h"
 #include "CThreadPool.h"
 #include "CEvent.h"
+#include "CLogger/include/CLogger/CLogger.h"
 
 // This class works with server 
 class CAcceptorWrapper

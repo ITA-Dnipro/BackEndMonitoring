@@ -55,10 +55,8 @@ public:
 	void Reset();
 
 private:
-	bool m_is_flash = false;
-	bool m_is_all_set = false;
-
 	std::mutex m_event_lock;
 	std::condition_variable m_event_condition;
-
+	bool m_is_flash = false;
+	bool m_is_all_set = false;
 };
