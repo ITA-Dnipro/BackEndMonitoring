@@ -20,12 +20,11 @@
 #else
     #ifdef CLOG_SYS_WINDOWS
         #define DEMODLL_EXPORTS
-        #ifdef CLOG_NONCLIENT_BUILD
-            #ifdef DEMODLL_EXPORTS
-                #define CLOGGER_API __declspec(dllexport)
-            #else
-                #define CLOGGER_API __declspec(dllimport)
-            #endif
+
+        #ifdef DEMODLL_EXPORTS
+            #define CLOGGER_API __declspec(dllexport)
+        #else
+            #define CLOGGER_API __declspec(dllimport)
         #endif
 
         #ifdef _MSC_VER

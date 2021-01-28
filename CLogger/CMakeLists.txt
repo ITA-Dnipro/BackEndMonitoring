@@ -3,8 +3,6 @@ project(CLogger)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_compile_definitions(CLOG_NONCLIENT_BUILD)
-
 include_directories(include)
 
 add_library(Static src/CLogBuilder/CLogBuilder.cpp
