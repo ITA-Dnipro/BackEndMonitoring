@@ -1,37 +1,37 @@
 #include "stdafx.h"
 #include "IParser.h"
 
-SServer& IParser::GetDefaultServerConfiguration()
+const SServer& IParser::GetServerConfiguration() const
 {
     return server_;
 }
 
-SComunicationSettings& IParser::GetDefaultComunicationConfiguration()
+const SComunicationSettings& IParser::GetComunicationConfiguration() const
 {
     return comunication_settings_;
 }
 
-SLogging& IParser::GetDefaultLoggingConfiguration()
+const SLogging& IParser::GetLoggingConfiguration() const
 {
     return logging_;
 }
 
-STime& IParser::GetDefaultTimeConfiguration()
+const STime& IParser::GetTimeConfiguration() const
 {
     return time_;
 }
 
-SThreadPool& IParser::GetDefaultThreadPoolConfiguration()
+const SThreadPool& IParser::GetThreadPoolConfiguration() const
 {
     return thread_pool_;
 }
 
-SHDDInfo& IParser::GetDefaultHDDInfoConfiguration()
+const SHDDInfo& IParser::GetHDDInfoConfiguration() const
 {
     return hdd_info_;
 }
 
-SProcessesInfo& IParser::GetDefaultProcessInfoConfiguration()
+const SProcessesInfo& IParser::GetProcessInfoConfiguration() const
 {
     return processes_info_;
 }

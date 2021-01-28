@@ -4,183 +4,161 @@
 
 bool CXMLParser::Initialize(const std::string& path_to_configuration_file)
 {
-	p_docfile_ = std::move(std::make_unique<pugi::xml_document>());
-	return p_docfile_->load_file(path_to_configuration_file.c_str());
+	p_file_ = std::move(std::make_unique<pugi::xml_document>());
+	return p_file_->load_file(path_to_configuration_file.c_str());
 }
 
-SServer& CXMLParser::TryToGetServerConfigurationFromFile()
+bool CXMLParser::IsFileInitialized() const
 {
-	if (nullptr == p_docfile_)
+	if (nullptr == p_file_)
 	{
-		// todo: write to logger
-		return server_;
+		// write to logger that xml file isn't initialized
+		return false;
 	}
 
-	std::string tmp_string;
-	int tmp_int;
+	return true;
+}
 
-	tmp_string = p_docfile_->child("root").child("Server").child("servername").child_value();
-	FormConfigurationString(tmp_string);
-	server_.server_name = tmp_string != "" ? tmp_string : server_.server_name;
+void CXMLParser::ReadConfigFromFile()
+{
 
-	tmp_string = p_docfile_->child("root").child("Server").child("serverdisplayname").child_value();
-	FormConfigurationString(tmp_string);
-	server_.server_displayname = tmp_string != "" ? tmp_string : server_.server_displayname;
-
-	tmp_string = p_docfile_->child("root").child("Server").child("listenerport").child_value();
-	FormConfigurationString(tmp_string);
-	server_.listener_port = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : server_.listener_port;
-
-	tmp_string = p_docfile_->child("root").child("Server").child("ipaddress").child_value();
-	FormConfigurationString(tmp_string);
-	server_.ip_address = tmp_string != "" ? tmp_string : server_.ip_address;
-
-	return server_;
+	GetServerConfigurationFromFile();
+	GetComunicationConfigurationFromFile();
+	GetLoggingConfigurationFromFile();
+	GetTimeConfigurationFromFile();
+	GetThreadPoolConfigurationFromFile();
+	GetHDDInfoConfigurationFromFile();
+	GetProcessInfoConfigurationFromFile();
 
 }
 
-SComunicationSettings& CXMLParser::TryToGetComunicationConfigurationFromFile()
+void CXMLParser::GetServerConfigurationFromFile()
 {
-	if (nullptr == p_docfile_)
-	{
-		// todo: write to logger
-		return comunication_settings_;
-	}
 
 	std::string tmp_string;
-	int tmp_int;
+	int tmp_int = 0;
 
-	tmp_string = p_docfile_->child("root").child("communicationsettings").child("blocking").child_value();
-	FormConfigurationString(tmp_string);
-	comunication_settings_.blocking = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : comunication_settings_.blocking;
+	if (TryToGetStringData("//root/Server/servername", tmp_string))
+		server_.server_name = tmp_string != "" ? tmp_string : server_.server_name;
 
-	tmp_string = p_docfile_->child("root").child("communicationsettings").child("socket_timeout").child_value();
-	FormConfigurationString(tmp_string);
-	comunication_settings_.socket_timeout = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : comunication_settings_.socket_timeout;
-	
-	return comunication_settings_;
+	if (TryToGetStringData("//root/Server/serverdisplayname", tmp_string))
+		server_.server_displayname = tmp_string != "" ? tmp_string : server_.server_displayname;
+
+
+	if (TryToGetStringData("//root/Server/listenerport", tmp_string))
+		server_.listener_port = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : server_.listener_port;
+
+	if (TryToGetStringData("//root/Server/ipaddress", tmp_string))
+		server_.ip_address = tmp_string != "" ? tmp_string : server_.ip_address;
 
 }
 
-SLogging& CXMLParser::TryToGetLoggingConfigurationFromFile()
+void CXMLParser::GetComunicationConfigurationFromFile()
 {
-	if (nullptr == p_docfile_)
-	{
-		// todo: write to logger
-		return logging_;
-	}
 
 	std::string tmp_string;
-	int tmp_int;
+	int tmp_int = 0;
 
-	tmp_string = p_docfile_->child("root").child("logging").child("filename").child_value();
-	FormConfigurationString(tmp_string);
-	logging_.file_name = tmp_string != "" ? tmp_string : logging_.file_name;
+	if (TryToGetStringData("//root/communicationsettings/blocking", tmp_string))
+		comunication_settings_.blocking = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : comunication_settings_.blocking;
 
-	tmp_string = p_docfile_->child("root").child("logging").child("LogLevel").child_value();
-	FormConfigurationString(tmp_string);
-	logging_.log_level = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : logging_.log_level;
-
-	tmp_string = p_docfile_->child("root").child("logging").child("LogLevel").child_value();
-	FormConfigurationString(tmp_string);
-	logging_.flush = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : logging_.flush;
-
-	return logging_;
+	if (TryToGetStringData("//root/communicationsettings/socket_timeout", tmp_string))
+		comunication_settings_.socket_timeout = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : comunication_settings_.socket_timeout;
 
 }
 
-STime& CXMLParser::TryToGetTimeConfigurationFromFile()
+void CXMLParser::GetLoggingConfigurationFromFile()
 {
-	if (nullptr == p_docfile_)
-	{
-		// todo: write to logger
-		return time_;
-	}
-
 	std::string tmp_string;
-	int tmp_int;
+	int tmp_int = 0;
 
-	tmp_string = p_docfile_->child("root").child("time").child("Period_time").child_value();
-	FormConfigurationString(tmp_string);
-	time_.period_time = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : time_.period_time;
+	if (TryToGetStringData("//root/logging/filename", tmp_string))
+		logging_.file_name = tmp_string != "" ? tmp_string : logging_.file_name;
 
-	return time_;
+	if (TryToGetStringData("//root/logging/LogLevel", tmp_string))
+		logging_.log_level = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : logging_.log_level;
+
+	if (TryToGetStringData("//root/logging/flush", tmp_string))
+		logging_.flush = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : logging_.flush;
 
 }
 
-SThreadPool& CXMLParser::TryToGetThreadPoolConfigurationFromFile()
+void CXMLParser::GetTimeConfigurationFromFile()
 {
-	if (nullptr == p_docfile_)
-	{
-		// todo: write to logger
-		return thread_pool_;
-	}
-
 	std::string tmp_string;
-	int tmp_int;
+	int tmp_int = 0;
 
-	tmp_string = p_docfile_->child("root").child("threadpool").child("maxworkingthreads").child_value();
-	FormConfigurationString(tmp_string);
-	thread_pool_.max_working_threads = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : thread_pool_.max_working_threads;
-	
-	return thread_pool_;
+	if (TryToGetStringData("//root/time/Period_time", tmp_string))
+		time_.period_time = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : time_.period_time;
 
 }
 
-SHDDInfo& CXMLParser::TryToGetHDDInfoConfigurationFromFile()
+void CXMLParser::GetThreadPoolConfigurationFromFile()
 {
-	if (nullptr == p_docfile_)
-	{
-		// todo: write to logger
-		return hdd_info_;
-	}
-
 	std::string tmp_string;
-	int tmp_int;
-	bool tmp_bool;
+	int tmp_int = 0;
 
-	tmp_string = p_docfile_->child("root").child("HDDinfo").child("filename").child_value();
-	FormConfigurationString(tmp_string);
-	hdd_info_.file_name = tmp_string != "" ? tmp_string : hdd_info_.file_name;
-
-	tmp_string = p_docfile_->child("root").child("HDDinfo").child("checkhdd").child_value();
-	FormConfigurationString(tmp_string);
-	hdd_info_.check_hdd = TryToConvertToBool(tmp_string, tmp_bool) ? tmp_bool : hdd_info_.check_hdd;
-
-	tmp_string = p_docfile_->child("root").child("HDDinfo").child("counttype").child_value();
-	FormConfigurationString(tmp_string);
-	hdd_info_.count_type = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : hdd_info_.count_type;
-
-	return hdd_info_;
+	if (TryToGetStringData("//root/threadpool/maxworkingthreads", tmp_string))
+		thread_pool_.max_working_threads = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : thread_pool_.max_working_threads;
 
 }
 
-SProcessesInfo& CXMLParser::TryToGetProcessInfoConfigurationFromFile()
+void CXMLParser::GetHDDInfoConfigurationFromFile()
 {
-	if (nullptr == p_docfile_)
-	{
-		// todo: write to logger
-		return processes_info_;
-	}
 
 	std::string tmp_string;
-	int tmp_int;
-	bool tmp_bool;
+	int tmp_int = 0;
+	bool tmp_bool = false;
 
-	tmp_string = p_docfile_->child("root").child("processesinfo").child("filename").child_value();
-	FormConfigurationString(tmp_string);
-	processes_info_.file_name = tmp_string != "" ? tmp_string : processes_info_.file_name;
+	if (TryToGetStringData("//root/HDDinfo/filename", tmp_string))
+		hdd_info_.file_name = tmp_string != "" ? tmp_string : hdd_info_.file_name;
 
-	tmp_string = p_docfile_->child("root").child("processesinfo").child("checkprocesses").child_value();
-	FormConfigurationString(tmp_string);
-	processes_info_.check_processes = TryToConvertToBool(tmp_string, tmp_bool) ? tmp_bool : processes_info_.check_processes;
+	if (TryToGetStringData("//root/HDDinfo/checkhdd", tmp_string))
+		hdd_info_.check_hdd = TryToConvertToBool(tmp_string, tmp_bool) ? tmp_bool : hdd_info_.check_hdd;
 
-	tmp_string = p_docfile_->child("root").child("processesinfo").child("counttype").child_value();
-	FormConfigurationString(tmp_string);
-	processes_info_.count_type = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : processes_info_.count_type;
+	if (TryToGetStringData("//root/HDDinfo/counttype", tmp_string))
+		hdd_info_.count_type = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : hdd_info_.count_type;
 
-	return processes_info_;
+}
 
+void CXMLParser::GetProcessInfoConfigurationFromFile()
+{
+
+	std::string tmp_string;
+	int tmp_int = 0;
+	bool tmp_bool = false;
+
+	if (TryToGetStringData("//root/processesinfo/filename", tmp_string))
+		processes_info_.file_name = tmp_string != "" ? tmp_string : processes_info_.file_name;
+
+	if (TryToGetStringData("//root/processesinfo/checkprocesses", tmp_string))
+		processes_info_.check_processes = TryToConvertToBool(tmp_string, tmp_bool) ? tmp_bool : processes_info_.check_processes;
+
+	if (TryToGetStringData("//root/processesinfo/counttype", tmp_string))
+		processes_info_.count_type = TryToConvertToInt(tmp_string, tmp_int) ? tmp_int : processes_info_.count_type;
+
+}
+
+bool CXMLParser::TryToGetStringData(const std::string& data_path, std::string& return_data)
+{
+	pugi::xpath_node point;
+	SearchNode(data_path, point);
+	if (nullptr != point)
+	{
+		return_data = point.node().child_value();
+		FormConfigurationString(return_data);
+		return true;
+	}
+	return false;
+}
+
+void CXMLParser::SearchNode(const std::string& data_path, pugi::xpath_node& node) const
+{
+	node = p_file_->select_node(data_path.c_str());
+	if (nullptr == node)
+	{
+		// report to logger
+	}
 }
 
 void CXMLParser::FormConfigurationString(std::string& return_data)
@@ -216,8 +194,8 @@ bool CXMLParser::TryToConvertToInt(const std::string& data_to_convert, int& retu
 		size_t tmp;
 		return_data = std::stoi(data_to_convert, &tmp);
 		if (data_to_convert.size() != tmp)
-			return false;
-			// todo: use logger
+			throw std::invalid_argument("Failed to convert data to integer");
+
 		return true;
 	}
 	catch (const std::exception& e)
@@ -225,6 +203,6 @@ bool CXMLParser::TryToConvertToInt(const std::string& data_to_convert, int& retu
 		// todo: use logger
 	}
 
-		return false;
+	return false;
 }
 

@@ -10,22 +10,27 @@ public:
 	virtual ~IParser() = default;
 
 	virtual bool Initialize(const std::string&) = 0;
+	virtual bool IsFileInitialized() const = 0;
+	virtual void ReadConfigFromFile() = 0;
 
-	SServer& GetDefaultServerConfiguration();
-	SComunicationSettings& GetDefaultComunicationConfiguration();
-	SLogging& GetDefaultLoggingConfiguration();
-	STime& GetDefaultTimeConfiguration();
-	SThreadPool& GetDefaultThreadPoolConfiguration();
-	SHDDInfo& GetDefaultHDDInfoConfiguration();
-	SProcessesInfo& GetDefaultProcessInfoConfiguration();
+	const SServer& GetServerConfiguration() const;
+	const SComunicationSettings& GetComunicationConfiguration() const;
+	const SLogging& GetLoggingConfiguration() const;
+	const STime& GetTimeConfiguration() const;
+	const SThreadPool& GetThreadPoolConfiguration() const;
+	const SHDDInfo& GetHDDInfoConfiguration() const;
+	const SProcessesInfo& GetProcessInfoConfiguration() const;
 
-	virtual SServer& TryToGetServerConfigurationFromFile() = 0;
-	virtual SComunicationSettings& TryToGetComunicationConfigurationFromFile() = 0;
-	virtual SLogging& TryToGetLoggingConfigurationFromFile() = 0;
-	virtual STime& TryToGetTimeConfigurationFromFile() = 0;
-	virtual SThreadPool& TryToGetThreadPoolConfigurationFromFile() = 0;
-	virtual SHDDInfo& TryToGetHDDInfoConfigurationFromFile() = 0;
-	virtual SProcessesInfo& TryToGetProcessInfoConfigurationFromFile() = 0;
+
+protected:
+
+	virtual void GetServerConfigurationFromFile() = 0;
+	virtual void GetComunicationConfigurationFromFile() = 0;
+	virtual void GetLoggingConfigurationFromFile() = 0;
+	virtual void GetTimeConfigurationFromFile() = 0;
+	virtual void GetThreadPoolConfigurationFromFile() = 0;
+	virtual void GetHDDInfoConfigurationFromFile() = 0;
+	virtual void GetProcessInfoConfigurationFromFile() = 0;
 
 protected:
 	SServer server_;

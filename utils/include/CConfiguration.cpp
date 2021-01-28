@@ -6,72 +6,54 @@ CConfiguration::CConfiguration(std::unique_ptr<IParser> p_parser) : p_parser_(st
 	
 }
 
-SServer& CConfiguration::GetDefaultServerConfiguration()
+void CConfiguration::ReadConfigFromFile()
 {
-    return p_parser_->GetDefaultServerConfiguration();
+    if(IsParserInitialized() && p_parser_->IsFileInitialized())
+        p_parser_->ReadConfigFromFile();
+
 }
 
-SComunicationSettings& CConfiguration::GetDefaultComunicationConfiguration()
+const SServer& CConfiguration::GetServerConfiguration() const
 {
-    return p_parser_->GetDefaultComunicationConfiguration();
+    return p_parser_->GetServerConfiguration();
 }
 
-SLogging& CConfiguration::GetDefaultLoggingConfiguration()
+const SComunicationSettings& CConfiguration::GetComunicationConfiguration() const
 {
-    return p_parser_->GetDefaultLoggingConfiguration();
+    return p_parser_->GetComunicationConfiguration();
 }
 
-STime& CConfiguration::GetDefaultTimeConfiguration()
+const SLogging& CConfiguration::GetLoggingConfiguration() const
 {
-    return p_parser_->GetDefaultTimeConfiguration();
+    return p_parser_->GetLoggingConfiguration();
 }
 
-SThreadPool& CConfiguration::GetDefaultThreadPoolConfiguration()
+const STime& CConfiguration::GetTimeConfiguration() const
 {
-    return p_parser_->GetDefaultThreadPoolConfiguration();
+    return p_parser_->GetTimeConfiguration();
 }
 
-SHDDInfo& CConfiguration::GetDefaultHDDInfoConfiguration()
+const SThreadPool& CConfiguration::GetThreadPoolConfiguration() const
 {
-    return p_parser_->GetDefaultHDDInfoConfiguration();
+    return p_parser_->GetThreadPoolConfiguration();
 }
 
-SProcessesInfo& CConfiguration::GetDefaultProcessInfoConfiguration()
+const SHDDInfo& CConfiguration::GetHDDInfoConfiguration() const
 {
-    return p_parser_->GetDefaultProcessInfoConfiguration();
+    return p_parser_->GetHDDInfoConfiguration();
 }
 
-SServer& CConfiguration::TryToGetServerConfigurationFromFile()
+const SProcessesInfo& CConfiguration::GetProcessInfoConfiguration() const
 {
-    return p_parser_->TryToGetServerConfigurationFromFile();
+    return p_parser_->GetProcessInfoConfiguration();
 }
 
-SComunicationSettings& CConfiguration::TryToGetComunicationConfigurationFromFile()
+bool CConfiguration::IsParserInitialized() const
 {
-    return p_parser_->TryToGetComunicationConfigurationFromFile();
-}
-
-SLogging& CConfiguration::TryToGetLoggingConfigurationFromFile()
-{
-    return p_parser_->TryToGetLoggingConfigurationFromFile();
-}
-
-STime& CConfiguration::TryToGetTimeConfigurationFromFile()
-{
-    return p_parser_->TryToGetTimeConfigurationFromFile();
-}
-
-SThreadPool& CConfiguration::TryToGetThreadPoolConfigurationFromFile()
-{
-    return p_parser_->TryToGetThreadPoolConfigurationFromFile();
-}
-
-SHDDInfo& CConfiguration::TryToGetHDDInfoConfigurationFromFile()
-{
-    return p_parser_->TryToGetHDDInfoConfigurationFromFile();
-}
-
-SProcessesInfo& CConfiguration::TryToGetProcessInfoConfigurationFromFile()
-{
-    return p_parser_->TryToGetProcessInfoConfigurationFromFile();
+    if (nullptr == p_parser_)
+    {
+        // write to logger: parser isn't initialized
+        return false;
+    }
+    return true;
 }
