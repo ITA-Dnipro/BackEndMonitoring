@@ -19,7 +19,7 @@ public:
             if(::CloseServiceHandle(m_handle) == 0)
             {
                 Utils::DisplayError("Failed to close the service handle");
-            };
+            }
         }
     }
 
@@ -60,6 +60,7 @@ bool ServiceHandler::Install() const
 
         escaped_path = '\"' + escaped_path + '\"';
 
+        // Chupakabra: maybe const
         auto service_control_manager = std::make_unique<ServiceHandle>(
             ::OpenSCManager(
                 nullptr, nullptr,

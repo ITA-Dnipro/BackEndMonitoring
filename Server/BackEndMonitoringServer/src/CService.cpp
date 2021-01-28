@@ -11,22 +11,35 @@
 void CService::RunServer()
 {
     std::fstream stream("Log.txt", std::ios_base::out);
-    CLogBuilder builder("Logger", ELogLevel::DEBUG_LEVEL);
-    builder.AddThreadUnsafeStream(stream).SetLogConfig(ELogConfig::CALL_TIME,
-        ELogConfig::FILE_NAME, ELogConfig::FUNCTION_NAME,
-        ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE, ELogConfig::PARAMS);
-    auto logger = builder.BuildSharedLog();
+
+    CLOG_START_CREATION();
+
+    CLOG_SET_LOG_NAME("Logger");
+    CLOG_SET_LOG_LEVEL(ELogLevel::DEBUG_LEVEL);
+    CLOG_SET_LOG_CONFIG(ELogConfig::LOG_NAME, ELogConfig::LOG_LEVEL,
+        ELogConfig::CALL_TIME, ELogConfig::THREAD_ID, ELogConfig::FILE_NAME,
+        ELogConfig::FUNCTION_NAME, ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE,
+        ELogConfig::PARAMS);
+
+    CLOG_ADD_SAFE_STREAM(stream);
+
+    CLOG_BUILD();
+
+    CLOG_END_CREATION();
 
     //TODO Add XML Configuration interaction
-    size_t num_threads = 20;
+    size_t num_threads = 3;
     int port = 1111;
     std::string ip_address = "127.0.0.1";
-
+	
     m_p_thread_pool = std::make_shared<CThreadPool>(num_threads, m_stop_event);
     m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(port, ip_address, 
-        m_stop_event, m_p_thread_pool, logger);
+        m_stop_event, m_p_thread_pool, true, 5);
 
     m_p_acceptor_socket->StartServer();
+
+    // I'm not sure that it should be here
+    CLOG_DESTROY();
 }
 
 CService* CService::m_p_service = nullptr;
@@ -105,9 +118,11 @@ const CString& CService::GetName() const
 const CString& CService::GetDisplayName() const 
 { return m_display_name;}
 
+// Chupakabra: returning copy of var, const redundant
 const DWORD CService::GetStartType() const
 { return m_start_type;}
 
+// Chupakabra: returning copy of var, const redundant
 const DWORD CService::GetErrorControlType() const
 { return m_error_control_type;}
 
