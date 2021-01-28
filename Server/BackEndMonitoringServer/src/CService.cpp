@@ -10,21 +10,29 @@
 
 void CService::RunServer()
 {
-    std::fstream stream("Log.txt", std::ios_base::out);
-    CLogBuilder builder("Logger", ELogLevel::DEBUG_LEVEL);
-    builder.AddThreadUnsafeStream(stream).SetLogConfig(ELogConfig::CALL_TIME,
-        ELogConfig::FILE_NAME, ELogConfig::FUNCTION_NAME,
-        ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE, ELogConfig::PARAMS);
-    auto logger = builder.BuildSharedLog();
+    m_log_stream = std::make_unique<std::fstream>("F:\\Git\\BackEndMonitoring\\Server\\BackEndMonitoringServer\\Build\\DebugWin64\\out\\Log.txt",
+                                                  std::ios_base::out);
+    CLOG_START_CREATION( );
+    CLOG_SET_LOG_NAME("Logger");
+    CLOG_SET_LOG_LEVEL(ELogLevel::TRACE_LEVEL);
+    CLOG_SET_LOG_CONFIG(ELogConfig::LOG_NAME, ELogConfig::LOG_LEVEL,
+                        ELogConfig::CALL_TIME, ELogConfig::THREAD_ID, ELogConfig::FILE_NAME,
+                        ELogConfig::FUNCTION_NAME, ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE,
+                        ELogConfig::PARAMS);
+
+    CLOG_ADD_SAFE_STREAM(*m_log_stream);
+
+    CLOG_BUILD( );
+    CLOG_END_CREATION( );
 
     //TODO Add XML Configuration interaction
-    size_t num_threads = 20;
+    size_t num_threads = 4;
     int port = 1111;
     std::string ip_address = "127.0.0.1";
 
     m_p_thread_pool = std::make_shared<CThreadPool>(num_threads, m_stop_event);
     m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(port, ip_address, 
-        m_stop_event, m_p_thread_pool, logger);
+        m_stop_event, m_p_thread_pool);
 
     m_p_acceptor_socket->StartServer();
 }
@@ -99,7 +107,7 @@ bool CService::Run()
     return ::StartServiceCtrlDispatcher(table_entry) == TRUE;
 }
 
-const CString& CService::GetName() const 
+const CString& CService::GetName() const
 { return m_name;}
 
 const CString& CService::GetDisplayName() const 
@@ -124,6 +132,9 @@ void CService::OnStop()
     m_stop_event.Set();
     m_p_acceptor_socket->StopSocket();
     m_main_thread.join();
+    m_p_thread_pool.reset( );
+    m_p_acceptor_socket.reset( );
+    CLOG_DESTROY( );
 }
 
 void CService::Start(DWORD argc, CHAR** argv)

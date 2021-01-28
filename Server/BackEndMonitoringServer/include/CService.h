@@ -16,13 +16,12 @@ class CService
 {
 public:
     explicit CService(const ServiceParameters& parameters);
-
+    
     CService(const CService& other) = delete;
     CService& operator=(const CService& other) = delete;
 
     CService(CService&& other) = delete;
     CService& operator=(CService&& other) = delete;
-
     const CString& GetName() const;
     const CString& GetDisplayName() const;
     const DWORD GetStartType() const;
@@ -61,4 +60,5 @@ private:
     CEvent m_stop_event;
     std::shared_ptr<CThreadPool> m_p_thread_pool;
     std::unique_ptr<CAcceptorWrapper> m_p_acceptor_socket;
+    std::unique_ptr<std::fstream> m_log_stream;
 };
