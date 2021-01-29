@@ -13,7 +13,7 @@ public:
 	~CBaseSocket();
 
 protected:
-#ifdef _WIN64
+#if defined(_WIN64) || defined(_WIN32)
 	SOCKET InitSocket();
 
 	SOCKET m_socket;

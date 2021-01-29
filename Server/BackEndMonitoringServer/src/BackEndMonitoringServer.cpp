@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 }
 
 
-//// FOR TESTING
+// FOR TESTING
 //#include "stdafx.h"
 //#include "../BackEndMonitoring/Sockets/BackEndMonitoringSockets/include/CAcceptorWrapper.h"
 //#include "CThreadPool.h"

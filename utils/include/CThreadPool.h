@@ -8,6 +8,7 @@
 #include "CEvent.h"
 #include "CThreadSafeVariable.h"
 #include "STaskInQueue.h"
+#include "CLogger/include/Log.h"
 
 class CThreadPool
 {
@@ -24,28 +25,42 @@ public:
 	CThreadPool& operator= (CThreadPool&&) noexcept = delete;
 
 	template<typename TaskType>
-	[[nodiscard]] auto Enqueue(TaskType task) -> STaskInQueue<decltype(task())>
+	[[nodiscard]] auto Enqueue(TaskType task) -> STaskInQueue<decltype(task( ))>
 	{
+		STaskInQueue<decltype(task( ))> future_and_pos;
+		CLOG_TRACE_START_FUNCTION( );
+		CLOG_TRACE_VAR_CREATION(future_and_pos);
+
 		auto p_task_wrapper = std::make_shared<std::packaged_task<
-			decltype(task())()>>(std::move(task));
+			decltype(task( ))()>>(std::move(task));
+		CLOG_TRACE_VAR_CREATION(p_task_wrapper);
 
-		STaskInQueue<decltype(task())> future_and_pos;
+		STaskInQueue<decltype(task( ))> future_and_pos;
 		{
-			auto [queue, mtx] = m_tasks_queue.GetAccess();
+			auto [queue, mtx] = m_tasks_queue.GetAccess( );
+			CLOG_TRACE("Obtained queue mutex");
 			queue.emplace([=]
-			{
-				(*p_task_wrapper)();
-			});
-			future_and_pos.position = queue.size();
-		}
-		m_event.NotifyOne();
+						  {
+							  (*p_task_wrapper)();
+						  });
+			CLOG_TRACE("Pushed task in queue");
 
-		future_and_pos.future = p_task_wrapper->get_future();
+			future_and_pos.position = queue.size( );
+			CLOG_TRACE_VAR_CREATION(future_and_pos.position);
+		}
+		m_event.NotifyOne( );
+		CLOG_TRACE("Notified one thread that task pushed");
+
+		future_and_pos.future = p_task_wrapper->get_future( );
+		CLOG_TRACE_VAR_CREATION(future_and_pos.future);
+
+		CLOG_TRACE_END_FUNCTION( );
 		return future_and_pos;
 	}
 
 private:
 	void ThreadWork();
+	void CheckThread( );
 
 private:
 	CEvent m_event;
