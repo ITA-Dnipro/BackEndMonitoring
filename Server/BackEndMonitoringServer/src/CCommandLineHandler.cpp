@@ -2,20 +2,24 @@
 
 #include "CCommandLineHandler.h"
 #include "CServiceHandler.h"
+// Chupakabra: unused header
 #include "Utils.h"
 
+// Chupakabra: maybe const method of class
 Task CommandLineHandler::GetTask()
 { return task; }
 
+// Chupakabra: maybe const method of class
 bool CommandLineHandler::Parse(int argc, char** argv)
 {
     ServiceParameters parameters;
     auto service = std::make_unique<CService>(parameters);
-    auto service_handler = 
-        std::make_unique<ServiceHandler>(std::move(service));
+    // Chupakabra: maybe const var
+    auto service_handler = std::make_unique<ServiceHandler>(std::move(service));
 
     bool success = true;
 
+	// Chupakabra: redundant parentheses in cases below
     switch(argc)
     {
     case (1):
@@ -42,6 +46,7 @@ bool CommandLineHandler::Parse(int argc, char** argv)
         }
 
     default :
+        // Chupakabra: no-need break
         // Show help
         break;
     }

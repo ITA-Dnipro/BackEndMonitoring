@@ -13,17 +13,17 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Sockets">
-      <UniqueIdentifier>{0a49ae18-b52e-412d-a6da-2ed75d91190c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Sockets">
-      <UniqueIdentifier>{e3f38d12-cc67-42e7-b607-764a9b50323a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Handlers">
       <UniqueIdentifier>{5a865737-a1bd-4921-9122-1b3556983aa1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Handlers">
       <UniqueIdentifier>{c133ec42-a782-489b-a031-55354485d041}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{bf2fce04-dc4b-4725-90a2-be0f9451e8a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{ab0e11b6-3c1f-41db-9b49-1c80935bb0d3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -42,23 +42,8 @@
     <ClInclude Include="include\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\CAcceptorSocket.h">
-      <Filter>Header Files\Sockets</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CBaseSocket.h">
-      <Filter>Header Files\Sockets</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CConnectorSocket.h">
-      <Filter>Header Files\Sockets</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CSocket.h">
-      <Filter>Header Files\Sockets</Filter>
-    </ClInclude>
     <ClInclude Include="include\CSocketWrapper.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CAcceptorWrapper.h">
-      <Filter>Header Files\Sockets</Filter>
     </ClInclude>
     <ClInclude Include="include\CClientConnectionHandler.h">
       <Filter>Header Files\Handlers</Filter>
@@ -68,6 +53,18 @@
     </ClInclude>
     <ClInclude Include="include\CServiceHandler.h">
       <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\PlatformUtils.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CAcceptorWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CSocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CLogger\include\Log.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -89,26 +86,26 @@
     <ClCompile Include="src\stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CAcceptorSocket.cpp">
-      <Filter>Source Files\Sockets</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CBaseSocket.cpp">
-      <Filter>Source Files\Sockets</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CSocket.cpp">
-      <Filter>Source Files\Sockets</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CConnectorSocket.cpp">
-      <Filter>Source Files\Sockets</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CSocketWrapper.cpp">
-      <Filter>Source Files\Sockets</Filter>
-    </ClCompile>
     <ClCompile Include="src\CClientConnectionHandler.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\CServiceConnectionHandler.cpp">
       <Filter>Source Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSocketWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\WindowsUtils.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\LinuxUtils.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CServerResponseHolder.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

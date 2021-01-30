@@ -10,23 +10,34 @@
 
 void CService::RunServer()
 {
-    std::fstream stream("Log.txt", std::ios_base::out);
-    CLogBuilder builder("Logger", ELogLevel::DEBUG_LEVEL);
-    builder.AddThreadUnsafeStream(stream).SetLogConfig(ELogConfig::CALL_TIME,
-        ELogConfig::FILE_NAME, ELogConfig::FUNCTION_NAME,
-        ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE, ELogConfig::PARAMS);
-    auto logger = builder.BuildSharedLog();
+    m_log_stream = std::make_unique<std::fstream>("F:\\Git\\BackEndMonitoring\\Server\\BackEndMonitoringServer\\Build\\DebugWin64\\out\\Log.txt",
+                                                  std::ios_base::out);
+    CLOG_START_CREATION( );
+    CLOG_SET_LOG_NAME("Logger");
+    CLOG_SET_LOG_LEVEL(ELogLevel::TRACE_LEVEL);
+    CLOG_SET_LOG_CONFIG(ELogConfig::LOG_NAME, ELogConfig::LOG_LEVEL,
+                        ELogConfig::CALL_TIME, ELogConfig::THREAD_ID, ELogConfig::FILE_NAME,
+                        ELogConfig::FUNCTION_NAME, ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE,
+                        ELogConfig::PARAMS);
+
+    CLOG_ADD_SAFE_STREAM(*m_log_stream);
+
+    CLOG_BUILD( );
+    CLOG_END_CREATION( );
 
     //TODO Add XML Configuration interaction
-    size_t num_threads = 20;
+    size_t num_threads = 4;
     int port = 1111;
     std::string ip_address = "127.0.0.1";
 
     m_p_thread_pool = std::make_shared<CThreadPool>(num_threads, m_stop_event);
-    m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(port, ip_address, 
-        m_stop_event, m_p_thread_pool, logger);
+    m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(port, ip_address,
+        m_stop_event, m_p_thread_pool, true, 5);
 
     m_p_acceptor_socket->StartServer();
+
+    // I'm not sure that it should be here
+    CLOG_DESTROY();
 }
 
 CService* CService::m_p_service = nullptr;
@@ -58,7 +69,7 @@ void CService::SetStatus(DWORD state, DWORD error_code, DWORD wait_hint)
 
 DWORD WINAPI CService::ServiceCtrlHandler(
     DWORD control_code, DWORD event_type,
-    void* event_data, void* context) 
+    void* event_data, void* context)
 {
     if (control_code == SERVICE_CONTROL_STOP)
     {
@@ -68,7 +79,7 @@ DWORD WINAPI CService::ServiceCtrlHandler(
     return 0;
 }
 
-void WINAPI CService::SvcMain(DWORD argc, CHAR** argv) 
+void WINAPI CService::SvcMain(DWORD argc, CHAR** argv)
 {
     assert(m_p_service);
 
@@ -99,15 +110,17 @@ bool CService::Run()
     return ::StartServiceCtrlDispatcher(table_entry) == TRUE;
 }
 
-const CString& CService::GetName() const 
+const CString& CService::GetName() const
 { return m_name;}
 
-const CString& CService::GetDisplayName() const 
+const CString& CService::GetDisplayName() const
 { return m_display_name;}
 
+// Chupakabra: returning copy of var, const redundant
 const DWORD CService::GetStartType() const
 { return m_start_type;}
 
+// Chupakabra: returning copy of var, const redundant
 const DWORD CService::GetErrorControlType() const
 { return m_error_control_type;}
 
@@ -119,11 +132,14 @@ void CService::OnStart(DWORD, CHAR**)
     });
 }
 
-void CService::OnStop() 
+void CService::OnStop()
 {
     m_stop_event.Set();
     m_p_acceptor_socket->StopSocket();
     m_main_thread.join();
+    m_p_thread_pool.reset( );
+    m_p_acceptor_socket.reset( );
+    CLOG_DESTROY( );
 }
 
 void CService::Start(DWORD argc, CHAR** argv)
@@ -133,7 +149,7 @@ void CService::Start(DWORD argc, CHAR** argv)
     SetStatus(SERVICE_RUNNING);
 }
 
-void CService::Stop() 
+void CService::Stop()
 {
     SetStatus(SERVICE_STOP_PENDING);
     OnStop();
