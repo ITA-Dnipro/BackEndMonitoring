@@ -1,9 +1,14 @@
 #include "stdafx.h"
-#include "CServiceConnectionHandler.h"
+
 #include "CLogger/include/Log.h"
 #include "PlatformUtils.h"
 
-CServiceConnectionHandler::CServiceConnectionHandler()
+#include "CServiceConnectionHandler.h"
+
+
+
+CServiceConnectionHandler::CServiceConnectionHandler(CDataReceiver json_data) :
+	m_json_data(json_data)
 {
 	m_peer_stream = InitPeerStream();
 }
@@ -45,7 +50,7 @@ bool CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
 
 bool CServiceConnectionHandler::HandleResponseEvent(const int socket_fd)
 {
-	return m_peer_stream->Send(socket_fd, data.GetData());
+	return m_peer_stream->Send(socket_fd, m_json_data.GetAllInfo());
 }
 
 bool CServiceConnectionHandler::HandleResponseExitEvent(const int socket_fd)

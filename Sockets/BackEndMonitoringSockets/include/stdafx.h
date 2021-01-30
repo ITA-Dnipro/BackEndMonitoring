@@ -5,8 +5,11 @@
 #include <memory>
 #include <map>
 #include <vector>
+#include <optional>
 
-#ifdef _WIN64
+#include "json.hpp"
+
+#if defined(_WIN64) || defined(_WIN32)
 
 #include <WinSock2.h>
 #include <ws2tcpip.h>

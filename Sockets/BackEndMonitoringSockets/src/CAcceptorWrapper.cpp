@@ -1,4 +1,5 @@
 #include "stdafx.h"
+
 #include "CAcceptorWrapper.h"
 #include "CServiceConnectionHandler.h"
 #include "CEvent.h"
@@ -6,11 +7,12 @@
 #include "CLogger/include/Log.h"
 
 CAcceptorWrapper::CAcceptorWrapper(int port, const std::string& ip_address, 
-	CEvent& event, std::shared_ptr<CThreadPool> pool, bool is_blocked, 
-	int socket_timeout)	: m_event(event), m_is_socket_blocked(is_blocked), 
+	CEvent& event, std::shared_ptr<CThreadPool> pool, 
+	bool is_blocked, int socket_timeout, CDataReceiver json_data):
+	m_event(event), m_is_socket_blocked(is_blocked), 
 	m_socket_timeout(socket_timeout), m_pool(pool)
 {
-	Initialize(port, ip_address);
+	Initialize(port, ip_address, json_data);
 }
 
 CAcceptorWrapper::~CAcceptorWrapper()
@@ -36,12 +38,13 @@ bool CAcceptorWrapper::StopSocket()
 	return m_server_acceptor->CloseSocket();
 }
 
-void CAcceptorWrapper::Initialize(int port, const std::string& ip_address)
+void CAcceptorWrapper::Initialize(int port, const std::string& ip_address, 
+								  CDataReceiver& json_data)
 {
 	PlatformUtils::InitializeWinLibrary();
 	m_server_acceptor = InitAcceptor(port, ip_address);
 	m_stream = InitSocketWrapper();
-	m_service_handler = InitServiceHandler();
+	m_service_handler = InitServiceHandler(json_data);
 }
 
 
@@ -52,9 +55,10 @@ std::unique_ptr<CAcceptor> CAcceptorWrapper::InitAcceptor(int port,
 		m_is_socket_blocked));
 }
 
-std::unique_ptr<CServiceConnectionHandler> CAcceptorWrapper::InitServiceHandler()
+std::unique_ptr<CServiceConnectionHandler> CAcceptorWrapper::InitServiceHandler(
+		CDataReceiver& json_data)
 {
-	return std::move(std::make_unique<CServiceConnectionHandler>());
+	return std::move(std::make_unique<CServiceConnectionHandler>(std::move(json_data)));
 }
 
 std::unique_ptr<CSocketWrapper> CAcceptorWrapper::InitSocketWrapper()

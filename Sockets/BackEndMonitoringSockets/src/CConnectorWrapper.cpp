@@ -5,14 +5,6 @@
 #include "PlatformUtils.h"
 #include "CLogger/include/Log.h"
 
-#include <memory>
-#include <string>
-#include <future>
-#include <thread>
-#include <mutex>
-#include <condition_variable>
-#include <deque>
-
 CConnectorWrapper::CConnectorWrapper(int port, const std::string& ip_address)
 	: m_port(port), m_address(ip_address)
 { 

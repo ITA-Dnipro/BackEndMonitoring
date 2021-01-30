@@ -21,7 +21,7 @@
     <ClCompile Include="src\stdafx.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="CClient.cpp">
+    <ClCompile Include="src\CClient.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,7 +29,7 @@
     <ClInclude Include="include\stdafx.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="CClient.h">
+    <ClInclude Include="include\CClient.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
