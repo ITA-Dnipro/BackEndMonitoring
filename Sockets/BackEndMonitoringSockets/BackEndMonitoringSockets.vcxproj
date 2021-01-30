@@ -19,13 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\CLogger\include\Log.h" />
+    <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="include\CAcceptor.h" />
-    <ClInclude Include="include\CAcceptorSocket.h" />
     <ClInclude Include="include\CAcceptorWrapper.h" />
-    <ClInclude Include="include\CBaseSocket.h" />
     <ClInclude Include="include\CClientConnectionHandler.h" />
     <ClInclude Include="include\CConnector.h" />
-    <ClInclude Include="include\CConnectorSocket.h" />
     <ClInclude Include="include\CConnectorWrapper.h" />
     <ClInclude Include="include\CServiceConnectionHandler.h" />
     <ClInclude Include="include\CServiceHandler.h" />
@@ -35,14 +34,14 @@
     <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\utils\include\LinuxUtils.cpp" />
+    <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
     <ClCompile Include="src\CAcceptor.cpp" />
-    <ClCompile Include="src\CAcceptorSocket.cpp" />
     <ClCompile Include="src\CAcceptorWrapper.cpp" />
-    <ClCompile Include="src\CBaseSocket.cpp" />
     <ClCompile Include="src\CClientConnectionHandler.cpp" />
     <ClCompile Include="src\CConnector.cpp" />
-    <ClCompile Include="src\CConnectorSocket.cpp" />
     <ClCompile Include="src\CConnectorWrapper.cpp" />
+    <ClCompile Include="src\CServerResponseHolder.cpp" />
     <ClCompile Include="src\CServiceConnectionHandler.cpp" />
     <ClCompile Include="src\CSocket.cpp" />
     <ClCompile Include="src\CSocketWrapper.cpp" />
@@ -141,6 +140,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -168,6 +168,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -191,10 +192,11 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\utils\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <PrecompiledHeaderOutputFile>$(IntDir)stdafx.pch</PrecompiledHeaderOutputFile>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -226,6 +228,7 @@
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>

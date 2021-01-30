@@ -1,20 +1,52 @@
 #pragma once
 
-#define DEMODLL_EXPORTS
+#ifdef _WIN32
+    #define CLOG_SYS_WINDOWS
+    // defined to disable <Window.h> from defining
+    // the min and max macros
+    #ifndef NOMINMAX
+        #define NOMINMAX
+    #endif
 
-//#define CLOGGER_EXTERN_C extern "C"
+#elif defined(__linux__)
+    #define CLOG_SYS_LINUX
+#elif defined(__APPLE__)
+    #define CLOG_SYS_MACOS
+#endif
 
-#ifdef DEMODLL_EXPORTS
-	#define CLOGGER_API __declspec(dllexport)
+
+#ifdef CLOG_STATIC_BUILD
+    #define CLOGGER_API
 #else
-	#define CLOGGER_API __declspec(dllimport)
+    #ifdef CLOG_SYS_WINDOWS
+        #define DEMODLL_EXPORTS
+
+        #ifdef DEMODLL_EXPORTS
+            #define CLOGGER_API __declspec(dllexport)
+        #else
+            #define CLOGGER_API __declspec(dllimport)
+        #endif
+
+        #ifdef _MSC_VER
+            #pragma warning(disable : 4251)
+            #pragma warning(disable : 5105)
+        #endif
+    #elif defined(CLOG_SYS_LINUX) || defined(CLOG_SYS_MACOS)
+        #if _GNUC_ >= 4
+            #define CLOGGER_API __attribute__((__visibility__("default")))
+        #else
+            #define CLOGGER_API
+        #endif
+    #endif
 #endif
 
 #include <filesystem>
 #include <list>
 #include <map>
+#include <memory>
 #include <mutex>
 #include <ostream>
 #include <sstream>
 #include <string>
 #include <thread>
+#include <typeinfo>
