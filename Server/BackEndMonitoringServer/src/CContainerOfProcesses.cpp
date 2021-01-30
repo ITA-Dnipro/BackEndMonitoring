@@ -1,8 +1,10 @@
 #include "stdafx.h"
 
 #include "CProcessInfo.h"
-#include "CContainerOfProcesses.h"
 #include "PlatformUtils.h"
+#include "CLogger/include/Log.h"
+
+#include "CContainerOfProcesses.h"
 
 CContainerOfProcesses::CContainerOfProcesses(std::chrono::duration<int>
 	pause_duration, std::string path_to_file, EMemoryConvertType count_type) :
@@ -13,40 +15,68 @@ CContainerOfProcesses::CContainerOfProcesses(std::chrono::duration<int>
 
 bool CContainerOfProcesses::Initialize()
 {
+	bool success = true;
+	CLOG_DEBUG_START_FUNCTION( );
+	CLOG_TRACE_VAR_CREATION(success);
+
 	m_processors_count = std::thread::hardware_concurrency( );
-	
+	CLOG_TRACE_VAR_CREATION(m_processors_count);
+
 	if(m_processors_count == 0)
-	{ return false;}
+	{
+		CLOG_PROD("Can't get number of logical CPU's");
+		return false;
+	}
 
 	std::vector<unsigned> PIDs;
-	bool success = true;
+	CLOG_TRACE_VAR_CREATION(PIDs);
 	if (success = PlatformUtils::GetExistingProcessIds(PIDs))
 	{
 		for (auto PID : PIDs)
 		{
 			CProcessInfo temp(PID, m_processors_count,
 				m_specification.GetCountType());
-			success = temp.Initialize();
-			if (success = temp.TryToUpdateCurrentStatus())
+			CLOG_TRACE_VAR_CREATION(temp);
+			if (success = temp.Initialize( ))
 			{
-				m_container.push_back(std::move(temp));
+				CLOG_DEBUG("Process " + std::to_string(PID) +
+						   " added to container");
+					m_container.push_back(std::move(temp));
+			}
+			else
+			{
+				CLOG_DEBUG("WARNING!!! Can't initialize process " + 
+						   std::to_string(PID));
 			}
 		}
 	}
+	else
+	{
+		CLOG_PROD("ERROR!!! Can't get list of existing PID's.");
+	}
 	m_is_initialized = success;
+	CLOG_TRACE_VAR_CREATION(m_is_initialized);
+	CLOG_DEBUG_END_FUNCTION( );
 	return success;
 }
 
 bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 {
+	bool success = true;
+	CLOG_DEBUG_START_FUNCTION( );
 	if (!m_is_initialized)
-	{ return false;}
+	{ 
+		CLOG_PROD("ERROR!!! Call function on uninitialized container of processes");
+		return false;
+	}
 
 	std::vector<unsigned> PIDs;
-	bool success = PlatformUtils::GetExistingProcessIds(PIDs);
-
+	CLOG_TRACE_VAR_CREATION(PIDs);
+	
+	success = PlatformUtils::GetExistingProcessIds(PIDs);
 	if (success)
 	{
+		CLOG_TRACE("Existing PID's recieved successfully");
 		for (auto PID : PIDs)
 		{
 			auto it = std::find_if(m_container.begin(), m_container.end(),
@@ -60,9 +90,15 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 			{
 				CProcessInfo temp(PID, m_processors_count,
 					m_specification.GetCountType());
+				CLOG_TRACE_VAR_CREATION(temp);
 				if (temp.Initialize())
 				{
 					m_container.push_back(std::move(temp));
+					CLOG_TRACE("Process " + std::to_string(PID) + " was added to container");
+				}
+				else
+				{
+					CLOG_TRACE("Process " + std::to_string(PID) + " wasn't initialised");
 				}
 			}
 			else
@@ -70,6 +106,11 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 				if (!it->TryToUpdateCurrentStatus())
 				{
 					m_container.erase(it);
+					CLOG_TRACE("Process " + std::to_string(PID) + " was erased from container");
+				}
+				else
+				{
+					CLOG_TRACE("Process " + std::to_string(PID) + " was updated");
 				}
 			}
 		}
@@ -84,6 +125,7 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 		while (dead_process != m_container.end())
 		{
 			m_container.erase(dead_process);
+			CLOG_TRACE("Inactive process was erased from container");
 			dead_process = std::find_if(m_container.begin(), m_container.end(),
 									    [](const CProcessInfo& proc)
 			{
@@ -91,18 +133,34 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 			});
 		}
 	}
+	else
+	{
+		CLOG_PROD("ERROR!!! Can't get existing PID's");
+	}
+	CLOG_DEBUG_END_FUNCTION( );
 	return success;
 }
 
 bool CContainerOfProcesses::GetAllProcesses(std::list<CProcessInfo>& to_list)  
 {
+	CLOG_DEBUG_START_FUNCTION( );
 	if (m_is_initialized)
 	{
 		to_list = m_container;
+		CLOG_TRACE_VAR_CREATION(to_list);
 	}
+	else
+	{
+		CLOG_TRACE("ERROR!!! Call function on uninitialized container of processes");
+	}
+	CLOG_DEBUG_END_FUNCTION( );
 	return m_is_initialized;
 };
 
 const CHardwareStatusSpecification* CContainerOfProcesses::GetSpecification()
 const
-{ return &m_specification; }
+{ 
+	CLOG_TRACE_START_FUNCTION( );
+	CLOG_TRACE_END_FUNCTION( );
+	return &m_specification;
+}

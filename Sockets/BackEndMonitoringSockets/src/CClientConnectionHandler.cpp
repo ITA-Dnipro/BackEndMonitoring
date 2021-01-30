@@ -32,7 +32,7 @@ bool CClientConnectionHandler::HandleRequestEvent(const int socket_fd)
 
 bool CClientConnectionHandler::HandleResponseEvent(const int socket_fd)
 {
-	std::cout << m_client_stream->Receive(socket_fd);
+	std::cout << m_client_stream->Receive(socket_fd) << '\n';
 	return true;
 	//TODO send data to client
 	//m_response_holder.SetResponse(m_client_stream->Receive(socket_fd));
