@@ -1,6 +1,7 @@
 #pragma once
 
-struct IBreakLine {
+struct IBreakLine
+{
 	IBreakLine() = default;
 	IBreakLine(const IBreakLine&) = delete;
 	IBreakLine(IBreakLine&&) noexcept = default;

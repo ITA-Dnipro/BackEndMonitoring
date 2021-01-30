@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
 
-struct IWriteLine {
+struct IWriteLine
+{
 	IWriteLine() = default;
 	IWriteLine(const IWriteLine&) = delete;
 	IWriteLine(IWriteLine&&) noexcept = default;
