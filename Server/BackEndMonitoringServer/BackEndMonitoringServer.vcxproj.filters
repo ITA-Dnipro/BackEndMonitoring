@@ -131,5 +131,8 @@
     <ClCompile Include="src\CProcessInfo.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\utils\include\LinuxUtils.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

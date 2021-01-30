@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "PlatformUtils.h"
+#include "Utils.h"
 
 #if defined(_WIN64) || defined(_WIN32)
 
@@ -114,18 +115,43 @@ namespace PlatformUtils
 		return success;
 	}
 
-	bool TryGetLogicalDisksNames(char* array_to_write, 
-		const unsigned short c_size_of_buffer_for_api)
+	bool TryGetLogicalDisksNames(std::vector<std::string>& all_disks_names)
 		{
+
+		const unsigned short c_size_of_buffer_for_api = 1024;
+		//We just skip some chars
+		const unsigned short number_of_chars_need_miss = 1U;
+		char container_all_disks_names[c_size_of_buffer_for_api +
+			c_size_of_buffer_for_api] = {};
+		
 		DWORD buffer_size = c_size_of_buffer_for_api;
 		DWORD is_created_correct = GetLogicalDriveStrings(buffer_size,
-			LPSTR(array_to_write));
+			LPSTR(container_all_disks_names));
+
 		if (is_created_correct > 0 &&
 			is_created_correct <= c_size_of_buffer_for_api)
+		{
+			char* variable_for_checking_names = container_all_disks_names;
+
+			while (*variable_for_checking_names)
 			{
-				return true;
+				std::string name_of_disk = variable_for_checking_names;
+
+				if (!Utils::TryGetFormattedDiskName(name_of_disk))
+				{
+					return false;
+				}
+				
+				all_disks_names.emplace_back(name_of_disk);
+
+				//go to the next driver
+				variable_for_checking_names +=
+					strlen(variable_for_checking_names) +
+					number_of_chars_need_miss;
 			}
 
+			return true;
+		}
 		// exception
 		return false;
 	}

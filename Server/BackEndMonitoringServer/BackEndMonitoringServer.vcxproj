@@ -198,6 +198,7 @@
     <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp" />
     <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp" />
     <ClCompile Include="..\..\utils\include\CThreadPool.cpp" />
+    <ClCompile Include="..\..\utils\include\LinuxUtils.cpp" />
     <ClCompile Include="..\..\utils\include\Utils.cpp" />
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
     <ClCompile Include="src\BackEndMonitoringServer.cpp" />
