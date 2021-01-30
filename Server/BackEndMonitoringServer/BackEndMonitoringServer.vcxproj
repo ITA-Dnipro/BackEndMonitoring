@@ -197,6 +197,10 @@
     <ClCompile Include="..\..\utils\include\CEvent.cpp" />
     <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp" />
     <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp" />
+    <ClCompile Include="..\..\utils\include\CNumericTypesParser.cpp" />
+    <ClCompile Include="..\..\utils\include\CReadFileWrapper.cpp" />
+    <ClCompile Include="..\..\utils\include\LinuxUtils.cpp" />
+    <ClCompile Include="..\..\utils\include\StrToNumWrapper.cpp" />
     <ClCompile Include="..\..\utils\include\CThreadPool.cpp" />
     <ClCompile Include="..\..\utils\include\Utils.cpp" />
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />

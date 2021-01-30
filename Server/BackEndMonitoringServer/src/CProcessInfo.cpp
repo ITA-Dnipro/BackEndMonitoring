@@ -7,10 +7,9 @@
 
 #include "CProcessInfo.h"
 
-CProcessInfo::CProcessInfo(unsigned PID, unsigned count_of_processors, 
-                   EMemoryConvertType type) :
-    m_PID(PID),
-    m_count_of_processors(count_of_processors),m_count_type(type), 
+CProcessInfo::CProcessInfo(unsigned PID,
+                           EMemoryConvertType type) :
+    m_PID(PID),m_count_type(type), 
     m_cpu_usage(0.0), m_ram_usage(00ULL), m_pagefile_usage(00ULL),
     m_last_sys_time(0ULL), m_last_kernel_time(0ULL), m_last_user_time(0ULL),
     m_is_initialized(false)
@@ -19,7 +18,6 @@ CProcessInfo::CProcessInfo(unsigned PID, unsigned count_of_processors,
 }
 
 CProcessInfo::CProcessInfo(const CProcessInfo& other) : m_PID(other.m_PID), 
-        m_count_of_processors(other.m_count_of_processors),
         m_cpu_usage(other.m_cpu_usage),
         m_ram_usage(other.m_ram_usage),
         m_pagefile_usage(other.m_pagefile_usage),
@@ -33,7 +31,6 @@ CProcessInfo::CProcessInfo(const CProcessInfo& other) : m_PID(other.m_PID),
 }
 
 CProcessInfo::CProcessInfo(CProcessInfo&& other) noexcept: m_PID(other.m_PID),
-        m_count_of_processors(other.m_count_of_processors),
         m_cpu_usage(other.m_cpu_usage),
         m_ram_usage(other.m_ram_usage),
         m_pagefile_usage(other.m_pagefile_usage),
@@ -52,7 +49,6 @@ CProcessInfo& CProcessInfo::operator=(const CProcessInfo& other)
                + std::to_string(m_PID) + "using operator=");
 
     m_PID = other.m_PID;
-    m_count_of_processors = other.m_count_of_processors;
     m_cpu_usage = other.m_cpu_usage;
     m_ram_usage = other.m_ram_usage;
     m_pagefile_usage = other.m_pagefile_usage;
@@ -75,8 +71,8 @@ bool CProcessInfo::Initialize()
     }
  
     bool success = PlatformUtils::GetProcessTimes(m_PID, m_last_sys_time,
-                                             m_last_kernel_time,
-                                             m_last_user_time);
+                                                 m_last_kernel_time,
+                                                 m_last_user_time);
     if (!success)
     {
         CLOG_PROD("WARNING!!! Can't get process times for PID: " +
@@ -286,8 +282,6 @@ bool CProcessInfo::CountCpuUsage()
                     /
                     static_cast<double>(cur_sys_time - m_last_sys_time)
                   ) * 100;
-    CLOG_TRACE_VAR_CREATION(m_cpu_usage);
-    m_cpu_usage /= m_count_of_processors;
     CLOG_TRACE_VAR_CREATION(m_cpu_usage);
 
     m_last_sys_time = cur_sys_time;

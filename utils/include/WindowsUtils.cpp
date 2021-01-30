@@ -1,8 +1,8 @@
 #include "stdafx.h"
 
-#include "PlatformUtils.h"
-
 #if defined(_WIN64) || defined(_WIN32)
+
+#include "PlatformUtils.h"
 
 #pragma warning(disable : 6385)
 
@@ -63,9 +63,16 @@ namespace PlatformUtils
 		HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
 			FALSE, PID);
 
-		bool success = (process != 0);
+		bool success = (process != nullptr);
 		if (success)
 		{
+			unsigned processors_count = std::thread::hardware_concurrency();
+			if (processors_count == 0)
+			{
+				CloseHandle(process);
+				return false;
+			}
+
 			FILETIME ftime, fsys, fuser;
 			GetSystemTimeAsFileTime(&ftime);
 			{
@@ -82,11 +89,13 @@ namespace PlatformUtils
 					ULARGE_INTEGER kernel_time_uli;
 					memcpy(&kernel_time_uli, &fsys, sizeof(FILETIME));
 					kernel_time = kernel_time_uli.QuadPart;
+					kernel_time /= processors_count;
 				}
 				{
 					ULARGE_INTEGER user_time_uli;
 					memcpy(&user_time_uli, &fuser, sizeof(FILETIME));
 					user_time = user_time_uli.QuadPart;
+					user_time /= processors_count;
 				}
 			}
 			CloseHandle(process);

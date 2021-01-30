@@ -24,7 +24,6 @@ public:
 private:
 	CHardwareStatusSpecification m_specification;
 	std::list<CProcessInfo> m_container;
-	unsigned m_processors_count;
 	bool m_is_initialized;
 };
 
