@@ -28,17 +28,16 @@ namespace PlatformUtils
 	bool GetExistingProcessIds(std::vector<unsigned>& container_of_PIDs)
 	{
 		unsigned short m_max_process_count = 1024;
-		DWORD* p_process_ids = new DWORD[m_max_process_count];
+		std::unique_ptr<DWORD> p_process_ids(new DWORD[m_max_process_count]);
 		DWORD cb = m_max_process_count * sizeof(DWORD);
 		DWORD bytes_returned = 0;
 
-		bool success = (EnumProcesses(p_process_ids, cb, &bytes_returned) != 0);
+		bool success = (EnumProcesses(p_process_ids.get(), cb, &bytes_returned) != 0);
 		if (success)
 		{
 			const int size = bytes_returned / sizeof(DWORD);
-			container_of_PIDs.assign(p_process_ids, p_process_ids + size);
+			container_of_PIDs.assign(p_process_ids.get(), p_process_ids.get() + size);
 		}
-		delete[] p_process_ids;
 
 		return success;
 }

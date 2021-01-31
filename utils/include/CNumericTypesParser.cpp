@@ -9,6 +9,9 @@ CNumericTypesParser::CNumericTypesParser(const std::string& m_value):m_value(m_v
 bool CNumericTypesParser::IsValidScientificNotaton(
             std::string::const_iterator scientific_part_begin,
             std::string::const_iterator scientific_part_end) const{
+    if (scientific_part_begin == scientific_part_end)
+    { return false;}
+
     if(*scientific_part_begin == '-' || *scientific_part_begin == '+'){
         ++scientific_part_begin;
     }
@@ -24,11 +27,11 @@ bool CNumericTypesParser::IsValidScientificNotaton(
 bool CNumericTypesParser::IsIntagerNumber() const {
     size_t i = 0;
     if(m_value.at(0) == '-'){
-        i=1;
+        i = static_cast<size_t>(1);
     }
 
-    for( ; i<m_value.size(); ++i) {
-        if(!std::isdigit( m_value.at(i) )){
+    for( ; i < m_value.size(); ++i) {
+        if(!std::isdigit( m_value[i] )){
             return false;
         }
     }
@@ -36,15 +39,15 @@ bool CNumericTypesParser::IsIntagerNumber() const {
 }
 
 bool CNumericTypesParser::IsFloatingPointNumber() const {
-    size_t i = 0;
+    size_t i = static_cast<size_t>(0);
     if(m_value.at(0) == '-'){
-        i=1;
+        i = static_cast<size_t>(1);
     }
 
-    for( ; i<m_value.size(); ++i) {
-        if(!std::isdigit(m_value.at(i)) && m_value.at(i) != '.') {
+    for( ; i < m_value.size(); ++i) {
+        if(!std::isdigit(m_value[i]) && m_value[i] != '.') {
             bool flag = false;
-            if (m_value.at(i) == 'e' || m_value.at(i) == 'E'){
+            if (m_value[i] == 'e' || m_value[i] == 'E'){
                 flag = IsValidScientificNotaton(m_value.begin()+i+1,
                                                 m_value.end());
             }
@@ -64,10 +67,10 @@ bool CNumericTypesParser::IsUnsignedIntagerNumber() const{
 }
 
 bool CNumericTypesParser::IsUnsignedFloatingPointNumber() const{
-    for(size_t i = 0; i<m_value.size(); ++i) {
-        if(!std::isdigit(m_value.at(i)) && m_value.at(i) != '.') {
+    for(size_t i = static_cast<size_t>(0); i < m_value.size(); ++i) {
+        if(!std::isdigit(m_value[i]) && m_value[i] != '.') {
             bool flag = false;
-            if (m_value.at(i) == 'e' || m_value.at(i) == 'E'){
+            if (m_value[i] == 'e' || m_value[i] == 'E'){
                 flag = IsValidScientificNotaton(m_value.begin()+i+1,
                                                 m_value.end());
             }

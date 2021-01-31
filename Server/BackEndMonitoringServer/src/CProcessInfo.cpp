@@ -10,7 +10,7 @@
 CProcessInfo::CProcessInfo(unsigned PID,
                            EMemoryConvertType type) :
     m_PID(PID),m_count_type(type), 
-    m_cpu_usage(0.0), m_ram_usage(00ULL), m_pagefile_usage(00ULL),
+    m_cpu_usage(0.0), m_ram_usage(0ULL), m_pagefile_usage(0ULL),
     m_last_sys_time(0ULL), m_last_kernel_time(0ULL), m_last_user_time(0ULL),
     m_is_initialized(false)
 { 
