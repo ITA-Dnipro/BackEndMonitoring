@@ -32,7 +32,10 @@ CContainerOfLogicalDisk::~CContainerOfLogicalDisk() noexcept
 {
 	for (const auto& disk : m_p_container_all_logical_disks)
 	{
-		delete disk;
+		if (nullptr != disk)
+		{
+			delete disk;
+		}
 	}
 }
 

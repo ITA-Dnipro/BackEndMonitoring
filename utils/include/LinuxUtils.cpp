@@ -82,23 +82,34 @@ namespace PlatformUtils
 		return false;
 	}
 
-	bool TryGetLogicalDisksNames(std::vector<std::string>& all_disks_names)
+	bool TryGetAllNamesAllDisksInSystem(std::vector<std::string>& names)
 	{
 		constexpr char path_dev[] = { "/dev" };
 		constexpr char loop_ignore[] = { "loop" };
-		std::vector<std::string> all_received_names;
-		//get all names of disks disks to mount
+
 		for (const auto& file : std::filesystem::directory_iterator(path_dev))
 		{
 			if (file.is_block_file() &&
 				(std::string::npos ==
 					file.path().filename().string().find(loop_ignore)))
 			{
-				all_received_names.emplace_back(
-					file.path().filename().string());
+				names.emplace_back(file.path().filename().string());
 			}
 		}
-		//mount all disks;
+
+		return !names.empty();
+	}
+
+	bool TryGetLogicalDisksNames(std::vector<std::string>& all_disks_names)
+	{	
+		std::vector<std::string> all_received_names;
+		
+		if (!TryGetAllNamesAllDisksInSystem(all_received_names))
+		{
+			// write to log
+			return false;
+		}
+		//create directory for all mount disks;
 		const std::string mount_dir = "/media/disks";
 		if (!std::filesystem::exists(mount_dir))
 		{
@@ -111,7 +122,7 @@ namespace PlatformUtils
 				mount_dir, std::filesystem::perms::group_all |
 				std::filesystem::perms::owner_all);
 		}
-		for (unsigned short i = 0; i < all_received_names.size(); ++i)
+		for (size_t i = 0; i < all_received_names.size(); ++i)
 		{
 			std::string path_to_mount_dir = mount_dir + "/" +
 				all_received_names[i];
@@ -129,7 +140,7 @@ namespace PlatformUtils
 			//NULL, 0, NULL);
 
 			const std::string system_utils_mount_disk =
-				(static_cast<std::string>("mount ") + path_dev + "/" +
+				(std::string("mount ") + path_dev + "/" +
 					all_received_names[i] + " " + path_to_mount_dir);
 			system(system_utils_mount_disk.c_str());
 			system("clear");
@@ -139,7 +150,8 @@ namespace PlatformUtils
 			{
 				//write to log
 				all_received_names.erase(all_received_names.begin() + i);
-				std::filesystem::remove(path_to_mount_dir);
+				//still need more test on different PC
+				//std::filesystem::remove(path_to_mount_dir);
 				continue;
 			}
 
@@ -148,7 +160,6 @@ namespace PlatformUtils
 
 		return !all_disks_names.empty();
 	}
-
 }
 
 #endif
