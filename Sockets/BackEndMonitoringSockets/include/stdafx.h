@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 #include <optional>
+#include <thread>
 
 #include "json.hpp"
 

@@ -5,6 +5,33 @@
 //in order to use ctime
 #pragma warning(disable:4996)
 
+std::vector<std::string> Utils::SplitIntoWords(const std::string& str,
+                                               const char delimiter)
+{
+    std::vector<std::string> result;
+
+    size_t pos = 0;
+    const size_t pos_end = str.npos;
+
+    while (true) {
+        size_t space = str.find(delimiter, pos);
+
+        result.push_back(
+            space == pos_end
+            ? str.substr(pos)
+            : str.substr(pos, space - pos));
+
+        if (space == pos_end) {
+            break;
+        }
+        else {
+            pos = space + 1;
+        }
+    }
+
+    return result;
+}
+
 bool Utils::TryGetCurrentDateAndTimeFormatted(std::string&
                                               date_time_var_to_save)
 {

@@ -8,7 +8,6 @@
 
 CContainerOfProcesses::CContainerOfProcesses(std::chrono::duration<int>
 	pause_duration, std::string path_to_file, EMemoryConvertType count_type) :
-	m_processors_count(0),
 	m_specification(pause_duration, path_to_file, count_type),
 	m_is_initialized(false)
 { }
@@ -19,23 +18,13 @@ bool CContainerOfProcesses::Initialize()
 	CLOG_DEBUG_START_FUNCTION( );
 	CLOG_TRACE_VAR_CREATION(success);
 
-	m_processors_count = std::thread::hardware_concurrency( );
-	CLOG_TRACE_VAR_CREATION(m_processors_count);
-
-	if(m_processors_count == 0)
-	{
-		CLOG_PROD("Can't get number of logical CPU's");
-		return false;
-	}
-
 	std::vector<unsigned> PIDs;
 	CLOG_TRACE_VAR_CREATION(PIDs);
 	if (success = PlatformUtils::GetExistingProcessIds(PIDs))
 	{
 		for (auto PID : PIDs)
 		{
-			CProcessInfo temp(PID, m_processors_count,
-				m_specification.GetCountType());
+			CProcessInfo temp(PID, m_specification.GetCountType());
 			CLOG_TRACE_VAR_CREATION(temp);
 			if (success = temp.Initialize( ))
 			{
@@ -88,8 +77,7 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 
 			if (it == m_container.end())
 			{
-				CProcessInfo temp(PID, m_processors_count,
-					m_specification.GetCountType());
+				CProcessInfo temp(PID, m_specification.GetCountType());
 				CLOG_TRACE_VAR_CREATION(temp);
 				if (temp.Initialize())
 				{

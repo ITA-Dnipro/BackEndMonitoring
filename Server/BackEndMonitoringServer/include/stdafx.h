@@ -30,4 +30,8 @@
 #include <WtsApi32.h>
 #include <strsafe.h>
 #include <atlstr.h>
+#elif
+#include <ctime>
+#include <sys/times.h>
+#include <unistd.h>
 #endif
