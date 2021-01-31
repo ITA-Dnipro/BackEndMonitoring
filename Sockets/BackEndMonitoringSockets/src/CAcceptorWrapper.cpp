@@ -1,35 +1,35 @@
 #include "stdafx.h"
+
 #include "CAcceptorWrapper.h"
+#include "CServiceConnectionHandler.h"
+#include "CEvent.h"
+#include "PlatformUtils.h"
+#include "CLogger/include/Log.h"
 
 CAcceptorWrapper::CAcceptorWrapper(int port, const std::string& ip_address, 
-	size_t num_threads, CEvent& event, std::shared_ptr<CLogger> logger)
-	: m_event(event), m_logger(logger)
+	CEvent& event, std::shared_ptr<CThreadPool> pool, 
+	bool is_blocked, int socket_timeout, CDataReceiver json_data):
+	m_event(event), m_is_socket_blocked(is_blocked), 
+	m_socket_timeout(socket_timeout), m_pool(pool)
 {
-	m_server_acceptor = InitAcceptor(1111, "127.0.0.1");
-	m_stream = InitSocketWrapper(m_server_acceptor->GetHandle());
-	m_service_handler = InitServiceHandler(m_server_acceptor->GetHandle());
-	m_pool = InitThreadPool(num_threads, m_event);
+	Initialize(port, ip_address, json_data);
+}
+
+CAcceptorWrapper::~CAcceptorWrapper()
+{
+	PlatformUtils::FinalizeWinLibrary();
 }
 
 void CAcceptorWrapper::StartServer()
 {
-	std::cout << "Start server" << std::endl;
-	int handle = SOCKET_ERROR;
-	while (!m_event.WaitFor(std::chrono::nanoseconds(1)))
+	CLOG_DEBUG(std::string(10u, '*') + " START SERVER " + std::string(10u, '*'));
+	if (m_is_socket_blocked)
 	{
-		if ((handle = m_server_acceptor->GetConnectedHandle()) != SOCKET_ERROR)
-		{
-			WRITE_DEBUG_WITH_PARAMS(*m_logger, "Connected with a new socket ", 
-				handle);
-			m_pool->Enqueue([this, &handle]()
-			{
-				while (!m_event.WaitFor(std::chrono::nanoseconds(1)))
-				{
-					m_service_handler->HandleEvent(handle,
-						EventType::REQUEST_DATA);
-				}
-			});
-		}
+		HandleBlockingEvents();
+	}
+	else
+	{
+		HandleNonBlockingEvents();
 	}
 }
 
@@ -38,28 +38,79 @@ bool CAcceptorWrapper::StopSocket()
 	return m_server_acceptor->CloseSocket();
 }
 
-std::unique_ptr<CThreadPool> CAcceptorWrapper::InitThreadPool(int num_threads, 
-	CEvent& event)
+void CAcceptorWrapper::Initialize(int port, const std::string& ip_address, 
+								  CDataReceiver& json_data)
 {
-	return std::move(std::make_unique<CThreadPool>(num_threads, event));
+	PlatformUtils::InitializeWinLibrary();
+	m_server_acceptor = InitAcceptor(port, ip_address);
+	m_stream = InitSocketWrapper();
+	m_service_handler = InitServiceHandler(json_data);
 }
+
 
 std::unique_ptr<CAcceptor> CAcceptorWrapper::InitAcceptor(int port, 
 	const std::string& address)
 {
-	return std::move(std::make_unique<CAcceptor>(port, address,
-		m_logger));
+	return std::move(std::make_unique<CAcceptor>(port, address, 
+		m_is_socket_blocked));
 }
 
-std::unique_ptr<CServiceConnectionHandler> CAcceptorWrapper::InitServiceHandler
-	(int handle)
+std::unique_ptr<CServiceConnectionHandler> CAcceptorWrapper::InitServiceHandler(
+		CDataReceiver& json_data)
 {
-	return std::move(std::make_unique<CServiceConnectionHandler>(handle, 
-		m_logger));
+	return std::move(std::make_unique<CServiceConnectionHandler>(std::move(json_data)));
 }
 
-std::unique_ptr<CSocketWrapper> CAcceptorWrapper::InitSocketWrapper(int handle)
+std::unique_ptr<CSocketWrapper> CAcceptorWrapper::InitSocketWrapper()
 {
-	return std::move(std::make_unique<CSocketWrapper>(handle, m_logger));
+	return std::move(std::make_unique<CSocketWrapper>());
 }
 
+void CAcceptorWrapper::HandleNonBlockingEvents()
+{
+	int max_sd;
+	FD_SET read_fds;
+	int socket_fd = ERROR_SOCKET;
+	timeval time_out;
+	time_out.tv_sec = m_socket_timeout;
+
+	while (!m_event.WaitFor(std::chrono::nanoseconds(1000)))
+	{
+		FD_ZERO(&read_fds);
+
+		FD_SET(m_server_acceptor->GetHandle(), &read_fds);
+		max_sd = m_server_acceptor->GetHandle();
+
+		select(max_sd + 1, &read_fds, NULL, NULL, &time_out);
+
+		if (FD_ISSET(m_server_acceptor->GetHandle(), &read_fds))
+		{
+			AddClientToThread(socket_fd);
+		}
+	}
+}
+
+void CAcceptorWrapper::HandleBlockingEvents()
+{
+	int socket_fd = ERROR_SOCKET;
+	while (!m_event.WaitFor(std::chrono::nanoseconds(1)))
+	{
+		AddClientToThread(socket_fd);
+	}
+}
+
+void CAcceptorWrapper::AddClientToThread(int& socket_fd)
+{
+	static int num = 0;
+	if ((socket_fd = m_server_acceptor->GetConnectedFD()) > 0)
+	{
+		m_pool->Enqueue([this, socket_fd]()
+			{
+				while (
+					m_service_handler->HandleEvent(socket_fd,
+						EventType::REQUEST_DATA) && 
+						!m_event.WaitFor(std::chrono::nanoseconds(1000)))
+				{ }
+			});
+	}
+}

@@ -17,6 +17,9 @@
 #include <vector>
 #include <cassert>
 #include <memory>
+#include <algorithm>
+#include <optional>
+#include "json.hpp"
 
 #ifndef _linux_
 #include <WinSock2.h>

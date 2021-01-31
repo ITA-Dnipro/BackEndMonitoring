@@ -3,7 +3,11 @@
 #include "CLogger/CLogger.h"
 
 CLogger::CLogger(const std::string& log_name, const ELogLevel log_level)
-	: m_log_level(log_level), m_log_name(log_name)
+	: CLogger(log_name, log_level, ELogFlush::NOT_FLUSH)
+{}
+
+CLogger::CLogger(const std::string& log_name, const ELogLevel log_level, const ELogFlush log_flush)
+	: m_log_level(log_level), m_log_flush(log_flush), m_log_name(log_name)
 {}
 
 CLogger::CLogger(CLogger&& move) noexcept = default;
@@ -40,6 +44,20 @@ CLogger& CLogger::SetLogLevel(const ELogLevel log_level)
 	return *this;
 }
 
+ELogFlush CLogger::GetLogFlush() const
+{
+	return m_log_flush;
+}
+
+CLogger& CLogger::SetLogFlush(const ELogFlush log_flush)
+{
+	if (m_log_flush != log_flush)
+	{
+		m_log_flush = log_flush;
+	}
+	return *this;
+}
+
 std::string CLogger::GetLogName() const
 {
 	return m_log_name;
@@ -72,12 +90,14 @@ void CLogger::PrintLogInfo() const
 	if (!m_log_config_list.empty())
 	{
 		ss << "Output order:" << " "
-		   << LogConfigToString(*m_log_config_list.begin()) << std::flush;
+			<< LogConfigToString(*m_log_config_list.begin());
+		FlushFunction(ss);
 
-		for (auto config = ++m_log_config_list.cbegin();
+		for (auto& config = ++m_log_config_list.cbegin();
 			config != m_log_config_list.cend(); ++config)
 		{
-			ss << "," << " " << LogConfigToString(*config) << std::flush;
+			ss << "," << " " << LogConfigToString(*config);
+			FlushFunction(ss);
 		}
 	}
 	

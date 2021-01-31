@@ -23,7 +23,7 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{9fe1f712-fdde-419f-9d2a-11603dbfbefd}</ProjectGuid>
     <RootNamespace>BackEndMonitoring</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
     <ProjectName>BackEndMonitoringServer</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -94,6 +94,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -114,6 +115,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,6 +136,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -154,6 +157,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -168,43 +172,52 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\3rdParty\include\pugiconfig.hpp" />
-    <ClInclude Include="..\..\3rdParty\include\pugixml.hpp" />
-    <ClInclude Include="..\..\utils\include\CDataReader.h" />
-    <ClInclude Include="..\..\utils\include\CLoggingSettings.h" />
-    <ClInclude Include="..\..\utils\include\CServerSettings.h" />
-    <ClInclude Include="..\..\utils\include\CXMLDataReader.h" />
-    <ClInclude Include="..\..\utils\include\CComunicationSettings.h" />
+    <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h" />
+    <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="include\CCommandLineHandler.h" />
+    <ClInclude Include="include\CContainerOfLogicalDisk.h" />
+    <ClInclude Include="include\CContainerOfProcesses.h" />
+    <ClInclude Include="include\IHardwareInfoMonitoring.h" />
+    <ClInclude Include="include\CHardwareStatusSpecification.h" />
+    <ClInclude Include="include\CJSONFormatterLogicalDisk.h" />
+    <ClInclude Include="include\CJSONFormatterProcess.h" />
+    <ClInclude Include="include\CLogicalDiskInfo.h" />
+    <ClInclude Include="include\CLogicalDiskInfoMonitoring.h" />
+    <ClInclude Include="include\CProcessInfo.h" />
+    <ClInclude Include="include\CProcessesInfoMonitoring.h" />
     <ClInclude Include="include\CService.h" />
     <ClInclude Include="include\CServiceHandler.h" />
+    <ClInclude Include="include\EMemoryConvertType.h" />
     <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\3rdParty\include\pugixml.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CComunicationSettings.cpp" />
-    <ClCompile Include="..\..\utils\include\CDataReader.cpp" />
     <ClCompile Include="..\..\utils\include\CEvent.cpp" />
     <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp" />
     <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp" />
-    <ClCompile Include="..\..\utils\include\CLoggingSettings.cpp" />
-    <ClCompile Include="..\..\utils\include\CServerSettings.cpp" />
     <ClCompile Include="..\..\utils\include\CThreadPool.cpp" />
-    <ClCompile Include="..\..\utils\include\CXMLDataReader.cpp" />
     <ClCompile Include="..\..\utils\include\Utils.cpp" />
+    <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
     <ClCompile Include="src\BackEndMonitoringServer.cpp" />
     <ClCompile Include="src\CCommandLineHandler.cpp" />
+    <ClCompile Include="src\CContainerOfLogicalDisk.cpp" />
+    <ClCompile Include="src\CContainerOfProcesses.cpp" />
+    <ClCompile Include="src\CHardwareStatusSpecification.cpp" />
+    <ClCompile Include="src\CJSONFormatterLogicalDisk.cpp" />
+    <ClCompile Include="src\CJSONFormatterProcess.cpp" />
+    <ClCompile Include="src\CLogicalDiskInfo.cpp" />
+    <ClCompile Include="src\CLogicalDiskInfoMonitoring.cpp" />
+    <ClCompile Include="src\CProcessInfo.cpp" />
+    <ClCompile Include="src\CProcessesInfoMonitoring.cpp" />
     <ClCompile Include="src\CService.cpp" />
     <ClCompile Include="src\CServiceHandler.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

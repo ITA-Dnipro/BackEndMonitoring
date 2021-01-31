@@ -13,24 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="3rdParty Libs">
-      <UniqueIdentifier>{8446db49-b174-4143-9aeb-1aa26199980c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3rdParty Libs\pugixml">
-      <UniqueIdentifier>{31795948-adb7-42c3-94ec-ac1c0ec1f7d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{dc771058-a6e6-42d1-8818-aa3631b8149f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\CDataReader">
-      <UniqueIdentifier>{18991b5b-fa67-4c9f-90a8-025a32df732b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\CXMLDataReader">
-      <UniqueIdentifier>{0088d739-ec6d-4ee8-b623-77e69a7b5cf6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\SettingClasses">
-      <UniqueIdentifier>{e6fa73fe-e12b-4be8-967b-2d48626df15a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\stdafx.h">
@@ -45,26 +27,44 @@
     <ClInclude Include="include\CServiceHandler.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\3rdParty\include\pugiconfig.hpp">
-      <Filter>3rdParty Libs\pugixml</Filter>
+    <ClInclude Include="include\CContainerOfLogicalDisk.h">
+      <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\3rdParty\include\pugixml.hpp">
-      <Filter>3rdParty Libs\pugixml</Filter>
+    <ClInclude Include="include\CContainerOfProcesses.h">
+      <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\CDataReader.h">
-      <Filter>Utils\CDataReader</Filter>
+    <ClInclude Include="include\CHardwareStatusSpecification.h">
+      <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\CXMLDataReader.h">
-      <Filter>Utils\CXMLDataReader</Filter>
+    <ClInclude Include="include\CJSONFormatterLogicalDisk.h">
+      <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\CServerSettings.h">
-      <Filter>Utils\SettingClasses</Filter>
+    <ClInclude Include="include\CJSONFormatterProcess.h">
+      <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\CComunicationSettings.h">
-      <Filter>Utils\SettingClasses</Filter>
+    <ClInclude Include="include\IHardwareInfoMonitoring.h">
+      <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\CLoggingSettings.h">
-      <Filter>Utils\SettingClasses</Filter>
+    <ClInclude Include="include\CLogicalDiskInfo.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CLogicalDiskInfoMonitoring.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CProcessesInfoMonitoring.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CProcessInfo.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EMemoryConvertType.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\PlatformUtils.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h">
+      <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -101,22 +101,34 @@
     <ClCompile Include="src\CServiceHandler.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\3rdParty\include\pugixml.cpp">
-      <Filter>3rdParty Libs\pugixml</Filter>
+    <ClCompile Include="src\CContainerOfLogicalDisk.cpp">
+      <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\CDataReader.cpp">
-      <Filter>Utils\CDataReader</Filter>
+    <ClCompile Include="src\CContainerOfProcesses.cpp">
+      <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\CXMLDataReader.cpp">
-      <Filter>Utils\CXMLDataReader</Filter>
+    <ClCompile Include="src\CHardwareStatusSpecification.cpp">
+      <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\CServerSettings.cpp">
-      <Filter>Utils\SettingClasses</Filter>
+    <ClCompile Include="src\CJSONFormatterLogicalDisk.cpp">
+      <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\CComunicationSettings.cpp">
-      <Filter>Utils\SettingClasses</Filter>
+    <ClCompile Include="src\CJSONFormatterProcess.cpp">
+      <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\CLoggingSettings.cpp">
+    <ClCompile Include="..\..\utils\include\WindowsUtils.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CLogicalDiskInfo.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CLogicalDiskInfoMonitoring.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CProcessesInfoMonitoring.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CProcessInfo.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

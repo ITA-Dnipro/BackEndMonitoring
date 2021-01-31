@@ -30,6 +30,9 @@
     <ClCompile Include="src\CLogger\CLogger.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ELogFlush\ELogFlush.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ELogLevel\ELogLevel.h">
@@ -50,13 +53,22 @@
     <ClInclude Include="include\CLogger\CLogger.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="include\CLogMacro\CLogMacro.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Log.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CLogMacro\CLogCreationMacro.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CLogMacro\CLogUsageMacro.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ELogFlush\ELogFlush.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
     <ClInclude Include="include\Utils\Utils.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GlobalLogger.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

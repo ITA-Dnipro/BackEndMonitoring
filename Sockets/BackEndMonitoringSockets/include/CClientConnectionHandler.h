@@ -1,21 +1,21 @@
 #pragma once
 #include "CServiceHandler.h"
 #include "CSocketWrapper.h"
+#include "CServerResponseHolder.h"
 
 // This class handles event form the user
 class CClientConnectionHandler : public CServiceHandler
 {
 public:
-	CClientConnectionHandler(int socket, std::shared_ptr<CLogger> logger);
-	void HandleEvent(const int socket, EventType type) override;
-	int GetHandle() const override;
+	CClientConnectionHandler();
+	bool HandleEvent(const int socket, EventType type) override;
 
 private:
-	void HandleReadEvent(int socket);
-	void HandleWriteEvent(int socket);
-	std::unique_ptr<CSocketWrapper> InitClientStream(int handle);
+	bool HandleRequestEvent(const int socket);
+	bool HandleResponseEvent(const int socket);
+	bool HandleExitEvent(const int socket);
+	std::unique_ptr<CSocketWrapper> InitClientStream();
 
-	int m_socket;
 	std::unique_ptr<CSocketWrapper> m_client_stream;
-	std::shared_ptr<CLogger> m_logger;
+	CServerResponseHolder m_response_holder;
 };
