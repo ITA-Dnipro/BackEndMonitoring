@@ -7,7 +7,7 @@ public:
 	CSocket(const int port, const std::string& ip_address);
 	virtual int GetSocketFD() const;
 	bool CloseSocket();
-	sockaddr_in GetSocketAddress() const;
+	sockaddress GetSocketAddress() const;
 protected:
 	void SetSocketAddress(const int port, const std::string& ip_address);
 	bool IsValidSocket() const;

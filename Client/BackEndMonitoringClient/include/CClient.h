@@ -10,7 +10,8 @@ public:
 	void MakeRequest();
 private:
 	void InitLogger();
-	std::unique_ptr<CConnectorWrapper> InitConnector;
+	std::unique_ptr<CConnectorWrapper> InitConnector();
+	bool GetRequestConfirmation();
 
 	std::unique_ptr<CConnectorWrapper> m_connector;
 	std::string m_ip_address;

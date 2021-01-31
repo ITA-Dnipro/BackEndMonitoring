@@ -33,7 +33,7 @@ namespace PlatformUtils
 
 	bool BindSocket(int socket, sockaddress& current_address)
 	{
-		if (::bind(socket, (struct SOCKADDR*)&current_address,
+		if (::bind(socket, (struct sockaddr*)&current_address,
 			sizeof(current_address)) == SUCCESS)
 		{
 			return true;
@@ -50,14 +50,17 @@ namespace PlatformUtils
 		return false;
 	}
 
-	int Accept(int socket)
+	int Accept(int socket, sockaddress& current_address)
 	{
-		return static_cast<int>(accept(socket, 0, 0));
+		int addrlen = sizeof(current_address);
+		return static_cast<int>(accept(socket, 
+			(struct sockaddr*)&current_address, (socklen_t*)&addrlen));
 	}
 
 	bool Connect(int socket, sockaddress& current_address)
 	{
-		return connect(socket, (struct sockaddr*)&current_address,
+		return connect(socket, (struct sockaddr*)&current_address, 
+			sizeof(current_address)) == SUCCESS;
 	}
 
 	bool SetUnblockingSocket(int socket)

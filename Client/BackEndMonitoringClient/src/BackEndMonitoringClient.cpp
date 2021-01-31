@@ -4,7 +4,8 @@
 int main()
 {
 	int port = 1111;
-	std::string ip_address = "127.0.0.1";
+	//std::string ip_address = "10.0.2.2";
+	std::string ip_address = "10.0.2.15";
 
 	CClient client(port, ip_address);
 

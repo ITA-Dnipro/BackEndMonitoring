@@ -42,7 +42,7 @@ namespace PlatformUtils
 
 	bool BindSocket(int socket, sockaddress& current_address);
 	bool Listen(int socket);
-	int Accept(int socket);
+	int Accept(int socket, sockaddress& current_address);
 	bool Connect(int socket, sockaddress& current_address);
 	bool SetUnblockingSocket(int socket);
 	bool CloseSocket(int socket);

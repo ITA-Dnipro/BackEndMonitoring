@@ -170,7 +170,7 @@ namespace PlatformUtils
 		return false;
 	}
 
-	int Accept(int socket)
+	int Accept(int socket, sockaddress& current_address)
 	{
 		return static_cast<int>(accept(socket, NULL, NULL));
 	}

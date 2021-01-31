@@ -18,7 +18,9 @@ int CAcceptor::GetConnectedFD()
 	//CLOG_DEBUG_WITH_PARAMS("In the class CAcceptor was accepted socket ",
 		//socket_fd);
 	
-	return PlatformUtils::Accept(m_socket_acceptor->GetSocketFD());
+	sockaddress current_address = m_socket_acceptor->GetSocketAddress();
+	return PlatformUtils::Accept(m_socket_acceptor->GetSocketFD(), 
+		current_address);
 }
 
 int CAcceptor::GetHandle() const

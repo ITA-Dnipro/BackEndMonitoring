@@ -65,7 +65,7 @@ std::unique_ptr<CSocketWrapper> CAcceptorWrapper::InitSocketWrapper()
 void CAcceptorWrapper::HandleNonBlockingEvents()
 {
 	int max_sd;
-	FD_SET read_fds;
+	fd_set read_fds;
 	int socket_fd = ERROR_SOCKET;
 	timeval time_out;
 	time_out.tv_sec = m_socket_timeout;
@@ -89,7 +89,7 @@ void CAcceptorWrapper::HandleNonBlockingEvents()
 void CAcceptorWrapper::HandleBlockingEvents()
 {
 	int socket_fd = ERROR_SOCKET;
-	while (!m_event.WaitFor(std::chrono::nanoseconds(1)))
+	while (!m_event.WaitFor(std::chrono::nanoseconds(1000)))
 	{
 		AddClientToThread(socket_fd);
 	}

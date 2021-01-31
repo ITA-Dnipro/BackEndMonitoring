@@ -27,7 +27,6 @@ private:
 	void HandleBlockingEvents();
 	void HandleNonBlockingEvents();
 
-	std::vector<int> m_accepted_sockets;
 	std::shared_ptr<CThreadPool> m_pool;
 	std::unique_ptr<CAcceptor> m_server_acceptor;
 	std::unique_ptr<CServiceConnectionHandler> m_service_handler;
