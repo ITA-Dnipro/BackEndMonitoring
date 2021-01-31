@@ -3,7 +3,7 @@
 #include "CLogger/include/Log.h"
 
 CComunicationSettings::CComunicationSettings(std::shared_ptr<CDataReader> p_data_reader) :
-	p_data_reader_(p_data_reader)
+	p_data_reader_(p_data_reader), blocking_(false)
 {
 
 }

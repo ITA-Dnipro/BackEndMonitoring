@@ -5,10 +5,10 @@ class CProcessesInfoSettings
 {
 public:
 	CProcessesInfoSettings() = delete;
-	CProcessesInfoSettings(CProcessesInfoSettings&) = delete;
+	CProcessesInfoSettings(const CProcessesInfoSettings&) = delete;
 	CProcessesInfoSettings(CProcessesInfoSettings&&) = delete;
 
-	CProcessesInfoSettings(std::shared_ptr<CDataReader> p_data_reader);
+	explicit CProcessesInfoSettings(std::shared_ptr<CDataReader> p_data_reader);
 	~CProcessesInfoSettings() = default;
 
 	void ReadConfigurationFromFile();

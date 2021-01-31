@@ -4,7 +4,7 @@ class CDataReader
 {
 public:
 	CDataReader() = default;
-	CDataReader(CDataReader&) = delete;
+	CDataReader(const CDataReader&) = delete;
 	CDataReader(CDataReader&&) = delete;
 	virtual	~CDataReader() = default;
 

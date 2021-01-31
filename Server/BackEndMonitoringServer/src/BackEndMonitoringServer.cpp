@@ -4,6 +4,8 @@
 #include "CCommandLineHandler.h"
 #include "CServiceHandler.h"
 #include "Utils.h"
+#include "CDataReader.h"
+#include "CXMLDataReader.h"
 
 int main(int argc, char** argv)
 {

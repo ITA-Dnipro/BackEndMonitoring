@@ -5,8 +5,8 @@
 class CXMLDataReader : public CDataReader
 {
 public:
-	CXMLDataReader() = default;
-	CXMLDataReader(CXMLDataReader&) = delete;
+	CXMLDataReader();
+	CXMLDataReader(const CXMLDataReader&) = delete;
 	CXMLDataReader(CXMLDataReader&&) = delete;
 	~CXMLDataReader() override = default;
 
@@ -19,7 +19,7 @@ private:
 	static void FormConfigurationString(std::string& data_to_form);
 
 private:
-	bool is_file_loaded = false;
-	std::unique_ptr<pugi::xml_document> p_file_ = nullptr;
+	bool is_file_loaded_;
+	std::unique_ptr<pugi::xml_document> p_file_;
 
 };
