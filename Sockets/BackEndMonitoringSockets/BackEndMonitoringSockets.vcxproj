@@ -31,6 +31,7 @@
     <ClInclude Include="include\CSocket.h" />
     <ClInclude Include="include\CSocketWrapper.h" />
     <ClInclude Include="include\CDataReceiver.h" />
+    <ClInclude Include="include\EClientRequestType.h" />
     <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,9 @@
 #include "stdafx.h"
 
+#include "Server/BackEndMonitoringServer/include/EMemoryConvertType.h"
+
 #include "Utils.h"
-#include "EMemoryConvertType.h"
+
 //in order to use ctime
 #pragma warning(disable:4996)
 

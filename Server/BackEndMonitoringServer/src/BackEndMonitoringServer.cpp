@@ -4,19 +4,23 @@
 #include "CCommandLineHandler.h"
 #include "CServiceHandler.h"
 #include "Utils.h"
-#include "CHardwareStatusSpecification.h"
-#include "CLogicalDiskInfoMonitoring.h"
 
 
 int main(int argc, char** argv)
 {
-    CEvent stop;
-    CThreadSafeVariable<CJSONFormatterLogicalDisk> jsonf;
-    CHardwareStatusSpecification specification_from_xml(
-        std::chrono::duration<int>(1), "info.json",
-        EMemoryConvertType::GIGABYTES);
-    CLogicalDiskInfoMonitoring logical_disks(stop, &specification_from_xml, jsonf);
-    logical_disks.StartMonitoringInfo();
+    auto parser = std::make_unique<CommandLineHandler>();
+
+    bool success = parser->Parse(argc, argv);
+
+    if (!success)
+    {
+        Utils::DisplayMessage("Invalid parameters");
+        return EXIT_FAILURE;
+    }
+
+    const int return_code = success ? 0 : 1;
+
+    return return_code;
     
     return 0;
 }

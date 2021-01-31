@@ -3,6 +3,8 @@
 #include "CSocketWrapper.h"
 #include "CDataReceiver.h"
 
+enum class EClientRequestType;
+
 // This class handles event form the server
 class CServiceConnectionHandler : public CServiceHandler
 {
@@ -12,7 +14,8 @@ public:
 
 private:
 	bool HandleRequestEvent(const int socket_fd);
-	bool HandleResponseEvent(const int socket_fd);
+	bool HandleResponseEvent(const int socket_fd,
+		EClientRequestType type);
 	bool HandleResponseExitEvent(const int socket_fd);
 	std::unique_ptr<CSocketWrapper> InitPeerStream();
 

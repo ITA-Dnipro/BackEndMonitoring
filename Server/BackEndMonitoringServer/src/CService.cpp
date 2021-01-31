@@ -23,7 +23,7 @@
 void CService::RunServer()
 {
     //TODO Add XML Configuration interaction
-    //Sleep(10000);
+    Sleep(10000);
 
     //Need absolute path here!!!
     std::string path_to_log_file("F:\\Git\\Log.txt");

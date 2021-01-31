@@ -2,8 +2,9 @@
 
 #if defined(_WIN64) || defined(_WIN32)
 
-#include "PlatformUtils.h"
 #include "Utils.h"
+
+#include "PlatformUtils.h"
 
 #pragma warning(disable : 6385)
 
@@ -42,7 +43,7 @@ namespace PlatformUtils
 		}
 
 		return success;
-}
+	}
 
 	bool CheckIsProcessActive(unsigned PID)
 	{
@@ -125,7 +126,7 @@ namespace PlatformUtils
 	}
 
 	bool TryGetLogicalDisksNames(std::vector<std::string>& all_disks_names)
-		{
+	{
 
 		const unsigned short c_size_of_buffer_for_api = 1024U;
 		//We just skip some chars

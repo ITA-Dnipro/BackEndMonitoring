@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EMemoryConvertType.h"
+enum class EMemoryConvertType;
 
 namespace Utils
 {

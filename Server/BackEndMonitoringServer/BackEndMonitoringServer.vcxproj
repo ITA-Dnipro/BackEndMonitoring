@@ -229,7 +229,6 @@
     <ClCompile Include="..\..\utils\include\CThreadPoolSettings.cpp" />
     <ClCompile Include="..\..\utils\include\CTimeSettings.cpp" />
     <ClCompile Include="..\..\utils\include\CXMLDataReader.cpp" />
-    <ClCompile Include="..\..\utils\include\LinuxUtils.cpp" />
     <ClCompile Include="..\..\utils\include\Utils.cpp" />
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
     <ClCompile Include="src\BackEndMonitoringServer.cpp" />

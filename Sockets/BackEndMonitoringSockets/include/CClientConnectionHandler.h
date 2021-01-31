@@ -11,7 +11,8 @@ public:
 	bool HandleEvent(const int socket, EventType type) override;
 
 private:
-	bool HandleRequestEvent(const int socket);
+	bool HandleRequestEvent(const int socket,
+							EventType type);
 	bool HandleResponseEvent(const int socket);
 	bool HandleExitEvent(const int socket);
 	std::unique_ptr<CSocketWrapper> InitClientStream();
