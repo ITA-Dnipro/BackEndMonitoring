@@ -36,17 +36,17 @@ std::string CDataReceiver::GetDisksInfo( )
 	return disks_info;
 }
 
-std::string CDataReceiver::GetAllInfo( )
+std::string CDataReceiver::GetAllInfo( ) const
 {
 	auto [disks_data, disks_mtx] = m_disks_json.GetAccess( );
 	auto [processes_data, processes_mtx] = m_processes_json.GetAccess( );
-	nlohmann::json* disks_json = disks_data.GetJSONFormattedData();
+	const nlohmann::json* disks_json = disks_data.GetJSONFormattedData();
 	if (disks_json == nullptr)
 	{
 		disks_json = new nlohmann::json("Can't get disks data");
 	}
 
-	nlohmann::json* processes_json = processes_data.GetJSONFormattedData();
+	const nlohmann::json* processes_json = processes_data.GetJSONFormattedData();
 	if (processes_json == nullptr)
 	{
 		processes_json = new nlohmann::json("Can't get processes data");

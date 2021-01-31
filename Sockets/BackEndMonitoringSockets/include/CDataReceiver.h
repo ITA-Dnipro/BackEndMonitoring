@@ -12,7 +12,7 @@ public:
 
 	std::string GetProcessesInfo();
 	std::string GetDisksInfo( );
-	std::string GetAllInfo( );
+	std::string GetAllInfo( ) const;
 
 private:
 	CThreadSafeVariable<CJSONFormatterProcess>& m_processes_json;
