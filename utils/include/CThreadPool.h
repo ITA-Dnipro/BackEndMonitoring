@@ -28,7 +28,7 @@ public:
 	[[nodiscard]] auto Enqueue(TaskType task) -> STaskInQueue<decltype(task( ))>
 	{
 		STaskInQueue<decltype(task( ))> future_and_pos;
-		CLOG_TRACE_START_FUNCTION( );
+		CLOG_DEBUG_START_FUNCTION( );
 		CLOG_TRACE_VAR_CREATION(future_and_pos);
 
 		auto p_task_wrapper = std::make_shared<std::packaged_task<
@@ -38,23 +38,23 @@ public:
 		STaskInQueue<decltype(task( ))> future_and_pos;
 		{
 			auto [queue, mtx] = m_tasks_queue.GetAccess( );
-			CLOG_TRACE("Obtained queue mutex");
+			CLOG_DEBUG("Obtained queue mutex");
 			queue.emplace([=]
 						  {
 							  (*p_task_wrapper)();
 						  });
-			CLOG_TRACE("Pushed task in queue");
+			CLOG_DEBUG("Pushed task in queue");
 
 			future_and_pos.position = queue.size( );
 			CLOG_TRACE_VAR_CREATION(future_and_pos.position);
 		}
 		m_event.NotifyOne( );
-		CLOG_TRACE("Notified one thread that task pushed");
+		CLOG_DEBUG("Notified one thread that task pushed");
 
 		future_and_pos.future = p_task_wrapper->get_future( );
 		CLOG_TRACE_VAR_CREATION(future_and_pos.future);
 
-		CLOG_TRACE_END_FUNCTION( );
+		CLOG_DEBUG_END_FUNCTION( );
 		return future_and_pos;
 	}
 

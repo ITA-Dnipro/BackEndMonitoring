@@ -5,6 +5,9 @@
 #include <memory>
 #include <map>
 #include <vector>
+#include <optional>
+
+#include "json.hpp"
 
 #if defined(_WIN64) || defined(_WIN32)
 
