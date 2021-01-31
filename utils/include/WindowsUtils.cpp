@@ -28,7 +28,7 @@ namespace PlatformUtils
 {
 	bool GetExistingProcessIds(std::vector<unsigned>& container_of_PIDs)
 	{
-		unsigned short m_max_process_count = 1024;
+		unsigned short m_max_process_count = 1024U;
 		DWORD* p_process_ids = new DWORD[m_max_process_count];
 		DWORD cb = m_max_process_count * sizeof(DWORD);
 		DWORD bytes_returned = 0;
@@ -118,7 +118,7 @@ namespace PlatformUtils
 	bool TryGetLogicalDisksNames(std::vector<std::string>& all_disks_names)
 		{
 
-		const unsigned short c_size_of_buffer_for_api = 1024;
+		const unsigned short c_size_of_buffer_for_api = 1024U;
 		//We just skip some chars
 		const unsigned short number_of_chars_need_miss = 1U;
 		char container_all_disks_names[c_size_of_buffer_for_api +
