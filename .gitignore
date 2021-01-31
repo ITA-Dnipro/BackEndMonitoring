@@ -38,6 +38,11 @@
 *.log
 *.tlog
 
+# Other
+*.idb
+*.pdb
+*.ilk
+
 # Build folders
 Client/BackEndMonitoringClient/Build/**
 Client/BackEndMonitoringClientTests/Build/**

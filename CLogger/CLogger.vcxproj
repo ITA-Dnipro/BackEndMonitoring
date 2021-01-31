@@ -171,15 +171,19 @@
     <ClCompile Include="src\CLogger\CLogger.cpp" />
     <ClCompile Include="src\DllMain.cpp" />
     <ClCompile Include="src\ELogConfig\ELogConfig.cpp" />
+    <ClCompile Include="src\ELogFlush\ELogFlush.cpp" />
     <ClCompile Include="src\ELogLevel\ELogLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CLogBuilder\CLogBuilder.h" />
     <ClInclude Include="include\CLogger\CLogger.h" />
-    <ClInclude Include="include\CLogMacro\CLogMacro.h" />
+    <ClInclude Include="include\CLogMacro\CLogCreationMacro.h" />
+    <ClInclude Include="include\CLogMacro\CLogUsageMacro.h" />
     <ClInclude Include="include\CLogMessage\CLogMessage.h" />
     <ClInclude Include="include\ELogConfig\ELogConfig.h" />
+    <ClInclude Include="include\ELogFlush\ELogFlush.h" />
     <ClInclude Include="include\ELogLevel\ELogLevel.h" />
+    <ClInclude Include="include\GlobalLogger.h" />
     <ClInclude Include="include\Log.h" />
     <ClInclude Include="include\stdafx.h" />
     <ClInclude Include="include\Utils\Utils.h" />

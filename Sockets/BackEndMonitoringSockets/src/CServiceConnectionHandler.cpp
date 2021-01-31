@@ -1,47 +1,65 @@
 #include "stdafx.h"
+
+#include "CLogger/include/Log.h"
+#include "PlatformUtils.h"
+
 #include "CServiceConnectionHandler.h"
 
-CServiceConnectionHandler::CServiceConnectionHandler(const int socket,
-	std::shared_ptr<CLogger> logger)
-	: m_server_socket(socket), m_logger(logger)
+
+
+CServiceConnectionHandler::CServiceConnectionHandler(CDataReceiver json_data) :
+	m_json_data(json_data)
 {
-	m_peer_stream = InitPeerStream(socket);
+	m_peer_stream = InitPeerStream();
 }
 
-void CServiceConnectionHandler::HandleEvent(const int socket, EventType type)
+bool CServiceConnectionHandler::HandleEvent(const int socket_fd, EventType type)
 {
-
-	if (type == EventType::REQUEST_DATA)
-	{
-		HandleRequestEvent(socket);
+	bool can_continue = true;
+	switch (type) {
+	case EventType::REQUEST_DATA:
+		can_continue = HandleRequestEvent(socket_fd);
+		break;
+	case EventType::CLOSE_EVENT:
+		can_continue = HandleResponseExitEvent(socket_fd);
+		break;
 	}
-	else if (type == EventType::RESPONSE_DATA)
+	return can_continue;
+
+}
+
+bool CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
+{
+	bool can_continue = true;
+	if (m_peer_stream->CanReceiveData(socket_fd))
 	{
-		HandleResponseEvent(socket);
+		std::string message = m_peer_stream->Receive(socket_fd);
+		if (message == "Request for data\n")
+		{
+			CLOG_DEBUG_WITH_PARAMS("Data request from the socket ", socket_fd);
+			HandleResponseEvent(socket_fd);
+		}
+		else if (message == "Exit")
+		{
+			HandleEvent(socket_fd, EventType::CLOSE_EVENT);
+			can_continue = false;
+		}
 	}
+	return can_continue;
 }
 
-int CServiceConnectionHandler::GetHandle() const
+bool CServiceConnectionHandler::HandleResponseEvent(const int socket_fd)
 {
-	return m_peer_stream->GetHandle();
+	return m_peer_stream->Send(socket_fd, m_json_data.GetAllInfo());
 }
 
-void CServiceConnectionHandler::HandleRequestEvent(const int socket)
+bool CServiceConnectionHandler::HandleResponseExitEvent(const int socket_fd)
 {
-	std::cout << "Request from the client " << socket << ": " << std::endl;
-	std::cout << m_peer_stream->Receive(socket);
-	HandleResponseEvent(socket);
+	return m_peer_stream->Send(socket_fd, "Disconnect");
 }
 
-void CServiceConnectionHandler::HandleResponseEvent(const int socket)
+std::unique_ptr<CSocketWrapper> CServiceConnectionHandler::InitPeerStream()
 {
-	std::cout << "The respone has been sent" << std::endl;
-	m_peer_stream->Send(socket, data.GetData());
-}
-
-std::unique_ptr<CSocketWrapper> CServiceConnectionHandler::InitPeerStream
-	(int handle)
-{
-	return std::move(std::make_unique<CSocketWrapper>(handle, m_logger));
+	return std::move(std::make_unique<CSocketWrapper>());
 }
 

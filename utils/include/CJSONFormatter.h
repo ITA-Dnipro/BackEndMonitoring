@@ -25,9 +25,7 @@ protected:
 	template <typename Value>
 	nlohmann::json CreatePair(const char* name_key, const Value& value_for_key)
 	{
-		nlohmann::json pair;
-		pair[name_key] = value_for_key;
-		return pair;
+		return {name_key, value_for_key};
 	}
 
 private:
