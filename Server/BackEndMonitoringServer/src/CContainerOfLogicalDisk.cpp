@@ -32,7 +32,10 @@ CContainerOfLogicalDisk::~CContainerOfLogicalDisk() noexcept
 {
 	for (const auto& disk : m_p_container_all_logical_disks)
 	{
-		delete disk;
+		if (nullptr != disk)
+		{
+			delete disk;
+		}
 	}
 }
 
@@ -43,39 +46,21 @@ bool CContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 		// will be changed after implementing an exception handler
 		return false;
 	}
-	const unsigned short c_size_of_buffer_for_api = 1024;
-	//We just skip some chars
-	const unsigned short number_of_chars_need_miss = 1U;
-	char container_all_disks_names[c_size_of_buffer_for_api +
-		c_size_of_buffer_for_api] = {};
+	std::vector<std::string> all_names_of_disks;
 
-	if (PlatformUtils::TryGetLogicalDisksNames(container_all_disks_names,
-		c_size_of_buffer_for_api))
+	if (PlatformUtils::TryGetLogicalDisksNames(all_names_of_disks))
 	{
-		char* variable_for_checking_names = container_all_disks_names;
-
-		while (*variable_for_checking_names)
+		for (const auto& disk_name : all_names_of_disks)
 		{
-
-			std::string name_of_disk = variable_for_checking_names;
-
-			if (!Utils::TryGetFormattedDiskName(name_of_disk))
-			{
-				return false;
-			}
 			CLogicalDiskInfo* created_disk = new CLogicalDiskInfo();
 
 			//avoid floppy disk or another logical disk without capacity
 			if (created_disk->InitializeLogicalDiskStatus(
-				name_of_disk, m_specification.GetCountType()))
+				disk_name, m_specification.GetCountType()))
 			{
 				m_p_container_all_logical_disks.push_back(created_disk);
 			}
 
-			//go to the next driver
-			variable_for_checking_names +=
-				strlen(variable_for_checking_names) +
-				number_of_chars_need_miss;
 		}
 	}
 	else
