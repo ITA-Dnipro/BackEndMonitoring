@@ -5,10 +5,10 @@ class CTimeSettings
 {
 public:
 	CTimeSettings() = delete;
-	CTimeSettings(CTimeSettings&) = delete;
+	CTimeSettings(const CTimeSettings&) = delete;
 	CTimeSettings(CTimeSettings&&) = delete;
 
-	CTimeSettings(std::shared_ptr<CDataReader> p_data_reader);
+	explicit CTimeSettings(std::shared_ptr<CDataReader> p_data_reader);
 	~CTimeSettings() = default;
 
 	void ReadConfigurationFromFile();

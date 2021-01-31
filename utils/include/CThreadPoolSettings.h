@@ -5,10 +5,10 @@ class CThreadPoolSettings
 {
 public:
 	CThreadPoolSettings() = delete;
-	CThreadPoolSettings(CThreadPoolSettings&) = delete;
+	CThreadPoolSettings(const CThreadPoolSettings&) = delete;
 	CThreadPoolSettings(CThreadPoolSettings&&) = delete;
 
-	CThreadPoolSettings(std::shared_ptr<CDataReader> p_data_reader);
+	explicit CThreadPoolSettings(std::shared_ptr<CDataReader> p_data_reader);
 	~CThreadPoolSettings() = default;
 
 	void ReadConfigurationFromFile();

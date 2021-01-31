@@ -5,10 +5,10 @@ class CServerSettings
 {
 public:
 	CServerSettings() = delete;
-	CServerSettings(CServerSettings&) = delete;
+	CServerSettings(const CServerSettings&) = delete;
 	CServerSettings(CServerSettings&&) = delete;
 
-	CServerSettings(std::shared_ptr<CDataReader> p_data_reader);
+	explicit CServerSettings(std::shared_ptr<CDataReader> p_data_reader);
 	~CServerSettings() = default;
 
 	void ReadConfigurationFromFile();

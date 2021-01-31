@@ -2,18 +2,23 @@
 #include "CXMLDataReader.h"
 #include "CLogger/include/Log.h"
 
+CXMLDataReader::CXMLDataReader() : 
+	is_file_loaded_(false), p_file_(nullptr)
+{
+}
+
 bool CXMLDataReader::Initialize(const std::string& file_path)
 {
 	p_file_ = std::move(std::make_unique<pugi::xml_document>());
-	is_file_loaded = p_file_->load_file(file_path.c_str());
-	if(!is_file_loaded) 
+	is_file_loaded_ = p_file_->load_file(file_path.c_str());
+	if(!is_file_loaded_) 
 		CLOG_ERROR_WITH_PARAMS("Failed to load file with this path", file_path);
-	return is_file_loaded;
+	return is_file_loaded_;
 }
 
 bool CXMLDataReader::IsFileInitialized() const
 {
-	if (nullptr == p_file_ || !is_file_loaded)
+	if (nullptr == p_file_ || !is_file_loaded_)
 	{
 		p_file_ ? CLOG_ERROR("Pointer to file is nullptr") : CLOG_ERROR("File is not loaded");
 		return false;
