@@ -16,6 +16,6 @@ public:
 	[[nodiscard]] int GetMaxWorkingThreads() const;
 
 private:
-	std::shared_ptr<CDataReader> p_data_reader_;
-	int max_working_threads_;
+	std::shared_ptr<CDataReader> m_p_data_reader_;
+	int m_max_working_threads_;
 };

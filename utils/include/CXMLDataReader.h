@@ -19,7 +19,7 @@ private:
 	static void FormConfigurationString(std::string& data_to_form);
 
 private:
-	bool is_file_loaded_;
-	std::unique_ptr<pugi::xml_document> p_file_;
+	bool m_is_file_loaded_;
+	std::unique_ptr<pugi::xml_document> m_p_file_;
 
 };

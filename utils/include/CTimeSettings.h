@@ -16,6 +16,6 @@ public:
 	[[nodiscard]] int GetPeriodTime() const;
 
 private:
-	std::shared_ptr<CDataReader> p_data_reader_;
-	int period_time_;
+	std::shared_ptr<CDataReader> m_p_data_reader_;
+	int m_period_time_;
 };

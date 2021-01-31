@@ -3,24 +3,24 @@
 #include "CLogger/include/Log.h"
 
 CXMLDataReader::CXMLDataReader() : 
-	is_file_loaded_(false), p_file_(nullptr)
+	m_is_file_loaded_(false), m_p_file_(nullptr)
 {
 }
 
 bool CXMLDataReader::Initialize(const std::string& file_path)
 {
-	p_file_ = std::move(std::make_unique<pugi::xml_document>());
-	is_file_loaded_ = p_file_->load_file(file_path.c_str());
-	if(!is_file_loaded_) 
+	m_p_file_ = std::move(std::make_unique<pugi::xml_document>());
+	m_is_file_loaded_ = m_p_file_->load_file(file_path.c_str());
+	if(!m_is_file_loaded_) 
 		CLOG_ERROR_WITH_PARAMS("Failed to load file with this path", file_path);
-	return is_file_loaded_;
+	return m_is_file_loaded_;
 }
 
 bool CXMLDataReader::IsFileInitialized() const
 {
-	if (nullptr == p_file_ || !is_file_loaded_)
+	if (nullptr == m_p_file_ || !m_is_file_loaded_)
 	{
-		p_file_ ? CLOG_ERROR("Pointer to file is nullptr") : CLOG_ERROR("File is not loaded");
+		m_p_file_ ? CLOG_ERROR("Pointer to file is nullptr") : CLOG_ERROR("File is not loaded");
 		return false;
 	}
 
@@ -48,7 +48,7 @@ bool CXMLDataReader::TryToGetStringData(const std::string& data_path, std::strin
 
 bool CXMLDataReader::TryToSearchNode(const std::string& data_path, pugi::xpath_node& node) const
 {
-	node = p_file_->select_node(data_path.c_str());
+	node = m_p_file_->select_node(data_path.c_str());
 	if (nullptr == node)
 	{
 		CLOG_ERROR_WITH_PARAMS("Failed to find Node with this path", data_path);

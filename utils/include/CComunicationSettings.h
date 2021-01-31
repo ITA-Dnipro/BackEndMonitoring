@@ -18,9 +18,9 @@ public:
 	[[nodiscard]] int GetSocketTimeout() const;
 	
 private:
-	std::shared_ptr<CDataReader> p_data_reader_ = nullptr;
+	std::shared_ptr<CDataReader> m_p_data_reader_;
 
-	bool blocking_ = false;
-	int socket_timeout_ = 5;
+	bool m_blocking_;
+	int m_socket_timeout_;
 
 };

@@ -19,11 +19,11 @@ public:
 	[[nodiscard]] int GetListenerPort() const;
 
 private:
-	std::shared_ptr<CDataReader> p_data_reader_;
+	std::shared_ptr<CDataReader> m_p_data_reader_;
 
-	std::string server_displayname_;
-	std::string ip_address_;
-	std::string server_name_;
-	int listener_port_;
+	std::string m_server_displayname_;
+	std::string m_ip_address_;
+	std::string m_server_name_;
+	int m_listener_port_;
 
 };

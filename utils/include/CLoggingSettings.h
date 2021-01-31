@@ -19,9 +19,9 @@ public:
 	[[nodiscard]] std::string GetFileName() const;
 
 private:
-	std::shared_ptr<CDataReader> p_data_reader_;
-	ELogLevel log_level_;
-	ELogFlush log_flush_;
-	std::string file_name_;
+	std::shared_ptr<CDataReader> m_p_data_reader_;
+	ELogLevel m_log_level_;
+	ELogFlush m_log_flush_;
+	std::string m_file_name_;
 	
 };

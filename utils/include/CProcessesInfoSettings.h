@@ -18,8 +18,8 @@ public:
 	[[nodiscard]] int GetCountType() const;
 
 private:
-	std::shared_ptr<CDataReader> p_data_reader_;
-	std::string file_name_;
-	bool check_processes_;
-	int count_type_;
+	std::shared_ptr<CDataReader> m_p_data_reader_;
+	std::string m_file_name_;
+	bool m_check_processes_;
+	int m_count_type_;
 };

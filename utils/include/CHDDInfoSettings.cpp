@@ -3,7 +3,7 @@
 #include "CLogger/include/Log.h"
 
 CHDDInfoSettings::CHDDInfoSettings(std::shared_ptr<CDataReader> p_data_reader) :
-	p_data_reader_(p_data_reader), file_name_("hddinfo.txt"), check_hdd_(true), count_type_(0)
+	m_p_data_reader_(p_data_reader), m_file_name_("hddinfo.txt"), m_check_hdd_(true), m_count_type_(0)
 {
 
 }
@@ -11,9 +11,9 @@ CHDDInfoSettings::CHDDInfoSettings(std::shared_ptr<CDataReader> p_data_reader) :
 void CHDDInfoSettings::ReadConfigurationFromFile()
 {
 	CLOG_DEBUG_START_FUNCTION();
-	if (nullptr == p_data_reader_ || !p_data_reader_->IsFileInitialized())
+	if (nullptr == m_p_data_reader_ || !m_p_data_reader_->IsFileInitialized())
 	{
-		p_data_reader_ ? CLOG_ERROR("Pointer to data reader is empty") :
+		m_p_data_reader_ ? CLOG_ERROR("Pointer to data reader is empty") :
 			CLOG_ERROR("Data reader is not initialized");
 		return;
 	}
@@ -22,29 +22,29 @@ void CHDDInfoSettings::ReadConfigurationFromFile()
 	int tmp_int = 0;
 	bool tmp_bool = false;
 
-	if (p_data_reader_->TryToGetStringData("//root/Server/servername", tmp_string))
-		file_name_ = tmp_string != "" ? tmp_string : file_name_;
+	if (m_p_data_reader_->TryToGetStringData("//root/Server/servername", tmp_string))
+		m_file_name_ = tmp_string != "" ? tmp_string : m_file_name_;
 
-	if (p_data_reader_->TryToGetStringData("//root/Server/serverdisplayname", tmp_string))
-		check_hdd_ = CDataReader::TryToConvertToBool(tmp_string, tmp_bool) ? tmp_bool : check_hdd_;
+	if (m_p_data_reader_->TryToGetStringData("//root/Server/serverdisplayname", tmp_string))
+		m_check_hdd_ = CDataReader::TryToConvertToBool(tmp_string, tmp_bool) ? tmp_bool : m_check_hdd_;
 
-	if (p_data_reader_->TryToGetStringData("//root/Server/listenerport", tmp_string))
-		count_type_ = CDataReader::TryToConvertToInteger(tmp_string, tmp_int) ? tmp_int : count_type_;
+	if (m_p_data_reader_->TryToGetStringData("//root/Server/listenerport", tmp_string))
+		m_count_type_ = CDataReader::TryToConvertToInteger(tmp_string, tmp_int) ? tmp_int : m_count_type_;
 
 	CLOG_DEBUG_END_FUNCTION();
 }
 
 std::string CHDDInfoSettings::GetFileName() const
 {
-	return file_name_;
+	return m_file_name_;
 }
 
 bool CHDDInfoSettings::GetCheckHdd() const
 {
-	return check_hdd_;
+	return m_check_hdd_;
 }
 
 int CHDDInfoSettings::GetCountType() const
 {
-	return count_type_;
+	return m_count_type_;
 }
