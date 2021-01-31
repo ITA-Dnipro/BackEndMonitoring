@@ -1,6 +1,6 @@
 #pragma once
-#include "CLogger/include/Log.h"
 #include "CDataReader.h"
+#include "CLogger/include/Log.h"
 
 class CLoggingSettings
 {
@@ -14,16 +14,14 @@ public:
 
 	void ReadConfigurationFromFile();
 
-	[[nodiscard]] ELogLevel GetServerName() const;
-	[[nodiscard]] std::string GetServerDisplayName() const;
-	[[nodiscard]] std::string GetServerIpAddress() const;
-	[[nodiscard]] int GetListenerPort() const;
+	[[nodiscard]] ELogLevel GetLogLevel() const;
+	[[nodiscard]] ELogFlush GetFlush() const;
+	[[nodiscard]] std::string GetFileName() const;
 
 private:
 	std::shared_ptr<CDataReader> p_data_reader_;
-	ELogLevel log_level_ = static_cast<ELogLevel>(1);
-	ELog
-	std::string file_name_ = "serverlog.txt";
-
+	ELogLevel log_level_;
+	ELogFlush log_flush_;
+	std::string file_name_;
 	
 };

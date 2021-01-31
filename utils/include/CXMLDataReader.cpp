@@ -1,10 +1,13 @@
 #include "stdafx.h"
 #include "CXMLDataReader.h"
+#include "CLogger/include/Log.h"
 
 bool CXMLDataReader::Initialize(const std::string& file_path)
 {
 	p_file_ = std::move(std::make_unique<pugi::xml_document>());
 	is_file_loaded = p_file_->load_file(file_path.c_str());
+	if(!is_file_loaded) 
+		CLOG_ERROR_WITH_PARAMS("Failed to load file with this path", file_path);
 	return is_file_loaded;
 }
 
@@ -12,7 +15,7 @@ bool CXMLDataReader::IsFileInitialized() const
 {
 	if (nullptr == p_file_ || !is_file_loaded)
 	{
-		// write to logger that xml file isn't initialized
+		p_file_ ? CLOG_ERROR("Pointer to file is nullptr") : CLOG_ERROR("File is not loaded");
 		return false;
 	}
 
@@ -28,6 +31,8 @@ bool CXMLDataReader::TryToGetStringData(const std::string& data_path, std::strin
 		{
 			return_data = point.node().child_value();
 			FormConfigurationString(return_data);
+			if ("" == return_data)
+				CLOG_ERROR_WITH_PARAMS("Empty data with this path", data_path);
 			return true;
 		}
 	}
@@ -41,7 +46,7 @@ bool CXMLDataReader::TryToSearchNode(const std::string& data_path, pugi::xpath_n
 	node = p_file_->select_node(data_path.c_str());
 	if (nullptr == node)
 	{
-		// report to logger
+		CLOG_ERROR_WITH_PARAMS("Failed to find Node with this path", data_path);
 		return false;
 	}
 	return true;

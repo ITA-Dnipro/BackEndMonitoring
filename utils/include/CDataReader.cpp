@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CDataReader.h"
+#include "CLogger/include/Log.h"
 
 bool CDataReader::TryToConvertToBool(const std::string& data_to_convert, bool& return_data)
 {
@@ -15,28 +16,22 @@ bool CDataReader::TryToConvertToBool(const std::string& data_to_convert, bool& r
 		return_data = false;
 		return true;
 	}
-
-	// todo: use logger
-	std::cerr << "failed to convert data to bool" << std::endl;
+	
+	CLOG_ERROR_WITH_PARAMS("Failed to convert to bool", data_to_convert);
 	return false;
 }
 
 bool CDataReader::TryToConvertToInteger(const std::string& data_to_convert, int& return_data)
 {
-	try
-	{
+	CLOG_DEBUG_START_FUNCTION();
 		size_t tmp;
 		return_data = std::stoi(data_to_convert, &tmp);
 		if (data_to_convert.size() != tmp)
-			throw std::invalid_argument("Failed to convert data to integer");
+			throw std::invalid_argument("Failed to convert data to integer: " + data_to_convert);
 
 		return true;
-	}
-	catch (const std::exception& e)
-	{
-		e.what();
-		// todo: use logger
-	}
+
+	CLOG_DEBUG_END_FUNCTION();
 
 	return false;
 }
