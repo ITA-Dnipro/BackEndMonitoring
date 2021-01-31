@@ -46,7 +46,7 @@ bool CJSONFormatter::TrySetJSONFormattedData(const nlohmann::json&
     return true;
 }
 
-nlohmann::json* CJSONFormatter::GetJSONFormattedData()
+const nlohmann::json* CJSONFormatter::GetJSONFormattedData() const
 {
     if (m_formatted_data.is_null())
     {
