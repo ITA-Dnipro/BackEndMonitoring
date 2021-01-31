@@ -239,7 +239,7 @@ inline bool CLegacyOut::BreakLine()
 template<typename Type>
 bool CLegacyOut::Write(const char* const format, Type value)
 {
-	return fprintf(&out_.get(), format, value) ? true : false;
+	return fprintf(&out_.get(), format, value) && fflush(&out_.get()) ? true : false;
 }
 
 template<typename Type>

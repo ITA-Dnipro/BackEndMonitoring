@@ -79,7 +79,7 @@ inline bool CModernOut::Write(const char value)
 
 inline bool CModernOut::Write(const bool value)
 {
-	return out_.get() << std::boolalpha << value ? true : false;
+	return out_.get() << std::boolalpha << value << std::flush ? true : false;
 }
 
 inline bool CModernOut::Write(const short value)
@@ -240,13 +240,13 @@ inline bool CModernOut::BreakLine()
 template<typename Type>
 bool CModernOut::Write(Type value)
 {
-	return out_.get() << value ? true : false;
+	return out_.get() << value << std::flush ? true : false;
 }
 
 template<typename Type>
 bool CModernOut::WriteLine(Type value)
 {
-	return Write(value) && BreakLine() ? true : false;
+	return Write(value) && out_.get() << std::endl ? true : false;
 }
 
 inline CModernOut MCout;
