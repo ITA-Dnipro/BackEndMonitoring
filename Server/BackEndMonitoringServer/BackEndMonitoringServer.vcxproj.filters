@@ -13,24 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="3rd Party Lib">
-      <UniqueIdentifier>{b45628eb-c23a-46ca-bc8f-db2ae5b46c71}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3rd Party Lib\pugixml">
-      <UniqueIdentifier>{342807d3-a824-4bc9-8467-262703bcac1a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{9d3e727e-a3b5-4c76-9418-7afbcc00a714}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\CXMLFileReader">
-      <UniqueIdentifier>{c997f183-c1e6-4db7-9d59-fc808c3c34ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\Setting Classes">
-      <UniqueIdentifier>{f861bd9f-0745-4111-bff3-e0ead120da45}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\CDataReader">
-      <UniqueIdentifier>{f6a4e701-06ea-4b78-9d8b-758db1b00a44}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\stdafx.h">
@@ -83,39 +65,6 @@
     </ClInclude>
     <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h">
       <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\3rdParty\include\pugiconfig.hpp">
-      <Filter>3rd Party Lib\pugixml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\3rdParty\include\pugixml.hpp">
-      <Filter>3rd Party Lib\pugixml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CDataReader.h">
-      <Filter>Utils\CDataReader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CXMLDataReader.h">
-      <Filter>Utils\CXMLFileReader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CComunicationSettings.h">
-      <Filter>Utils\Setting Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CLoggingSettings.h">
-      <Filter>Utils\Setting Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CServerSettings.h">
-      <Filter>Utils\Setting Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CThreadPoolSettings.h">
-      <Filter>Utils\Setting Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CTimeSettings.h">
-      <Filter>Utils\Setting Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CHDDInfoSettings.h">
-      <Filter>Utils\Setting Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CProcessesInfoSettings.h">
-      <Filter>Utils\Setting Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -182,35 +131,8 @@
     <ClCompile Include="src\CProcessInfo.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\3rdParty\include\pugixml.cpp">
-      <Filter>3rd Party Lib\pugixml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CDataReader.cpp">
-      <Filter>Utils\CDataReader</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CXMLDataReader.cpp">
-      <Filter>Utils\CXMLFileReader</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CComunicationSettings.cpp">
-      <Filter>Utils\Setting Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CLoggingSettings.cpp">
-      <Filter>Utils\Setting Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CServerSettings.cpp">
-      <Filter>Utils\Setting Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CTimeSettings.cpp">
-      <Filter>Utils\Setting Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CThreadPoolSettings.cpp">
-      <Filter>Utils\Setting Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CHDDInfoSettings.cpp">
-      <Filter>Utils\Setting Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CProcessesInfoSettings.cpp">
-      <Filter>Utils\Setting Classes</Filter>
+    <ClCompile Include="..\..\utils\include\LinuxUtils.cpp">
+      <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
