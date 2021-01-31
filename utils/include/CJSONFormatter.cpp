@@ -46,7 +46,7 @@ bool CJSONFormatter::TrySetJSONFormattedData(const nlohmann::json&
     return true;
 }
 
-nlohmann::json* CJSONFormatter::GetJSONFormattedData()
+const nlohmann::json* CJSONFormatter::GetJSONFormattedData() const
 {
     if (m_formatted_data.is_null())
     {
@@ -58,13 +58,12 @@ nlohmann::json* CJSONFormatter::GetJSONFormattedData()
 
 bool CJSONFormatter::TryGetJSONDataAsString(std::string& str_for_data)
 {
-    str_for_data = m_formatted_data.dump();
-    if (str_for_data.empty())
+    if (!m_formatted_data.empty())
     {
-        return false;
+        str_for_data = m_formatted_data.dump();
+        return true;
     }
-
-    return true;
+    return false;
 }
 
 bool CJSONFormatter::TryEraseAllData()

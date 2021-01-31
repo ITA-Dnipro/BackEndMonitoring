@@ -13,7 +13,7 @@ public:
 		const nlohmann::json& formatted_data);
 	[[nodiscard]] bool TrySetJSONFormattedData(
 		const nlohmann::json& formatted_data);
-	[[nodiscard]] nlohmann::json* GetJSONFormattedData();
+	[[nodiscard]] const nlohmann::json* GetJSONFormattedData() const;
 
 	[[nodiscard]] bool TryGetJSONDataAsString(std::string& str_for_data);
 
