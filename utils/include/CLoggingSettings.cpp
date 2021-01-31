@@ -21,7 +21,6 @@ void CLoggingSettings::ReadConfigurationFromFile()
 
 	std::string tmp_string;
 	int tmp_int = 0;
-	bool tmp_bool = false;
 
 	if (p_data_reader_->TryToGetStringData("//root/logging/filename", tmp_string))
 		file_name_ = tmp_string != "" ? tmp_string : file_name_;

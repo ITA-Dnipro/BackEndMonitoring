@@ -8,8 +8,8 @@ public:
 	CLoggingSettings() = delete;
 	CLoggingSettings(CLoggingSettings&) = delete;
 	CLoggingSettings(CLoggingSettings&&) = delete;
-
-	CLoggingSettings(std::shared_ptr<CDataReader> p_data_reader);
+	
+	explicit CLoggingSettings(std::shared_ptr<CDataReader> p_data_reader);
 	~CLoggingSettings() = default;
 
 	void ReadConfigurationFromFile();
