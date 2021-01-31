@@ -21,4 +21,9 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserve
     return TRUE;
 }
 
+#else
+    int main()
+    {
+        return EXIT_SUCCESS;
+    }
 #endif

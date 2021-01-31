@@ -13,7 +13,7 @@ public:
 		const nlohmann::json& formatted_data);
 	[[nodiscard]] bool TrySetJSONFormattedData(
 		const nlohmann::json& formatted_data);
-	[[nodiscard]] nlohmann::json* GetJSONFormattedData();
+	[[nodiscard]] const nlohmann::json* GetJSONFormattedData() const;
 
 	[[nodiscard]] bool TryGetJSONDataAsString(std::string& str_for_data);
 
@@ -25,9 +25,7 @@ protected:
 	template <typename Value>
 	nlohmann::json CreatePair(const char* name_key, const Value& value_for_key)
 	{
-		nlohmann::json pair;
-		pair[name_key] = value_for_key;
-		return pair;
+		return {name_key, value_for_key};
 	}
 
 private:

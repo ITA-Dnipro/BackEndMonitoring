@@ -15,84 +15,114 @@ CAcceptor::CAcceptor(const int port, const std::string& ip_address,
 
 int CAcceptor::GetConnectedFD()
 {
-	//CLOG_DEBUG_WITH_PARAMS("In the class CAcceptor was accepted socket ",
-		//socket_fd);
-	
 	sockaddress current_address = m_socket_acceptor->GetSocketAddress();
+	CLOG_DEBUG_START_FUNCTION();
+	CLOG_DEBUG_WITH_PARAMS("In the class CAcceptor was accepted socket ",
+		m_socket_acceptor->GetSocketFD());
+	
+	CLOG_DEBUG_END_FUNCTION();
 	return PlatformUtils::Accept(m_socket_acceptor->GetSocketFD(), 
 		current_address);
 }
 
 int CAcceptor::GetHandle() const
 {
+	CLOG_DEBUG_START_FUNCTION();
+	CLOG_DEBUG_WITH_PARAMS("Retrun socket descriptor ", 
+		m_socket_acceptor->GetSocketFD());
+	CLOG_DEBUG_END_FUNCTION();
 	return m_socket_acceptor->GetSocketFD();
 }
 
 bool CAcceptor::CloseSocket()
 {
+	bool result = false;
+	CLOG_DEBUG_START_FUNCTION();
+	CLOG_DEBUG_WITH_PARAMS("Try close socket descriptor ",
+	m_socket_acceptor->GetSocketFD());
 	if (m_socket_acceptor->CloseSocket())
 	{
-		CLOG_DEBUG("Socket was succesfully closed");
-		return true;
+		result = true;
+		CLOG_DEBUG_WITH_PARAMS("Socket was succesfully closed, result of the function - ",
+			result);
 	}
-	CLOG_DEBUG("Cannot close socket");
-	return false;
+	CLOG_DEBUG_WITH_PARAMS("Cannot close socket, result of the function - ",
+		result);
+	CLOG_DEBUG_END_FUNCTION();
+	return result;
 }
 
 void CAcceptor::Initialize()
 {
-	m_socket_acceptor = InitSocket(m_port, m_ip_address);
+	CLOG_DEBUG_START_FUNCTION();
+	InitSocket(m_port, m_ip_address);
 
-	if (OpenAcception())
-	{
-		// log pos
-	}
-	else
-	{
-		//log neg
-	}
-
-	if (!m_is_socked_blocked)
+	if (OpenAcception() && !m_is_socked_blocked)
 	{
 		PlatformUtils::SetUnblockingSocket(m_socket_acceptor->GetSocketFD());
 	}
+	CLOG_DEBUG_END_FUNCTION();
 }
 
 bool CAcceptor::OpenAcception()
 {
+	bool result = false;
+	CLOG_DEBUG_START_FUNCTION();
 	if (BindSocket() && StartListening())
 	{
-		return true;
+		result = true;
 	}
-	return false;
+	CLOG_DEBUG_WITH_PARAMS("Result of work function  OpenAcception", result);
+	CLOG_DEBUG_END_FUNCTION();
+	return result;
 }
 
 bool CAcceptor::BindSocket()
 {
+	bool result = false;
+	CLOG_DEBUG_START_FUNCTION();
 	sockaddress current_address = m_socket_acceptor->GetSocketAddress();
-	return PlatformUtils::BindSocket(m_socket_acceptor->GetSocketFD(), current_address);
+	result = PlatformUtils::BindSocket(m_socket_acceptor->GetSocketFD(), 
+		current_address);
+	CLOG_DEBUG_WITH_PARAMS("Bind socket returned ", result);
+	CLOG_DEBUG_END_FUNCTION();
+	return result;
 }
 
 bool CAcceptor::StartListening()
 {
-	return PlatformUtils::Listen(m_socket_acceptor->GetSocketFD());
+	bool result = false;
+	CLOG_DEBUG_START_FUNCTION();
+	result = PlatformUtils::Listen(m_socket_acceptor->GetSocketFD());
+	CLOG_DEBUG_WITH_PARAMS("Listen socket returned ", result);
+	CLOG_DEBUG_END_FUNCTION();
+	return result;
 }
 
 bool CAcceptor::MakeSocketMulticonnected()
 {
+	bool result = false;
+	CLOG_DEBUG_START_FUNCTION();
 	int on = 1;
 	if (setsockopt(m_socket_acceptor->GetSocketFD(), SOL_SOCKET, SO_REUSEADDR,
 		(char*)&on, sizeof(on)) != ERROR_SOCKET)
 	{
-		return true;
+		CLOG_DEBUG_WITH_PARAMS("setsockopt was successful, the socket ", 
+			m_socket_acceptor->GetSocketFD(), " was made multiconnected");
+		result = true;
 	}
-	return false;
+	CLOG_DEBUG("setsockopt returned -1");
+	CLOG_DEBUG_END_FUNCTION();
+	return result;
 }
 
-std::unique_ptr<CSocket> CAcceptor::InitSocket(const int port,
+void CAcceptor::InitSocket(const int port,
 	const std::string& ip_address)
 {
-	return std::move(std::make_unique<CSocket>(port, ip_address));
+	CLOG_DEBUG_START_FUNCTION();
+	m_socket_acceptor = std::make_unique<CSocket>(port, ip_address);
+	CLOG_TRACE_VAR_CREATION(m_socket_acceptor);
+	CLOG_DEBUG_END_FUNCTION();
 }
 
 

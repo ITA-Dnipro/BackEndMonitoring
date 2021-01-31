@@ -150,7 +150,7 @@
 	CLOG_WRITE(std::string(__FUNCTION__) + " " + "function started", logLevel); \
 	try { \
 
-#define CLOG_WRITE_START_FUNCTION_WITH_PARAMS(logger, logLevel, ...) \
+#define CLOG_WRITE_START_FUNCTION_WITH_PARAMS(logLevel, ...) \
 	CLOG_WRITE_WITH_PARAMS(std::string(__FUNCTION__) + " " + "function started", logLevel, __VA_ARGS__); \
 	try { \
 
@@ -163,7 +163,7 @@
 	CLOG_WRITE_WITH_PARAMS(std::string(__FUNCTION__) + " " + "function ended", logLevel, value); \
 	} catch (const std::exception& exception) { \
 	CLOG_WRITE_EXCEPTION(exception, logLevel); \
-	throw exception; } \
+	return value; } \
 
 #define CLOG_PROD_START_FUNCTION() \
 	CLOG_WRITE_START_FUNCTION(ELogLevel::PROD_LEVEL) \

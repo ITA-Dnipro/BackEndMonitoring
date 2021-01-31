@@ -13,7 +13,7 @@ public:
 	~CBaseSocket();
 
 protected:
-#ifdef _WIN64
+#if defined(_WIN64) || defined(_WIN32)
 	SOCKET InitSocket();
 
 	SOCKET m_socket;
@@ -35,8 +35,7 @@ namespace PlatformUtils
 						 unsigned long long& user_time);
 	bool GetProcessMemoryUsage(unsigned PID, unsigned long long& ram_usage,
 		unsigned long long& pagefile_usage);
-	bool TryGetLogicalDisksNames(char* array_to_write,
-		const unsigned short c_size_of_buffer_for_api);
+	bool TryGetLogicalDisksNames(std::vector<std::string>& all_disks_names);
 	bool InitializeWinLibrary();
 	bool FinalizeWinLibrary();
 
@@ -46,6 +45,5 @@ namespace PlatformUtils
 	bool Connect(int socket, sockaddress& current_address);
 	bool SetUnblockingSocket(int socket);
 	bool CloseSocket(int socket);
-
 }
 

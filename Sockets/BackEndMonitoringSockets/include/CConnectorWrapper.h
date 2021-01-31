@@ -3,6 +3,7 @@
 #include "CSocketWrapper.h"
 #include "CClientConnectionHandler.h"
 #include "CServerResponseHolder.h"
+#include "EClientRequestType.h"
 
 class CConnector;
 
@@ -14,7 +15,7 @@ public:
 	CConnectorWrapper(int port, const std::string& ip_address);
 	~CConnectorWrapper();
 
-	std::string MakeRequest() const;
+	std::string MakeRequest(EClientRequestType r_type) const;
 	bool ConnectToServer() const;
 	void Exit();
 

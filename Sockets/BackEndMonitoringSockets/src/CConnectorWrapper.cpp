@@ -1,17 +1,11 @@
 #include "stdafx.h"
-#include "CConnectorWrapper.h"
+
 #include "CClientConnectionHandler.h"
 #include "CConnector.h"
 #include "PlatformUtils.h"
 #include "CLogger/include/Log.h"
 
-#include <memory>
-#include <string>
-#include <future>
-#include <thread>
-#include <mutex>
-#include <condition_variable>
-#include <deque>
+#include "CConnectorWrapper.h"
 
 CConnectorWrapper::CConnectorWrapper(int port, const std::string& ip_address)
 	: m_port(port), m_address(ip_address)
@@ -27,12 +21,29 @@ CConnectorWrapper::~CConnectorWrapper()
 	PlatformUtils::FinalizeWinLibrary();
 }
 
-std::string CConnectorWrapper::MakeRequest() const
+std::string CConnectorWrapper::MakeRequest(EClientRequestType r_type) const
 {
+	EventType request_event = EventType::REQUEST_ALL_DATA;
+	if( r_type == EClientRequestType::ALL_DATA)
+	{
+		request_event = EventType::REQUEST_ALL_DATA;
+	}
+	else if (r_type == EClientRequestType::DISKS_DATA)
+	{
+		request_event = EventType::REQUEST_DISK_DATA;
+	}
+	else if (r_type == EClientRequestType::PROCESSES_DATA)
+	{
+		request_event = EventType::REQUEST_PROCESS_DATA;
+	}
+	else
+	{
+		return "";
+	}
 	while (true)	
 	{
 		if((m_client_handler->HandleEvent(m_connector->GetSocketFD(),
-			EventType::REQUEST_DATA)))
+			request_event)))
 		{
 			break;
 		}

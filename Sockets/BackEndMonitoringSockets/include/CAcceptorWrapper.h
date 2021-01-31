@@ -3,8 +3,9 @@
 #include "CAcceptor.h"
 #include "CSocketWrapper.h"
 #include "CThreadPool.h"
+#include "CThreadSafeVariable.h"
+#include "CDataReceiver.h"
 
-class DataReceiver;
 class CEvent;
 class CSocketWrapper;
 
@@ -13,16 +14,19 @@ class CAcceptorWrapper
 {
 public:
 	CAcceptorWrapper(int port, const std::string& ip_address, CEvent& event, 
-		std::shared_ptr<CThreadPool> pool, bool is_blocked, int socket_timeout);
+		std::shared_ptr<CThreadPool> pool, bool is_blocked, int socket_timeout,
+		CDataReceiver json_data);
 	~CAcceptorWrapper();
 	void StartServer();
 	bool StopSocket();
 private:
-	void Initialize(int port, const std::string& ip_address);
-	std::unique_ptr<CAcceptor> InitAcceptor(int port, 
-		const std::string& address);
-	std::unique_ptr<CServiceConnectionHandler> InitServiceHandler();
-	std::unique_ptr<CSocketWrapper> InitSocketWrapper();
+	void Initialize(int port, const std::string& ip_address, CDataReceiver& json_data);
+	
+	void InitAcceptor(int port, const std::string& address);
+
+	void InitServiceHandler(CDataReceiver& json_data);
+
+	void InitSocketWrapper();
 	void AddClientToThread(int& socket_fd);
 	void HandleBlockingEvents();
 	void HandleNonBlockingEvents();
