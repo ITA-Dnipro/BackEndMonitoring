@@ -6,7 +6,7 @@
 
 CJSONFormatSaver::CJSONFormatSaver(const std::string& path_to_file) :
 	m_path_to_file(path_to_file), m_number_of_spaces(3), 
-	num_of_bities_to_last_data(5)
+	m_num_of_bities_to_last_data(5)
 { };
 
 bool CJSONFormatSaver::TrySaveToFile(const CJSONFormatter& formatted_data) 
@@ -38,7 +38,7 @@ const
 	std::streampos position = JSON_file_to_save.tellp();
 	
 	JSON_file_to_save.seekp(position - 
-		static_cast<std::streampos>(num_of_bities_to_last_data));
+		static_cast<std::streampos>(m_num_of_bities_to_last_data));
 
 	position = JSON_file_to_save.tellp();
 	if (!TryWriteToFile(JSON_file_to_save, formatted_data))
