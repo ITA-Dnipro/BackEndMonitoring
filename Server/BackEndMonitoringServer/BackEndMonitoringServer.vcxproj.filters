@@ -22,17 +22,14 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{dc771058-a6e6-42d1-8818-aa3631b8149f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils\IParser">
-      <UniqueIdentifier>{8bb96cce-47c2-477b-9d01-b047a0b2a363}</UniqueIdentifier>
+    <Filter Include="Utils\CDataReader">
+      <UniqueIdentifier>{18991b5b-fa67-4c9f-90a8-025a32df732b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils\CConfiguration">
-      <UniqueIdentifier>{f6777284-3165-4b1e-8806-c422e7e8bb0c}</UniqueIdentifier>
+    <Filter Include="Utils\CXMLDataReader">
+      <UniqueIdentifier>{0088d739-ec6d-4ee8-b623-77e69a7b5cf6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils\CXML Parser">
-      <UniqueIdentifier>{d5d41a88-b9a2-403f-abf5-04359048a9ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\SStructs">
-      <UniqueIdentifier>{2ca59a07-7c7e-42fb-90fa-6e7f689c1a0f}</UniqueIdentifier>
+    <Filter Include="Utils\SettingClasses">
+      <UniqueIdentifier>{e6fa73fe-e12b-4be8-967b-2d48626df15a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -54,17 +51,20 @@
     <ClInclude Include="..\..\3rdParty\include\pugixml.hpp">
       <Filter>3rdParty Libs\pugixml</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\CXMLParser.h">
-      <Filter>Utils\CXML Parser</Filter>
+    <ClInclude Include="..\..\utils\include\CDataReader.h">
+      <Filter>Utils\CDataReader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\IParser.h">
-      <Filter>Utils\IParser</Filter>
+    <ClInclude Include="..\..\utils\include\CXMLDataReader.h">
+      <Filter>Utils\CXMLDataReader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\CConfiguration.h">
-      <Filter>Utils\CConfiguration</Filter>
+    <ClInclude Include="..\..\utils\include\CServerSettings.h">
+      <Filter>Utils\SettingClasses</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\SConfigurationStructures.h">
-      <Filter>Utils\SStructs</Filter>
+    <ClInclude Include="..\..\utils\include\CComunicationSettings.h">
+      <Filter>Utils\SettingClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CLoggingSettings.h">
+      <Filter>Utils\SettingClasses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -104,14 +104,20 @@
     <ClCompile Include="..\..\3rdParty\include\pugixml.cpp">
       <Filter>3rdParty Libs\pugixml</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\CXMLParser.cpp">
-      <Filter>Utils\CXML Parser</Filter>
+    <ClCompile Include="..\..\utils\include\CDataReader.cpp">
+      <Filter>Utils\CDataReader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\CConfiguration.cpp">
-      <Filter>Utils\CConfiguration</Filter>
+    <ClCompile Include="..\..\utils\include\CXMLDataReader.cpp">
+      <Filter>Utils\CXMLDataReader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\IParser.cpp">
-      <Filter>Utils\IParser</Filter>
+    <ClCompile Include="..\..\utils\include\CServerSettings.cpp">
+      <Filter>Utils\SettingClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CComunicationSettings.cpp">
+      <Filter>Utils\SettingClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CLoggingSettings.cpp">
+      <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
