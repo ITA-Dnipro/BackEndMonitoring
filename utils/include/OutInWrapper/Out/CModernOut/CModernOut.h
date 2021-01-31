@@ -1,18 +1,18 @@
 #pragma once
 #include <iostream>
 
-#include "../Interfaces/IBreakLine.h"
-#include "../Interfaces/IWrite.h"
-#include "../Interfaces/IWriteLine.h"
+#include "../Interfaces/IWriter.h"
 
-class CModernOut final
-	: public IWrite, public IWriteLine, public IBreakLine
+class CModernOut final : public IWriter
 {
 public:
 	CModernOut();
 	explicit CModernOut(std::ostream& out);
 	CModernOut(const CModernOut& copy) = delete;
 	CModernOut(CModernOut&& move) noexcept;
+
+	CModernOut& operator=(const CModernOut& copy) = delete;
+	CModernOut& operator=(CModernOut&& move) noexcept;
 	
 	~CModernOut() override;
 	
@@ -27,10 +27,12 @@ public:
 	bool Write(unsigned long value) override;
 	bool Write(unsigned long long value) override;
 	bool Write(const char* value) override;
+	bool Write(char* value) override;
 	bool Write(const std::string& value) override;
 	bool Write(float value) override;
 	bool Write(double value) override;
 	bool Write(long double value) override;
+	
 	bool WriteLine(char value) override;
 	bool WriteLine(bool value) override;
 	bool WriteLine(short value) override;
@@ -42,6 +44,7 @@ public:
 	bool WriteLine(unsigned long value) override;
 	bool WriteLine(unsigned long long value) override;
 	bool WriteLine(const char* value) override;
+	bool WriteLine(char* value) override;
 	bool WriteLine(const std::string& value) override;
 	bool WriteLine(float value) override;
 	bool WriteLine(double value) override;
@@ -63,8 +66,11 @@ inline CModernOut::CModernOut(): CModernOut(std::cout) {}
 
 inline CModernOut::CModernOut(std::ostream& out): out_(out) {}
 
-inline CModernOut::CModernOut(CModernOut&& move) noexcept = default;
-inline CModernOut::~CModernOut()                          = default;
+inline CModernOut::CModernOut(CModernOut&& move) noexcept            = default;
+
+inline CModernOut& CModernOut::operator=(CModernOut&& move) noexcept = default;
+
+inline CModernOut::~CModernOut()                                     = default;
 
 inline bool CModernOut::Write(const char value)
 {
@@ -117,6 +123,11 @@ inline bool CModernOut::Write(const unsigned long long value)
 }
 
 inline bool CModernOut::Write(const char* value)
+{
+	return Write(std::string(value));
+}
+
+inline bool CModernOut::Write(char* value)
 {
 	return Write(std::string(value));
 }
@@ -194,6 +205,11 @@ inline bool CModernOut::WriteLine(const unsigned long long value)
 inline bool CModernOut::WriteLine(const char* value)
 {
 	return WriteLine<const char*>(value);
+}
+
+inline bool CModernOut::WriteLine(char* value)
+{
+	return WriteLine<char*>(value);
 }
 
 inline bool CModernOut::WriteLine(const std::string& value)

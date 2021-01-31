@@ -1,17 +1,16 @@
 #pragma once
-#include "../Interfaces/IBreakLine.h"
-#include "../Interfaces/IWrite.h"
-#include "../Interfaces/IWriteLine.h"
+#include "../Interfaces/IWriter.h"
 
-class CLegacyOut final
-	: public IWrite, public IWriteLine, public IBreakLine
+class CLegacyOut final : public IWriter
 {
 public:
 	CLegacyOut();
 	explicit CLegacyOut(FILE* out);
 	CLegacyOut(const CLegacyOut& copy) = delete;
 	CLegacyOut(CLegacyOut&& move) noexcept;
-	
+
+	CLegacyOut& operator=(const CLegacyOut& copy) = delete;
+	CLegacyOut& operator=(CLegacyOut&& move) noexcept;
 	~CLegacyOut() override;
 	
 	bool Write(char value) override;
@@ -25,6 +24,7 @@ public:
 	bool Write(unsigned long value) override;
 	bool Write(unsigned long long value) override;
 	bool Write(const char* value) override;
+	bool Write(char* value) override;
 	bool Write(const std::string& value) override;
 	bool Write(float value) override;
 	bool Write(double value) override;
@@ -41,6 +41,7 @@ public:
 	bool WriteLine(unsigned long value) override;
 	bool WriteLine(unsigned long long value) override;
 	bool WriteLine(const char* value) override;
+	bool WriteLine(char* value) override;
 	bool WriteLine(const std::string& value) override;
 	bool WriteLine(float value) override;
 	bool WriteLine(double value) override;
@@ -58,12 +59,17 @@ private:
 	bool WriteLine(const char* format, Type value);
 };
 
-inline CLegacyOut::CLegacyOut(): CLegacyOut(stdout) {}
+inline CLegacyOut::CLegacyOut(): CLegacyOut(stdout)
+{}
 
-inline CLegacyOut::CLegacyOut(FILE* out): out_(*out) {}
+inline CLegacyOut::CLegacyOut(FILE* out): out_(*out)
+{}
 
-inline CLegacyOut::CLegacyOut(CLegacyOut&& move) noexcept = default;
-inline CLegacyOut::~CLegacyOut()                          = default;
+inline CLegacyOut::CLegacyOut(CLegacyOut&& move) noexcept            = default;
+
+inline CLegacyOut& CLegacyOut::operator=(CLegacyOut&& move) noexcept = default;
+
+inline CLegacyOut::~CLegacyOut()                                     = default;
 
 inline bool CLegacyOut::Write(const char value)
 {
@@ -120,6 +126,11 @@ inline bool CLegacyOut::Write(const char* value)
 	return Write<const char*>("%s", value);
 }
 
+inline bool CLegacyOut::Write(char* value)
+{
+	return Write<char*>("%s", value);
+}
+
 inline bool CLegacyOut::Write(const std::string& value)
 {
 	return Write(value.c_str());
@@ -137,7 +148,7 @@ inline bool CLegacyOut::Write(const double value)
 
 inline bool CLegacyOut::Write(const long double value)
 {
-	return Write<long double>("%f", value);
+	return Write<long double>("%lf", value);
 }
 
 inline bool CLegacyOut::WriteLine(const char value)
@@ -195,6 +206,11 @@ inline bool CLegacyOut::WriteLine(const char* value)
 	return WriteLine<const char*>("%s", value);
 }
 
+inline bool CLegacyOut::WriteLine(char* value)
+{
+	return WriteLine<char*>("%s", value);
+}
+
 inline bool CLegacyOut::WriteLine(const std::string& value)
 {
 	return WriteLine(value.c_str());
@@ -212,7 +228,7 @@ inline bool CLegacyOut::WriteLine(const double value)
 
 inline bool CLegacyOut::WriteLine(const long double value)
 {
-	return WriteLine<long double>("%f", value);
+	return WriteLine<long double>("%lf", value);
 }
 
 inline bool CLegacyOut::BreakLine()

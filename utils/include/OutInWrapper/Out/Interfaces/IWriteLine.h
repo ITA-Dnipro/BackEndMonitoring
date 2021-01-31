@@ -26,5 +26,6 @@ struct IWriteLine
 	virtual bool WriteLine(double value) = 0;
 	virtual bool WriteLine(long double value) = 0;
 	virtual bool WriteLine(const char* value) = 0;
+	virtual bool WriteLine(char* value) = 0;
 	virtual bool WriteLine(const std::string& value) = 0;
 };
