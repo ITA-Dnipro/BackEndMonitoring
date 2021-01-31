@@ -4,7 +4,7 @@
 #include "CJSONFormatter.h"
 #include "CJSONFormatSaver.h"
 
-explicit CJSONFormatSaver::CJSONFormatSaver(const std::string& path_to_file) :
+CJSONFormatSaver::CJSONFormatSaver(const std::string& path_to_file) :
 	m_path_to_file(path_to_file), m_number_of_spaces(3), 
 	num_of_bities_to_last_data(5)
 { };

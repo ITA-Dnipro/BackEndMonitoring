@@ -6,7 +6,7 @@ class CJSONFormatSaver
 {
 public:
 	CJSONFormatSaver() = delete;
-	CJSONFormatSaver(const std::string& path_to_file);
+	explicit CJSONFormatSaver(const std::string& path_to_file);
 	CJSONFormatSaver(const CJSONFormatSaver&) = delete;
 	CJSONFormatSaver(const CJSONFormatSaver&&) = delete;
 	
