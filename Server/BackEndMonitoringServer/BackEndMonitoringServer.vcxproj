@@ -172,7 +172,18 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\3rdParty\include\pugiconfig.hpp" />
+    <ClInclude Include="..\..\3rdParty\include\pugixml.hpp" />
+    <ClInclude Include="..\..\utils\include\CComunicationSettings.h" />
+    <ClInclude Include="..\..\utils\include\CDataReader.h" />
+    <ClInclude Include="..\..\utils\include\CHDDInfoSettings.h" />
     <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h" />
+    <ClInclude Include="..\..\utils\include\CLoggingSettings.h" />
+    <ClInclude Include="..\..\utils\include\CProcessesInfoSettings.h" />
+    <ClInclude Include="..\..\utils\include\CServerSettings.h" />
+    <ClInclude Include="..\..\utils\include\CThreadPoolSettings.h" />
+    <ClInclude Include="..\..\utils\include\CTimeSettings.h" />
+    <ClInclude Include="..\..\utils\include\CXMLDataReader.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="include\CCommandLineHandler.h" />
     <ClInclude Include="include\CContainerOfLogicalDisk.h" />
@@ -194,10 +205,20 @@
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\3rdParty\include\pugixml.cpp" />
+    <ClCompile Include="..\..\utils\include\CComunicationSettings.cpp" />
+    <ClCompile Include="..\..\utils\include\CDataReader.cpp" />
     <ClCompile Include="..\..\utils\include\CEvent.cpp" />
+    <ClCompile Include="..\..\utils\include\CHDDInfoSettings.cpp" />
     <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp" />
     <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp" />
+    <ClCompile Include="..\..\utils\include\CLoggingSettings.cpp" />
+    <ClCompile Include="..\..\utils\include\CProcessesInfoSettings.cpp" />
+    <ClCompile Include="..\..\utils\include\CServerSettings.cpp" />
     <ClCompile Include="..\..\utils\include\CThreadPool.cpp" />
+    <ClCompile Include="..\..\utils\include\CThreadPoolSettings.cpp" />
+    <ClCompile Include="..\..\utils\include\CTimeSettings.cpp" />
+    <ClCompile Include="..\..\utils\include\CXMLDataReader.cpp" />
     <ClCompile Include="..\..\utils\include\LinuxUtils.cpp" />
     <ClCompile Include="..\..\utils\include\Utils.cpp" />
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
