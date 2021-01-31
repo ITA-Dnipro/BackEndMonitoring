@@ -19,8 +19,12 @@ namespace Utils
 
 	[[nodiscard]] bool TryGetFormattedDiskName(std::string& name_of_disk);
 
+	[[nodiscard]] bool TryCreateFileIfNotExist(const std::string& path_to_file);
+
 	[[nodiscard]] bool IsFileEmpty(std::ifstream& file);
 	[[nodiscard]] bool IsFileEmpty(std::fstream& file);
+	[[nodiscard]] bool IsFileEmpty(std::ofstream& file);
+
 
 	void DisplayError(const std::string& message);
 	void DisplayMessage(const std::string& message);

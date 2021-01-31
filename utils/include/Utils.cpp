@@ -46,13 +46,15 @@ bool Utils::TryGetCurrentDateAndTimeFormatted(std::string&
 
     std::string buff_year = date_time_var_to_save.substr(
         date_time_var_to_save.find_last_of(" ") + 1ULL);
-    date_time_var_to_save.erase(date_time_var_to_save.end( ) - buff_year.size( ),
+    date_time_var_to_save.erase(date_time_var_to_save.end( ) - 
+                                buff_year.size( ) - 1,
                                 date_time_var_to_save.end( ));
 
-    std::string buff_month = date_time_var_to_save.substr(0,
-                                                          date_time_var_to_save.find_first_of(" "));
+    std::string buff_month = date_time_var_to_save.substr(
+        0, date_time_var_to_save.find_first_of(" "));
     date_time_var_to_save.erase(date_time_var_to_save.begin( ),
-                                date_time_var_to_save.begin( ) + buff_month.size( ) + 1ULL);
+                                date_time_var_to_save.begin( ) + 
+                                buff_month.size( ) + 1ULL);
 
     if (!TrySetMonthAsNumber(buff_month))
     {
@@ -111,14 +113,43 @@ bool Utils::TryGetFormattedDiskName(std::string& name_of_disk)
     return true;
 }
 
-bool Utils::IsFileEmpty(std::ifstream& file)
+bool Utils::TryCreateFileIfNotExist(const std::string& path_to_file)
 {
-    return file.peek( ) == std::ifstream::traits_type::eof( );
+    if (!std::filesystem::exists(path_to_file))
+    {
+        std::ofstream created_file(path_to_file);
+
+        if (!created_file.is_open())
+        {
+            // couldn't create file
+            return false;
+        }
+        created_file.close();
+    }
+
+    return true;
 }
 
+bool Utils::IsFileEmpty(std::ifstream& file)
+{ return file.peek( ) == std::ifstream::traits_type::eof( ); }
+
 bool Utils::IsFileEmpty(std::fstream& file)
+{ return file.peek( ) == std::fstream::traits_type::eof( ); }
+
+bool Utils::IsFileEmpty(std::ofstream& file)
 {
-    return file.peek( ) == std::fstream::traits_type::eof( );
+    bool answer = true;
+    
+    file.seekp(0, file.end);
+    std::streampos position = file.tellp();
+    
+    if (position != 0)
+    {
+        answer = false;
+    }
+    file.seekp(file.beg);
+
+    return answer;
 }
 
 #define EN_US 0x0409
