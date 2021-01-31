@@ -7,8 +7,9 @@ public:
 	CHDDInfoSettings() = delete;
 	CHDDInfoSettings(CHDDInfoSettings&) = delete;
 	CHDDInfoSettings(CHDDInfoSettings&&) = delete;
-
-	CHDDInfoSettings(std::shared_ptr<CDataReader> p_data_reader);
+	
+	explicit CHDDInfoSettings(std::shared_ptr<CDataReader> p_data_reader);
+	
 	~CHDDInfoSettings() = default;
 
 	void ReadConfigurationFromFile();

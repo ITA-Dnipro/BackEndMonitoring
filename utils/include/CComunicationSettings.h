@@ -5,10 +5,11 @@ class CComunicationSettings
 {
 public:
 	CComunicationSettings() = delete;
-	CComunicationSettings(CComunicationSettings&) = delete;
+	CComunicationSettings(const CComunicationSettings&) = delete;
 	CComunicationSettings(CComunicationSettings&&) = delete;
-
-	CComunicationSettings(std::shared_ptr<CDataReader> p_data_reader);
+	
+	explicit CComunicationSettings(std::shared_ptr<CDataReader> p_data_reader);
+	
 	~CComunicationSettings() = default;
 
 	void ReadConfigurationFromFile();
