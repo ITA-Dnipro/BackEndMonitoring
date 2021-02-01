@@ -3,11 +3,11 @@ project(CLogger)
 
 set(CMAKE_CXX_STANDARD 17)
 
-link_directories(${CMAKE_BINARY_DIR}/CLogger)
-link_directories(.)
-link_directories(${CMAKE_BINARY_DIR}/Sockets)
+#link_directories(${CMAKE_BINARY_DIR}/CLogger)
+#link_directories(.)
+#link_directories(${CMAKE_BINARY_DIR}/Sockets)
 
-include_directories(./BackEndMonitoringClient/include)
+include_directories(BackEndMonitoringClient/include)
 include_directories(../3rdParty/include)
 include_directories(../utils/include)
 include_directories(..)
@@ -21,5 +21,5 @@ add_executable(Client BackEndMonitoringClient/src/BackEndMonitoringClient.cpp
         ../utils/include/StrToNumWrapper.cpp
         ../utils/include/CStringCleaner.cpp)
 
-target_link_libraries(Client CLogger)
-target_link_libraries(Client Sockets)
+#target_link_libraries(Client CLogger)
+#target_link_libraries(Client Sockets)
