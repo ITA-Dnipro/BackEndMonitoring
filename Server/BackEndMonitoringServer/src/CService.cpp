@@ -32,17 +32,18 @@ void CService::RunServer()
     //TODO Add XML Configuration interaction
     Sleep(10000);
 
-    std::shared_ptr<CXMLDataReader> xml_reader = std::shared_ptr<CXMLDataReader>();
-    xml_reader->Initialize("");
+    std::string path_to_log_file("F:\\Git\\Log.txt");
+    ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
+    if (!InitializeLogger(path_to_log_file, log_level))
+    {
+        return;
+    }
+
+    std::shared_ptr<CXMLDataReader> xml_reader = std::make_shared<CXMLDataReader>();
+    xml_reader->Initialize("C:\\xgconsole.xml");
 
     CLoggingSettings log_sett(xml_reader);
     log_sett.ReadConfigurationFromFile();
-
-    if(!InitializeLogger(log_sett))
-    {
-        // to log
-        return; 
-    }
 
     CThreadPoolSettings thred_pool_sett(xml_reader);
     thred_pool_sett.ReadConfigurationFromFile();
@@ -99,27 +100,26 @@ void CService::RunServer()
     m_p_acceptor_socket->StartServer( );
 }
 
-bool CService::InitializeLogger(const CLoggingSettings& log_sett)
+bool CService::InitializeLogger(const std::string& path_to_log_file, ELogLevel level)
 {
-    m_log_stream = std::make_unique<std::fstream>(log_sett.GetFileName(),
-                                                  std::ios_base::out);
-    if (m_log_stream->is_open( ))
+    m_log_stream = std::make_unique<std::fstream>(path_to_log_file,
+        std::ios_base::out);
+    if (m_log_stream->is_open())
     {
-        CLOG_START_CREATION( );
+        CLOG_START_CREATION();
 
         CLOG_SET_LOG_NAME("Logger");
-        CLOG_SET_LOG_LEVEL(log_sett.GetLogLevel());
+        CLOG_SET_LOG_LEVEL(level);
         CLOG_SET_LOG_CONFIG(ELogConfig::LOG_NAME, ELogConfig::LOG_LEVEL,
-                            ELogConfig::CALL_TIME, ELogConfig::THREAD_ID, 
-                            ELogConfig::FILE_NAME, ELogConfig::FUNCTION_NAME, 
-                            ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE,
-                            ELogConfig::PARAMS);
+            ELogConfig::CALL_TIME, ELogConfig::THREAD_ID, ELogConfig::FILE_NAME,
+            ELogConfig::FUNCTION_NAME, ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE,
+            ELogConfig::PARAMS);
 
         CLOG_ADD_SAFE_STREAM(*m_log_stream);
 
-        CLOG_BUILD( );
+        CLOG_BUILD();
 
-        CLOG_END_CREATION( );
+        CLOG_END_CREATION();
         return true;
     }
     return false;
