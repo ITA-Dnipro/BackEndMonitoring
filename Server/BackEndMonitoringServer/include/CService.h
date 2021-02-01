@@ -67,7 +67,7 @@ private:
     void OnStart(DWORD, CHAR**);
     void OnStop();
     void RunServer();
-    bool InitializeLogger(const CLoggingSettings& log_sett);
+    bool InitializeLogger(const std::string& path_to_log_file, ELogLevel level);
     bool InitializeThreadPool(const CThreadPoolSettings& thread_pool_sett);
     bool InitializeLogicalDiscMonitoring(const CHDDInfoSettings& xml_settings);
     bool InitializeProcessesMonitoring(
