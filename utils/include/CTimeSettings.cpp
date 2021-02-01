@@ -18,7 +18,9 @@ void CTimeSettings::ReadConfigurationFromFile()
 	}
 
 	std::string tmp_string;
+	CLOG_TRACE_VAR_CREATION(tmp_string);
 	int tmp_int = 0;
+	CLOG_TRACE_VAR_CREATION(tmp_int);
 
 	if (m_p_data_reader_->TryToGetStringData("//root/time/Period_time", tmp_string))
 		m_period_time_ = CDataReader::TryToConvertToInteger(tmp_string, tmp_int) ? tmp_int : m_period_time_;

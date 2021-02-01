@@ -19,9 +19,11 @@ void CProcessesInfoSettings::ReadConfigurationFromFile()
 	}
 
 	std::string tmp_string;
+	CLOG_TRACE_VAR_CREATION(tmp_string);
 	int tmp_int = 0;
+	CLOG_TRACE_VAR_CREATION(tmp_int);
 	bool tmp_bool = false;
-
+	CLOG_TRACE_VAR_CREATION(tmp_bool);
 	if (m_p_data_reader_->TryToGetStringData("//root/processesinfo/filename", tmp_string))
 		m_file_name_ = tmp_string != "" ? tmp_string : m_file_name_;
 

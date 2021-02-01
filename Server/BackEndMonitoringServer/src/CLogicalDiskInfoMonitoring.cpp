@@ -7,6 +7,7 @@
 #include "CJSONFormatterLogicalDisk.h"
 #include "CLogicalDiskInfoMonitoring.h"
 #include "CEvent.h"
+#include "CLogger/include/Log.h"
 
 CLogicalDiskInfoMonitoring::CLogicalDiskInfoMonitoring(
 	CEvent& stop_event,
@@ -31,6 +32,7 @@ CLogicalDiskInfoMonitoring::CLogicalDiskInfoMonitoring(
 
 CLogicalDiskInfoMonitoring::~CLogicalDiskInfoMonitoring()
 {
+	CLOG_DEBUG_START_FUNCTION();
 	if (nullptr != m_p_specification)
 	{
 		delete m_p_specification;
@@ -39,10 +41,12 @@ CLogicalDiskInfoMonitoring::~CLogicalDiskInfoMonitoring()
 	{
 		delete m_p_container;
 	}
+	CLOG_DEBUG_END_FUNCTION();
 }
 
 bool CLogicalDiskInfoMonitoring::StartMonitoringInfo()
 {
+	CLOG_DEBUG_START_FUNCTION();
 	if (nullptr == m_p_container)
 	{
 		m_p_container = new CContainerOfLogicalDisk(*m_p_specification);
@@ -54,7 +58,7 @@ bool CLogicalDiskInfoMonitoring::StartMonitoringInfo()
 	}
 	CJSONFormatSaver json_saver(
 		*m_p_container->GetSpecification()->GetPathToSaveFile());
-
+	CLOG_TRACE_VAR_CREATION(json_saver);
 	if (nullptr == m_p_container)
 	{
 		std::cout << "Problem with creating container!";
@@ -63,7 +67,7 @@ bool CLogicalDiskInfoMonitoring::StartMonitoringInfo()
 	while (!m_stop_event.WaitFor(m_p_specification->GetPauseDuration()))
 	{
 		auto [json_formatter, mtx] = m_json_formatter.GetAccess();
-		
+		CLOG_TRACE_VAR_CREATION(json_formatter);
 		if (!json_formatter.TryEraseAllData())
 		{
 			continue;
@@ -81,5 +85,6 @@ bool CLogicalDiskInfoMonitoring::StartMonitoringInfo()
 			continue;
 		}
 	}
+	CLOG_DEBUG_END_FUNCTION();	
 	return true;
 }

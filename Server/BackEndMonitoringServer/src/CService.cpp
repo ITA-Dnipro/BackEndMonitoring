@@ -31,21 +31,24 @@ void CService::RunServer()
 {
     //TODO Add XML Configuration interaction
     Sleep(10000);
-
     std::string path_to_log_file("F:\\Git\\Log.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if (!InitializeLogger(path_to_log_file, log_level))
     {
         return;
     }
+    CLOG_DEBUG_START_FUNCTION();
 
     std::shared_ptr<CXMLDataReader> xml_reader = std::make_shared<CXMLDataReader>();
+    CLOG_TRACE_VAR_CREATION(xml_reader);
     xml_reader->Initialize("C:\\xgconsole.xml");
 
     CLoggingSettings log_sett(xml_reader);
+    CLOG_TRACE_VAR_CREATION(log_sett);
     log_sett.ReadConfigurationFromFile();
 
     CThreadPoolSettings thred_pool_sett(xml_reader);
+    CLOG_TRACE_VAR_CREATION(thred_pool_sett);
     thred_pool_sett.ReadConfigurationFromFile();
 
     if(!InitializeThreadPool(thred_pool_sett))
@@ -55,6 +58,7 @@ void CService::RunServer()
     }
 
     CHDDInfoSettings hdd_sett(xml_reader);
+    CLOG_TRACE_VAR_CREATION(hdd_sett);
     hdd_sett.ReadConfigurationFromFile();
     
     if (InitializeLogicalDiscMonitoring(hdd_sett))
@@ -73,6 +77,7 @@ void CService::RunServer()
     }
 
     CProcessesInfoSettings process_sett(xml_reader);
+    CLOG_TRACE_VAR_CREATION(process_sett);
     process_sett.ReadConfigurationFromFile();
 
     if (InitializeProcessesMonitoring(process_sett))
@@ -89,6 +94,7 @@ void CService::RunServer()
     }
 
     CServerSettings server_sett(xml_reader);
+    CLOG_TRACE_VAR_CREATION(server_sett);
     server_sett.ReadConfigurationFromFile();
 
     if (!InitializeSockets(server_sett))
@@ -98,10 +104,12 @@ void CService::RunServer()
     }
 
     m_p_acceptor_socket->StartServer( );
+    CLOG_DEBUG_END_FUNCTION();
 }
 
 bool CService::InitializeLogger(const std::string& path_to_log_file, ELogLevel level)
 {
+    CLOG_DEBUG_START_FUNCTION();
     m_log_stream = std::make_unique<std::fstream>(path_to_log_file,
         std::ios_base::out);
     if (m_log_stream->is_open())
@@ -122,6 +130,7 @@ bool CService::InitializeLogger(const std::string& path_to_log_file, ELogLevel l
         CLOG_END_CREATION();
         return true;
     }
+    CLOG_DEBUG_END_FUNCTION();
     return false;
 }
 
@@ -139,7 +148,6 @@ bool CService::InitializeThreadPool(
 bool CService::InitializeLogicalDiscMonitoring(
     const CHDDInfoSettings& xml_settings)
 {
-
     CLOG_DEBUG_START_FUNCTION( );
     CHardwareStatusSpecification* specification = new 
         CHardwareStatusSpecification(

@@ -2,6 +2,7 @@
 
 #include "CProcessInfo.h"
 #include "CJSONFormatterProcess.h"
+#include "CLogger/include/Log.h"
 
 CJSONFormatterProcess::CJSONFormatterProcess() : CJSONFormatter()
 {};
@@ -9,12 +10,17 @@ CJSONFormatterProcess::CJSONFormatterProcess() : CJSONFormatter()
 bool CJSONFormatterProcess::TryAddProcessData(
     const CProcessInfo& process_to_json)
 {
+    CLOG_DEBUG_START_FUNCTION();
     nlohmann::json json_format_data;
-
+    CLOG_TRACE_VAR_CREATION(json_format_data);
     unsigned PID;
+    CLOG_TRACE_VAR_CREATION(PID);
     double cpu_usage;
+    CLOG_TRACE_VAR_CREATION(cpu_usage);
     long double ram_usage;
+    CLOG_TRACE_VAR_CREATION(ram_usage);
     long double pagefile_usage;
+    CLOG_TRACE_VAR_CREATION(pagefile_usage);
     if (!process_to_json.GetPID(PID) ||
         !process_to_json.GetCpuUsage(cpu_usage) ||
         !process_to_json.GetRamUsage(ram_usage) ||
@@ -35,6 +41,6 @@ bool CJSONFormatterProcess::TryAddProcessData(
     {
         return false;
     }
-
+    CLOG_DEBUG_END_FUNCTION();
     return true;
 }

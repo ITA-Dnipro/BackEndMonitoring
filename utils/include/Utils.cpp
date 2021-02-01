@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "Server/BackEndMonitoringServer/include/EMemoryConvertType.h"
+#include "CLogger/include/Log.h"
 
 #include "Utils.h"
 
@@ -11,13 +12,17 @@ std::vector<std::string> Utils::SplitIntoWords(const std::string& str,
                                                const char delimiter)
 {
     std::vector<std::string> result;
-
+    CLOG_DEBUG_START_FUNCTION();
+    CLOG_TRACE_VAR_CREATION(result);
     size_t pos = 0;
+    CLOG_TRACE_VAR_CREATION(pos);
     const size_t pos_end = str.npos;
+    CLOG_TRACE_VAR_CREATION(pos_end);
 
-    while (true) {
+    while (true) 
+    {
         size_t space = str.find(delimiter, pos);
-
+        CLOG_TRACE_VAR_CREATION(space);
         result.push_back(
             space == pos_end
             ? str.substr(pos)
@@ -30,16 +35,19 @@ std::vector<std::string> Utils::SplitIntoWords(const std::string& str,
             pos = space + 1;
         }
     }
-
+    CLOG_DEBUG_END_FUNCTION();
     return result;
 }
 
 bool Utils::TryGetCurrentDateAndTimeFormatted(std::string&
                                               date_time_var_to_save)
 {
+    CLOG_DEBUG_START_FUNCTION();
     //parse to format: dd.mm.yyyy hh:mm:ss
     std::time_t current_time = std::chrono::system_clock::to_time_t(
         std::chrono::system_clock::now( ));
+    CLOG_TRACE_VAR_CREATION(current_time);
+
     date_time_var_to_save = ctime(&current_time);
 
     date_time_var_to_save.pop_back( );
@@ -51,12 +59,14 @@ bool Utils::TryGetCurrentDateAndTimeFormatted(std::string&
     date_time_var_to_save.erase(date_time_var_to_save.end( ) - 
                                 buff_year.size( ) - 1,
                                 date_time_var_to_save.end( ));
+    CLOG_TRACE_VAR_CREATION(buff_year);
 
     std::string buff_month = date_time_var_to_save.substr(
         0, date_time_var_to_save.find_first_of(" "));
     date_time_var_to_save.erase(date_time_var_to_save.begin( ),
                                 date_time_var_to_save.begin( ) + 
                                 buff_month.size( ) + 1ULL);
+    CLOG_TRACE_VAR_CREATION(buff_month);
 
     if (!TrySetMonthAsNumber(buff_month))
     {
@@ -68,13 +78,17 @@ bool Utils::TryGetCurrentDateAndTimeFormatted(std::string&
     date_time_var_to_save.insert(date_time_var_to_save.find_first_of(" "),
                                  "." + buff_year + " ");
 
+    CLOG_DEBUG_END_FUNCTION();
     return true;
 }
 
 bool Utils::TrySetMonthAsNumber(std::string& p_month)
 {
+    CLOG_DEBUG_START_FUNCTION();
     constexpr size_t num_of_month_in_year = 12U;
+    CLOG_TRACE_VAR_CREATION(num_of_month_in_year);
     constexpr size_t num_of_letters = 4U;
+    CLOG_TRACE_VAR_CREATION(num_of_letters);
     constexpr char c_name_of_all_months[][num_of_letters] = {
         {'J', 'a', 'n', '\0'},
         {'F', 'e', 'b', '\0'},
@@ -88,6 +102,7 @@ bool Utils::TrySetMonthAsNumber(std::string& p_month)
         {'O', 'c', 't', '\0'},
         {'N', 'o', 'v', '\0'},
         {'D', 'e', 'c', '\0'} };
+    CLOG_TRACE_VAR_CREATION(c_name_of_all_months);
 
     for (size_t month_as_num = 0; month_as_num < num_of_month_in_year;
          ++month_as_num)
@@ -99,27 +114,31 @@ bool Utils::TrySetMonthAsNumber(std::string& p_month)
             return true;
         }
     }
-
+    CLOG_DEBUG_END_FUNCTION();
     return false;
 }
 
 bool Utils::TryGetFormattedDiskName(std::string& name_of_disk)
 {
+    CLOG_DEBUG_START_FUNCTION();
+
     if (name_of_disk.empty( ))
     {
         return false;
     }
     name_of_disk.replace(name_of_disk.begin( ) + 1ULL, name_of_disk.end( ),
                          std::string(":/"));
-
+    CLOG_DEBUG_END_FUNCTION();
     return true;
 }
 
 bool Utils::TryCreateFileIfNotExist(const std::string& path_to_file)
 {
+    CLOG_DEBUG_START_FUNCTION();
     if (!std::filesystem::exists(path_to_file))
     {
         std::ofstream created_file(path_to_file);
+        CLOG_TRACE_VAR_CREATION(created_file);
 
         if (!created_file.is_open())
         {
@@ -128,7 +147,7 @@ bool Utils::TryCreateFileIfNotExist(const std::string& path_to_file)
         }
         created_file.close();
     }
-
+    CLOG_DEBUG_END_FUNCTION();
     return true;
 }
 
@@ -140,17 +159,18 @@ bool Utils::IsFileEmpty(std::fstream& file)
 
 bool Utils::IsFileEmpty(std::ofstream& file)
 {
-    bool answer = true;
-    
+    bool answer = false;
+    CLOG_DEBUG_START_FUNCTION();
     file.seekp(0, file.end);
     std::streampos position = file.tellp();
-    
-    if (position != 0)
+    CLOG_TRACE_VAR_CREATION(position);
+
+    if (position == 0)
     {
-        answer = false;
+        answer = true;
     }
     file.seekp(file.beg);
-
+    CLOG_DEBUG_END_FUNCTION();
     return answer;
 }
 
@@ -158,8 +178,10 @@ bool Utils::IsFileEmpty(std::ofstream& file)
 
 void Utils::DisplayError(const std::string& message)
 {
+    CLOG_DEBUG_START_FUNCTION();
     // char*
     LPSTR error = NULL;
+    CLOG_TRACE_VAR_CREATION(error);
 
     FormatMessage(
         FORMAT_MESSAGE_ALLOCATE_BUFFER |
@@ -174,12 +196,11 @@ void Utils::DisplayError(const std::string& message)
 
     std::cout << message << ". " << error;
     LocalFree(error);
+    CLOG_DEBUG_END_FUNCTION();
 }
 
 void Utils::DisplayMessage(const std::string& message)
-{
-    std::cout << message << ". " << std::endl;
-}
+{ std::cout << message << ". " << std::endl; }
 
 
 long double Utils::ConvertToCountType(
