@@ -15,7 +15,11 @@ class CContainerOfProcesses;
 class CContainerOfLogicalDisk;
 class CProcessesInfoMonitoring;
 class CLogicalDiskInfoMonitoring;
-
+class CLoggingSettings;
+class CThreadPoolSettings;
+class CHDDInfoSettings;
+class CProcessesInfoSettings;
+class CServerSettings;
 
 struct ServiceParameters
 {
@@ -63,16 +67,13 @@ private:
     void OnStart(DWORD, CHAR**);
     void OnStop();
     void RunServer();
-    bool InitializeLogger(const std::string& path_to_log_file, ELogLevel level);
-    bool InitializeThreadPool(size_t num_threads);
-    bool InitializeLogicalDiscMonitoring(const std::chrono::duration<int>& tick,
-                                         const std::string& path_to_file,
-                                         EMemoryConvertType measure_in);
-    bool InitializeProcessesMonitoring(const std::chrono::duration<int>& tick,
-                                       const std::string& path_to_file,
-                                       EMemoryConvertType measure_in);
-    bool InitializeSockets(int port, const std::string& ip_address,
-                           bool is_sockets_blocking, int timeout);
+    bool InitializeLogger(const CLoggingSettings& log_sett);
+    bool InitializeThreadPool(const CThreadPoolSettings& thread_pool_sett);
+    bool InitializeLogicalDiscMonitoring(const CHDDInfoSettings& xml_settings);
+    bool InitializeProcessesMonitoring(
+        const CProcessesInfoSettings& process_sett);
+    bool InitializeSockets(const CServerSettings& server_sett);
+
 private:
     CEvent m_stop_event;
     CThreadSafeVariable<CJSONFormatterProcess> m_processes_json;

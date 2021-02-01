@@ -33,4 +33,6 @@ namespace Utils
 		uintmax_t const value_to_calculate, EMemoryConvertType convert_type);
 	[[nodiscard]] long double RoundToDecimal(long double const value_to_round);
 
+	[[nodiscard]] EMemoryConvertType DefineCountType(int count_type_from_xml);
+
 }

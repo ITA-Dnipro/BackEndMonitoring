@@ -193,3 +193,25 @@ long double Utils::ConvertToCountType(
 long double Utils::RoundToDecimal(
     long double const value_to_round)
 { return round(value_to_round * 100.0) / 100.0; }
+
+EMemoryConvertType Utils::DefineCountType(int count_type_from_xml)
+{
+    switch (count_type_from_xml)
+    {
+    case 0:
+        return EMemoryConvertType::BYTES;
+        
+    case 1:
+        return EMemoryConvertType::KILOBYTES;
+
+    case 2:
+        return EMemoryConvertType::MEGABYTES;
+
+    case 3:
+        return EMemoryConvertType::GIGABYTES;
+
+    default:
+        //write to logger
+        return EMemoryConvertType::BYTES;
+    }
+}
