@@ -1,0 +1,210 @@
+{
+   ".2.2021  1 06:46:35": [
+      {
+         "disk0": {
+            "available": 75541.14,
+            "capacity": 199383.35,
+            "free": 75541.14,
+            "name": "C:/"
+         }
+      },
+      {
+         "disk1": {
+            "available": 64521.32,
+            "capacity": 100000.0,
+            "free": 64521.32,
+            "name": "D:/"
+         }
+      },
+      {
+         "disk2": {
+            "available": 50748.25,
+            "capacity": 58665.66,
+            "free": 50748.25,
+            "name": "E:/"
+         }
+      }
+   ],
+   ".2.2021  1 06:47:05": [
+      {
+         "disk0": {
+            "available": 75465.36,
+            "capacity": 199383.35,
+            "free": 75465.36,
+            "name": "C:/"
+         }
+      },
+      {
+         "disk1": {
+            "available": 64521.32,
+            "capacity": 100000.0,
+            "free": 64521.32,
+            "name": "D:/"
+         }
+      },
+      {
+         "disk2": {
+            "available": 50748.25,
+            "capacity": 58665.66,
+            "free": 50748.25,
+            "name": "E:/"
+         }
+      }
+   ],
+   ".2.2021  1 06:47:35": [
+      {
+         "disk0": {
+            "available": 75389.58,
+            "capacity": 199383.35,
+            "free": 75389.58,
+            "name": "C:/"
+         }
+      },
+      {
+         "disk1": {
+            "available": 64521.32,
+            "capacity": 100000.0,
+            "free": 64521.32,
+            "name": "D:/"
+         }
+      },
+      {
+         "disk2": {
+            "available": 50748.25,
+            "capacity": 58665.66,
+            "free": 50748.25,
+            "name": "E:/"
+         }
+      }
+   ],
+   ".2.2021  1 06:48:05": [
+      {
+         "disk0": {
+            "available": 75317.55,
+            "capacity": 199383.35,
+            "free": 75317.55,
+            "name": "C:/"
+         }
+      },
+      {
+         "disk1": {
+            "available": 64521.32,
+            "capacity": 100000.0,
+            "free": 64521.32,
+            "name": "D:/"
+         }
+      },
+      {
+         "disk2": {
+            "available": 50748.25,
+            "capacity": 58665.66,
+            "free": 50748.25,
+            "name": "E:/"
+         }
+      }
+   ],
+   ".2.2021  1 06:48:35": [
+      {
+         "disk0": {
+            "available": 75238.77,
+            "capacity": 199383.35,
+            "free": 75238.77,
+            "name": "C:/"
+         }
+      },
+      {
+         "disk1": {
+            "available": 64521.32,
+            "capacity": 100000.0,
+            "free": 64521.32,
+            "name": "D:/"
+         }
+      },
+      {
+         "disk2": {
+            "available": 50748.25,
+            "capacity": 58665.66,
+            "free": 50748.25,
+            "name": "E:/"
+         }
+      }
+   ],
+   ".2.2021  1 07:04:07": [
+      {
+         "disk0": {
+            "available": 75385.93,
+            "capacity": 199383.35,
+            "free": 75385.93,
+            "name": "C:/"
+         }
+      },
+      {
+         "disk1": {
+            "available": 64521.32,
+            "capacity": 100000.0,
+            "free": 64521.32,
+            "name": "D:/"
+         }
+      },
+      {
+         "disk2": {
+            "available": 50748.25,
+            "capacity": 58665.66,
+            "free": 50748.25,
+            "name": "E:/"
+         }
+      }
+   ],
+   ".2.2021  1 07:04:37": [
+      {
+         "disk0": {
+            "available": 75337.83,
+            "capacity": 199383.35,
+            "free": 75337.83,
+            "name": "C:/"
+         }
+      },
+      {
+         "disk1": {
+            "available": 64521.32,
+            "capacity": 100000.0,
+            "free": 64521.32,
+            "name": "D:/"
+         }
+      },
+      {
+         "disk2": {
+            "available": 50748.25,
+            "capacity": 58665.66,
+            "free": 50748.25,
+            "name": "E:/"
+         }
+      }
+   ],
+   ".2.2021  1 07:05:07": [
+      {
+         "disk0": {
+            "available": 75594.85,
+            "capacity": 199383.35,
+            "free": 75594.85,
+            "name": "C:/"
+         }
+      },
+      {
+         "disk1": {
+            "available": 64521.32,
+            "capacity": 100000.0,
+            "free": 64521.32,
+            "name": "D:/"
+         }
+      },
+      {
+         "disk2": {
+            "available": 50748.25,
+            "capacity": 58665.66,
+            "free": 50748.25,
+            "name": "E:/"
+         }
+      }
+   ]
+}

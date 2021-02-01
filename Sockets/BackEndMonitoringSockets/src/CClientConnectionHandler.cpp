@@ -49,10 +49,14 @@ bool CClientConnectionHandler::HandleRequestEvent(const int socket_fd,
 
 bool CClientConnectionHandler::HandleResponseEvent(const int socket_fd)
 {
-	std::cout << m_client_stream->Receive(socket_fd) << '\n';
+	std::string message = m_client_stream->Receive(socket_fd);
+	if (message == "-1")
+	{
+		std::cout << "Error connection to the server, exit" << '\n';
+		return false;
+	}
+	std::cout << message << '\n';
 	return true;
-	//TODO send data to client
-	//m_response_holder.SetResponse(m_client_stream->Receive(socket_fd));
 }
 
 bool CClientConnectionHandler::HandleExitEvent(const int socket_fd)

@@ -12,6 +12,8 @@ public:
 	CBaseSocket();
 	~CBaseSocket();
 
+	int GetSocketFD() const;
+
 protected:
 #if defined(_WIN64) || defined(_WIN32)
 	SOCKET InitSocket();
@@ -45,5 +47,7 @@ namespace PlatformUtils
 	bool Connect(int socket, sockaddress& current_address);
 	bool SetUnblockingSocket(int socket);
 	bool CloseSocket(int socket);
+	int GetConnectionError(int socket_fd);
+
 }
 

@@ -18,6 +18,11 @@ CBaseSocket::~CBaseSocket()
 	PlatformUtils::CloseSocket(m_socket);
 }
 
+int CSocket::GetSocketFD() const
+{
+	return m_socket;
+}
+
 int CBaseSocket::InitSocket()
 {
 	return ::socket(AF_INET, SOCK_STREAM, 0);
@@ -88,6 +93,14 @@ namespace PlatformUtils
 			}
 		}
 		return false;
+	}
+
+	int GetConnectionError(int socket_fd)
+	{
+		int error = 0;
+		socklen_t size = sizeof(error);
+		return getsockopt(socket_fd, SOL_SOCKET, SO_ERROR, (char*)&error,
+			&size);
 	}
 
 	bool TryGetAllNamesAllDisksInSystem(std::vector<std::string>& names)

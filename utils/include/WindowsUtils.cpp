@@ -19,6 +19,11 @@ CBaseSocket::~CBaseSocket( )
 	PlatformUtils::CloseSocket(static_cast<int>(m_socket));
 }
 
+int CBaseSocket::GetSocketFD() const
+{
+	return static_cast<int>(m_socket);
+}
+
 SOCKET CBaseSocket::InitSocket( )
 {
 	return socket(AF_INET, SOCK_STREAM, NULL);
@@ -235,6 +240,14 @@ namespace PlatformUtils
 			}
 		}
 		return false;
+	}
+
+	int GetConnectionError(int socket_fd)
+	{
+		int error = 0;
+		socklen_t size = sizeof(error);
+		return getsockopt(socket_fd, SOL_SOCKET, SO_ERROR, (char*)&error, 
+			&size);
 	}
 }
 

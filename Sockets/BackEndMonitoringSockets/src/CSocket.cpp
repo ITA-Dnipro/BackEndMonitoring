@@ -6,11 +6,6 @@ CSocket::CSocket(const int port, const std::string& ip_address)
 	SetSocketAddress(port, ip_address);
 }
 
-int CSocket::GetSocketFD() const
-{
-	return static_cast<int>(m_socket);
-}
-
 void CSocket::SetSocketAddress(const int port,
 	const std::string& ip_address)
 {
@@ -37,3 +32,4 @@ sockaddr_in CSocket::GetSocketAddress() const
 {
 	return m_address;
 }
+

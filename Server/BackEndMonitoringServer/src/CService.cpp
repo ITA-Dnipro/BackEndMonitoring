@@ -39,8 +39,8 @@ void CService::RunServer()
     }
 
     std::chrono::duration<int> tick = std::chrono::seconds(30);
-    std::string path_to_disk_file("F:\\Git\\disk.json");
-    std::string path_to_proc_file("F:\\Git\\proc.json");
+    std::string path_to_disk_file("C:\\Users\\Sergei\\source\\SoftServe\\BackEndMonitoring\\disk.json");
+    std::string path_to_proc_file("C:\\Users\\Sergei\\source\\SoftServe\\BackEndMonitoring\\proc.json");
     EMemoryConvertType measure_in = EMemoryConvertType::MEGABYTES;
 
     if (InitializeLogicalDiscMonitoring(tick, path_to_disk_file, measure_in))
