@@ -65,12 +65,13 @@ bool CClientConnectionHandler::HandleExitEvent(const int socket_fd)
 
 	while (true)
 	{
-		if (m_client_stream->Receive(socket_fd) != "Disconnect")
+		std::cout << "Waiting for disconnection" << std::endl;
+		if (m_client_stream->Receive(socket_fd) == "Disconnect")
 		{
-			return false;
+			return true;
 		}
 	}
-	return true;
+	return false;
 }
 
 std::unique_ptr<CSocketWrapper> CClientConnectionHandler::InitClientStream()

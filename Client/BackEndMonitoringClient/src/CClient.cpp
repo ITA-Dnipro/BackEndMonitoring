@@ -56,7 +56,7 @@ std::string CClient::MakeRequest(ERequestType type)
 
 void CClient::InitLogger()
 {
-	std::fstream fs("temp.log", std::ios_base::out);
+	std::fstream fs("C:\\ClientLog.log", std::ios_base::out);
 
 	CLOG_START_CREATION();
 

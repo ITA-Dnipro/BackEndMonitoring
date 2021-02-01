@@ -26,7 +26,7 @@ void CService::RunServer()
     Sleep(10000);
 
     //Need absolute path here!!!
-    std::string path_to_log_file("C:\\Users\\Sergei\\source\\SoftServe\\BackEndMonitoring\\Server\\BackEndMonitoringServer\\Build\\DebugWin64\\out\\Log.txt");
+    std::string path_to_log_file("C:\\ServerLog.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if(!InitializeLogger(path_to_log_file, log_level))
     { return;}
@@ -39,8 +39,8 @@ void CService::RunServer()
     }
 
     std::chrono::duration<int> tick = std::chrono::seconds(30);
-    std::string path_to_disk_file("C:\\Users\\Sergei\\source\\SoftServe\\BackEndMonitoring\\disk.json");
-    std::string path_to_proc_file("C:\\Users\\Sergei\\source\\SoftServe\\BackEndMonitoring\\proc.json");
+    std::string path_to_disk_file("C:\\disk.json");
+    std::string path_to_proc_file("C:\\proc.json");
     EMemoryConvertType measure_in = EMemoryConvertType::MEGABYTES;
 
     if (InitializeLogicalDiscMonitoring(tick, path_to_disk_file, measure_in))
