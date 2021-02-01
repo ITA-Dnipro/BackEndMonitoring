@@ -20,7 +20,9 @@ void CServerSettings::ReadConfigurationFromFile()
 	}
 
 	std::string tmp_string;
+	CLOG_TRACE_VAR_CREATION(tmp_string);
 	int tmp_int = 0;
+	CLOG_TRACE_VAR_CREATION(tmp_int);
 
 	if (m_p_data_reader_->TryToGetStringData("//root/Server/servername", tmp_string))
 		m_server_name_ = tmp_string != "" ? tmp_string : m_server_name_;

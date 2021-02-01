@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 
 #include "CService.h"
@@ -21,9 +22,10 @@ int main(int argc, char** argv)
     const int return_code = success ? 0 : 1;
 
     return return_code;
-    
+
     return 0;
-}
+};
+
 
 
 ////// FOR TESTING
