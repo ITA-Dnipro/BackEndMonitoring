@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 
 enum class EMemoryConvertType;
 
@@ -26,9 +27,11 @@ namespace Utils
 	[[nodiscard]] bool IsFileEmpty(std::fstream& file);
 	[[nodiscard]] bool IsFileEmpty(std::ofstream& file);
 
-
+	#ifdef _WIN64
 	void DisplayError(const std::string& message);
+	#endif
 	void DisplayMessage(const std::string& message);
+	void DisplayHelp();
 
 	[[nodiscard]] long double ConvertToCountType(
 		uintmax_t const value_to_calculate, EMemoryConvertType convert_type);

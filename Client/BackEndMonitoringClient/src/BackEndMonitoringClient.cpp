@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+﻿#include "../include/stdafx.h"
 
 #include "CClient.h"
 #include "CClientView.h"

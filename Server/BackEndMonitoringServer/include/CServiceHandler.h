@@ -1,6 +1,8 @@
 #pragma once
+
 #include "CService.h"
 
+#ifdef _WIN64
 class ServiceHandler
 {
 public:
@@ -20,8 +22,8 @@ public:
 private:
 	bool Start() const;
 	bool Stop() const;
-	bool Restart() const;
 
 private:
 	std::unique_ptr<CService> m_p_service;
 };
+#endif

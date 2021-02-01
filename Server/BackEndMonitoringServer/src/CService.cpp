@@ -1,4 +1,5 @@
-#include "stdafx.h"
+// #include "stdafx.h"
+#include "../include/stdafx.h"
 
 #include "Clogger/include/Log.h"
 #include "CEvent.h"
@@ -23,9 +24,30 @@
 
 #include "CService.h"
 
-// We need this to test the service
-#define DEFAULT_BUFLEN 512
-#define DEFAULT_PORT "27015"
+CService* CService::m_p_service = nullptr;
+
+bool CService::Run()
+{
+    #ifdef _WIN64
+
+    m_p_service = this;
+
+    CHAR* name = const_cast<CString&>(m_name).GetBuffer();
+
+    SERVICE_TABLE_ENTRY table_entry[] =
+    {
+        { name, SvcMain },
+        { nullptr, nullptr }
+    };
+
+    return ::StartServiceCtrlDispatcher(table_entry) == TRUE;
+
+    #elif linux
+
+    RunServer();
+
+    #endif
+}
 
 void CService::RunServer()
 {
@@ -39,7 +61,7 @@ void CService::RunServer()
         return;
     }
 
-    std::shared_ptr<CXMLDataReader> xml_reader = std::make_shared<CXMLDataReader>();
+    auto xml_reader = std::make_shared<CXMLDataReader>();
     xml_reader->Initialize("C:\\xgconsole.xml");
 
     CLoggingSettings log_sett(xml_reader);
@@ -60,11 +82,9 @@ void CService::RunServer()
     if (InitializeLogicalDiscMonitoring(hdd_sett))
     {
         m_p_thread_pool->Enqueue([this] ( )
-                                 {
-                                     m_disks_monitor->StartMonitoringInfo( );
-                                 });
-
-
+        {
+            m_disks_monitor->StartMonitoringInfo( );
+        });
     }
     else
     {
@@ -78,9 +98,9 @@ void CService::RunServer()
     if (InitializeProcessesMonitoring(process_sett))
     {
         m_p_thread_pool->Enqueue([this] ( )
-                                 {
-                                     m_processes_monitor->StartMonitoringInfo( );
-                                 });
+        {
+            m_processes_monitor->StartMonitoringInfo( );
+        });
     }
     else
     {
@@ -100,19 +120,29 @@ void CService::RunServer()
     m_p_acceptor_socket->StartServer( );
 }
 
-bool CService::InitializeLogger(const std::string& path_to_log_file, ELogLevel level)
+bool CService::InitializeLogger(
+    const std::string& path_to_log_file, 
+    ELogLevel level)
 {
-    m_log_stream = std::make_unique<std::fstream>(path_to_log_file,
+    m_log_stream = std::make_unique<std::fstream>(
+        path_to_log_file,
         std::ios_base::out);
+
     if (m_log_stream->is_open())
     {
         CLOG_START_CREATION();
 
         CLOG_SET_LOG_NAME("Logger");
         CLOG_SET_LOG_LEVEL(level);
-        CLOG_SET_LOG_CONFIG(ELogConfig::LOG_NAME, ELogConfig::LOG_LEVEL,
-            ELogConfig::CALL_TIME, ELogConfig::THREAD_ID, ELogConfig::FILE_NAME,
-            ELogConfig::FUNCTION_NAME, ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE,
+        CLOG_SET_LOG_CONFIG(
+            ELogConfig::LOG_NAME, 
+            ELogConfig::LOG_LEVEL,
+            ELogConfig::CALL_TIME, 
+            ELogConfig::THREAD_ID, 
+            ELogConfig::FILE_NAME,
+            ELogConfig::FUNCTION_NAME, 
+            ELogConfig::LINE_NUMBER, 
+            ELogConfig::MESSAGE,
             ELogConfig::PARAMS);
 
         CLOG_ADD_SAFE_STREAM(*m_log_stream);
@@ -130,7 +160,9 @@ bool CService::InitializeThreadPool(
 {
     CLOG_DEBUG_START_FUNCTION( );
     m_p_thread_pool = std::make_shared<CThreadPool>(
-        thread_pool_sett.GetMaxWorkingThreads(), m_stop_event);
+        thread_pool_sett.GetMaxWorkingThreads(),
+        m_stop_event);
+        
     CLOG_TRACE_VAR_CREATION(m_p_thread_pool);
     CLOG_DEBUG_END_FUNCTION( );
     return true;
@@ -143,15 +175,19 @@ bool CService::InitializeLogicalDiscMonitoring(
     CLOG_DEBUG_START_FUNCTION( );
     CHardwareStatusSpecification* specification = new 
         CHardwareStatusSpecification(
-        std::chrono::duration<int>(30), xml_settings.GetFileName(),
-        Utils::DefineCountType(xml_settings.GetCountType()));
+            std::chrono::duration<int>(30), 
+            xml_settings.GetFileName(),
+            Utils::DefineCountType(xml_settings.GetCountType()));
+
     CLOG_TRACE_VAR_CREATION(specification);
     m_disks_monitor = std::make_unique<CLogicalDiskInfoMonitoring>(
         m_stop_event,
         specification, 
         m_disks_json);
+
     CLOG_TRACE_VAR_CREATION(m_disks_monitor);
     CLOG_DEBUG_END_FUNCTION( );
+
     return true;
 }
 
@@ -159,12 +195,15 @@ bool CService::InitializeProcessesMonitoring(
     const CProcessesInfoSettings& process_sett)
 {
     m_processes_monitor = std::make_unique<CProcessesInfoMonitoring>(
-        std::chrono::duration<int>(30), process_sett.GetFileName(), 
+        std::chrono::duration<int>(30), 
+        process_sett.GetFileName(), 
         Utils::DefineCountType(process_sett.GetCountType()),
-        m_stop_event, m_processes_json);
+        m_stop_event, 
+        m_processes_json);
+
     CLOG_DEBUG_START_FUNCTION( );
     CLOG_TRACE_VAR_CREATION(m_processes_monitor);
-    CLOG_DEBUG_END_FUNCTION( );
+    CLOG_DEBUG_END_FUNCTION( );    
     return m_processes_monitor->Initialize( );
 }
 
@@ -174,15 +213,20 @@ bool CService::InitializeSockets(const CServerSettings& server_sett)
     CDataReceiver json_data(m_processes_json, m_disks_json);
     CLOG_TRACE_VAR_CREATION(json_data);
     m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(
-        server_sett.GetListenerPort(), server_sett.GetServerIpAddress(),
-        m_stop_event, m_p_thread_pool, false, 5, std::move(json_data));
+        server_sett.GetListenerPort(), 
+        server_sett.GetServerIpAddress(),
+        m_stop_event, m_p_thread_pool, 
+        false, 
+        5, 
+        std::move(json_data));
+
     CLOG_TRACE_VAR_CREATION(m_p_acceptor_socket);
 
     CLOG_DEBUG_END_FUNCTION( );
     return true;
 }
 
-CService* CService::m_p_service = nullptr;
+#ifdef _WIN64
 
 CService::CService(const ServiceParameters& parameters)
   : m_name(parameters.name),
@@ -235,21 +279,6 @@ void WINAPI CService::SvcMain(DWORD argc, CHAR** argv)
     }
 
     m_p_service->Start(argc, argv);
-}
-
-bool CService::Run()
-{
-    m_p_service = this;
-
-    CHAR* name = const_cast<CString&>(m_name).GetBuffer();
-
-    SERVICE_TABLE_ENTRY table_entry[] =
-    {
-        { name, SvcMain },
-        { nullptr, nullptr }
-    };
-
-    return ::StartServiceCtrlDispatcher(table_entry) == TRUE;
 }
 
 const CString& CService::GetName() const 
@@ -305,3 +334,24 @@ void CService::Stop()
     OnStop();
     SetStatus(SERVICE_STOPPED);
 }
+
+#elif linux
+
+CService::CService()
+{
+    signal(SIGTERM, Service::HandleSignal);
+}
+
+void CService::HandleSignal(int signal) 
+{
+    if (signal == SIGTERM)
+    {
+        m_service->m_stop_event.Set();
+        m_service->m_p_acceptor_socket->StopSocket();
+        m_service->m_p_acceptor_socket.reset();
+        m_service->m_p_thread_pool.reset();
+        return;
+    }
+}
+
+#endif

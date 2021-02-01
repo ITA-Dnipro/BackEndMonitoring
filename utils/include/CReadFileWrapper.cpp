@@ -1,4 +1,6 @@
-#include "stdafx.h"
+#include <memory>
+#include <filesystem>
+#include <fstream>
 
 #include "CReadFileWrapper.h"
 

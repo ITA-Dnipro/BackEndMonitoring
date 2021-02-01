@@ -3,6 +3,7 @@
 #include "CServiceHandler.h"
 #include "Utils.h"
 
+#ifdef _WIN64
 class ServiceHandle
 {
 public:
@@ -268,24 +269,8 @@ bool ServiceHandler::Stop() const
     return success;
 }
 
-bool ServiceHandler::Restart() const
-{
-    Utils::DisplayMessage("Starting the service");
-
-    bool success = true;
-
-    if (success = Stop())
-    {
-        success = Start();
-    }
-    
-    success ? Utils::DisplayMessage("Service restarted")
-            : Utils::DisplayMessage("Failed to restart the service");
-
-    return success;
-}
-
 bool ServiceHandler::Run() const
 {
     return m_p_service->Run();
 }
+#endif
