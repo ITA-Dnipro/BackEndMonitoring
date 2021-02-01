@@ -1,7 +1,6 @@
-// #include "stdafx.h"
-#include "../include/stdafx.h"
+#include "Server/BackEndMonitoringServer/include/stdafx.h"
 
-#include "Clogger/include/Log.h"
+#include "CLogger/include/Log.h"
 #include "CEvent.h"
 #include "CThreadPool.h"
 #include "EMemoryConvertType.h"
@@ -52,9 +51,8 @@ bool CService::Run()
 void CService::RunServer()
 {
     //TODO Add XML Configuration interaction
-    Sleep(10000);
 
-    std::string path_to_log_file("F:\\Git\\Log.txt");
+    std::string path_to_log_file("/home/vytalyhorbatov/CPP_Projects/BackEndMonitoring-linux-dev/Log.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if (!InitializeLogger(path_to_log_file, log_level))
     {
@@ -62,7 +60,7 @@ void CService::RunServer()
     }
 
     auto xml_reader = std::make_shared<CXMLDataReader>();
-    xml_reader->Initialize("C:\\xgconsole.xml");
+    xml_reader->Initialize("/home/vytalyhorbatov/CPP_Projects/BackEndMonitoring-linux-dev/xgconsole.xml");
 
     CLoggingSettings log_sett(xml_reader);
     log_sett.ReadConfigurationFromFile();
@@ -103,7 +101,7 @@ void CService::RunServer()
         });
     }
     else
-    {
+    { 
         CLOG_PROD("ERROR! Can't initialize processes monitoring!");
         return;
     }
@@ -339,18 +337,24 @@ void CService::Stop()
 
 CService::CService()
 {
-    signal(SIGTERM, Service::HandleSignal);
+    signal(SIGTERM, CService::HandleSignal);
 }
 
 void CService::HandleSignal(int signal) 
 {
     if (signal == SIGTERM)
     {
-        m_service->m_stop_event.Set();
-        m_service->m_p_acceptor_socket->StopSocket();
-        m_service->m_p_acceptor_socket.reset();
-        m_service->m_p_thread_pool.reset();
-        return;
+	m_p_service->m_stop_event.Set();
+	CLOG_DEBUG("Stop event setted");
+	m_p_service->m_p_acceptor_socket->StopSocket();
+	CLOG_DEBUG("Acceptor socket stopped!");
+	m_p_service->m_p_acceptor_socket.reset( );
+	CLOG_TRACE("Acceptor socket deleted!");
+	m_p_service->m_p_thread_pool.reset( );
+	CLOG_TRACE("Thread pool deleted!");
+	CLOG_TRACE("Main logger deleted");
+	CLOG_DESTROY( );
+	return;
     }
 }
 

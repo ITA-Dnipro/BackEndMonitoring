@@ -3,7 +3,10 @@ project(CLogger)
 
 set(CMAKE_CXX_STANDARD 17)
 
-include_directories(include)
+include_directories(${CMAKE_SOURCE_DIR}
+        include
+        ${CMAKE_SOURCE_DIR}/3rdParty/include
+        ${CMAKE_SOURCE_DIR}/utils/include)
 
 #add_library(StaticCLogger src/CLogBuilder/CLogBuilder.cpp
 #        src/CLogger/CLogger.cpp

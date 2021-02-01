@@ -1,4 +1,5 @@
-#include "../include/stdafx.h"
+#include "Sockets/BackEndMonitoringSockets/include/stdafx.h"
+
 #include "CClientConnectionHandler.h"
 
 CClientConnectionHandler::CClientConnectionHandler() 

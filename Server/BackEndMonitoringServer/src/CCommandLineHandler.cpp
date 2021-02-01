@@ -1,9 +1,9 @@
-#include "../include/stdafx.h"
+#include "Server/BackEndMonitoringServer/include/stdafx.h"
 
 #include "CCommandLineHandler.h"
 #include "CServiceHandler.h"
 
-#include "../../../../utils/include/Utils.h"
+#include "Utils.h"
 
 
 

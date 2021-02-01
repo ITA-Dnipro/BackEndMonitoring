@@ -3,6 +3,7 @@ project(CLogger)
 
 set(CMAKE_CXX_STANDARD 17)
 
+			
 include_directories(${CMAKE_SOURCE_DIR}/CLogger/include
         ${CMAKE_SOURCE_DIR}/Client/BackEndMonitoringClient/include
         ${CMAKE_SOURCE_DIR}/3rdParty/include

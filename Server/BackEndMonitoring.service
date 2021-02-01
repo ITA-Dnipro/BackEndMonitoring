@@ -1,0 +1,9 @@
+[Unit]
+Description=Simple daemon template
+After=network.target
+
+[Service]
+ExecStart=/home/vytalyhorbatov/CPP_Projects/BackEndMonitoring-linux-dev/Server/Server
+
+[Install]
+WantedBy=multi-user.target

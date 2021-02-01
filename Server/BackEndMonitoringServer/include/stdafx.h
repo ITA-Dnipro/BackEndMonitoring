@@ -43,4 +43,5 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <sys/ioctl.h>
+#include <csignal>
 #endif

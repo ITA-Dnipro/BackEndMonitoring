@@ -1,4 +1,5 @@
-#include "../include/stdafx.h"
+#include "Sockets/BackEndMonitoringSockets/include/stdafx.h"
+
 #include "CSocketWrapper.h"
 #include "Log.h"
 

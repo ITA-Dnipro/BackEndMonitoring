@@ -7,10 +7,10 @@ link_directories(${CMAKE_BINARY_DIR}/CLogger)
 link_directories(.)
 link_directories(${CMAKE_BINARY_DIR}/Sockets)
 
-include_directories(BackEndMonitoringClient/include)
-include_directories(../3rdParty/include)
-include_directories(../utils/include)
-include_directories(..)
+include_directories(${CMAKE_SOURCE_DIR}
+        include
+        ${CMAKE_SOURCE_DIR}/3rdParty/include
+        ${CMAKE_SOURCE_DIR}/utils/include)
 
 add_executable(Client BackEndMonitoringClient/src/BackEndMonitoringClient.cpp
         BackEndMonitoringClient/src/CClient.cpp

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "Server/BackEndMonitoringServer/include/stdafx.h"
 
 #include "CThreadSafeVariable.h"
 #include "CJSONFormatSaver.h"
@@ -7,6 +7,8 @@
 #include "CJSONFormatterLogicalDisk.h"
 #include "CLogicalDiskInfoMonitoring.h"
 #include "CEvent.h"
+
+#include "CLogger/include/Log.h"
 
 CLogicalDiskInfoMonitoring::CLogicalDiskInfoMonitoring(
 	CEvent& stop_event,
@@ -77,6 +79,7 @@ bool CLogicalDiskInfoMonitoring::StartMonitoringInfo()
 
 		if (!json_saver.TrySaveToFile(json_formatter))
 		{
+			CLOG_DEBUG("ERROR! FiseSave doesn't work!");
 			//exception handler
 			continue;
 		}

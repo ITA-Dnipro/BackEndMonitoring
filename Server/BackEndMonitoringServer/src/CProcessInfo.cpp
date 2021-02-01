@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "Server/BackEndMonitoringServer/include/stdafx.h"
 
 #include "EMemoryConvertType.h"
 #include "PlatformUtils.h"

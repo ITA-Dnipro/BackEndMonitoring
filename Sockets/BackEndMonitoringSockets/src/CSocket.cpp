@@ -1,4 +1,5 @@
-#include "stdafx.h"
+#include "Sockets/BackEndMonitoringSockets/include/stdafx.h"
+
 #include "CSocket.h"
 
 CSocket::CSocket(const int port, const std::string& ip_address)

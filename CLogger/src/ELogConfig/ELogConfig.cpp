@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "CLogger/include/stdafx.h"
 
 #include "ELogConfig/ELogConfig.h"
 

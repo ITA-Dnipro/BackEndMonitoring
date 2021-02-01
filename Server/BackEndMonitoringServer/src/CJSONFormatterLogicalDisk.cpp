@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "Server/BackEndMonitoringServer/include/stdafx.h"
 
 #include "CJSONFormatter.h"
 #include "CLogicalDiskInfo.h"

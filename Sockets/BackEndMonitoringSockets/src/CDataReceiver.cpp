@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "Sockets/BackEndMonitoringSockets/include/stdafx.h"
 
 #include "CDataReceiver.h"
 #include "CJSONFormatterLogicalDisk.h"

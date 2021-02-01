@@ -1,7 +1,31 @@
 #pragma once
-#include "/home/sasha/Документы/GitHub/BackEndMonitoring/Sockets/BackEndMonitoringSockets/include/stdafx.h"
 
+#include <vector>
+
+#if defined(_WIN64) || defined(_WIN32)
+
+#include <WinSock2.h>
+#include <ws2tcpip.h>
+#pragma comment(lib, "ws2_32.lib")
+#include <Windows.h>
+using sockaddress = sockaddr_in;
+
+#elif __linux__
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/socket.h>
+#include <netinet/ip.h>
+#include <netdb.h>
+#include <arpa/inet.h>
+#include <sys/ioctl.h>
 using sockaddress = struct sockaddr_in;
+
+#endif
 
 constexpr int ERROR_SOCKET = -1;
 constexpr int SOCKET_INVALID = 0;

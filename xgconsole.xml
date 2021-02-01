@@ -32,7 +32,7 @@
      </threadpool>
      <HDDinfo>
          <!--information about total and free space on disks-->
-         <filename> "C:\hddinfo.txt"</filename>
+         <filename> "/home/asd.txt"</filename>
          <!--flag for checking hhd info (enable / disable)-->
          <checkhdd> "enable"</checkhdd>
 		 <!--CountType: Bytes(0) - Megabytes(1) - Gigabytes(2)-->
@@ -40,7 +40,7 @@
      </HDDinfo>
      <processesinfo>
          <!--information about processes which running on the system-->
-         <filename> "C:\processesinfo.txt"</filename>
+         <filename> "/home/vytalyhorbatov/CPP_Projects/BackEndMonitoring-linux-dev/processesinfo.txt"</filename>
          <!--flag for checking processes info  (enable / disable)-->
          <checkprocesses> "enable"</checkprocesses>
 		 <!--CountType: Bytes(0) - Megabytes(1) - Gigabytes(2)-->

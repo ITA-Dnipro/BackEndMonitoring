@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "CLogger/include/stdafx.h"
 
 #include "CLogBuilder/CLogBuilder.h"
 

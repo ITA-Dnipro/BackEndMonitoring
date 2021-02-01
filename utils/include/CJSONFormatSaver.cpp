@@ -1,4 +1,6 @@
-#include "stdafx.h"
+#include "Server/BackEndMonitoringServer/include/stdafx.h"
+
+#include <fstream>
 
 #include "Utils.h"
 #include "CJSONFormatter.h"
@@ -17,8 +19,8 @@ const
 		//write to log??
 	}
 
-	std::ofstream JSON_file_to_save(m_path_to_file, std::ios::binary || 
-									std::ios::app);
+	std::ofstream JSON_file_to_save(m_path_to_file, std::ios::binary | 
+									std::ios_base::app);
 
 	if (!JSON_file_to_save.is_open())
 	{

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "Sockets/BackEndMonitoringSockets/include/stdafx.h"
 
 #include "Log.h"
 #include "PlatformUtils.h"
@@ -61,17 +61,16 @@ bool CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
 		}
 		CLOG_TRACE_WITH_PARAMS("value can_continue = ", can_continue);
 	}
-	else
+	int error = PlatformUtils::GetConnectionError(socket_fd);
+	CLOG_DEBUG_WITH_PARAMS("SOCEKET ERRNO", error);
+	if (error > 0)
 	{
-		int error = 0;
-		if ((error = PlatformUtils::GetConnectionError(socket_fd)) > 0)
-		{
-			CLOG_DEBUG_WITH_PARAMS("On the socket ", socket_fd, 
-				" has occured error ", error);
-			can_continue = false;
-			CLOG_TRACE_WITH_PARAMS("value can_continue = ", can_continue);
-		}
+		CLOG_DEBUG_WITH_PARAMS("!!!AAAAA!!!On the socket ", socket_fd, 
+			" has occured error ", error);
+		//can_continue = false;
+		CLOG_TRACE_WITH_PARAMS("value can_continue = ", can_continue);
 	}
+
 	return can_continue;
 }
 
