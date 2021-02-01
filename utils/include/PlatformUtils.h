@@ -1,6 +1,7 @@
 #pragma once
+#include "stdafx.h"
 
-using sockaddress = struct sockaddr_in ;
+using sockaddress = struct sockaddr_in;
 
 constexpr int ERROR_SOCKET = -1;
 constexpr int SOCKET_INVALID = 0;

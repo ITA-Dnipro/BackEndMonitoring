@@ -1,7 +1,7 @@
 #pragma once
-#include "stdafx.h"
+#include "/home/sasha/BackEndMonitoring/CLogger/include/stdafx.h"
 
-#include "ELogLevel/ELogLevel.h"
+#include "../ELogLevel/ELogLevel.h"
 
 /// <summary>
 ///		Stores some message with different data

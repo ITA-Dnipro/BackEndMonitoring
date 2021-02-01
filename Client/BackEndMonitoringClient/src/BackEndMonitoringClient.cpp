@@ -7,8 +7,8 @@
 int main()
 {
 	int port = 1111;
-	//std::string ip_address = "10.0.2.2";
-	std::string ip_address = "127.0.0.1";
+	std::string ip_address = "10.0.2.2";
+//	std::string ip_address = "127.0.0.1";
 
 	CClientView view(std::cout, std::cin);
 	CClient client(port, ip_address);
@@ -29,7 +29,7 @@ int main()
 			{
 				std::cout << "\n_________" << i << "_________\n";
 				view.PrintResult(client.MakeRequest(ERequestType::ALL_DATA));
-				Sleep(500);
+                std::this_thread::sleep_for(std::chrono::milliseconds(500ll));
 			}
 			break;
 		default:
@@ -38,5 +38,4 @@ int main()
 		}
 	} while (request != ERequestType::EXIT);
 	view.PrintGoodbye();
-	system("pause");
 }

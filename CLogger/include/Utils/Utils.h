@@ -1,5 +1,5 @@
 #pragma once
-#include "stdafx.h"
+#include "CLogger/include/stdafx.h"
 
 namespace LogUtils {
 	/// <summary>

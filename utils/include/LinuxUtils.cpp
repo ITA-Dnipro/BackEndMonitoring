@@ -18,7 +18,7 @@ CBaseSocket::~CBaseSocket()
 	PlatformUtils::CloseSocket(m_socket);
 }
 
-int CSocket::GetSocketFD() const
+int CBaseSocket::GetSocketFD() const
 {
 	return m_socket;
 }
@@ -161,7 +161,7 @@ namespace PlatformUtils
 			//NULL, 0, NULL);
 
 			const std::string system_utils_mount_disk =
-				(std::string("mount ") + path_dev + "/" +
+				(std::string("mount ") + "/dev" + "/" +
 					all_received_names[i] + " " + path_to_mount_dir);
 			system(system_utils_mount_disk.c_str());
 			system("clear");

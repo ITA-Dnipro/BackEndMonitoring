@@ -21,7 +21,7 @@
 #include <optional>
 #include "json.hpp"
 
-#ifndef _linux_
+#ifndef __linux__
 #include <WinSock2.h>
 #include <ws2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
@@ -30,7 +30,7 @@
 #include <WtsApi32.h>
 #include <strsafe.h>
 #include <atlstr.h>
-#elif
+#else
 #include <ctime>
 #include <sys/times.h>
 #include <unistd.h>

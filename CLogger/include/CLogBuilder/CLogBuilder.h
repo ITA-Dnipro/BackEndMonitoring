@@ -1,10 +1,10 @@
 #pragma once
-#include "stdafx.h"
+#include "/home/sasha/BackEndMonitoring/CLogger/include/stdafx.h"
 
-#include "ELogConfig/ELogConfig.h"
-#include "ELogLevel/ELogLevel.h"
-#include "ELogFlush/ELogFlush.h"
-#include "CLogger/CLogger.h"
+#include "../ELogConfig/ELogConfig.h"
+#include "../ELogLevel/ELogLevel.h"
+#include "../ELogFlush/ELogFlush.h"
+#include "../CLogger/CLogger.h"
 /// <summary>
 ///		Class, that sets basic configuration of <c>CLogger</c> and creates it
 /// </summary>

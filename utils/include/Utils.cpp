@@ -154,6 +154,7 @@ bool Utils::IsFileEmpty(std::ofstream& file)
     return answer;
 }
 
+#if defined(_WIN32) || defined(_WIN64)
 #define EN_US 0x0409
 
 void Utils::DisplayError(const std::string& message)
@@ -180,7 +181,7 @@ void Utils::DisplayMessage(const std::string& message)
 {
     std::cout << message << ". " << std::endl;
 }
-
+#endif
 
 long double Utils::ConvertToCountType(
     uintmax_t const value_to_calculate, EMemoryConvertType convert_type)

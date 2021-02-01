@@ -7,6 +7,7 @@
 #include <vector>
 #include <optional>
 #include <thread>
+#include <filesystem>
 
 #include "json.hpp"
 
@@ -17,7 +18,7 @@
 #pragma comment(lib, "ws2_32.lib")
 #include <Windows.h>
 #include <psapi.h>
-#elif _linux_
+#elif __linux__
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>

@@ -1,5 +1,5 @@
 #pragma once
-#include "stdafx.h"
+#include "/home/sasha/BackEndMonitoring/CLogger/include/stdafx.h"
 
 /// <summary>
 ///		Enumeration that indicates info that logger must print
