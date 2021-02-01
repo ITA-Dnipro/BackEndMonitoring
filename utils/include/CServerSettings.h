@@ -1,7 +1,8 @@
 #pragma once
 #include "CDataReader.h"
+#include "CSettings.h"
 
-class CServerSettings
+class CServerSettings : public CSettings
 {
 public:
 	CServerSettings() = delete;
@@ -9,9 +10,9 @@ public:
 	CServerSettings(CServerSettings&&) = delete;
 
 	explicit CServerSettings(std::shared_ptr<CDataReader> p_data_reader);
-	~CServerSettings() = default;
+	~CServerSettings() override = default;
 
-	void ReadConfigurationFromFile();
+	void ReadConfigurationFromFile() override;
 
 	[[nodiscard]] std::string GetServerName() const;
 	[[nodiscard]] std::string GetServerDisplayName() const;
@@ -19,8 +20,6 @@ public:
 	[[nodiscard]] int GetListenerPort() const;
 
 private:
-	std::shared_ptr<CDataReader> m_p_data_reader_;
-
 	std::string m_server_displayname_;
 	std::string m_ip_address_;
 	std::string m_server_name_;
