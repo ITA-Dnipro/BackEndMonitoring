@@ -1,9 +1,38 @@
 #include "stdafx.h"
 
+#include "Server/BackEndMonitoringServer/include/EMemoryConvertType.h"
+
 #include "Utils.h"
-#include "EMemoryConvertType.h"
+
 //in order to use ctime
 #pragma warning(disable:4996)
+
+std::vector<std::string> Utils::SplitIntoWords(const std::string& str,
+                                               const char delimiter)
+{
+    std::vector<std::string> result;
+
+    size_t pos = 0;
+    const size_t pos_end = str.npos;
+
+    while (true) {
+        size_t space = str.find(delimiter, pos);
+
+        result.push_back(
+            space == pos_end
+            ? str.substr(pos)
+            : str.substr(pos, space - pos));
+
+        if (space == pos_end) {
+            break;
+        }
+        else {
+            pos = space + 1;
+        }
+    }
+
+    return result;
+}
 
 bool Utils::TryGetCurrentDateAndTimeFormatted(std::string&
                                               date_time_var_to_save)
@@ -164,3 +193,25 @@ long double Utils::ConvertToCountType(
 long double Utils::RoundToDecimal(
     long double const value_to_round)
 { return round(value_to_round * 100.0) / 100.0; }
+
+EMemoryConvertType Utils::DefineCountType(int count_type_from_xml)
+{
+    switch (count_type_from_xml)
+    {
+    case 0:
+        return EMemoryConvertType::BYTES;
+        
+    case 1:
+        return EMemoryConvertType::KILOBYTES;
+
+    case 2:
+        return EMemoryConvertType::MEGABYTES;
+
+    case 3:
+        return EMemoryConvertType::GIGABYTES;
+
+    default:
+        //write to logger
+        return EMemoryConvertType::BYTES;
+    }
+}

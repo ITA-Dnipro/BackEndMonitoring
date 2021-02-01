@@ -54,8 +54,6 @@ std::string CDataReceiver::GetAllInfo( ) const
 
 	nlohmann::json all_data = { {"disks info", *disks_json},
 								{"processes info", *processes_json} };
-	delete processes_json;
-	delete disks_json;
 
 	return all_data.dump( );
 }

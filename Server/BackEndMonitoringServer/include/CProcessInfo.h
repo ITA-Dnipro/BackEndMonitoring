@@ -5,8 +5,7 @@ enum class EMemoryConvertType;
 class CProcessInfo {
 public:
 	CProcessInfo() = default;
-	explicit CProcessInfo(unsigned PID, unsigned count_of_processors, 
-					  EMemoryConvertType type);
+	explicit CProcessInfo(unsigned PID,  EMemoryConvertType type);
 	CProcessInfo(const CProcessInfo&);
 	CProcessInfo(CProcessInfo&&) noexcept;
 	CProcessInfo& operator= (const CProcessInfo&);
@@ -27,7 +26,6 @@ private:
 	unsigned long long m_ram_usage, m_pagefile_usage;
 	unsigned long long m_last_sys_time, m_last_kernel_time, m_last_user_time;
 	unsigned m_PID;
-	unsigned m_count_of_processors;
 	EMemoryConvertType m_count_type;
 	bool m_is_initialized;
 };

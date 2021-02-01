@@ -8,7 +8,7 @@ CConnector::CConnector(const int port, const std::string& ip_address)
 
 bool CConnector::Connect()
 {
-	sockaddr_in current_address = m_socket_connector->GetSocketAddress();
+	sockaddress current_address = m_socket_connector->GetSocketAddress();
 
 	if (PlatformUtils::Connect(m_socket_connector->GetSocketFD(), 
 		current_address))

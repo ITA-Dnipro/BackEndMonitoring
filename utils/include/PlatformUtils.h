@@ -1,6 +1,6 @@
 #pragma once
 
-typedef struct sockaddr_in sockaddress;
+using sockaddress = struct sockaddr_in ;
 
 constexpr int ERROR_SOCKET = -1;
 constexpr int SOCKET_INVALID = 0;
@@ -12,12 +12,14 @@ public:
 	CBaseSocket();
 	~CBaseSocket();
 
+	int GetSocketFD() const;
+
 protected:
 #if defined(_WIN64) || defined(_WIN32)
 	SOCKET InitSocket();
 
 	SOCKET m_socket;
-#elif _linux_
+#elif __linux__
 	int InitSocket();
 
 	int m_socket;
@@ -41,9 +43,11 @@ namespace PlatformUtils
 
 	bool BindSocket(int socket, sockaddress& current_address);
 	bool Listen(int socket);
-	int Accept(int socket);
+	int Accept(int socket, sockaddress& current_address);
 	bool Connect(int socket, sockaddress& current_address);
 	bool SetUnblockingSocket(int socket);
 	bool CloseSocket(int socket);
+	int GetConnectionError(int socket_fd);
+
 }
 

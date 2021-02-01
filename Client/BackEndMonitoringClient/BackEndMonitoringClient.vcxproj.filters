@@ -24,12 +24,39 @@
     <ClCompile Include="src\CClient.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\utils\include\CStringCleaner.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CClientView.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\LinuxUtils.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\WindowsUtils.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\Utils.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\stdafx.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="include\CClient.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ERequestType.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CStringCleaner.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CClientView.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\PlatformUtils.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

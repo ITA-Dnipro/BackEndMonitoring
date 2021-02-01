@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 #include <optional>
+#include <thread>
 
 #include "json.hpp"
 
@@ -23,4 +24,9 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/socket.h>
+#include <netinet/ip.h>
+#include <netdb.h>
+#include <arpa/inet.h>
+#include <sys/ioctl.h>
 #endif

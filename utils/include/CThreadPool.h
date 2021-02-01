@@ -25,7 +25,7 @@ public:
 	CThreadPool& operator= (CThreadPool&&) noexcept = delete;
 
 	template<typename TaskType>
-	[[nodiscard]] auto Enqueue(TaskType task) -> STaskInQueue<decltype(task( ))>
+	auto Enqueue(TaskType task) -> STaskInQueue<decltype(task( ))>
 	{
 		STaskInQueue<decltype(task( ))> future_and_pos;
 		CLOG_DEBUG_START_FUNCTION( );

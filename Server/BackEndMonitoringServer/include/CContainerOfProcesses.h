@@ -1,8 +1,7 @@
 #pragma once
 
 #include "CHardwareStatusSpecification.h"
-
-class CProcessInfo;
+#include "CProcessInfo.h"
 
 class CContainerOfProcesses
 {
@@ -24,7 +23,6 @@ public:
 private:
 	CHardwareStatusSpecification m_specification;
 	std::list<CProcessInfo> m_container;
-	unsigned m_processors_count;
 	bool m_is_initialized;
 };
 

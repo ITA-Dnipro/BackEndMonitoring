@@ -1,9 +1,10 @@
 #include "stdafx.h"
 
-#include "PlatformUtils.h"
+#if defined(_WIN64) || defined(_WIN32)
+
 #include "Utils.h"
 
-#if defined(_WIN64) || defined(_WIN32)
+#include "PlatformUtils.h"
 
 #pragma warning(disable : 6385)
 
@@ -18,6 +19,11 @@ CBaseSocket::~CBaseSocket( )
 	PlatformUtils::CloseSocket(static_cast<int>(m_socket));
 }
 
+int CBaseSocket::GetSocketFD() const
+{
+	return static_cast<int>(m_socket);
+}
+
 SOCKET CBaseSocket::InitSocket( )
 {
 	return socket(AF_INET, SOCK_STREAM, NULL);
@@ -28,21 +34,21 @@ namespace PlatformUtils
 {
 	bool GetExistingProcessIds(std::vector<unsigned>& container_of_PIDs)
 	{
-		unsigned short m_max_process_count = 1024U;
-		DWORD* p_process_ids = new DWORD[m_max_process_count];
+		unsigned short m_max_process_count = 1024;
+		std::unique_ptr<DWORD> p_process_ids(new DWORD[m_max_process_count]);
+
 		DWORD cb = m_max_process_count * sizeof(DWORD);
 		DWORD bytes_returned = 0;
 
-		bool success = (EnumProcesses(p_process_ids, cb, &bytes_returned) != 0);
+		bool success = (EnumProcesses(p_process_ids.get(), cb, &bytes_returned) != 0);
 		if (success)
 		{
 			const int size = bytes_returned / sizeof(DWORD);
-			container_of_PIDs.assign(p_process_ids, p_process_ids + size);
+			container_of_PIDs.assign(p_process_ids.get(), p_process_ids.get() + size);
 		}
-		delete[] p_process_ids;
 
 		return success;
-}
+	}
 
 	bool CheckIsProcessActive(unsigned PID)
 	{
@@ -64,9 +70,16 @@ namespace PlatformUtils
 		HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
 			FALSE, PID);
 
-		bool success = (process != 0);
+		bool success = (process != nullptr);
 		if (success)
 		{
+			unsigned processors_count = std::thread::hardware_concurrency();
+			if (processors_count == 0)
+			{
+				CloseHandle(process);
+				return false;
+			}
+
 			FILETIME ftime, fsys, fuser;
 			GetSystemTimeAsFileTime(&ftime);
 			{
@@ -83,11 +96,13 @@ namespace PlatformUtils
 					ULARGE_INTEGER kernel_time_uli;
 					memcpy(&kernel_time_uli, &fsys, sizeof(FILETIME));
 					kernel_time = kernel_time_uli.QuadPart;
+					kernel_time /= processors_count;
 				}
 				{
 					ULARGE_INTEGER user_time_uli;
 					memcpy(&user_time_uli, &fuser, sizeof(FILETIME));
 					user_time = user_time_uli.QuadPart;
+					user_time /= processors_count;
 				}
 			}
 			CloseHandle(process);
@@ -116,7 +131,7 @@ namespace PlatformUtils
 	}
 
 	bool TryGetLogicalDisksNames(std::vector<std::string>& all_disks_names)
-		{
+	{
 
 		const unsigned short c_size_of_buffer_for_api = 1024U;
 		//We just skip some chars
@@ -194,7 +209,7 @@ namespace PlatformUtils
 		return false;
 	}
 
-	int Accept(int socket)
+	int Accept(int socket, sockaddress& current_address)
 	{
 		return static_cast<int>(accept(socket, NULL, NULL));
 	}
@@ -225,6 +240,14 @@ namespace PlatformUtils
 			}
 		}
 		return false;
+	}
+
+	int GetConnectionError(int socket_fd)
+	{
+		int error = 0;
+		socklen_t size = sizeof(error);
+		return getsockopt(socket_fd, SOL_SOCKET, SO_ERROR, (char*)&error, 
+			&size);
 	}
 }
 

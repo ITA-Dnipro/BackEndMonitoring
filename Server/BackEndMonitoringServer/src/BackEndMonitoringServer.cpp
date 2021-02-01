@@ -4,29 +4,45 @@
 #include "CCommandLineHandler.h"
 #include "CServiceHandler.h"
 #include "Utils.h"
-#include "CHardwareStatusSpecification.h"
-#include "CLogicalDiskInfoMonitoring.h"
 
 
 int main(int argc, char** argv)
 {
-    CEvent stop;
-    CThreadSafeVariable<CJSONFormatterLogicalDisk> jsonf;
-    CHardwareStatusSpecification specification_from_xml(
-        std::chrono::duration<int>(1), "info.json",
-        EMemoryConvertType::GIGABYTES);
-    CLogicalDiskInfoMonitoring logical_disks(stop, &specification_from_xml, jsonf);
-    logical_disks.StartMonitoringInfo();
+    auto parser = std::make_unique<CommandLineHandler>();
+
+    bool success = parser->Parse(argc, argv);
+
+    if (!success)
+    {
+        Utils::DisplayMessage("Invalid parameters");
+        return EXIT_FAILURE;
+    }
+
+    const int return_code = success ? 0 : 1;
+
+    return return_code;
     
     return 0;
 }
 
 
-// FOR TESTING
-//#include "stdafx.h"
+////// FOR TESTING
+////#include "stdafx.h"
+//
 //#include "../BackEndMonitoring/Sockets/BackEndMonitoringSockets/include/CAcceptorWrapper.h"
+//#include "Clogger/include/Log.h"
+//#include "CEvent.h"
 //#include "CThreadPool.h"
-//#include "CLogger/include/Log.h"
+//#include "EMemoryConvertType.h"
+//#include "CProcessInfo.h"
+//#include "CJSONFormatterProcess.h"
+//#include "CJSONFormatterLogicalDisk.h"
+//#include "CHardwareStatusSpecification.h"
+//#include "CContainerOfProcesses.h"
+//#include "CContainerOfLogicalDisk.h"
+//#include "CProcessesInfoMonitoring.h"
+//#include "CLogicalDiskInfoMonitoring.h"
+//#include "Sockets/BackEndMonitoringSockets/include/CDataReceiver.h"
 //
 //int main()
 //{
@@ -52,11 +68,21 @@ int main(int argc, char** argv)
 //	int port = 1111;
 //	std::string ip_address = "127.0.0.1";
 //	CEvent m_stop_event;
+//
+//	auto m_disks_monitor = std::make_unique<CLogicalDiskInfoMonitoring>(m_stop_event,
+//		specification,
+//		m_disks_json);
+//
+//	auto m_processes_monitor = std::make_unique<CProcessesInfoMonitoring>(
+//		tick, path_to_file, measure_in, m_stop_event, m_processes_json);
+//
+//	CDataReceiver json_data(m_processes_json, m_disks_json);
+//
 //	std::shared_ptr<CThreadPool>m_thread_pool =
 //		std::make_shared<CThreadPool>(num_threads, m_stop_event);
 //	std::unique_ptr<CAcceptorWrapper>m_acceptor_socket =
 //		std::make_unique<CAcceptorWrapper>(port, ip_address,
-//			m_stop_event, m_thread_pool, false, 5);
+//			m_stop_event, m_thread_pool, false, 5, nullptr);
 //
 //	m_acceptor_socket->StartServer();
 //	system("pause");

@@ -31,6 +31,7 @@
     <ClInclude Include="include\CSocket.h" />
     <ClInclude Include="include\CSocketWrapper.h" />
     <ClInclude Include="include\CDataReceiver.h" />
+    <ClInclude Include="include\EClientRequestType.h" />
     <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -41,7 +42,6 @@
     <ClCompile Include="src\CClientConnectionHandler.cpp" />
     <ClCompile Include="src\CConnector.cpp" />
     <ClCompile Include="src\CConnectorWrapper.cpp" />
-    <ClCompile Include="src\CServerResponseHolder.cpp" />
     <ClCompile Include="src\CServiceConnectionHandler.cpp" />
     <ClCompile Include="src\CSocket.cpp" />
     <ClCompile Include="src\CSocketWrapper.cpp" />

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EMemoryConvertType.h"
+enum class EMemoryConvertType;
 
 namespace Utils
 {
@@ -8,6 +8,10 @@ namespace Utils
 	/// Return current date and time in system
 	/// </summary>
 	/// <returns>format: dd.mm.yyyy hh:mm:ss</returns>
+
+	[[nodiscard]] std::vector<std::string> SplitIntoWords(const std::string& str,
+		const char delimiter);
+
 	[[nodiscard]] bool TryGetCurrentDateAndTimeFormatted(std::string&
 														 date_time_var_to_save);
 
@@ -28,5 +32,7 @@ namespace Utils
 	[[nodiscard]] long double ConvertToCountType(
 		uintmax_t const value_to_calculate, EMemoryConvertType convert_type);
 	[[nodiscard]] long double RoundToDecimal(long double const value_to_round);
+
+	[[nodiscard]] EMemoryConvertType DefineCountType(int count_type_from_xml);
 
 }

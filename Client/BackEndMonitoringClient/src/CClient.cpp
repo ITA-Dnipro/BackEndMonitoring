@@ -1,13 +1,22 @@
 #include "stdafx.h"
-#include "CClient.h"
+
 #include "CLogger/include/Log.h"
 #include "Sockets/BackEndMonitoringSockets/include/CConnectorWrapper.h"
+#include "ERequestType.h"
+
+#include "CClient.h"
 
 CClient::CClient(int port, const std::string& ip_address)
-	: m_port(port), m_ip_address(ip_address)
+	: m_port(port), m_ip_address(ip_address), is_connected(false)
 {
 	InitLogger();
 	m_connector = InitConnector();
+}
+
+bool CClient::Connect()
+{
+	is_connected = m_connector->ConnectToServer();
+	return is_connected;
 }
 
 CClient::~CClient()
@@ -15,43 +24,39 @@ CClient::~CClient()
 	CLOG_DESTROY();
 }
 
-void CClient::MakeRequest()
+std::string CClient::MakeRequest(ERequestType type)
 {
-	std::cout << "\t\tClient" << std::endl << std::endl;
-
-	if (m_connector->ConnectToServer())
+	if (is_connected)
 	{
-
-		//while (GetRequestConfirmation())
-		//{
-		//	m_client_handler->HandleEvent(m_connector->GetSocket_fd(),
-		//		EventType::REQUEST_DATA);
-		//}
-		int counter = 0;
-		while (true)
+		switch (type)
 		{
-			//CLOG_DEBUG_WITH_PARAMS("Request to the server for the data ",
-			//	counter);
-
-			Sleep(500);
-			std::cout << "-------- " << ++counter << " ---------" << std::endl;
-			std::cout << m_connector->MakeRequest();
-			if (counter == 20)
+			case (ERequestType::PROCESSES_DATA):
+			{
+				return GetProcessesData();
+			}
+			case (ERequestType::DISKS_DATA):
+			{
+				return GetDisksData();
+			}
+			case (ERequestType::ALL_DATA):
+			{
+				return GetAllData();
+			}
+			case (ERequestType::EXIT):
 			{
 				m_connector->Exit();
+				return "Successfully disconnected!";
 			}
+			default:
+				return "Error";
 		}
 	}
-	else
-	{
-		std::cout << "Cannot connect to the server!" << std::endl;
-	}
-
+	return "Cannot connect to the server!";
 }
 
 void CClient::InitLogger()
 {
-	std::fstream fs("temp.log", std::ios_base::out);
+	std::fstream fs("C:\\ClientLog.log", std::ios_base::out);
 
 	CLOG_START_CREATION();
 
@@ -74,26 +79,17 @@ std::unique_ptr<CConnectorWrapper> CClient::InitConnector()
 	return std::move(std::make_unique<CConnectorWrapper>(m_port, m_ip_address));
 }
 
-bool CClient::GetRequestConfirmation()
+std::string CClient::GetProcessesData()
 {
-	std::cout << "\t\tMenu" << std::endl
-		<< "\t[1] - get current status from the server" << std::endl
-		<< "\t[0] - exit" << std::endl;
-	std::string choice;
-	std::cin >> choice;
+	return m_connector->MakeRequest(EClientRequestType::PROCESSES_DATA);
+}
 
-	if (choice == "1")
-	{
-		return true;
-	}
-	else if (choice == "0")
-	{
-		std::cout << "Goodbay!" << std::endl;
-	}
-	else
-	{
-		std::cout << "The wrong parameter has been passed, exit!" << std::endl;
-	}
+std::string CClient::GetDisksData()
+{
+	return m_connector->MakeRequest(EClientRequestType::DISKS_DATA);
+}
 
-	return false;
+std::string CClient::GetAllData()
+{
+	return m_connector->MakeRequest(EClientRequestType::ALL_DATA);
 }

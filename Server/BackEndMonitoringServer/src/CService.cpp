@@ -13,6 +13,13 @@
 #include "CProcessesInfoMonitoring.h"
 #include "CLogicalDiskInfoMonitoring.h"
 #include "Sockets/BackEndMonitoringSockets/include/CDataReceiver.h"
+#include "Utils.h"
+#include "CXMLDataReader.h"
+#include "CLoggingSettings.h"
+#include "CThreadPoolSettings.h"
+#include "CHDDInfoSettings.h"
+#include "CProcessesInfoSettings.h"
+#include "CServerSettings.h"
 
 #include "CService.h"
 
@@ -23,27 +30,34 @@
 void CService::RunServer()
 {
     //TODO Add XML Configuration interaction
-    //Sleep(10000);
+    Sleep(10000);
 
-    //Need absolute path here!!!
     std::string path_to_log_file("F:\\Git\\Log.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
-    if(!InitializeLogger(path_to_log_file, log_level))
-    { return;}
+    if (!InitializeLogger(path_to_log_file, log_level))
+    {
+        return;
+    }
 
-    size_t num_threads = 5;
-    if(!InitializeThreadPool(num_threads))
+    std::shared_ptr<CXMLDataReader> xml_reader = std::make_shared<CXMLDataReader>();
+    xml_reader->Initialize("C:\\xgconsole.xml");
+
+    CLoggingSettings log_sett(xml_reader);
+    log_sett.ReadConfigurationFromFile();
+
+    CThreadPoolSettings thred_pool_sett(xml_reader);
+    thred_pool_sett.ReadConfigurationFromFile();
+
+    if(!InitializeThreadPool(thred_pool_sett))
     { 
         CLOG_PROD("ERROR! Can't initialize thread pool!");
         return;
     }
 
-    std::chrono::duration<int> tick = std::chrono::seconds(30);
-    std::string path_to_disk_file("F:\\Git\\disk.json");
-    std::string path_to_proc_file("F:\\Git\\proc.json");
-    EMemoryConvertType measure_in = EMemoryConvertType::MEGABYTES;
-
-    if (InitializeLogicalDiscMonitoring(tick, path_to_disk_file, measure_in))
+    CHDDInfoSettings hdd_sett(xml_reader);
+    hdd_sett.ReadConfigurationFromFile();
+    
+    if (InitializeLogicalDiscMonitoring(hdd_sett))
     {
         m_p_thread_pool->Enqueue([this] ( )
                                  {
@@ -58,7 +72,10 @@ void CService::RunServer()
         return;
     }
 
-    if (InitializeProcessesMonitoring(tick, path_to_proc_file, measure_in))
+    CProcessesInfoSettings process_sett(xml_reader);
+    process_sett.ReadConfigurationFromFile();
+
+    if (InitializeProcessesMonitoring(process_sett))
     {
         m_p_thread_pool->Enqueue([this] ( )
                                  {
@@ -71,11 +88,10 @@ void CService::RunServer()
         return;
     }
 
-    int port = 1111;
-    std::string ip_address = "127.0.0.1";
-    bool is_sockets_blocking = true;
-    int timeout = 5;
-    if (!InitializeSockets(port, ip_address, is_sockets_blocking, timeout))
+    CServerSettings server_sett(xml_reader);
+    server_sett.ReadConfigurationFromFile();
+
+    if (!InitializeSockets(server_sett))
     {
         CLOG_PROD("ERROR! Can't initialize sockets!");
         return;
@@ -87,77 +103,79 @@ void CService::RunServer()
 bool CService::InitializeLogger(const std::string& path_to_log_file, ELogLevel level)
 {
     m_log_stream = std::make_unique<std::fstream>(path_to_log_file,
-                                                  std::ios_base::out);
-    if (m_log_stream->is_open( ))
+        std::ios_base::out);
+    if (m_log_stream->is_open())
     {
-        CLOG_START_CREATION( );
+        CLOG_START_CREATION();
 
         CLOG_SET_LOG_NAME("Logger");
         CLOG_SET_LOG_LEVEL(level);
         CLOG_SET_LOG_CONFIG(ELogConfig::LOG_NAME, ELogConfig::LOG_LEVEL,
-                            ELogConfig::CALL_TIME, ELogConfig::THREAD_ID, ELogConfig::FILE_NAME,
-                            ELogConfig::FUNCTION_NAME, ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE,
-                            ELogConfig::PARAMS);
+            ELogConfig::CALL_TIME, ELogConfig::THREAD_ID, ELogConfig::FILE_NAME,
+            ELogConfig::FUNCTION_NAME, ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE,
+            ELogConfig::PARAMS);
 
         CLOG_ADD_SAFE_STREAM(*m_log_stream);
 
-        CLOG_BUILD( );
+        CLOG_BUILD();
 
-        CLOG_END_CREATION( );
+        CLOG_END_CREATION();
         return true;
     }
     return false;
 }
 
-bool CService::InitializeThreadPool(size_t num_threads)
+bool CService::InitializeThreadPool(
+    const CThreadPoolSettings& thread_pool_sett)
 {
     CLOG_DEBUG_START_FUNCTION( );
-    m_p_thread_pool = std::make_shared<CThreadPool>(num_threads, m_stop_event);
+    m_p_thread_pool = std::make_shared<CThreadPool>(
+        thread_pool_sett.GetMaxWorkingThreads(), m_stop_event);
     CLOG_TRACE_VAR_CREATION(m_p_thread_pool);
     CLOG_DEBUG_END_FUNCTION( );
     return true;
 }
 
-bool CService::InitializeLogicalDiscMonitoring(const std::chrono::duration<int>& tick,
-                                               const std::string& path_to_file,
-                                               EMemoryConvertType measure_in)
+bool CService::InitializeLogicalDiscMonitoring(
+    const CHDDInfoSettings& xml_settings)
 {
+
     CLOG_DEBUG_START_FUNCTION( );
-    CHardwareStatusSpecification* specification = new CHardwareStatusSpecification(
-        tick, path_to_file, measure_in);
+    CHardwareStatusSpecification* specification = new 
+        CHardwareStatusSpecification(
+        std::chrono::duration<int>(30), xml_settings.GetFileName(),
+        Utils::DefineCountType(xml_settings.GetCountType()));
     CLOG_TRACE_VAR_CREATION(specification);
-    m_disks_monitor = std::make_unique<CLogicalDiskInfoMonitoring>(m_stop_event,
-                                                                   specification, 
-                                                                   m_disks_json);
+    m_disks_monitor = std::make_unique<CLogicalDiskInfoMonitoring>(
+        m_stop_event,
+        specification, 
+        m_disks_json);
     CLOG_TRACE_VAR_CREATION(m_disks_monitor);
     CLOG_DEBUG_END_FUNCTION( );
     return true;
 }
 
-bool CService::InitializeProcessesMonitoring(const std::chrono::duration<int>& tick,
-                                             const std::string& path_to_file,
-                                             EMemoryConvertType measure_in)
+bool CService::InitializeProcessesMonitoring(
+    const CProcessesInfoSettings& process_sett)
 {
     m_processes_monitor = std::make_unique<CProcessesInfoMonitoring>(
-        tick, path_to_file, measure_in, m_stop_event, m_processes_json);
+        std::chrono::duration<int>(30), process_sett.GetFileName(), 
+        Utils::DefineCountType(process_sett.GetCountType()),
+        m_stop_event, m_processes_json);
     CLOG_DEBUG_START_FUNCTION( );
     CLOG_TRACE_VAR_CREATION(m_processes_monitor);
     CLOG_DEBUG_END_FUNCTION( );
     return m_processes_monitor->Initialize( );
 }
 
-bool CService::InitializeSockets(int port, const std::string& ip_address,
-                                 bool is_sockets_blocking, int timeout)
+bool CService::InitializeSockets(const CServerSettings& server_sett)
 {
     CLOG_DEBUG_START_FUNCTION( );
     CDataReceiver json_data(m_processes_json, m_disks_json);
     CLOG_TRACE_VAR_CREATION(json_data);
-    m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(port, ip_address,
-                                                             m_stop_event, 
-                                                             m_p_thread_pool, 
-                                                             is_sockets_blocking,
-                                                             timeout,
-                                                             std::move(json_data));
+    m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(
+        server_sett.GetListenerPort(), server_sett.GetServerIpAddress(),
+        m_stop_event, m_p_thread_pool, false, 5, std::move(json_data));
     CLOG_TRACE_VAR_CREATION(m_p_acceptor_socket);
 
     CLOG_DEBUG_END_FUNCTION( );
