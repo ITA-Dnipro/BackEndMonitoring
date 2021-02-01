@@ -12,7 +12,7 @@ include_directories(include)
 #        src/ELogLevel/ELogLevel.cpp
 #        src/DllMain.cpp)
 
-add_library(CLogger SHARED src/CLogBuilder/CLogBuilder.cpp
+add_library(CLogger src/CLogBuilder/CLogBuilder.cpp
         src/CLogger/CLogger.cpp
         src/ELogConfig/ELogConfig.cpp
         src/ELogFlush/ELogFlush.cpp
