@@ -1,8 +1,8 @@
 #include "stdafx.h"
 
 #include "CDataReceiver.h"
-#include "Server/BackEndMonitoringServer/include/CJSONFormatterLogicalDisk.h"
-#include "Server/BackEndMonitoringServer/include/CJSONFormatterProcess.h"
+#include "CJSONFormatterLogicalDisk.h"
+#include "CJSONFormatterProcess.h"
 
 CDataReceiver::CDataReceiver(CThreadSafeVariable<CJSONFormatterProcess>& processes_json,
 							 CThreadSafeVariable<CJSONFormatterLogicalDisk>& disks_json)

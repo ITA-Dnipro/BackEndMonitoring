@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "CLogger/include/Log.h"
+#include "Log.h"
 #include "PlatformUtils.h"
 #include "EClientRequestType.h"
 

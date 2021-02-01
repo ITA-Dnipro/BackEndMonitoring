@@ -3,7 +3,7 @@
 #include "CClientConnectionHandler.h"
 #include "CConnector.h"
 #include "PlatformUtils.h"
-#include "CLogger/include/Log.h"
+#include "Log.h"
 
 #include "CConnectorWrapper.h"
 

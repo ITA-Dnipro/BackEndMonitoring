@@ -1,6 +1,7 @@
-#include "stdafx.h"
+#include "../include/stdafx.h"
 #include "CSocketWrapper.h"
-#include "CLogger/include/Log.h"
+#include "Log.h"
+
 CSocketWrapper::CSocketWrapper()
 { }
 

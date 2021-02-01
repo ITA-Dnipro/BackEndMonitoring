@@ -2,7 +2,7 @@
 #include "CAcceptor.h"
 #include "CServiceConnectionHandler.h"
 #include "CServiceHandler.h"
-#include "CLogger/include/Log.h"
+#include "Log.h"
 
 
 CAcceptor::CAcceptor(const int port, const std::string& ip_address, 

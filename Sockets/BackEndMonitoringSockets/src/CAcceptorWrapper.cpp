@@ -4,7 +4,7 @@
 #include "CServiceConnectionHandler.h"
 #include "CEvent.h"
 #include "PlatformUtils.h"
-#include "CLogger/include/Log.h"
+#include "Log.h"
 
 CAcceptorWrapper::CAcceptorWrapper(int port, const std::string& ip_address,
 	CEvent& event, std::shared_ptr<CThreadPool> pool,

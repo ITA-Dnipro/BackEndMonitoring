@@ -8,7 +8,7 @@
 #include "CEvent.h"
 #include "CThreadSafeVariable.h"
 #include "STaskInQueue.h"
-#include "CLogger/include/Log.h"
+#include "Log.h"
 
 class CThreadPool
 {

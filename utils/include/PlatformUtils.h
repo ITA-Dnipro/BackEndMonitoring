@@ -1,5 +1,5 @@
 #pragma once
-#include "stdafx.h"
+#include "/home/sasha/Документы/GitHub/BackEndMonitoring/Sockets/BackEndMonitoringSockets/include/stdafx.h"
 
 using sockaddress = struct sockaddr_in;
 

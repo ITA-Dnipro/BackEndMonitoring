@@ -3,14 +3,16 @@ project(CLogger)
 
 set(CMAKE_CXX_STANDARD 17)
 
-link_directories(../packages/CLogger/Debug/linux)
+link_directories(${CMAKE_SOURCE_DIR}/packages/CLogger/Debug/linux)
 
-include_directories(./BackEndMonitoringSockets/include)
-include_directories(../3rdParty/include)
-include_directories(../utils/include)
-include_directories(..)
+include_directories(${CMAKE_SOURCE_DIR}/CLogger/include
+        ${CMAKE_SOURCE_DIR}/Client/BackEndMonitoringClient/include
+        ${CMAKE_SOURCE_DIR}/3rdParty/include
+        ${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/include
+        ${CMAKE_SOURCE_DIR}/Sockets/BackEndMonitoringSockets/include
+        ${CMAKE_SOURCE_DIR}/utils/include)
 
-add_library(Sockets ../utils/include/LinuxUtils.cpp
+add_library(Sockets ${CMAKE_SOURCE_DIR}/utils/include/LinuxUtils.cpp
         BackEndMonitoringSockets/src/CSocket.cpp
         BackEndMonitoringSockets/src/CAcceptor.cpp
         BackEndMonitoringSockets/src/CAcceptorWrapper.cpp
@@ -20,7 +22,7 @@ add_library(Sockets ../utils/include/LinuxUtils.cpp
         BackEndMonitoringSockets/src/CServiceConnectionHandler.cpp
         BackEndMonitoringSockets/src/CSocketWrapper.cpp
         BackEndMonitoringSockets/src/CDataReceiver.cpp
-        ../utils/include/CThreadPool.cpp
-        ../utils/include/CEvent.cpp)
+        ${CMAKE_SOURCE_DIR}/utils/include/CThreadPool.cpp
+        ${CMAKE_SOURCE_DIR}/utils/include/CEvent.cpp)
 
 target_link_libraries(Sockets CLogger)

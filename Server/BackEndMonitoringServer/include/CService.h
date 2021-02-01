@@ -2,7 +2,7 @@
 
 #include "CThreadSafeVariable.h"
 #include "CEvent.h"
-#include "Sockets/BackEndMonitoringSockets/include/CAcceptorWrapper.h"
+#include "CAcceptorWrapper.h"
 #include "CJSONFormatterProcess.h"
 #include "CJSONFormatterLogicalDisk.h"
 
