@@ -26,7 +26,7 @@ void CService::RunServer()
     Sleep(10000);
 
     //Need absolute path here!!!
-    std::string path_to_log_file("F:\\Git\\Log.txt");
+    std::string path_to_log_file("C:\\ServerLog.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if(!InitializeLogger(path_to_log_file, log_level))
     { return;}
@@ -39,8 +39,8 @@ void CService::RunServer()
     }
 
     std::chrono::duration<int> tick = std::chrono::seconds(30);
-    std::string path_to_disk_file("F:\\Git\\disk.json");
-    std::string path_to_proc_file("F:\\Git\\proc.json");
+    std::string path_to_disk_file("C:\\disk.json");
+    std::string path_to_proc_file("C:\\proc.json");
     EMemoryConvertType measure_in = EMemoryConvertType::MEGABYTES;
 
     if (InitializeLogicalDiscMonitoring(tick, path_to_disk_file, measure_in))
@@ -73,7 +73,7 @@ void CService::RunServer()
 
     int port = 1111;
     std::string ip_address = "127.0.0.1";
-    bool is_sockets_blocking = true;
+    bool is_sockets_blocking = false;
     int timeout = 5;
     if (!InitializeSockets(port, ip_address, is_sockets_blocking, timeout))
     {

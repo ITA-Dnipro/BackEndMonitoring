@@ -22,17 +22,15 @@ public:
 private:
 	void Initialize(int port, const std::string& ip_address, CDataReceiver& json_data);
 	
-	std::unique_ptr<CAcceptor> InitAcceptor(int port, 
-		const std::string& address);
+	void InitAcceptor(int port, const std::string& address);
 
-	std::unique_ptr<CServiceConnectionHandler> InitServiceHandler(CDataReceiver& json_data);
+	void InitServiceHandler(CDataReceiver& json_data);
 
-	std::unique_ptr<CSocketWrapper> InitSocketWrapper();
+	void InitSocketWrapper();
 	void AddClientToThread(int& socket_fd);
 	void HandleBlockingEvents();
 	void HandleNonBlockingEvents();
 
-	std::vector<int> m_accepted_sockets;
 	std::shared_ptr<CThreadPool> m_pool;
 	std::unique_ptr<CAcceptor> m_server_acceptor;
 	std::unique_ptr<CServiceConnectionHandler> m_service_handler;

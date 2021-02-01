@@ -18,7 +18,7 @@ private:
 	bool BindSocket();
 	bool StartListening();
 	bool MakeSocketMulticonnected();
-	std::unique_ptr<CSocket> InitSocket(const int port, 
+	void InitSocket(const int port, 
 		const std::string& ip_address);
 
 	std::string m_ip_address;
