@@ -1,6 +1,6 @@
 #pragma once
 
-typedef struct sockaddr_in sockaddress;
+using sockaddress = struct sockaddr_in ;
 
 constexpr int ERROR_SOCKET = -1;
 constexpr int SOCKET_INVALID = 0;
@@ -19,7 +19,7 @@ protected:
 	SOCKET InitSocket();
 
 	SOCKET m_socket;
-#elif _linux_
+#elif __linux__
 	int InitSocket();
 
 	int m_socket;

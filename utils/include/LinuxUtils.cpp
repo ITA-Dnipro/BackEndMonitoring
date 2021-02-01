@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#ifdef _linux_
+#ifdef __linux__
 
 #include "CNumericTypesParser.h"
 #include "CReadFileWrapper.h"
