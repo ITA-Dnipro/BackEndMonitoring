@@ -17,7 +17,6 @@ else()
     set(PLATFORM_SPECIFIC_UTILS ${UTILS_SRC_DIR}/WindowsUtils.cpp)
 endif(UNIX)
 
-
 add_subdirectory(CLogger)
 add_subdirectory(Sockets)
 add_subdirectory(Client)

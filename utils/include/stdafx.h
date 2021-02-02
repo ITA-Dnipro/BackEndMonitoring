@@ -14,7 +14,6 @@
     #define BACK_END_MONITORING_SYS_MACOS
 #endif
 
-
 #ifdef CLOG_STATIC_BUILD
     #define CLOGGER_API
 #else
