@@ -122,7 +122,7 @@ void CService::RunServer()
     else
     {
         CLOG_PROD("ERROR! Can't initialize processes monitoring!");
-        return;
+//        return;
     }
 
     CServerSettings server_sett(xml_reader);
