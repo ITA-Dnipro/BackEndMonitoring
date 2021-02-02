@@ -151,7 +151,7 @@ bool CService::InitializeLogicalDiscMonitoring(
     CLOG_DEBUG_START_FUNCTION( );
     CHardwareStatusSpecification* specification = new 
         CHardwareStatusSpecification(
-        std::chrono::duration<int>(30), xml_settings.GetFileName(),
+        std::chrono::duration<int>(5), xml_settings.GetFileName(),
         Utils::DefineCountType(xml_settings.GetCountType()));
     CLOG_TRACE_VAR_CREATION(specification);
     m_disks_monitor = std::make_unique<CLogicalDiskInfoMonitoring>(
@@ -167,7 +167,7 @@ bool CService::InitializeProcessesMonitoring(
     const CProcessesInfoSettings& process_sett)
 {
     m_processes_monitor = std::make_unique<CProcessesInfoMonitoring>(
-        std::chrono::duration<int>(30), process_sett.GetFileName(), 
+        std::chrono::duration<int>(5), process_sett.GetFileName(), 
         Utils::DefineCountType(process_sett.GetCountType()),
         m_stop_event, m_processes_json);
     CLOG_DEBUG_START_FUNCTION( );

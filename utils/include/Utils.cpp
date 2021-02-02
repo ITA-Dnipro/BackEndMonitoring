@@ -42,44 +42,25 @@ std::vector<std::string> Utils::SplitIntoWords(const std::string& str,
 bool Utils::TryGetCurrentDateAndTimeFormatted(std::string&
                                               date_time_var_to_save)
 {
-    CLOG_DEBUG_START_FUNCTION();
-    //parse to format: dd.mm.yyyy hh:mm:ss
-    std::time_t current_time = std::chrono::system_clock::to_time_t(
-        std::chrono::system_clock::now( ));
-    CLOG_TRACE_VAR_CREATION(current_time);
+    const auto time = std::make_unique<tm>();
+    auto current_time = std::chrono::system_clock::to_time_t
+    (std::chrono::system_clock::now());
 
-    date_time_var_to_save = ctime(&current_time);
+#ifdef _MSC_VER
+    localtime_s(time.get(), &current_time);
+#else 
+    localtime_r(&current_time, time.get());
+#endif
 
-    date_time_var_to_save.pop_back( );
-    date_time_var_to_save = date_time_var_to_save.substr(
-        date_time_var_to_save.find_first_of(" ") + 1ULL);
+    date_time_var_to_save;
+    date_time_var_to_save.resize(50u);
+    std::strftime(date_time_var_to_save.data(),
+        date_time_var_to_save.capacity(), "%d.%m.%Y %X", time.get());
+    // Clean redundant \0 symbols, that fills resized string
+    date_time_var_to_save.erase(std::remove(date_time_var_to_save.begin(),
+        date_time_var_to_save.end(), '\0'), date_time_var_to_save.end());
 
-    std::string buff_year = date_time_var_to_save.substr(
-        date_time_var_to_save.find_last_of(" ") + 1ULL);
-    date_time_var_to_save.erase(date_time_var_to_save.end( ) - 
-                                buff_year.size( ) - 1,
-                                date_time_var_to_save.end( ));
-    CLOG_TRACE_VAR_CREATION(buff_year);
-
-    std::string buff_month = date_time_var_to_save.substr(
-        0, date_time_var_to_save.find_first_of(" "));
-    date_time_var_to_save.erase(date_time_var_to_save.begin( ),
-                                date_time_var_to_save.begin( ) + 
-                                buff_month.size( ) + 1ULL);
-    CLOG_TRACE_VAR_CREATION(buff_month);
-
-    if (!TrySetMonthAsNumber(buff_month))
-    {
-        return false;
-    }
-
-    date_time_var_to_save.insert(date_time_var_to_save.find_first_of(" "),
-                                 "." + buff_month);
-    date_time_var_to_save.insert(date_time_var_to_save.find_first_of(" "),
-                                 "." + buff_year + " ");
-
-    CLOG_DEBUG_END_FUNCTION();
-    return true;
+    return !date_time_var_to_save.empty();
 }
 
 bool Utils::TrySetMonthAsNumber(std::string& p_month)
