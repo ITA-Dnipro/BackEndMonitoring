@@ -27,7 +27,7 @@ CService* CService::m_p_service = nullptr;
 
 bool CService::Run()
 {
-    #ifdef _WIN64
+    #if defined(_WIN64) || defined(_WIN32)
 
     m_p_service = this;
 
@@ -41,7 +41,7 @@ bool CService::Run()
 
     return ::StartServiceCtrlDispatcher(table_entry) == TRUE;
 
-    #elif linux
+    #elif __linux__
 
     RunServer();
 
@@ -224,7 +224,7 @@ bool CService::InitializeSockets(const CServerSettings& server_sett)
     return true;
 }
 
-#ifdef _WIN64
+#if defined(_WIN64) || defined(_WIN32)
 
 CService::CService(const ServiceParameters& parameters)
   : m_name(parameters.name),
@@ -232,10 +232,10 @@ CService::CService(const ServiceParameters& parameters)
     m_start_type(parameters.start_type),
     m_error_control_type(parameters.err_ctrl_type),
     m_status_handle(nullptr),
-    m_status{
+    m_status {
         SERVICE_WIN32_OWN_PROCESS,
         SERVICE_START_PENDING,
-        parameters.accepted_cmds,
+		parameters.accepted_cmds,
         NO_ERROR,
         0,
         0,
@@ -333,7 +333,7 @@ void CService::Stop()
     SetStatus(SERVICE_STOPPED);
 }
 
-#elif linux
+#elif __linux__
 
 CService::CService()
 {

@@ -5,8 +5,6 @@
 
 #include "Utils.h"
 
-
-
 CommandLineHandler::CommandLineHandler(int argc, char** argv)
   : m_argc(argc),
     m_argv(argv)
@@ -14,10 +12,11 @@ CommandLineHandler::CommandLineHandler(int argc, char** argv)
 
 bool CommandLineHandler::Parse()
 {
-#ifdef _WIN64
-    ServiceParameters parameters;
-    auto service = std::make_unique<Service>(parameters);
-    auto service_handler = std::make_unique<ServiceHandler>(std::move(service));
+#if defined(_WIN32) || defined(_WIN64)
+	ServiceParameters parameters;
+    auto service = std::make_unique<CService>(parameters);
+    auto service_handler = std::make_unique<ServiceHandler>(std::move
+    		(service));
 
     bool success = true;
 
@@ -56,7 +55,7 @@ bool CommandLineHandler::Parse()
     while (false);
 
     return success;
-#elif linux
+#elif __linux__
     auto service = std::make_unique<CService>();
     bool success = true;
 

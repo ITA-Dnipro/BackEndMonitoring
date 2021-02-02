@@ -3,17 +3,13 @@ project(CLogger)
 
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:preprocessor")
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /Zc:preprocessor")
+
 include_directories(${CMAKE_SOURCE_DIR}
         include
         ${CMAKE_SOURCE_DIR}/3rdParty/include
         ${CMAKE_SOURCE_DIR}/utils/include)
-
-#add_library(StaticCLogger src/CLogBuilder/CLogBuilder.cpp
-#        src/CLogger/CLogger.cpp
-#        src/ELogConfig/ELogConfig.cpp
-#        src/ELogFlush/ELogFlush.cpp
-#        src/ELogLevel/ELogLevel.cpp
-#        src/DllMain.cpp)
 
 add_library(CLogger src/CLogBuilder/CLogBuilder.cpp
         src/CLogger/CLogger.cpp

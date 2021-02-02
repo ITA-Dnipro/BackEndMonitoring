@@ -3,7 +3,7 @@
 #include "CServiceHandler.h"
 #include "Utils.h"
 
-#ifdef _WIN64
+#if defined(_WIN64) || defined(_WIN32)
 class ServiceHandle
 {
 public:

@@ -1,4 +1,9 @@
 #pragma once
+
+#if defined(_WIN32) || defined(_WIN64)
+#include <atlalloc.h>
+#endif
+
 #include <vector>
 #include <string>
 
@@ -27,7 +32,7 @@ namespace Utils
 	[[nodiscard]] bool IsFileEmpty(std::fstream& file);
 	[[nodiscard]] bool IsFileEmpty(std::ofstream& file);
 
-	#ifdef _WIN64
+	#if defined(_WIN64) || defined(_WIN32)
 	void DisplayError(const std::string& message);
 	#endif
 	void DisplayMessage(const std::string& message);

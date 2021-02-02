@@ -1,5 +1,9 @@
 #pragma once
 
+#if defined(_WIN64) || defined(_WIN32)
+#include <atlstr.h>
+#endif
+
 #include "CThreadSafeVariable.h"
 #include "CEvent.h"
 #include "CAcceptorWrapper.h"
@@ -21,7 +25,7 @@ class CHDDInfoSettings;
 class CProcessesInfoSettings;
 class CServerSettings;
 
-#ifdef _WIN64
+#if defined(_WIN64) || defined(_WIN32)
 
 struct ServiceParameters
 {
@@ -31,7 +35,6 @@ struct ServiceParameters
     DWORD err_ctrl_type = SERVICE_ERROR_NORMAL;
     DWORD accepted_cmds = SERVICE_ACCEPT_STOP;
 };
-
 #endif
 
 class CService
@@ -45,7 +48,7 @@ public:
 
     bool Run();
 
-    #ifdef _WIN64
+    #if defined(_WIN64) || defined(_WIN32)
 
     explicit CService(const ServiceParameters& parameters);
 
@@ -54,7 +57,7 @@ public:
     const DWORD GetStartType() const;
     const DWORD GetErrorControlType() const;
 
-    #elif linux
+    #elif __linux__
 
     CService();
 
@@ -68,7 +71,7 @@ private:
         const CProcessesInfoSettings& process_sett);
     bool InitializeSockets(const CServerSettings& server_sett);
 
-    #ifdef _WIN64
+    #if defined(_WIN64) || defined(_WIN32)
 
     static DWORD WINAPI ServiceCtrlHandler(
         DWORD control_code, 
@@ -88,7 +91,7 @@ private:
     void OnStart(DWORD, CHAR**);
     void OnStop();
 
-    #elif linux
+    #elif __linux__
 
     static void HandleSignal(int signal);
 
@@ -107,7 +110,7 @@ private:
     std::shared_ptr<CLogicalDiskInfoMonitoring> m_disks_monitor;
     std::unique_ptr<std::fstream> m_log_stream;
 
-    #ifdef _WIN64
+    #if defined(_WIN64) || defined(_WIN32)
 
     SERVICE_STATUS m_status;
     std::thread m_main_thread;

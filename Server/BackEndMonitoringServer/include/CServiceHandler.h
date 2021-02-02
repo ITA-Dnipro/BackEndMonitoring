@@ -2,7 +2,7 @@
 
 #include "CService.h"
 
-#ifdef _WIN64
+#if defined(_WIN64) || defined(_WIN32)
 class ServiceHandler
 {
 public:

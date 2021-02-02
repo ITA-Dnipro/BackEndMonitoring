@@ -10,7 +10,7 @@
 #include "Utils.h"
 
 //in order to use ctime
-#pragma warning(disable:4996)
+#pragma warning(disable : 4996)
 
 std::vector<std::string> Utils::SplitIntoWords(const std::string& str,
                                                const char delimiter)
@@ -159,7 +159,7 @@ bool Utils::IsFileEmpty(std::ofstream& file)
     return answer;
 }
 
-#ifdef _WIN64
+#if defined(_WIN64) || defined(_WIN32)
 #define EN_US 0x0409
 
 void Utils::DisplayError(const std::string& message)
@@ -187,7 +187,7 @@ void Utils::DisplayError(const std::string& message)
 
 void Utils::DisplayHelp()
 {
-#ifdef _WIN64
+#if defined(_WIN64) || defined(_WIN32)
 	std::cout << "\nUsage:\n"
 				 "Enter \"install\" to install and start the service.\n"
 				 "Enter \"uninstall\" to stop and delete the service.\n"
