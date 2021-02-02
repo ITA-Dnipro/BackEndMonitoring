@@ -54,10 +54,10 @@ bool Utils::TryGetCurrentDateAndTimeFormatted(std::string&
 
     date_time_var_to_save;
     date_time_var_to_save.resize(50u);
-    std::strftime(date_time_var_to_save.data(), 
+    std::strftime(date_time_var_to_save.data(),
         date_time_var_to_save.capacity(), "%d.%m.%Y %X", time.get());
     // Clean redundant \0 symbols, that fills resized string
-    date_time_var_to_save.erase(std::remove(date_time_var_to_save.begin(), 
+    date_time_var_to_save.erase(std::remove(date_time_var_to_save.begin(),
         date_time_var_to_save.end(), '\0'), date_time_var_to_save.end());
 
     return !date_time_var_to_save.empty();
@@ -65,11 +65,11 @@ bool Utils::TryGetCurrentDateAndTimeFormatted(std::string&
 
 bool Utils::TrySetMonthAsNumber(std::string& p_month)
 {
-    //CLOG_DEBUG_START_FUNCTION();
+    CLOG_DEBUG_START_FUNCTION();
     constexpr size_t num_of_month_in_year = 12U;
-    //CLOG_TRACE_VAR_CREATION(num_of_month_in_year);
+    CLOG_TRACE_VAR_CREATION(num_of_month_in_year);
     constexpr size_t num_of_letters = 4U;
-    //CLOG_TRACE_VAR_CREATION(num_of_letters);
+    CLOG_TRACE_VAR_CREATION(num_of_letters);
     constexpr char c_name_of_all_months[][num_of_letters] = {
         {'J', 'a', 'n', '\0'},
         {'F', 'e', 'b', '\0'},
@@ -83,7 +83,7 @@ bool Utils::TrySetMonthAsNumber(std::string& p_month)
         {'O', 'c', 't', '\0'},
         {'N', 'o', 'v', '\0'},
         {'D', 'e', 'c', '\0'} };
-    //CLOG_TRACE_VAR_CREATION(c_name_of_all_months);
+    CLOG_TRACE_VAR_CREATION(c_name_of_all_months);
 
     for (size_t month_as_num = 0; month_as_num < num_of_month_in_year;
          ++month_as_num)
@@ -95,7 +95,7 @@ bool Utils::TrySetMonthAsNumber(std::string& p_month)
             return true;
         }
     }
-    //CLOG_DEBUG_END_FUNCTION();
+    CLOG_DEBUG_END_FUNCTION();
     return false;
 }
 
