@@ -31,7 +31,7 @@ void CService::RunServer()
 {
     //TODO Add XML Configuration interaction
     Sleep(10000);
-    std::string path_to_log_file("F:\\Git\\Log.txt");
+    std::string path_to_log_file("D:\\Log.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if (!InitializeLogger(path_to_log_file, log_level))
     {
@@ -41,7 +41,7 @@ void CService::RunServer()
 
     std::shared_ptr<CXMLDataReader> xml_reader = std::make_shared<CXMLDataReader>();
     CLOG_TRACE_VAR_CREATION(xml_reader);
-    xml_reader->Initialize("C:\\xgconsole.xml");
+    xml_reader->Initialize("D:\\xgconsole.xml");
 
     CLoggingSettings log_sett(xml_reader);
     CLOG_TRACE_VAR_CREATION(log_sett);
@@ -109,13 +109,13 @@ void CService::RunServer()
 
 bool CService::InitializeLogger(const std::string& path_to_log_file, ELogLevel level)
 {
-    CLOG_DEBUG_START_FUNCTION();
+    //CLOG_DEBUG_START_FUNCTION();
     m_log_stream = std::make_unique<std::fstream>(path_to_log_file,
         std::ios_base::out);
     if (m_log_stream->is_open())
     {
         CLOG_START_CREATION();
-
+        
         CLOG_SET_LOG_NAME("Logger");
         CLOG_SET_LOG_LEVEL(level);
         CLOG_SET_LOG_CONFIG(ELogConfig::LOG_NAME, ELogConfig::LOG_LEVEL,
@@ -130,7 +130,7 @@ bool CService::InitializeLogger(const std::string& path_to_log_file, ELogLevel l
         CLOG_END_CREATION();
         return true;
     }
-    CLOG_DEBUG_END_FUNCTION();
+    //CLOG_DEBUG_END_FUNCTION();
     return false;
 }
 
