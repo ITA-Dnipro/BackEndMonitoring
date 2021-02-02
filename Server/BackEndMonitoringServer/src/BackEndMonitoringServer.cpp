@@ -34,9 +34,8 @@ int main(int argc, char** argv)
 
   CLOG_END_CREATION();
 
-  auto parser = std::make_unique<CommandLineHandler>();
-
-  bool success = parser->Parse(argc, argv);
+  auto parser = std::make_unique<CommandLineHandler>(argc, argv);
+  bool success = parser->Parse( );
 
   if (!success)
   {
@@ -50,8 +49,6 @@ int main(int argc, char** argv)
 
   return return_code;
 };
-
-
 
 ////// FOR TESTING
 ////#include "stdafx.h"

@@ -222,7 +222,6 @@
     <ClCompile Include="..\..\utils\include\CNumericTypesParser.cpp" />
     <ClCompile Include="..\..\utils\include\CReadFileWrapper.cpp" />
     <ClCompile Include="..\..\utils\include\CSettings.cpp" />
-    <ClCompile Include="..\..\utils\include\LinuxUtils.cpp" />
     <ClCompile Include="..\..\utils\include\StrToNumWrapper.cpp" />
     <ClCompile Include="..\..\utils\include\CLoggingSettings.cpp" />
     <ClCompile Include="..\..\utils\include\CProcessesInfoSettings.cpp" />

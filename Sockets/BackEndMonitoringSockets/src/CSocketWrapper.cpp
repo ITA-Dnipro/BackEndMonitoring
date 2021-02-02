@@ -3,9 +3,6 @@
 #include "CSocketWrapper.h"
 #include "CLogger/include/Log.h"
 
-CSocketWrapper::CSocketWrapper()
-{ }
-
 std::string CSocketWrapper::Receive(const int socket)
 {
 
