@@ -40,6 +40,11 @@ void CHDDInfoSettings::ReadConfigurationFromFile()
 		m_count_type_ = CDataReader::TryToConvertToInteger(tmp_string, tmp_int)
 		? tmp_int : m_count_type_;
 
+	if (m_p_data_reader_->TryToGetStringData("//root/time/Period_time",
+		tmp_string))
+		m_period_time_ = CDataReader::TryToConvertToInteger(tmp_string, tmp_int) ?
+		tmp_int : m_period_time_;
+
 	CLOG_DEBUG_END_FUNCTION();
 }
 
