@@ -23,15 +23,12 @@
 
 #include "CService.h"
 
-// We need this to test the service
-#define DEFAULT_BUFLEN 512
-#define DEFAULT_PORT "27015"
-
 void CService::RunServer()
 {
     //TODO Add XML Configuration interaction
-    Sleep(10000);
-    std::string path_to_log_file("D:\\Log.txt");
+    //Sleep(20000);
+    std::string path_to_log_file(
+        "D:/softserve/backend_monitoring/branches/Service-logger/stuff/Log.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if (!InitializeLogger(path_to_log_file, log_level))
     {
@@ -41,7 +38,8 @@ void CService::RunServer()
 
     std::shared_ptr<CXMLDataReader> xml_reader = std::make_shared<CXMLDataReader>();
     CLOG_TRACE_VAR_CREATION(xml_reader);
-    xml_reader->Initialize("D:\\xgconsole.xml");
+    xml_reader->Initialize(
+        "D:/softserve/backend_monitoring/branches/Service-logger/xgconsole.xml");
 
     CLoggingSettings log_sett(xml_reader);
     CLOG_TRACE_VAR_CREATION(log_sett);
@@ -107,11 +105,15 @@ void CService::RunServer()
     CLOG_DEBUG_END_FUNCTION();
 }
 
-bool CService::InitializeLogger(const std::string& path_to_log_file, ELogLevel level)
+bool CService::InitializeLogger(
+    const std::string& path_to_log_file, 
+    ELogLevel level)
 {
     //CLOG_DEBUG_START_FUNCTION();
-    m_log_stream = std::make_unique<std::fstream>(path_to_log_file,
-        std::ios_base::out);
+    m_log_stream = std::make_unique<std::fstream>(
+        path_to_log_file,
+        std::ios_base::app);
+
     if (m_log_stream->is_open())
     {
         CLOG_START_CREATION();
