@@ -26,16 +26,16 @@ void CHDDInfoSettings::ReadConfigurationFromFile()
 	bool tmp_bool = false;
 	CLOG_TRACE_VAR_CREATION(tmp_bool);
 
-	if (m_p_data_reader_->TryToGetStringData("//root/Server/servername", 
+	if (m_p_data_reader_->TryToGetStringData("//root/HDDinfo/filename", 
 		tmp_string))
 		m_file_name_ = tmp_string != "" ? tmp_string : m_file_name_;
 
-	if (m_p_data_reader_->TryToGetStringData("//root/Server/serverdisplayname",
+	if (m_p_data_reader_->TryToGetStringData("//root/HDDinfo/checkhdd",
 		tmp_string))
 		m_check_hdd_ = CDataReader::TryToConvertToBool(tmp_string, tmp_bool) ? 
 		tmp_bool : m_check_hdd_;
 
-	if (m_p_data_reader_->TryToGetStringData("//root/Server/listenerport", 
+	if (m_p_data_reader_->TryToGetStringData("//root/HDDinfo/counttype", 
 		tmp_string))
 		m_count_type_ = CDataReader::TryToConvertToInteger(tmp_string, tmp_int)
 		? tmp_int : m_count_type_;
