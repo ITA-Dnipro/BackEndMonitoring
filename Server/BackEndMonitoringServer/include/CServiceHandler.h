@@ -20,7 +20,6 @@ public:
 private:
 	bool Start() const;
 	bool Stop() const;
-	bool Restart() const;
 
 private:
 	std::unique_ptr<CService> m_p_service;

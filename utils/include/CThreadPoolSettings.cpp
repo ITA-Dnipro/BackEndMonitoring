@@ -3,7 +3,7 @@
 #include "CLogger/include/Log.h"
 
 CThreadPoolSettings::CThreadPoolSettings(std::shared_ptr<CDataReader> p_data_reader) :
-	m_p_data_reader_(p_data_reader), m_max_working_threads_(10)
+	CSettings(p_data_reader), m_max_working_threads_(10)
 {
 
 }
@@ -19,7 +19,9 @@ void CThreadPoolSettings::ReadConfigurationFromFile()
 	}
 
 	std::string tmp_string;
+	CLOG_TRACE_VAR_CREATION(tmp_string);
 	int tmp_int = 0;
+	CLOG_TRACE_VAR_CREATION(tmp_int);
 
 	if (m_p_data_reader_->TryToGetStringData("//root/threadpool/maxworkingthreads", tmp_string))
 		m_max_working_threads_ = CDataReader::TryToConvertToInteger(tmp_string, tmp_int) ? tmp_int : m_max_working_threads_;

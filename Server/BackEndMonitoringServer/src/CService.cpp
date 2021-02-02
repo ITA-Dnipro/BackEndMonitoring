@@ -23,45 +23,46 @@
 
 #include "CService.h"
 
-// We need this to test the service
-#define DEFAULT_BUFLEN 512
-#define DEFAULT_PORT "27015"
-
 void CService::RunServer()
 {
     //TODO Add XML Configuration interaction
-
-    std::string path_to_log_file("C:\\Log.txt");
+    //Sleep(20000);
+    std::string path_to_log_file(GetRelativePath() + "Log.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if (!InitializeLogger(path_to_log_file, log_level))
     {
         return;
     }
+    CLOG_DEBUG_START_FUNCTION();
 
     std::shared_ptr<CXMLDataReader> xml_reader = std::make_shared<CXMLDataReader>();
-    xml_reader->Initialize("C:\\xgconsole.xml");
+    CLOG_TRACE_VAR_CREATION(xml_reader);
+    xml_reader->Initialize(GetRelativePath() + "../../../../../xgconsole.xml");
 
     CLoggingSettings log_sett(xml_reader);
+    CLOG_TRACE_VAR_CREATION(log_sett);
     log_sett.ReadConfigurationFromFile();
 
     CThreadPoolSettings thred_pool_sett(xml_reader);
+    CLOG_TRACE_VAR_CREATION(thred_pool_sett);
     thred_pool_sett.ReadConfigurationFromFile();
 
     if(!InitializeThreadPool(thred_pool_sett))
-    { 
+    {
         CLOG_PROD("ERROR! Can't initialize thread pool!");
         return;
     }
 
     CHDDInfoSettings hdd_sett(xml_reader);
+    CLOG_TRACE_VAR_CREATION(hdd_sett);
     hdd_sett.ReadConfigurationFromFile();
-    
+
     if (InitializeLogicalDiscMonitoring(hdd_sett))
     {
         m_p_thread_pool->Enqueue([this] ( )
-                                 {
-                                     m_disks_monitor->StartMonitoringInfo( );
-                                 });
+        {
+            m_disks_monitor->StartMonitoringInfo( );
+        });
 
 
     }
@@ -72,14 +73,15 @@ void CService::RunServer()
     }
 
     CProcessesInfoSettings process_sett(xml_reader);
+    CLOG_TRACE_VAR_CREATION(process_sett);
     process_sett.ReadConfigurationFromFile();
 
     if (InitializeProcessesMonitoring(process_sett))
     {
         m_p_thread_pool->Enqueue([this] ( )
-                                 {
-                                     m_processes_monitor->StartMonitoringInfo( );
-                                 });
+        {
+            m_processes_monitor->StartMonitoringInfo( );
+        });
     }
     else
     {
@@ -88,6 +90,7 @@ void CService::RunServer()
     }
 
     CServerSettings server_sett(xml_reader);
+    CLOG_TRACE_VAR_CREATION(server_sett);
     server_sett.ReadConfigurationFromFile();
 
     if (!InitializeSockets(server_sett))
@@ -98,22 +101,26 @@ void CService::RunServer()
     CDataReceiver json_data(m_processes_json, m_disks_json);
     CLOG_TRACE_VAR_CREATION(json_data);
 
-    if (!m_p_acceptor_socket->Initialize(std::move(m_p_thread_pool), 
+    if (!m_p_acceptor_socket->Initialize(std::move(m_p_thread_pool),
         json_data, SOMAXCONN))
     {
         CLOG_PROD("ERROR! Can't initialize sockets!");
         return;
     }
 
-
     m_p_acceptor_socket->Execute( );
+    CLOG_DEBUG_END_FUNCTION();
 }
 
-bool CService::InitializeLogger(const std::string& path_to_log_file, 
+bool CService::InitializeLogger(
+    const std::string& path_to_log_file,
     ELogLevel level)
 {
-    m_log_stream = std::make_unique<std::fstream>(path_to_log_file,
-        std::ios_base::out);
+    //CLOG_DEBUG_START_FUNCTION();
+    m_log_stream = std::make_unique<std::fstream>(
+        path_to_log_file,
+        std::ios_base::app);
+
     if (m_log_stream->is_open())
     {
         CLOG_START_CREATION();
@@ -132,6 +139,7 @@ bool CService::InitializeLogger(const std::string& path_to_log_file,
         CLOG_END_CREATION();
         return true;
     }
+    //CLOG_DEBUG_END_FUNCTION();
     return false;
 }
 
@@ -149,16 +157,16 @@ bool CService::InitializeThreadPool(
 bool CService::InitializeLogicalDiscMonitoring(
     const CHDDInfoSettings& xml_settings)
 {
-
     CLOG_DEBUG_START_FUNCTION( );
-    CHardwareStatusSpecification* specification = new 
+    CHardwareStatusSpecification* specification = new
         CHardwareStatusSpecification(
-        std::chrono::duration<int>(30), xml_settings.GetFileName(),
+        std::chrono::duration<int>(xml_settings.GetPeriodTime()),
+        xml_settings.GetFileName(),
         Utils::DefineCountType(xml_settings.GetCountType()));
     CLOG_TRACE_VAR_CREATION(specification);
     m_disks_monitor = std::make_unique<CLogicalDiskInfoMonitoring>(
         m_stop_event,
-        specification, 
+        specification,
         m_disks_json);
     CLOG_TRACE_VAR_CREATION(m_disks_monitor);
     CLOG_DEBUG_END_FUNCTION( );
@@ -169,7 +177,8 @@ bool CService::InitializeProcessesMonitoring(
     const CProcessesInfoSettings& process_sett)
 {
     m_processes_monitor = std::make_unique<CProcessesInfoMonitoring>(
-        std::chrono::duration<int>(30), process_sett.GetFileName(), 
+        std::chrono::duration<int>(process_sett.GetPeriodTime()),
+        process_sett.GetFileName(),
         Utils::DefineCountType(process_sett.GetCountType()),
         m_stop_event, m_processes_json);
     CLOG_DEBUG_START_FUNCTION( );
@@ -208,6 +217,39 @@ CService::CService(const ServiceParameters& parameters)
         0}
 { }
 
+bool CService::GetModulePath(CString& module_path)
+{
+    bool success = true;
+
+    LPSTR path = module_path.GetBufferSetLength(MAX_PATH);
+
+    if (::GetModuleFileName(nullptr, path, MAX_PATH) == 0)
+    {
+        Utils::DisplayError("Failed to get module file name");
+        success = false;
+    }
+
+    module_path.ReleaseBuffer();
+    return success;
+}
+
+bool CService::EscapePath(CString& path)
+{
+    path.Remove('\"');
+    path = '\"' + path + '\"';
+    return true;
+}
+
+std::string CService::GetRelativePath()
+{
+    std::string executable = "BackEndMonitoringServer.exe";
+    CString module_path;
+    GetModulePath(module_path);
+    std::string path = static_cast<std::string>(module_path);
+    path = path.substr(0, path.length() - executable.length());
+    return path;
+}
+
 void CService::SetStatus(DWORD state, DWORD error_code, DWORD wait_hint)
 {
     m_status.dwCurrentState = state;
@@ -219,7 +261,7 @@ void CService::SetStatus(DWORD state, DWORD error_code, DWORD wait_hint)
 
 DWORD WINAPI CService::ServiceCtrlHandler(
     DWORD control_code, DWORD event_type,
-    void* event_data, void* context) 
+    void* event_data, void* context)
 {
     if (control_code == SERVICE_CONTROL_STOP)
     {
@@ -229,7 +271,7 @@ DWORD WINAPI CService::ServiceCtrlHandler(
     return 0;
 }
 
-void WINAPI CService::SvcMain(DWORD argc, CHAR** argv) 
+void WINAPI CService::SvcMain(DWORD argc, CHAR** argv)
 {
     assert(m_p_service);
 
@@ -260,10 +302,10 @@ bool CService::Run()
     return ::StartServiceCtrlDispatcher(table_entry) == TRUE;
 }
 
-const CString& CService::GetName() const 
+const CString& CService::GetName() const
 { return m_name;}
 
-const CString& CService::GetDisplayName() const 
+const CString& CService::GetDisplayName() const
 { return m_display_name;}
 
 // Chupakabra: returning copy of var, const redundant
@@ -282,7 +324,7 @@ void CService::OnStart(DWORD, CHAR**)
     });
 }
 
-void CService::OnStop() 
+void CService::OnStop()
 {
     CLOG_DEBUG_START_FUNCTION( );
     m_stop_event.Set();
@@ -307,7 +349,7 @@ void CService::Start(DWORD argc, CHAR** argv)
     SetStatus(SERVICE_RUNNING);
 }
 
-void CService::Stop() 
+void CService::Stop()
 {
     SetStatus(SERVICE_STOP_PENDING);
     OnStop();
