@@ -3,7 +3,7 @@
 #include "CLogger/include/Log.h"
 
 CServerSettings::CServerSettings(std::shared_ptr<CDataReader> p_data_reader) :
-	m_p_data_reader_(p_data_reader), m_server_displayname_("ServTestserver"), m_ip_address_("127.0.0.1"),
+	CSettings(p_data_reader), m_server_displayname_("ServTestserver"), m_ip_address_("127.0.0.1"),
 	m_server_name_("ServTest"), m_listener_port_(25000)
 {
 
@@ -20,7 +20,9 @@ void CServerSettings::ReadConfigurationFromFile()
 	}
 
 	std::string tmp_string;
+	CLOG_TRACE_VAR_CREATION(tmp_string);
 	int tmp_int = 0;
+	CLOG_TRACE_VAR_CREATION(tmp_int);
 
 	if (m_p_data_reader_->TryToGetStringData("//root/Server/servername", tmp_string))
 		m_server_name_ = tmp_string != "" ? tmp_string : m_server_name_;

@@ -5,13 +5,17 @@
 class CConnector
 {
 public:
-	CConnector(const int port, const std::string& address);
+	CConnector() = delete;
+	explicit CConnector(const int port, const std::string& address);
+	CConnector(const CConnector&) = delete;
+	CConnector(CConnector&&) noexcept = delete;
+	~CConnector() noexcept = default;
 
 	bool Connect();
-	int GetSocketFD() const;
+	[[nodiscard]] int GetSocketFD() const;
 private:
-	std::unique_ptr<CSocket> InitSocketConnector(const int port, 
+	[[nodiscard]] std::unique_ptr<CSocket> InitSocketConnector(const int port,
 		const std::string& ip_address);
 
-	std::unique_ptr<CSocket> m_socket_connector;
+	std::unique_ptr<CSocket> m_p_socket_connector;
 };

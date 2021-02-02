@@ -1,7 +1,8 @@
 #pragma once
 #include "CDataReader.h"
+#include "CSettings.h"
 
-class CComunicationSettings
+class CComunicationSettings : public CSettings
 {
 public:
 	CComunicationSettings() = delete;
@@ -10,16 +11,14 @@ public:
 	
 	explicit CComunicationSettings(std::shared_ptr<CDataReader> p_data_reader);
 	
-	~CComunicationSettings() = default;
+	~CComunicationSettings() override = default;
 
-	void ReadConfigurationFromFile();
+	void ReadConfigurationFromFile() override;
 
 	[[nodiscard]] bool GetBlocking() const;
 	[[nodiscard]] int GetSocketTimeout() const;
 	
 private:
-	std::shared_ptr<CDataReader> m_p_data_reader_;
-
 	bool m_blocking_;
 	int m_socket_timeout_;
 

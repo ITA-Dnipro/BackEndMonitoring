@@ -50,9 +50,9 @@ namespace PlatformUtils
 		return false;
 	}
 
-	bool Listen(int socket)
+	bool Listen(int socket, const int connections)
 	{
-		if (listen(socket, SOMAXCONN) == SUCCESS)
+		if (::listen(socket, connections) == SUCCESS)
 		{
 			return true;
 		}

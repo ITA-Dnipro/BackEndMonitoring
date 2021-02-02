@@ -17,7 +17,7 @@ void CSocket::SetSocketAddress(const int port,
 
 bool CSocket::IsValidSocket() const
 {
-	if (m_socket == SOCKET_INVALID)
+	if (m_socket == c_invalid_socket)
 	{
 		return false;
 	}

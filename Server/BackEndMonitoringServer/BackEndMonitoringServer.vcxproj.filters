@@ -93,9 +93,6 @@
     <ClInclude Include="..\..\utils\include\CXMLDataReader.h">
       <Filter>Utils\CXMLDataReader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\CTimeSettings.h">
-      <Filter>Utils\Settings Classes</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\utils\include\CProcessesInfoSettings.h">
       <Filter>Utils\Settings Classes</Filter>
     </ClInclude>
@@ -116,6 +113,14 @@
     </ClInclude>
     <ClInclude Include="..\..\utils\include\stdafx.h">
       <Filter>Header files</Filter>
+    <ClInclude Include="..\..\utils\include\CSettings.h">
+      <Filter>Utils\Settings Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CTimeSettings.h">
+      <Filter>Utils\Settings Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\ISettings.h">
+      <Filter>Utils\Settings Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -219,6 +224,9 @@
       <Filter>Utils\Settings Classes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\utils\include\CComunicationSettings.cpp">
+      <Filter>Utils\Settings Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CSettings.cpp">
       <Filter>Utils\Settings Classes</Filter>
     </ClCompile>
   </ItemGroup>

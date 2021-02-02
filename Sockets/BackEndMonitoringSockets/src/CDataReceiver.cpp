@@ -6,14 +6,14 @@
 
 CDataReceiver::CDataReceiver(CThreadSafeVariable<CJSONFormatterProcess>& processes_json,
 							 CThreadSafeVariable<CJSONFormatterLogicalDisk>& disks_json)
-	: m_disks_json(disks_json), m_processes_json(processes_json)
+	: m_p_disks_json(disks_json), m_p_processes_json(processes_json)
 { }
 
-std::string CDataReceiver::GetProcessesInfo( )
+std::string CDataReceiver::GetProcessesInfo( ) const
 {
 	std::string processes_info;
 	{
-		auto [data, mtx] = m_processes_json.GetAccess( );
+		auto [data, mtx] = m_p_processes_json.GetAccess( );
 		if (!data.TryGetJSONDataAsString(processes_info))
 		{
 			processes_info = "Can't get processes data";
@@ -23,11 +23,11 @@ std::string CDataReceiver::GetProcessesInfo( )
 }
 
 
-std::string CDataReceiver::GetDisksInfo( )
+std::string CDataReceiver::GetDisksInfo( ) const
 {
 	std::string disks_info;
 	{
-		auto [data, mtx] = m_disks_json.GetAccess( );
+		auto [data, mtx] = m_p_disks_json.GetAccess( );
 		if (!data.TryGetJSONDataAsString(disks_info))
 		{
 			disks_info = "Can't get disks data";
@@ -38,8 +38,8 @@ std::string CDataReceiver::GetDisksInfo( )
 
 std::string CDataReceiver::GetAllInfo( ) const
 {
-	auto [disks_data, disks_mtx] = m_disks_json.GetAccess( );
-	auto [processes_data, processes_mtx] = m_processes_json.GetAccess( );
+	auto [disks_data, disks_mtx] = m_p_disks_json.GetAccess( );
+	auto [processes_data, processes_mtx] = m_p_processes_json.GetAccess( );
 	const nlohmann::json* disks_json = disks_data.GetJSONFormattedData();
 	if (disks_json == nullptr)
 	{

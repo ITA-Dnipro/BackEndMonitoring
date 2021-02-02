@@ -2,6 +2,7 @@
 
 #include "EMemoryConvertType.h"
 #include "CHardwareStatusSpecification.h"
+#include "CLogger/include/Log.h"
 
 CHardwareStatusSpecification::CHardwareStatusSpecification(
 	std::chrono::duration<int>
@@ -31,9 +32,11 @@ const std::string* CHardwareStatusSpecification::GetPathToSaveFile() const
 bool CHardwareStatusSpecification::CloneObject(
 	const CHardwareStatusSpecification& orig)
 {
+	CLOG_DEBUG_START_FUNCTION();
 	m_count_type = orig.m_count_type;
 	m_path_to_file = orig.m_path_to_file;
 	m_pause_duration = orig.m_pause_duration;
-
+	CLOG_DEBUG_END_FUNCTION();
 	return true;
 }
+

@@ -27,9 +27,9 @@ using sockaddress = struct sockaddr_in;
 
 #endif
 
-constexpr int ERROR_SOCKET = -1;
-constexpr int SOCKET_INVALID = 0;
-constexpr int SUCCESS = 0;
+constexpr int c_error_socket = -1;
+constexpr int c_invalid_socket = 0;
+constexpr int c_success = 0;
 
 class CBaseSocket
 {
@@ -67,7 +67,7 @@ namespace PlatformUtils
 	bool FinalizeWinLibrary();
 
 	bool BindSocket(int socket, sockaddress& current_address);
-	bool Listen(int socket);
+	bool Listen(int socket, const int connections);
 	int Accept(int socket, sockaddress& current_address);
 	bool Connect(int socket, sockaddress& current_address);
 	bool SetUnblockingSocket(int socket);

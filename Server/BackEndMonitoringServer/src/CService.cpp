@@ -27,7 +27,7 @@ CService* CService::m_p_service = nullptr;
 
 bool CService::Run()
 {
-    #if defined(_WIN64) || defined(_WIN32)
+#if defined(_WIN64) || defined(_WIN32)
 
     m_p_service = this;
 
@@ -41,48 +41,55 @@ bool CService::Run()
 
     return ::StartServiceCtrlDispatcher(table_entry) == TRUE;
 
-    #elif __linux__
+#elif __linux__
 
     RunServer( );
 
 #endif
 }
 
-void CService::RunServer( )
+void CService::RunServer()
 {
     //TODO Add XML Configuration interaction
-
-    std::string path_to_log_file("/home/vytalyhorbatov/CPP_Projects/BackEndMonitoring-__linux__-dev/Log.txt");
+    //Sleep(20000);
+    std::string path_to_log_file(GetRelativePath() + "Log.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if (!InitializeLogger(path_to_log_file, log_level))
     {
         return;
     }
+    CLOG_DEBUG_START_FUNCTION();
 
-    auto xml_reader = std::make_shared<CXMLDataReader>( );
-    xml_reader->Initialize("/home/vytalyhorbatov/CPP_Projects/BackEndMonitoring-__linux__-dev/xgconsole.xml");
+    std::shared_ptr<CXMLDataReader> xml_reader = std::make_shared<CXMLDataReader>();
+    CLOG_TRACE_VAR_CREATION(xml_reader);
+    xml_reader->Initialize(GetRelativePath() + "../../../../../xgconsole.xml");
 
     CLoggingSettings log_sett(xml_reader);
-    log_sett.ReadConfigurationFromFile( );
+    CLOG_TRACE_VAR_CREATION(log_sett);
+    log_sett.ReadConfigurationFromFile();
 
     CThreadPoolSettings thred_pool_sett(xml_reader);
-    thred_pool_sett.ReadConfigurationFromFile( );
+    CLOG_TRACE_VAR_CREATION(thred_pool_sett);
+    thred_pool_sett.ReadConfigurationFromFile();
 
-    if (!InitializeThreadPool(thred_pool_sett))
+    if(!InitializeThreadPool(thred_pool_sett))
     {
         CLOG_PROD("ERROR! Can't initialize thread pool!");
         return;
     }
 
     CHDDInfoSettings hdd_sett(xml_reader);
-    hdd_sett.ReadConfigurationFromFile( );
+    CLOG_TRACE_VAR_CREATION(hdd_sett);
+    hdd_sett.ReadConfigurationFromFile();
 
     if (InitializeLogicalDiscMonitoring(hdd_sett))
     {
         m_p_thread_pool->Enqueue([this] ( )
-                                 {
-                                     m_disks_monitor->StartMonitoringInfo( );
-                                 });
+        {
+            m_disks_monitor->StartMonitoringInfo( );
+        });
+
+
     }
     else
     {
@@ -91,14 +98,15 @@ void CService::RunServer( )
     }
 
     CProcessesInfoSettings process_sett(xml_reader);
-    process_sett.ReadConfigurationFromFile( );
+    CLOG_TRACE_VAR_CREATION(process_sett);
+    process_sett.ReadConfigurationFromFile();
 
     if (InitializeProcessesMonitoring(process_sett))
     {
         m_p_thread_pool->Enqueue([this] ( )
-                                 {
-                                     m_processes_monitor->StartMonitoringInfo( );
-                                 });
+        {
+            m_processes_monitor->StartMonitoringInfo( );
+        });
     }
     else
     {
@@ -107,26 +115,38 @@ void CService::RunServer( )
     }
 
     CServerSettings server_sett(xml_reader);
-    server_sett.ReadConfigurationFromFile( );
+    CLOG_TRACE_VAR_CREATION(server_sett);
+    server_sett.ReadConfigurationFromFile();
 
     if (!InitializeSockets(server_sett))
+    {
+        CLOG_PROD("ERROR! Can't create sockets!");
+        return;
+    }
+    CDataReceiver json_data(m_processes_json, m_disks_json);
+    CLOG_TRACE_VAR_CREATION(json_data);
+
+    if (!m_p_acceptor_socket->Initialize(std::move(m_p_thread_pool),
+        json_data, SOMAXCONN))
     {
         CLOG_PROD("ERROR! Can't initialize sockets!");
         return;
     }
 
-    m_p_acceptor_socket->StartServer( );
+    m_p_acceptor_socket->Execute( );
+    CLOG_DEBUG_END_FUNCTION();
 }
 
 bool CService::InitializeLogger(
     const std::string& path_to_log_file,
     ELogLevel level)
 {
+    //CLOG_DEBUG_START_FUNCTION();
     m_log_stream = std::make_unique<std::fstream>(
         path_to_log_file,
-        std::ios_base::out);
+        std::ios_base::app);
 
-    if (m_log_stream->is_open( ))
+    if (m_log_stream->is_open())
     {
         CLOG_START_CREATION( );
 
@@ -150,6 +170,7 @@ bool CService::InitializeLogger(
         CLOG_END_CREATION( );
         return true;
     }
+    //CLOG_DEBUG_END_FUNCTION();
     return false;
 }
 
@@ -169,14 +190,12 @@ bool CService::InitializeThreadPool(
 bool CService::InitializeLogicalDiscMonitoring(
     const CHDDInfoSettings& xml_settings)
 {
-
     CLOG_DEBUG_START_FUNCTION( );
     CHardwareStatusSpecification* specification = new
         CHardwareStatusSpecification(
-        std::chrono::duration<int>(30),
-        xml_settings.GetFileName( ),
-        Utils::DefineCountType(xml_settings.GetCountType( )));
-
+        std::chrono::duration<int>(xml_settings.GetPeriodTime()),
+        xml_settings.GetFileName(),
+        Utils::DefineCountType(xml_settings.GetCountType()));
     CLOG_TRACE_VAR_CREATION(specification);
     m_disks_monitor = std::make_unique<CLogicalDiskInfoMonitoring>(
         m_stop_event,
@@ -193,12 +212,10 @@ bool CService::InitializeProcessesMonitoring(
     const CProcessesInfoSettings& process_sett)
 {
     m_processes_monitor = std::make_unique<CProcessesInfoMonitoring>(
-        std::chrono::duration<int>(30),
-        process_sett.GetFileName( ),
-        Utils::DefineCountType(process_sett.GetCountType( )),
-        m_stop_event,
-        m_processes_json);
-
+        std::chrono::duration<int>(process_sett.GetPeriodTime()),
+        process_sett.GetFileName(),
+        Utils::DefineCountType(process_sett.GetCountType()),
+        m_stop_event, m_processes_json);
     CLOG_DEBUG_START_FUNCTION( );
     CLOG_TRACE_VAR_CREATION(m_processes_monitor);
     CLOG_DEBUG_END_FUNCTION( );
@@ -208,16 +225,9 @@ bool CService::InitializeProcessesMonitoring(
 bool CService::InitializeSockets(const CServerSettings& server_sett)
 {
     CLOG_DEBUG_START_FUNCTION( );
-    CDataReceiver json_data(m_processes_json, m_disks_json);
-    CLOG_TRACE_VAR_CREATION(json_data);
     m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(
-        server_sett.GetListenerPort( ),
-        server_sett.GetServerIpAddress( ),
-        m_stop_event, m_p_thread_pool,
-        false,
-        5,
-        std::move(json_data));
-
+        server_sett.GetListenerPort(), server_sett.GetServerIpAddress(),
+        true, 5, m_stop_event);
     CLOG_TRACE_VAR_CREATION(m_p_acceptor_socket);
 
     CLOG_DEBUG_END_FUNCTION( );
@@ -241,6 +251,39 @@ CService::CService(const ServiceParameters& parameters)
         0,
         0 }
 { }
+
+bool CService::GetModulePath(CString& module_path)
+{
+    bool success = true;
+
+    LPSTR path = module_path.GetBufferSetLength(MAX_PATH);
+
+    if (::GetModuleFileName(nullptr, path, MAX_PATH) == 0)
+    {
+        Utils::DisplayError("Failed to get module file name");
+        success = false;
+    }
+
+    module_path.ReleaseBuffer();
+    return success;
+}
+
+bool CService::EscapePath(CString& path)
+{
+    path.Remove('\"');
+    path = '\"' + path + '\"';
+    return true;
+}
+
+std::string CService::GetRelativePath()
+{
+    std::string executable = "BackEndMonitoringServer.exe";
+    CString module_path;
+    GetModulePath(module_path);
+    std::string path = static_cast<std::string>(module_path);
+    path = path.substr(0, path.length() - executable.length());
+    return path;
+}
 
 void CService::SetStatus(DWORD state, DWORD error_code, DWORD wait_hint)
 {
@@ -309,7 +352,7 @@ void CService::OnStart(DWORD, CHAR**)
                                 });
 }
 
-void CService::OnStop( )
+void CService::OnStop()
 {
     CLOG_DEBUG_START_FUNCTION( );
     m_stop_event.Set( );
@@ -334,7 +377,7 @@ void CService::Start(DWORD argc, CHAR** argv)
     SetStatus(SERVICE_RUNNING);
 }
 
-void CService::Stop( )
+void CService::Stop()
 {
     SetStatus(SERVICE_STOP_PENDING);
     OnStop( );
@@ -348,7 +391,7 @@ CService::CService()
     signal(SIGTERM, CService::HandleSignal);
 }
 
-void CService::HandleSignal(int signal) 
+void CService::HandleSignal(int signal)
 {
     if (signal == SIGTERM)
     {

@@ -2,142 +2,61 @@
 
 #include "CCommandLineHandler.h"
 #include "CServiceHandler.h"
-
+// Chupakabra: unused header
 #include "Utils.h"
 
+// Chupakabra: maybe const method of class
+Task CommandLineHandler::GetTask()
+{ return task; }
 
-
-CommandLineHandler::CommandLineHandler(int argc, char** argv)
-  : m_argc(argc),
-    m_argv(argv)
-{ }
-
-bool CommandLineHandler::Parse()
+// Chupakabra: maybe const method of class
+bool CommandLineHandler::Parse(int argc, char** argv)
 {
-#if defined(_WIN64) || defined(_WIN32)
+    bool success = false;
+    //CLOG_DEBUG_START_FUNCTION();
     ServiceParameters parameters;
+    //CLOG_TRACE_VAR_CREATION(parameters);
     auto service = std::make_unique<CService>(parameters);
+    //CLOG_TRACE_VAR_CREATION(service);
+    // Chupakabra: maybe const var
     auto service_handler = std::make_unique<ServiceHandler>(std::move(service));
-
-    bool success = true;
-
-    do
+    //CLOG_TRACE_VAR_CREATION(service_handler);
+    success = true;
+    //CLOG_TRACE_VAR_CREATION(success);
+  // Chupakabra: redundant parentheses in cases below
+    switch(argc)
     {
-        if (m_argc == 1)
+    case (1):
+        success = service_handler->Run();
+        //CLOG_TRACE_VAR_CREATION(success);
+        break;
+
+    case (2):
+        if (strcmp(argv[1], "install") == 0)
         {
-            success = service_handler->Run();
+            success = service_handler->Install();
+            //CLOG_TRACE_VAR_CREATION(success);
             break;
         }
 
-	    if (m_argc == 2)
+        if (strcmp(argv[1], "uninstall") == 0)
         {
-            if (strcmp(m_argv[1], "install") == 0)
-            {
-                success = service_handler->Install();
-                break;
-            }
-
-            if (strcmp(m_argv[1], "uninstall") == 0)
-            {
-                success = service_handler->Uninstall();
-                break;
-            }
-
-            if (strcmp(m_argv[1], "help") == 0)
-            {
-                Utils::DisplayHelp();
-                break;
-            }
-        }
-        
-        Utils::DisplayMessage("Invalid parameters");
-        Utils::DisplayHelp();
-    }
-    while (false);
-
-    return success;
-#elif __linux__
-    auto service = std::make_unique<CService>();
-    bool success = true;
-
-    do
-    {
-        if (m_argc == 1)
-        {
-            success = service->Run();
+            success = service_handler->Uninstall();
+            //CLOG_TRACE_VAR_CREATION(success);
             break;
         }
 
-        if (m_argc == 2)
+        if (strcmp(argv[1], "help") == 0)
         {
-            if (strcmp(m_argv[1], "help") == 0)
-            {
-                Utils::DisplayHelp();
-                break;
-            }
+            // Show help
+            break;
         }
-        
-        Utils::DisplayMessage("Invalid parameters");
-        Utils::DisplayHelp();
-    }
-    while (false);
 
+    default :
+        // Chupakabra: no-need break
+        // Show help
+        break;
+    }
+    //CLOG_DEBUG_END_FUNCTION();
     return success;
-#endif
 }
-
-// #include "stdafx.h"
-
-// #include "CCommandLineHandler.h"
-// #include "CServiceHandler.h"
-// // Chupakabra: unused header
-// #include "Utils.h"
-
-// // Chupakabra: maybe const method of class
-// Task CommandLineHandler::GetTask()
-// { return task; }
-
-// // Chupakabra: maybe const method of class
-// bool CommandLineHandler::Parse(int argc, char** argv)
-// {
-//     ServiceParameters parameters;
-//     auto service = std::make_unique<CService>(parameters);
-//     // Chupakabra: maybe const var
-//     auto service_handler = std::make_unique<ServiceHandler>(std::move(service));
-
-//     bool success = true;
-
-// 	// Chupakabra: redundant parentheses in cases below
-//     switch(argc)
-//     {
-//     case (1):
-//         success = service_handler->Run();
-//         break;
-
-//     case (2):
-//         if (strcmp(argv[1], "install") == 0)
-//         {
-//             success = service_handler->Install();
-//             break;
-//         }
-
-//         if (strcmp(argv[1], "uninstall") == 0)
-//         {
-//             success = service_handler->Uninstall();
-//             break;
-//         }
-
-//         if (strcmp(argv[1], "help") == 0)
-//         {
-//             // Show help
-//             break;
-//         }
-
-//     default :
-//         // Chupakabra: no-need break
-//         // Show help
-//         break;
-//     }
-
-//     return success;
-// }

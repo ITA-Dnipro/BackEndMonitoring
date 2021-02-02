@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 
 #include "CService.h"
@@ -8,28 +9,48 @@
 
 int main(int argc, char** argv)
 {
-    auto parser = std::make_unique<CommandLineHandler>(argc, argv);
-    bool success = parser->Parse();
-    const int return_code = success ? 0 : 1;
+  std::fstream stream(
+	CService::GetRelativePath() + "Log.txt",
+	std::ios_base::app);
 
-    return return_code;
+	CLOG_START_CREATION();
 
-    // auto parser = std::make_unique<CommandLineHandler>();
+	CLOG_SET_LOG_NAME("ServiceLogger");
+	CLOG_SET_LOG_LEVEL(ELogLevel::DEBUG_LEVEL);
+	CLOG_SET_LOG_CONFIG(
+		ELogConfig::LOG_NAME,
+		ELogConfig::LOG_LEVEL,
+		ELogConfig::CALL_TIME,
+		ELogConfig::THREAD_ID,
+		ELogConfig::FILE_NAME,
+		ELogConfig::FUNCTION_NAME,
+		ELogConfig::LINE_NUMBER,
+		ELogConfig::MESSAGE,
+		ELogConfig::PARAMS);
 
-    // bool success = parser->Parse(argc, argv);
+	CLOG_ADD_SAFE_STREAM(stream);
 
-    // if (!success)
-    // {
-    //     Utils::DisplayMessage("Invalid parameters");
-    //     return EXIT_FAILURE;
-    // }
+	CLOG_BUILD();
 
-    // const int return_code = success ? 0 : 1;
+  CLOG_END_CREATION();
 
-    // return return_code;
-    
-    // return 0;
-}
+  auto parser = std::make_unique<CommandLineHandler>();
+
+  bool success = parser->Parse(argc, argv);
+
+  if (!success)
+  {
+      Utils::DisplayMessage("Invalid parameters");
+      return EXIT_FAILURE;
+  }
+
+  const int return_code = success ? 0 : 1;
+
+  CLOG_DESTROY();
+
+  return return_code;
+};
+
 
 
 ////// FOR TESTING
