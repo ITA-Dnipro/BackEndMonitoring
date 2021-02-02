@@ -92,14 +92,25 @@ void CService::RunServer()
 
     if (!InitializeSockets(server_sett))
     {
+        CLOG_PROD("ERROR! Can't create sockets!");
+        return;
+    }
+    CDataReceiver json_data(m_processes_json, m_disks_json);
+    CLOG_TRACE_VAR_CREATION(json_data);
+
+    if (!m_p_acceptor_socket->Initialize(std::move(m_p_thread_pool), 
+        json_data, SOMAXCONN))
+    {
         CLOG_PROD("ERROR! Can't initialize sockets!");
         return;
     }
 
-    m_p_acceptor_socket->StartServer( );
+
+    m_p_acceptor_socket->Execute( );
 }
 
-bool CService::InitializeLogger(const std::string& path_to_log_file, ELogLevel level)
+bool CService::InitializeLogger(const std::string& path_to_log_file, 
+    ELogLevel level)
 {
     m_log_stream = std::make_unique<std::fstream>(path_to_log_file,
         std::ios_base::out);
@@ -170,11 +181,9 @@ bool CService::InitializeProcessesMonitoring(
 bool CService::InitializeSockets(const CServerSettings& server_sett)
 {
     CLOG_DEBUG_START_FUNCTION( );
-    CDataReceiver json_data(m_processes_json, m_disks_json);
-    CLOG_TRACE_VAR_CREATION(json_data);
     m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(
         server_sett.GetListenerPort(), server_sett.GetServerIpAddress(),
-        m_stop_event, m_p_thread_pool, false, 5, std::move(json_data));
+        true, 5, m_stop_event);
     CLOG_TRACE_VAR_CREATION(m_p_acceptor_socket);
 
     CLOG_DEBUG_END_FUNCTION( );

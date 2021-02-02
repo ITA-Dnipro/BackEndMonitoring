@@ -3,26 +3,24 @@
 
 CConnector::CConnector(const int port, const std::string& ip_address)
 {
-	m_socket_connector = InitSocketConnector(port, ip_address);
+	m_p_socket_connector = InitSocketConnector(port, ip_address);
 }
 
 bool CConnector::Connect()
 {
-	sockaddress current_address = m_socket_connector->GetSocketAddress();
+	sockaddress current_address = m_p_socket_connector->GetSocketAddress();
 
-	if (PlatformUtils::Connect(m_socket_connector->GetSocketFD(), 
+	if (PlatformUtils::Connect(m_p_socket_connector->GetSocketFD(), 
 		current_address))
     {
-		std::cout << "Success connection to the server" << std::endl;
 		return true;
     }
-	std::cout << "Fail connection to the server" << std::endl;
 	return false;
 }
 
 int CConnector::GetSocketFD() const
 {
-	return m_socket_connector->GetSocketFD();
+	return m_p_socket_connector->GetSocketFD();
 }
 
 std::unique_ptr<CSocket> CConnector::InitSocketConnector

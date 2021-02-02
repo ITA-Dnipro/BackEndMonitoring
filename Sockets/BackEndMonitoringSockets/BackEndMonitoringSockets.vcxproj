@@ -27,7 +27,7 @@
     <ClInclude Include="include\CConnector.h" />
     <ClInclude Include="include\CConnectorWrapper.h" />
     <ClInclude Include="include\CServiceConnectionHandler.h" />
-    <ClInclude Include="include\CServiceHandler.h" />
+    <ClInclude Include="include\EEventType.h" />
     <ClInclude Include="include\CSocket.h" />
     <ClInclude Include="include\CSocketWrapper.h" />
     <ClInclude Include="include\CDataReceiver.h" />

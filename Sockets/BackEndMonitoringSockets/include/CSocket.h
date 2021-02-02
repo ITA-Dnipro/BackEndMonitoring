@@ -4,9 +4,14 @@
 class CSocket : public CBaseSocket
 {
 public:
-	CSocket(const int port, const std::string& ip_address);
+	CSocket() = delete;
+	explicit CSocket(const int port, const std::string& ip_address);
+	CSocket(const CSocket&) = delete;
+	CSocket(CSocket&&) noexcept = delete;
+	~CSocket() noexcept = default;
+
 	bool CloseSocket();
-	sockaddress GetSocketAddress() const;
+	[[nodiscard]]  sockaddress GetSocketAddress() const;
 
 protected:
 	void SetSocketAddress(const int port, const std::string& ip_address);

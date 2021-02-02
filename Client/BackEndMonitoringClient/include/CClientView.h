@@ -10,13 +10,10 @@ public:
 	CClientView(CClientView&&) = delete;
 	~CClientView() noexcept = default;
 
-	void PrintMenu();
-	ERequestType GetRequest();
-	void PrintResult(const std::string& result);
-	void PrintError();
-	void PrintGoodbye();
-	void PrintClientConnected();
-	void PrintErrorConnection();
+	void PrintMenu() const;
+	ERequestType GetRequest() const;
+	void PrintMessage(const std::string& result) const;
+	void PrintError() const;
 
 private:
 	std::ostream& m_output_stream;
