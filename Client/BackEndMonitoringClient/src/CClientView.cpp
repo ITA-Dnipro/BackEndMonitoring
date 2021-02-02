@@ -10,18 +10,18 @@ CClientView::CClientView(std::ostream& out, std::istream& in) :
 	m_output_stream(out), m_input_stream(in)
 { }
 
-void CClientView::PrintMenu()
+void CClientView::PrintMenu() const
 {
 	m_output_stream << "\t\tMenu" << std::endl
 		<< "\t[drives data] : get current status about logical drives of the server\n"
 		<< "\t[processes data] - get current status about running processes of the server server\n"
 		<< "\t[all data] - get current status about the server\n"
-		<< "\t[cycle] - run 20 iterations of [all data]\n"
+		<< "\t[cycle] - run 100 iterations of [all data]\n"
 		<< "\t[exit] - exit" << std::endl;
 
 }
 
-ERequestType CClientView::GetRequest()
+ERequestType CClientView::GetRequest() const
 {
 	std::string choice_str;
 	std::getline(m_input_stream, choice_str);
@@ -54,18 +54,28 @@ ERequestType CClientView::GetRequest()
 	return ERequestType::ERR;
 }
 
-void CClientView::PrintResult(const std::string& result)
+void CClientView::PrintResult(const std::string& result) const
 {
 	m_output_stream << result << '\n';
 }
 
-void CClientView::PrintError()
+void CClientView::PrintError() const
 {
 	m_output_stream << "Sorry, you entered something wrong :(\n";
 }
 
-void CClientView::PrintGoodbye()
+void CClientView::PrintGoodbye() const
 {
 	m_output_stream << "Goodbye\n";
+}
+
+void CClientView::PrintClientConnected() const
+{
+	m_output_stream << "You have successfully connected to the server\n";
+}
+
+void CClientView::PrintErrorConnection() const
+{
+	m_output_stream << "Cannot connect to the server, exit\n";
 }
 

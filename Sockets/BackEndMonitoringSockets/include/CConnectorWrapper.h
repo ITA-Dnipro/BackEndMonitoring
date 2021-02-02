@@ -12,7 +12,10 @@ class CConnector;
 class CConnectorWrapper
 {
 public:
+	CConnectorWrapper() = delete;
 	CConnectorWrapper(int port, const std::string& ip_address);
+	CConnectorWrapper(const CConnectorWrapper&) = delete;
+	CConnectorWrapper(CConnectorWrapper&&) noexcept = delete;
 	~CConnectorWrapper();
 
 	bool MakeRequest(EClientRequestType r_type) const;
@@ -20,13 +23,13 @@ public:
 	void Exit();
 
 private:
-	std::unique_ptr<CConnector> InitConnector(int port, 
+	[[nodiscard]] std::unique_ptr<CConnector> InitConnector(int port,
 		const std::string& ip_address);
-	std::unique_ptr<CClientConnectionHandler> InitClientHandler();
+	[[nodiscard]] std::unique_ptr<CClientConnectionHandler> InitClientHandler();
 
 	std::string m_address;
-	std::unique_ptr<CClientConnectionHandler> m_client_handler;
-	std::unique_ptr<CConnector> m_connector;
+	std::unique_ptr<CClientConnectionHandler> m_p_client_handler;
+	std::unique_ptr<CConnector> m_p_connector;
 	CServerResponseHolder m_response_holder;
 	int m_port;
 };

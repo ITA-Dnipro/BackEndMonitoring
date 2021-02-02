@@ -174,7 +174,7 @@ namespace PlatformUtils
 	bool InitializeWinLibrary( )
 	{
 		WSADATA info;
-		if (WSAStartup(MAKEWORD(2, 1), &info) == SUCCESS)
+		if (WSAStartup(MAKEWORD(2, 1), &info) == c_success)
 		{
 			return true;
 		}
@@ -183,7 +183,7 @@ namespace PlatformUtils
 
 	bool FinalizeWinLibrary( )
 	{
-		if (WSACleanup( ) == SUCCESS)
+		if (WSACleanup( ) == c_success)
 		{
 			return true;
 		}
@@ -193,16 +193,16 @@ namespace PlatformUtils
 	bool BindSocket(int socket, sockaddress& current_address)
 	{
 		if (::bind(socket, (SOCKADDR*) &current_address,
-			sizeof(current_address)) == SUCCESS)
+			sizeof(current_address)) == c_success)
 		{
 			return true;
 		}
 		return false;
 	}
 
-	bool Listen(int socket)
+	bool Listen(int socket, const int connections)
 	{
-		if (listen(socket, SOMAXCONN) == SUCCESS)
+		if (listen(socket, connections) == c_success)
 		{
 			return true;
 		}
@@ -217,13 +217,13 @@ namespace PlatformUtils
 	bool Connect(int socket, sockaddress& current_address)
 	{
 		return connect(socket, (sockaddr*) &current_address,
-					   sizeof(current_address)) == SUCCESS;
+					   sizeof(current_address)) == c_success;
 	}
 
 	bool SetUnblockingSocket(int socket)
 	{
 		u_long iMode = 1UL;
-		if (ioctlsocket(socket, FIONBIO, &iMode) == SUCCESS)
+		if (ioctlsocket(socket, FIONBIO, &iMode) == c_success)
 		{
 			return true;
 		}
@@ -232,9 +232,9 @@ namespace PlatformUtils
 
 	bool CloseSocket(int socket)
 	{
-		if (socket != SOCKET_INVALID)
+		if (socket != c_invalid_socket)
 		{
-			if (closesocket(socket) != ERROR_SOCKET)
+			if (closesocket(socket) != c_error_socket)
 			{
 				return true;
 			}

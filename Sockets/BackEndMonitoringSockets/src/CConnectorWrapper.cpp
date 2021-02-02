@@ -4,20 +4,19 @@
 #include "CConnector.h"
 #include "PlatformUtils.h"
 #include "CLogger/include/Log.h"
-
 #include "CConnectorWrapper.h"
 
 CConnectorWrapper::CConnectorWrapper(int port, const std::string& ip_address)
 	: m_port(port), m_address(ip_address)
 { 
 	PlatformUtils::InitializeWinLibrary();
-	m_client_handler = InitClientHandler();
-	m_connector = InitConnector(m_port, m_address);
+	m_p_client_handler = InitClientHandler();
+	m_p_connector = InitConnector(m_port, m_address);
 }
 
 CConnectorWrapper::~CConnectorWrapper()
 {
-	PlatformUtils::CloseSocket(m_connector->GetSocketFD());
+	PlatformUtils::CloseSocket(m_p_connector->GetSocketFD());
 	PlatformUtils::FinalizeWinLibrary();
 }
 
@@ -37,18 +36,18 @@ bool CConnectorWrapper::MakeRequest(EClientRequestType r_type) const
 		request_event = EventType::REQUEST_PROCESS_DATA;
 	}
 
-	return m_client_handler->HandleEvent(m_connector->GetSocketFD(),
+	return m_p_client_handler->HandleEvent(m_p_connector->GetSocketFD(),
 		request_event);
 }
 
 bool CConnectorWrapper::ConnectToServer() const
 {
-	return m_connector->Connect();
+	return m_p_connector->Connect();
 }
 
 void CConnectorWrapper::Exit()
 {
-	m_client_handler->HandleEvent(m_connector->GetSocketFD(),
+	m_p_client_handler->HandleEvent(m_p_connector->GetSocketFD(),
 		EventType::CLOSE_EVENT);
 }
 

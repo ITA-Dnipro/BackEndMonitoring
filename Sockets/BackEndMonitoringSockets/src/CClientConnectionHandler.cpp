@@ -3,7 +3,7 @@
 
 CClientConnectionHandler::CClientConnectionHandler() 
 {
-	m_client_stream = InitClientStream();
+	m_p_client_stream = InitClientStream();
 }
 
 bool CClientConnectionHandler::HandleEvent(const int socket_fd, 
@@ -51,7 +51,7 @@ bool CClientConnectionHandler::HandleRequestEvent(const int socket_fd,
 	default:
 		return false;
 	}
-	if (m_client_stream->Send(socket_fd, request_str) == false)
+	if (m_p_client_stream->Send(socket_fd, request_str) == false)
 	{
 		return false;
 	}
@@ -61,7 +61,7 @@ bool CClientConnectionHandler::HandleRequestEvent(const int socket_fd,
 
 bool CClientConnectionHandler::HandleResponseEvent(const int socket_fd)
 {
-	std::string message = m_client_stream->Receive(socket_fd);
+	std::string message = m_p_client_stream->Receive(socket_fd);
 	if (message == "-1")
 	{
 		std::cout << "Error connection to the server, exit" << '\n';
@@ -73,12 +73,12 @@ bool CClientConnectionHandler::HandleResponseEvent(const int socket_fd)
 
 bool CClientConnectionHandler::HandleExitEvent(const int socket_fd)
 {
-	m_client_stream->Send(socket_fd, "Exit");
+	m_p_client_stream->Send(socket_fd, "Exit");
 
 	while (true)
 	{
 		std::cout << "Waiting for disconnection" << std::endl;
-		if (m_client_stream->Receive(socket_fd) == "Disconnect")
+		if (m_p_client_stream->Receive(socket_fd) == "Disconnect")
 		{
 			return true;
 		}

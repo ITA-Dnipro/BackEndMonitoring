@@ -7,16 +7,19 @@
 class CClientConnectionHandler : public CServiceHandler
 {
 public:
-	CClientConnectionHandler();
+	explicit CClientConnectionHandler();
+	CClientConnectionHandler(const CClientConnectionHandler&) = delete;
+	CClientConnectionHandler(CClientConnectionHandler&&) noexcept = delete;
+	~CClientConnectionHandler() noexcept = default;
+
 	bool HandleEvent(const int socket, EventType type) override;
 
 private:
-	bool HandleRequestEvent(const int socket,
-							EventType type);
+	bool HandleRequestEvent(const int socket, EventType type);
 	bool HandleResponseEvent(const int socket);
 	bool HandleExitEvent(const int socket);
-	std::unique_ptr<CSocketWrapper> InitClientStream();
+	[[nodiscard]] std::unique_ptr<CSocketWrapper> InitClientStream();
 
-	std::unique_ptr<CSocketWrapper> m_client_stream;
+	std::unique_ptr<CSocketWrapper> m_p_client_stream;
 	CServerResponseHolder m_response_holder;
 };

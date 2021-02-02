@@ -7,13 +7,10 @@
 #include "CLogger/include/Log.h"
 
 CAcceptorWrapper::CAcceptorWrapper(int port, const std::string& ip_address,
-	CEvent& event, std::shared_ptr<CThreadPool> pool,
-	bool is_blocked, int socket_timeout, CDataReceiver json_data) :
-	m_event(event), m_is_socket_blocked(is_blocked),
-	m_socket_timeout(socket_timeout), m_pool(pool)
-{
-	Initialize(port, ip_address, json_data);
-}
+	bool is_blocked, int socket_timeout, CEvent& event) :
+	m_port(port), m_ip_address(ip_address), m_event(event),
+	m_is_socket_blocked(is_blocked), m_socket_timeout(socket_timeout)
+{ }
 
 CAcceptorWrapper::~CAcceptorWrapper()
 {
@@ -22,58 +19,61 @@ CAcceptorWrapper::~CAcceptorWrapper()
 	PlatformUtils::FinalizeWinLibrary();
 }
 
-void CAcceptorWrapper::StartServer()
+bool CAcceptorWrapper::Initialize(std::shared_ptr<CThreadPool> pool, 
+	CDataReceiver& json_data, const int connections)
 {
 	CLOG_DEBUG_START_FUNCTION();
-	CLOG_DEBUG(std::string(10u, '*') + " START SERVER " + std::string(10u, '*'));
-
-	if (m_is_socket_blocked)
-	{
-		CLOG_DEBUG("Starting handling blocking events");
-		HandleBlockingEvents();
-	}
-	else
-	{
-		CLOG_DEBUG("Starting handling non blocking events");
-		HandleNonBlockingEvents();
-	}
-	CLOG_DEBUG_END_FUNCTION();
-}
-
-bool CAcceptorWrapper::StopSocket()
-{
-	CLOG_DEBUG_START_FUNCTION();
-	CLOG_DEBUG("Server socket was closed");
-	CLOG_DEBUG_END_FUNCTION();
-	return m_server_acceptor->CloseSocket();
-}
-
-void CAcceptorWrapper::Initialize(int port, const std::string& ip_address,
-	CDataReceiver& json_data)
-{
-	CLOG_DEBUG_START_FUNCTION();
-	if(PlatformUtils::InitializeWinLibrary())
+	m_p_pool = pool;
+	if (PlatformUtils::InitializeWinLibrary())
 	{
 		CLOG_DEBUG("Windows library start working on Windows (default true for linux)");
 	}
 	else
 	{
 		CLOG_DEBUG("Cannnot initialize windows library!");
+		return false;
 	}
-	InitAcceptor(port, ip_address);
+	InitAcceptor(m_port, m_ip_address);
 	InitSocketWrapper();
 	InitServiceHandler(json_data);
+
+	if (!m_p_server_acceptor->Initialize(m_ip_address, m_port, connections))
+	{
+		return false;
+	}
+
 	CLOG_DEBUG_END_FUNCTION();
+
+	return true;
 }
 
+bool CAcceptorWrapper::Execute()
+{
+	bool result = false;
+	CLOG_DEBUG_START_FUNCTION();
+	CLOG_PROD(std::string(10u, '*') + " START SERVER " + std::string(10u, '*'));
+
+	result = HandleEvents();
+	CLOG_DEBUG_END_FUNCTION();
+	return result;
+}
+
+bool CAcceptorWrapper::StopSocket()
+{
+	CLOG_DEBUG_START_FUNCTION();
+	CLOG_DEBUG("Server socket was closed");
+	CLOG_PROD(std::string(10u, '*') + " STOP SERVER " + std::string(10u, '*'));
+	CLOG_DEBUG_END_FUNCTION();
+	return m_p_server_acceptor->CloseSocket();
+}
 
 void CAcceptorWrapper::InitAcceptor(int port, 
 	const std::string& address)
 {
 	CLOG_DEBUG_START_FUNCTION();
-	m_server_acceptor = std::make_unique<CAcceptor>(port, address,
-		m_is_socket_blocked);
-	CLOG_TRACE_VAR_CREATION(m_server_acceptor);
+	m_p_server_acceptor = std::make_unique<CAcceptor>(m_is_socket_blocked, 
+		m_socket_timeout, m_event);
+	CLOG_TRACE_VAR_CREATION(m_p_server_acceptor);
 	CLOG_DEBUG_END_FUNCTION();
 }
 
@@ -81,71 +81,54 @@ void CAcceptorWrapper::InitServiceHandler(
 		CDataReceiver& json_data)
 {
 	CLOG_DEBUG_START_FUNCTION();
-	m_service_handler = std::make_unique<CServiceConnectionHandler>(std::move(json_data));
-	CLOG_TRACE_VAR_CREATION(m_service_handler);
+	m_p_service_handler = 
+		std::make_unique<CServiceConnectionHandler>(std::move(json_data));
+	CLOG_TRACE_VAR_CREATION(m_p_service_handler);
 	CLOG_DEBUG_END_FUNCTION();
 }
 
 void CAcceptorWrapper::InitSocketWrapper()
 {
 	CLOG_DEBUG_START_FUNCTION();
-	m_stream = std::make_unique<CSocketWrapper>();
-	CLOG_TRACE_VAR_CREATION(m_stream);
+	m_p_stream = std::make_unique<CSocketWrapper>();
+	CLOG_TRACE_VAR_CREATION(m_p_stream);
 	CLOG_DEBUG_END_FUNCTION();
 }
 
-void CAcceptorWrapper::HandleNonBlockingEvents()
+bool CAcceptorWrapper::HandleEvents()
 {
 	CLOG_DEBUG_START_FUNCTION();
-	int max_sd;
-	fd_set read_fds;
-	int socket_fd = ERROR_SOCKET;
-	timeval time_out;
-	time_out.tv_sec = m_socket_timeout;
-
+	int socket_fd = c_error_socket;
 	while (!m_event.WaitFor(std::chrono::nanoseconds(1000)))
 	{
-		FD_ZERO(&read_fds);
-
-		FD_SET(m_server_acceptor->GetHandle(), &read_fds);
-		max_sd = m_server_acceptor->GetHandle();
-
-		select(max_sd + 1, &read_fds, NULL, NULL, &time_out);
-
-		if (FD_ISSET(m_server_acceptor->GetHandle(), &read_fds))
+		if (m_p_server_acceptor->Accept(socket_fd))
 		{
+			CLOG_DEBUG_WITH_PARAMS("New client with socket desciptor ",
+				socket_fd, " was accepted");
 			AddClientToThread(socket_fd);
+		}
+		else
+		{
+			if (m_p_server_acceptor->IsTimeOutWithoutConnections())
+			{
+				CLOG_TRACE("Connection timeout for the client");
+			}
 		}
 	}
 	CLOG_DEBUG_END_FUNCTION();
+	return true;
 }
 
-void CAcceptorWrapper::HandleBlockingEvents()
+void CAcceptorWrapper::AddClientToThread(int socket_fd)
 {
-	CLOG_DEBUG_START_FUNCTION();
-	int socket_fd = ERROR_SOCKET;
-	while (!m_event.WaitFor(std::chrono::nanoseconds(1000)))
-	{
-		AddClientToThread(socket_fd);
-	}
-	CLOG_DEBUG_END_FUNCTION();
-}
-
-void CAcceptorWrapper::AddClientToThread(int& socket_fd)
-{
-	CLOG_DEBUG_START_FUNCTION();
-	if ((socket_fd = m_server_acceptor->GetConnectedFD()) > 0)
-	{
-		CLOG_DEBUG_WITH_PARAMS("New client with socket desciptor ", socket_fd, 
-			" was accepted");
-		m_pool->Enqueue([this, socket_fd]()
+	m_p_pool->Enqueue([this, socket_fd]()
+		{
+			CLOG_DEBUG("New client was added to the thread");
+			while (
+				m_p_service_handler->HandleEvent(socket_fd,
+					EventType::REQUEST_DATA) &&
+				!m_event.WaitFor(std::chrono::nanoseconds(1000)))
 			{
-				while (
-					m_service_handler->HandleEvent(socket_fd,
-						EventType::REQUEST_DATA) && 
-						!m_event.WaitFor(std::chrono::nanoseconds(1000)))
-				{ }
-			});
-	}
-	CLOG_DEBUG_END_FUNCTION();
+			}
+		});
 }
