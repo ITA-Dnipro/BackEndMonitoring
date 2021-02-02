@@ -2,20 +2,25 @@ cmake_minimum_required(VERSION 3.17)
 project(CLogger)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
+
+if(linux)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
+endif()
 
 link_directories(${CMAKE_BINARY_DIR}/CLogger)
+link_directories(.)
 link_directories(${CMAKE_BINARY_DIR}/Sockets)
 
 include_directories(BackEndMonitoringServer/include
 	${CMAKE_SOURCE_DIR}
 	${CMAKE_SOURCE_DIR}/CLogger/include
 	${CMAKE_SOURCE_DIR}/Sockets/BackEndMonitoringSockets/include
-        ${CMAKE_SOURCE_DIR}/3rdParty/include
-        ${CMAKE_SOURCE_DIR}/utils/include)
+	${CMAKE_SOURCE_DIR}/3rdParty/include
+    ${CMAKE_SOURCE_DIR}/utils/include)
 
-add_executable(Server 
+add_executable(Server
+	${UTILS}
 	${CMAKE_SOURCE_DIR}/3rdParty/include/pugixml.cpp
 	${CMAKE_SOURCE_DIR}/utils/include/Utils.cpp
 	${CMAKE_SOURCE_DIR}/utils/include/CStringCleaner.cpp
@@ -35,21 +40,19 @@ add_executable(Server
 	${CMAKE_SOURCE_DIR}/utils/include/CThreadPool.cpp
 	${CMAKE_SOURCE_DIR}/utils/include/CJSONFormatter.cpp
 	${CMAKE_SOURCE_DIR}/utils/include/CJSONFormatSaver.cpp
-	${CMAKE_SOURCE_DIR}/utils/include/LinuxUtils.cpp
 	BackEndMonitoringServer/src/CCommandLineHandler.cpp
-        BackEndMonitoringServer/src/CContainerOfLogicalDisk.cpp
-        BackEndMonitoringServer/src/CContainerOfProcesses.cpp
-        BackEndMonitoringServer/src/CHardwareStatusSpecification.cpp
-        BackEndMonitoringServer/src/CJSONFormatterLogicalDisk.cpp
-        BackEndMonitoringServer/src/CJSONFormatterProcess.cpp
-        BackEndMonitoringServer/src/CLogicalDiskInfo.cpp
-        BackEndMonitoringServer/src/CLogicalDiskInfoMonitoring.cpp
-        BackEndMonitoringServer/src/CService.cpp
-        BackEndMonitoringServer/src/CServiceHandler.cpp
-        BackEndMonitoringServer/src/CProcessInfo.cpp
-        BackEndMonitoringServer/src/BackEndMonitoringServer.cpp
-        BackEndMonitoringServer/src/CProcessesInfoMonitoring.cpp        
-        )
+	BackEndMonitoringServer/src/CContainerOfLogicalDisk.cpp
+	BackEndMonitoringServer/src/CContainerOfProcesses.cpp
+	BackEndMonitoringServer/src/CHardwareStatusSpecification.cpp
+	BackEndMonitoringServer/src/CJSONFormatterLogicalDisk.cpp
+	BackEndMonitoringServer/src/CJSONFormatterProcess.cpp
+	BackEndMonitoringServer/src/CLogicalDiskInfo.cpp
+	BackEndMonitoringServer/src/CLogicalDiskInfoMonitoring.cpp
+	BackEndMonitoringServer/src/CService.cpp
+	BackEndMonitoringServer/src/CServiceHandler.cpp
+	BackEndMonitoringServer/src/CProcessInfo.cpp
+	BackEndMonitoringServer/src/BackEndMonitoringServer.cpp
+	BackEndMonitoringServer/src/CProcessesInfoMonitoring.cpp)
 
 target_link_libraries(Server CLogger)
 target_link_libraries(Server Sockets)
