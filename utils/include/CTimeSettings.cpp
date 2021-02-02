@@ -3,7 +3,7 @@
 #include "CLogger/include/Log.h"
 
 CTimeSettings::CTimeSettings(std::shared_ptr<CDataReader> p_data_reader) :
-	m_p_data_reader_(p_data_reader), m_period_time_(30)
+	CSettings(p_data_reader), m_period_time_(30)
 {
 }
 

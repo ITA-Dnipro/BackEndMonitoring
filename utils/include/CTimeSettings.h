@@ -1,7 +1,8 @@
 #pragma once
 #include "CDataReader.h"
+#include "CSettings.h"
 
-class CTimeSettings
+class CTimeSettings : public CSettings
 {
 public:
 	CTimeSettings() = delete;
@@ -9,13 +10,12 @@ public:
 	CTimeSettings(CTimeSettings&&) = delete;
 
 	explicit CTimeSettings(std::shared_ptr<CDataReader> p_data_reader);
-	~CTimeSettings() = default;
+	~CTimeSettings() override = default;
 
-	void ReadConfigurationFromFile();
+	void ReadConfigurationFromFile() override;
 
 	[[nodiscard]] int GetPeriodTime() const;
 
 private:
-	std::shared_ptr<CDataReader> m_p_data_reader_;
 	int m_period_time_;
 };

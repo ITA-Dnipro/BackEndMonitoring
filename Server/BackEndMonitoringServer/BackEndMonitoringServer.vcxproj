@@ -59,8 +59,7 @@
   <ImportGroup Label="Shared">
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project
-            ="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\PropertySheets\DebugWin32.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -182,9 +181,11 @@
     <ClInclude Include="..\..\utils\include\CLoggingSettings.h" />
     <ClInclude Include="..\..\utils\include\CProcessesInfoSettings.h" />
     <ClInclude Include="..\..\utils\include\CServerSettings.h" />
+    <ClInclude Include="..\..\utils\include\CSettings.h" />
     <ClInclude Include="..\..\utils\include\CThreadPoolSettings.h" />
     <ClInclude Include="..\..\utils\include\CTimeSettings.h" />
     <ClInclude Include="..\..\utils\include\CXMLDataReader.h" />
+    <ClInclude Include="..\..\utils\include\ISettings.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="include\CCommandLineHandler.h" />
     <ClInclude Include="include\CContainerOfLogicalDisk.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp" />
     <ClCompile Include="..\..\utils\include\CNumericTypesParser.cpp" />
     <ClCompile Include="..\..\utils\include\CReadFileWrapper.cpp" />
+    <ClCompile Include="..\..\utils\include\CSettings.cpp" />
     <ClCompile Include="..\..\utils\include\LinuxUtils.cpp" />
     <ClCompile Include="..\..\utils\include\StrToNumWrapper.cpp" />
     <ClCompile Include="..\..\utils\include\CLoggingSettings.cpp" />

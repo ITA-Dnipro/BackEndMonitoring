@@ -1,7 +1,8 @@
 #pragma once
 #include "CDataReader.h"
+#include "CSettings.h"
 
-class CHDDInfoSettings
+class CHDDInfoSettings : public CSettings
 {
 public:
 	CHDDInfoSettings() = delete;
@@ -10,17 +11,18 @@ public:
 	
 	explicit CHDDInfoSettings(std::shared_ptr<CDataReader> p_data_reader);
 	
-	~CHDDInfoSettings() = default;
+	~CHDDInfoSettings() override = default;
 
-	void ReadConfigurationFromFile();
+	void ReadConfigurationFromFile() override;
 
 	[[nodiscard]] std::string GetFileName() const;
 	[[nodiscard]] bool GetCheckHdd() const;
 	[[nodiscard]] int GetCountType () const;
+	[[nodiscard]] int GetPeriodTime() const;
 
 private:
-	std::shared_ptr<CDataReader> m_p_data_reader_;
 	std::string m_file_name_;
 	bool m_check_hdd_;
 	int m_count_type_;
+	int m_period_time_;
 };

@@ -3,7 +3,7 @@
 #include "CLogger/include/Log.h"
 
 CThreadPoolSettings::CThreadPoolSettings(std::shared_ptr<CDataReader> p_data_reader) :
-	m_p_data_reader_(p_data_reader), m_max_working_threads_(10)
+	CSettings(p_data_reader), m_max_working_threads_(10)
 {
 
 }
