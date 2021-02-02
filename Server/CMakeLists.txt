@@ -3,10 +3,10 @@ project(CLogger)
 
 set(CMAKE_CXX_STANDARD 17)
 
-if(linux)
+if(UNIX)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
-endif()
+endif(UNIX)
 
 link_directories(${CMAKE_BINARY_DIR}/CLogger)
 link_directories(.)
