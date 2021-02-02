@@ -1,9 +1,5 @@
 #pragma once
 
-#if defined(_WIN64) || defined(_WIN32)
-#include <atlstr.h>
-#endif
-
 #include "CThreadSafeVariable.h"
 #include "CEvent.h"
 #include "CAcceptorWrapper.h"
@@ -35,6 +31,7 @@ struct ServiceParameters
     DWORD err_ctrl_type = SERVICE_ERROR_NORMAL;
     DWORD accepted_cmds = SERVICE_ACCEPT_STOP;
 };
+
 #endif
 
 class CService
@@ -52,16 +49,16 @@ public:
 
     explicit CService(const ServiceParameters& parameters);
 
-    const CString& GetName() const;
-    const CString& GetDisplayName() const;
-    const DWORD GetStartType() const;
-    const DWORD GetErrorControlType() const;
+    const CString& GetName( ) const;
+    const CString& GetDisplayName( ) const;
+    const DWORD GetStartType( ) const;
+    const DWORD GetErrorControlType( ) const;
 
-    #elif __linux__
+#elif __linux__
 
-    CService();
+    CService( );
 
-    #endif
+#endif
 
 private:
     bool InitializeLogger(const std::string& path_to_log_file, ELogLevel level);
@@ -74,9 +71,9 @@ private:
     #if defined(_WIN64) || defined(_WIN32)
 
     static DWORD WINAPI ServiceCtrlHandler(
-        DWORD control_code, 
+        DWORD control_code,
         DWORD event_type,
-        void* event_data, 
+        void* event_data,
         void* context);
 
     static void WINAPI SvcMain(DWORD argc, CHAR** argv);
@@ -87,17 +84,17 @@ private:
         DWORD wait_hint = 0);
 
     void Start(DWORD argc, CHAR** argv);
-    void Stop();
+    void Stop( );
     void OnStart(DWORD, CHAR**);
-    void OnStop();
+    void OnStop( );
 
-    #elif __linux__
+#elif __linux__
 
     static void HandleSignal(int signal);
 
-    #endif
+#endif
 
-    void RunServer();
+    void RunServer( );
 
 private:
     static CService* m_p_service;

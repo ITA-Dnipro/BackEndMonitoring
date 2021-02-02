@@ -1,9 +1,11 @@
-#include "Server/BackEndMonitoringServer/include/stdafx.h"
+#include "stdafx.h"
 
 #include "CCommandLineHandler.h"
 #include "CServiceHandler.h"
 
 #include "Utils.h"
+
+
 
 CommandLineHandler::CommandLineHandler(int argc, char** argv)
   : m_argc(argc),
@@ -12,11 +14,10 @@ CommandLineHandler::CommandLineHandler(int argc, char** argv)
 
 bool CommandLineHandler::Parse()
 {
-#if defined(_WIN32) || defined(_WIN64)
-	ServiceParameters parameters;
+#if defined(_WIN64) || defined(_WIN32)
+    ServiceParameters parameters;
     auto service = std::make_unique<CService>(parameters);
-    auto service_handler = std::make_unique<ServiceHandler>(std::move
-    		(service));
+    auto service_handler = std::make_unique<ServiceHandler>(std::move(service));
 
     bool success = true;
 

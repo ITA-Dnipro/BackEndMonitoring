@@ -1,1 +1,1 @@
-#include "Server/BackEndMonitoringServer/include/stdafx.h"
+#include "stdafx.h"

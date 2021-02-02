@@ -1,7 +1,7 @@
-#include "Sockets/BackEndMonitoringSockets/include/stdafx.h"
+#include "stdafx.h"
 
 #include "CSocketWrapper.h"
-#include "Log.h"
+#include "CLogger/include/Log.h"
 
 CSocketWrapper::CSocketWrapper()
 { }

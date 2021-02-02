@@ -1,4 +1,4 @@
-#include "../include/stdafx.h"
+#include "stdafx.h"
 
 #include "CLogger/include/Log.h"
 #include "Sockets/BackEndMonitoringSockets/include/CConnectorWrapper.h"

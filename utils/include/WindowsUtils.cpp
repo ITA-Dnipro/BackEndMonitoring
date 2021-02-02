@@ -1,11 +1,13 @@
-#include "Server/BackEndMonitoringServer/include/stdafx.h"
+#include "stdafx.h"
 
 #if defined(_WIN64) || defined(_WIN32)
 
 #include "Utils.h"
+
 #include "PlatformUtils.h"
 
 #pragma warning(disable : 6385)
+
 
 CBaseSocket::CBaseSocket( )
 {
@@ -38,8 +40,7 @@ namespace PlatformUtils
 		DWORD cb = m_max_process_count * sizeof(DWORD);
 		DWORD bytes_returned = 0;
 
-		bool success = (EnumProcesses(p_process_ids.get(), cb,
-				&bytes_returned) != 0);
+		bool success = (EnumProcesses(p_process_ids.get(), cb, &bytes_returned) != 0);
 		if (success)
 		{
 			const int size = bytes_returned / sizeof(DWORD);

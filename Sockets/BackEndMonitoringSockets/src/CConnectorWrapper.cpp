@@ -1,9 +1,9 @@
-#include "Sockets/BackEndMonitoringSockets/include/stdafx.h"
+#include "stdafx.h"
 
 #include "CClientConnectionHandler.h"
 #include "CConnector.h"
 #include "PlatformUtils.h"
-#include "Log.h"
+#include "CLogger/include/Log.h"
 
 #include "CConnectorWrapper.h"
 

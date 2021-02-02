@@ -3,11 +3,8 @@ project(CLogger)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:preprocessor")
-#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /Zc:preprocessor")
-
-include_directories(${CMAKE_SOURCE_DIR}
-        include
+include_directories(include
+	${CMAKE_SOURCE_DIR}
         ${CMAKE_SOURCE_DIR}/3rdParty/include
         ${CMAKE_SOURCE_DIR}/utils/include)
 

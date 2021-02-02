@@ -1,9 +1,4 @@
 #pragma once
-
-#if defined(_WIN32) || defined(_WIN64)
-#include <atlalloc.h>
-#endif
-
 #include <vector>
 #include <string>
 

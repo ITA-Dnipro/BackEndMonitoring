@@ -1,16 +1,11 @@
-#include <cstring>
-#include <chrono>
-#include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <cmath>
+#include "stdafx.h"
 
-#include "Server/BackEndMonitoringServer/include/EMemoryConvertType.h"
+#include "EMemoryConvertType.h"
 
 #include "Utils.h"
 
 //in order to use ctime
-#pragma warning(disable : 4996)
+#pragma warning(disable:4996)
 
 std::vector<std::string> Utils::SplitIntoWords(const std::string& str,
                                                const char delimiter)
@@ -164,28 +159,28 @@ bool Utils::IsFileEmpty(std::ofstream& file)
 
 void Utils::DisplayError(const std::string& message)
 {
-	LPSTR error = NULL;
+    LPSTR error = NULL;
 
-	if (FormatMessage(
-			FORMAT_MESSAGE_ALLOCATE_BUFFER |
-			FORMAT_MESSAGE_FROM_SYSTEM |
-			FORMAT_MESSAGE_IGNORE_INSERTS,
-			NULL,
-			GetLastError(),
-			EN_US,
-			reinterpret_cast<LPSTR>(&error),
-			0,
-			NULL) == 0)
-	{
-		return;
-	}
+    if (FormatMessage(
+        FORMAT_MESSAGE_ALLOCATE_BUFFER |
+        FORMAT_MESSAGE_FROM_SYSTEM |
+        FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL,
+        GetLastError( ),
+        EN_US,
+        reinterpret_cast<LPSTR>(&error),
+        0,
+        NULL) == 0)
+    {
+        return;
+    }
 
-	std::cout << message << ". " << error;
-	LocalFree(error);
+    std::cout << message << ". " << error;
+    LocalFree(error);
 }
 #endif
 
-void Utils::DisplayHelp()
+void Utils::DisplayHelp( )
 {
 #if defined(_WIN64) || defined(_WIN32)
 	std::cout << "\nUsage:\n"

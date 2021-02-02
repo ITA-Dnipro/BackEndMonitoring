@@ -8,7 +8,10 @@
 #include <ws2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
 #include <Windows.h>
+using sockaddress = sockaddr_in;
+
 #elif __linux__
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -20,10 +23,9 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <sys/ioctl.h>
+using sockaddress = struct sockaddr_in;
 
 #endif
-
-using sockaddress = sockaddr_in;
 
 constexpr int ERROR_SOCKET = -1;
 constexpr int SOCKET_INVALID = 0;

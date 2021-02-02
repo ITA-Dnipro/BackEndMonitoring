@@ -1,10 +1,10 @@
-#include "Sockets/BackEndMonitoringSockets/include/stdafx.h"
+#include "stdafx.h"
 
 #include "CAcceptorWrapper.h"
 #include "CServiceConnectionHandler.h"
 #include "CEvent.h"
 #include "PlatformUtils.h"
-#include "Log.h"
+#include "CLogger/include/Log.h"
 
 CAcceptorWrapper::CAcceptorWrapper(int port, const std::string& ip_address,
 	CEvent& event, std::shared_ptr<CThreadPool> pool,

@@ -1,4 +1,4 @@
-#include "Server/BackEndMonitoringServer/include/stdafx.h"
+#include "stdafx.h"
 
 #include "CServiceHandler.h"
 #include "Utils.h"

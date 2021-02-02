@@ -1,4 +1,4 @@
-#include "Server/BackEndMonitoringServer/include/stdafx.h"
+#include "stdafx.h"
 
 #include "EMemoryConvertType.h"
 #include "CHardwareStatusSpecification.h"

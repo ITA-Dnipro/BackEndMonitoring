@@ -1,6 +1,6 @@
+#ifdef __linux__
 #include "stdafx.h"
 
-#ifdef __linux__
 #include <string>
 #include <memory>
 #include <vector>

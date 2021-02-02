@@ -1,4 +1,4 @@
-#include "Sockets/BackEndMonitoringSockets/include/stdafx.h"
+#include "stdafx.h"
 
 #include "CSocket.h"
 

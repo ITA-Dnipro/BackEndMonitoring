@@ -1,9 +1,9 @@
-#include "Sockets/BackEndMonitoringSockets/include/stdafx.h"
+#include "stdafx.h"
 
 #include "CAcceptor.h"
 #include "CServiceConnectionHandler.h"
 #include "CServiceHandler.h"
-#include "Log.h"
+#include "CLogger/include/Log.h"
 
 
 CAcceptor::CAcceptor(const int port, const std::string& ip_address, 

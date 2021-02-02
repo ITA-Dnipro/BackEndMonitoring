@@ -33,9 +33,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\stdafx.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="include\CCommandLineHandler.h">
       <Filter>Header files</Filter>
     </ClInclude>
@@ -117,6 +114,9 @@
     <ClInclude Include="..\..\utils\include\CComunicationSettings.h">
       <Filter>Utils\Settings Classes</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\utils\include\stdafx.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
@@ -189,9 +189,6 @@
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\utils\include\StrToNumWrapper.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\LinuxUtils.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\3rdParty\include\pugixml.cpp">

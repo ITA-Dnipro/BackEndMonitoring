@@ -1,4 +1,4 @@
-#include "Server/BackEndMonitoringServer/include/stdafx.h"
+#include "stdafx.h"
 
 #include "CProcessInfo.h"
 #include "PlatformUtils.h"
