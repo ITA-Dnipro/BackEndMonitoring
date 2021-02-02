@@ -48,9 +48,6 @@
     <ClInclude Include="include\CServiceConnectionHandler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
-    <ClInclude Include="include\CServiceHandler.h">
-      <Filter>Header Files\Handlers</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\utils\include\PlatformUtils.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
@@ -68,6 +65,9 @@
     </ClInclude>
     <ClInclude Include="include\EClientRequestType.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EEventType.h">
+      <Filter>Header Files\Handlers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -103,9 +103,6 @@
     </ClCompile>
     <ClCompile Include="..\..\utils\include\LinuxUtils.cpp">
       <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CServerResponseHolder.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CDataReceiver.cpp">
       <Filter>Source Files</Filter>

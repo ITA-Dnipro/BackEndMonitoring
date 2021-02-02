@@ -2,76 +2,101 @@
 #include "CClientConnectionHandler.h"
 
 CClientConnectionHandler::CClientConnectionHandler() 
+	: m_can_make_request(true)
 {
-	m_client_stream = InitClientStream();
+	m_p_client_stream = InitClientStream();
 }
 
 bool CClientConnectionHandler::HandleEvent(const int socket_fd, 
-	EventType type)
+	EEventType type, std::string& message)
 {
-
+	bool result = true;
 	switch (type) {
-	case EventType::REQUEST_ALL_DATA:
-		return HandleRequestEvent(socket_fd, EventType::REQUEST_ALL_DATA);
-	case EventType::REQUEST_DISK_DATA:
-		return HandleRequestEvent(socket_fd, EventType::REQUEST_DISK_DATA);
-	case EventType::REQUEST_PROCESS_DATA:
-		return HandleRequestEvent(socket_fd, EventType::REQUEST_PROCESS_DATA);
-	case EventType::CLOSE_EVENT:
-		HandleExitEvent(socket_fd);
-		return false;
+	case EEventType::REQUEST_ALL_DATA:
+		result = HandleRequestEvent(socket_fd, EEventType::REQUEST_ALL_DATA, 
+			message);
+		break;
+	case EEventType::REQUEST_DISK_DATA:
+		result = HandleRequestEvent(socket_fd, EEventType::REQUEST_DISK_DATA, 
+			message);
+		break;
+	case EEventType::REQUEST_PROCESS_DATA:
+		result = HandleRequestEvent(socket_fd, EEventType::REQUEST_PROCESS_DATA, 
+			message);
+		break;
+	case EEventType::CLOSE_EVENT:
+		if (HandleExitEvent(socket_fd, message) == true)
+		{
+			result = false;
+		}
+		break;
 	default:
-		return false;
+		result = false;
+		break;
 	}
-	return true;
+
+	return result;
 }
 
 bool CClientConnectionHandler::HandleRequestEvent(const int socket_fd, 
-												  EventType type)
+	EEventType type, std::string& message)
 {
 	std::string request_str;
 	switch (type) {
-	case EventType::REQUEST_ALL_DATA:
+	case EEventType::REQUEST_ALL_DATA:
 		request_str = "ALL_DATA";
 		break;
-	case EventType::REQUEST_DISK_DATA:
+	case EEventType::REQUEST_DISK_DATA:
 		request_str = "DISK_DATA";
 		break;
-	case EventType::REQUEST_PROCESS_DATA:
+	case EEventType::REQUEST_PROCESS_DATA:
 		request_str = "PROCESS_DATA";
 		break;
 	default:
 		return false;
 	}
-	m_client_stream->Send(socket_fd, request_str);
-	return HandleResponseEvent(socket_fd);
-}
-
-bool CClientConnectionHandler::HandleResponseEvent(const int socket_fd)
-{
-	std::string message = m_client_stream->Receive(socket_fd);
-	if (message == "-1")
+	if (m_p_client_stream->Send(socket_fd, request_str) == false)
 	{
-		std::cout << "Error connection to the server, exit" << '\n';
 		return false;
 	}
-	std::cout << message << '\n';
-	return true;
+	m_can_make_request = false;
+	return HandleResponseEvent(socket_fd, message);
 }
 
-bool CClientConnectionHandler::HandleExitEvent(const int socket_fd)
+bool CClientConnectionHandler::HandleResponseEvent(const int socket_fd, 
+	std::string& message)
 {
-	m_client_stream->Send(socket_fd, "Exit");
+
+	message = m_p_client_stream->Receive(socket_fd);
+	if (message == "-1")
+	{
+		//std::cout << "Error connection to the server, exit" << '\n';
+		return false;
+	}
+	//std::cout << message << '\n';
+
+	return HandleDataReceivedEvent(socket_fd);
+}
+
+bool CClientConnectionHandler::HandleExitEvent(const int socket_fd, 
+	std::string& message)
+{
+	m_p_client_stream->Send(socket_fd, "Exit");
 
 	while (true)
 	{
-		std::cout << "Waiting for disconnection" << std::endl;
-		if (m_client_stream->Receive(socket_fd) == "Disconnect")
+		if (m_p_client_stream->Receive(socket_fd) == "Disconnect")
 		{
 			return true;
 		}
 	}
 	return false;
+}
+
+bool CClientConnectionHandler::HandleDataReceivedEvent(const int socket_fd)
+{
+	m_can_make_request = true;
+	return m_p_client_stream->Send(socket_fd, "DATA RECEIVED");
 }
 
 std::unique_ptr<CSocketWrapper> CClientConnectionHandler::InitClientStream()

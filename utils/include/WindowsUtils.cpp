@@ -75,7 +75,7 @@ namespace PlatformUtils
 	}
 
 	bool GetProcessTimes(unsigned PID, unsigned long long& system_time,
-						 unsigned long long& kernel_time, 
+						 unsigned long long& kernel_time,
 						 unsigned long long& user_time)
 	{
 		bool success = false;
@@ -190,7 +190,7 @@ namespace PlatformUtils
 				{
 					return false;
 				}
-				
+
 				all_disks_names.emplace_back(name_of_disk);
 
 				//go to the next driver
@@ -211,7 +211,7 @@ namespace PlatformUtils
 		CLOG_DEBUG_START_FUNCTION();
 		WSADATA info;
 		CLOG_TRACE_VAR_CREATION(info);
-		if (WSAStartup(MAKEWORD(2, 1), &info) == SUCCESS)
+		if (WSAStartup(MAKEWORD(2, 1), &info) == c_success)
 		{
 			return true;
 		}
@@ -222,7 +222,7 @@ namespace PlatformUtils
 	bool FinalizeWinLibrary( )
 	{
 		CLOG_DEBUG_START_FUNCTION();
-		if (WSACleanup( ) == SUCCESS)
+		if (WSACleanup( ) == c_success)
 		{
 			return true;
 		}
@@ -234,7 +234,7 @@ namespace PlatformUtils
 	{
 		CLOG_DEBUG_START_FUNCTION();
 		if (::bind(socket, (SOCKADDR*) &current_address,
-			sizeof(current_address)) == SUCCESS)
+			sizeof(current_address)) == c_success)
 		{
 			return true;
 		}
@@ -242,10 +242,10 @@ namespace PlatformUtils
 		return false;
 	}
 
-	bool Listen(int socket)
+	bool Listen(int socket, const int connections)
 	{
 		CLOG_DEBUG_START_FUNCTION();
-		if (listen(socket, SOMAXCONN) == SUCCESS)
+		if (listen(socket, connections) == c_success)
 		{
 			return true;
 		}
@@ -261,7 +261,7 @@ namespace PlatformUtils
 	bool Connect(int socket, sockaddress& current_address)
 	{
 		return connect(socket, (sockaddr*) &current_address,
-					   sizeof(current_address)) == SUCCESS;
+					   sizeof(current_address)) == c_success;
 	}
 
 	bool SetUnblockingSocket(int socket)
@@ -269,7 +269,7 @@ namespace PlatformUtils
 		CLOG_DEBUG_START_FUNCTION();
 		u_long iMode = 1UL;
 		CLOG_TRACE_VAR_CREATION(iMode);
-		if (ioctlsocket(socket, FIONBIO, &iMode) == SUCCESS)
+		if (ioctlsocket(socket, FIONBIO, &iMode) == c_success)
 		{
 			return true;
 		}
@@ -280,9 +280,9 @@ namespace PlatformUtils
 	bool CloseSocket(int socket)
 	{
 		CLOG_DEBUG_START_FUNCTION();
-		if (socket != SOCKET_INVALID)
+		if (socket != c_invalid_socket)
 		{
-			if (closesocket(socket) != ERROR_SOCKET)
+			if (closesocket(socket) != c_error_socket)
 			{
 				return true;
 			}
@@ -293,14 +293,11 @@ namespace PlatformUtils
 
 	int GetConnectionError(int socket_fd)
 	{
-		int error = 0;
-		socklen_t size = 0;
-		CLOG_DEBUG_START_FUNCTION();
-		size = sizeof(error);
-		CLOG_TRACE_VAR_CREATION(size);
-		CLOG_DEBUG_END_FUNCTION();
-		return getsockopt(socket_fd, SOL_SOCKET, SO_ERROR, (char*)&error, 
-			&size);
+		//int error = 0;
+		//socklen_t size = sizeof(error);
+		//return getsockopt(socket_fd, SOL_SOCKET, SO_ERROR, (char*)&error,
+		//	&size);
+		return WSAGetLastError();
 	}
 }
 
