@@ -11,6 +11,7 @@ public:
 	bool CanReceiveData(const int socket) const;
 
 private:
+	const size_t MAX_BUFFER_SIZE = 2000u;
 	const int CONNECTION_ERROR = -1;
 
 	std::string CreateHeader(const int size);

@@ -21,7 +21,7 @@ CConnectorWrapper::~CConnectorWrapper()
 	PlatformUtils::FinalizeWinLibrary();
 }
 
-std::string CConnectorWrapper::MakeRequest(EClientRequestType r_type) const
+bool CConnectorWrapper::MakeRequest(EClientRequestType r_type) const
 {
 	EventType request_event = EventType::REQUEST_ALL_DATA;
 	if( r_type == EClientRequestType::ALL_DATA)
@@ -36,20 +36,9 @@ std::string CConnectorWrapper::MakeRequest(EClientRequestType r_type) const
 	{
 		request_event = EventType::REQUEST_PROCESS_DATA;
 	}
-	else
-	{
-		return "";
-	}
-	while (true)	
-	{
-		if((m_client_handler->HandleEvent(m_connector->GetSocketFD(),
-			request_event)))
-		{
-			break;
-		}
-	}
 
-	return "";//m_response_holder.GetResponse();
+	return m_client_handler->HandleEvent(m_connector->GetSocketFD(),
+		request_event);
 }
 
 bool CConnectorWrapper::ConnectToServer() const

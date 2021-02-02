@@ -27,10 +27,6 @@ int CAcceptor::GetConnectedFD()
 
 int CAcceptor::GetHandle() const
 {
-	CLOG_DEBUG_START_FUNCTION();
-	CLOG_DEBUG_WITH_PARAMS("Return socket descriptor ", 
-		m_socket_acceptor->GetSocketFD());
-	CLOG_DEBUG_END_FUNCTION();
 	return m_socket_acceptor->GetSocketFD();
 }
 

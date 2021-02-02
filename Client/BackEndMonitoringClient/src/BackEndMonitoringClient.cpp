@@ -13,7 +13,7 @@ int main()
 	CClientView view(std::cout, std::cin);
 	CClient client(port, ip_address);
 	client.Connect();
-	
+	bool result = true;
 	ERequestType request;
 	do
 	{
@@ -25,18 +25,17 @@ int main()
 			view.PrintError();
 			break;
 		case ERequestType::ALL_DATA_CYCLE:
-			for (unsigned i = 0u; i < 20; ++i)
+			for (unsigned i = 0u; i < 100; ++i)
 			{
 				std::cout << "\n_________" << i << "_________\n";
-				view.PrintResult(client.MakeRequest(ERequestType::ALL_DATA));
-				Sleep(500);
+				result = client.MakeRequest(ERequestType::ALL_DATA);
 			}
 			break;
 		default:
-			view.PrintResult(client.MakeRequest(request));
+			result = client.MakeRequest(request);
 			break;
 		}
-	} while (request != ERequestType::EXIT);
+	} while (result && request != ERequestType::EXIT);
 	view.PrintGoodbye();
 	system("pause");
 }

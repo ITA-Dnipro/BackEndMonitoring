@@ -244,10 +244,11 @@ namespace PlatformUtils
 
 	int GetConnectionError(int socket_fd)
 	{
-		int error = 0;
-		socklen_t size = sizeof(error);
-		return getsockopt(socket_fd, SOL_SOCKET, SO_ERROR, (char*)&error, 
-			&size);
+		//int error = 0;
+		//socklen_t size = sizeof(error);
+		//return getsockopt(socket_fd, SOL_SOCKET, SO_ERROR, (char*)&error, 
+		//	&size);
+		return WSAGetLastError();
 	}
 }
 

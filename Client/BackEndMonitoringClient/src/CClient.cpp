@@ -24,34 +24,38 @@ CClient::~CClient()
 	CLOG_DESTROY();
 }
 
-std::string CClient::MakeRequest(ERequestType type)
+bool CClient::MakeRequest(ERequestType type)
 {
+	bool result = true;
 	if (is_connected)
 	{
 		switch (type)
 		{
 			case (ERequestType::PROCESSES_DATA):
 			{
-				return GetProcessesData();
+				result = RequestProcessesData();
+				break;
 			}
 			case (ERequestType::DISKS_DATA):
 			{
-				return GetDisksData();
+				result = RequestDisksData();
+				break;
 			}
 			case (ERequestType::ALL_DATA):
 			{
-				return GetAllData();
+				result = RequestAllData();
+				break;
 			}
 			case (ERequestType::EXIT):
 			{
 				m_connector->Exit();
-				return "Successfully disconnected!";
+				result = false;
+				break;
 			}
-			default:
-				return "Error";
+
 		}
 	}
-	return "Cannot connect to the server!";
+	return result;
 }
 
 void CClient::InitLogger()
@@ -79,17 +83,17 @@ std::unique_ptr<CConnectorWrapper> CClient::InitConnector()
 	return std::move(std::make_unique<CConnectorWrapper>(m_port, m_ip_address));
 }
 
-std::string CClient::GetProcessesData()
+bool CClient::RequestProcessesData()
 {
 	return m_connector->MakeRequest(EClientRequestType::PROCESSES_DATA);
 }
 
-std::string CClient::GetDisksData()
+bool CClient::RequestDisksData()
 {
 	return m_connector->MakeRequest(EClientRequestType::DISKS_DATA);
 }
 
-std::string CClient::GetAllData()
+bool CClient::RequestAllData()
 {
 	return m_connector->MakeRequest(EClientRequestType::ALL_DATA);
 }

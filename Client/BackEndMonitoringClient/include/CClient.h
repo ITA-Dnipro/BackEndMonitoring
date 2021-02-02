@@ -9,13 +9,13 @@ public:
 	CClient(int port, const std::string& ip_address);
 	bool Connect();
 	~CClient();
-	std::string MakeRequest(ERequestType type);
+	bool MakeRequest(ERequestType type);
 private:
 	void InitLogger();
 	std::unique_ptr<CConnectorWrapper> InitConnector();
-	std::string GetProcessesData();
-	std::string GetDisksData();
-	std::string GetAllData();
+	bool RequestProcessesData();
+	bool RequestDisksData();
+	bool RequestAllData();
 	std::unique_ptr<CConnectorWrapper> m_connector;
 	std::string m_ip_address;
 	int m_port;

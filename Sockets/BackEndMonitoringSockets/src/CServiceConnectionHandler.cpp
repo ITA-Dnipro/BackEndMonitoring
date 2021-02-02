@@ -61,16 +61,14 @@ bool CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
 		}
 		CLOG_TRACE_WITH_PARAMS("value can_continue = ", can_continue);
 	}
-	else
+
+	int error = 0;
+	if ((error = PlatformUtils::GetConnectionError(socket_fd)) == 10054)
 	{
-		int error = 0;
-		if ((error = PlatformUtils::GetConnectionError(socket_fd)) > 0)
-		{
-			CLOG_DEBUG_WITH_PARAMS("On the socket ", socket_fd, 
-				" has occured error ", error);
-			can_continue = false;
-			CLOG_TRACE_WITH_PARAMS("value can_continue = ", can_continue);
-		}
+		CLOG_DEBUG_WITH_PARAMS("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!On the socket ", socket_fd,
+			" has occured error ", error);
+		can_continue = false;
+		CLOG_TRACE_WITH_PARAMS("value can_continue = ", can_continue);
 	}
 	return can_continue;
 }
@@ -80,25 +78,27 @@ bool CServiceConnectionHandler::HandleResponseEvent(const int socket_fd,
 {
 	bool result = false;
 	CLOG_DEBUG_START_FUNCTION();
+	std::string message;
 	switch (type)
 	{
 	case EClientRequestType::ALL_DATA:
 		CLOG_DEBUG("Send all info to the client");
-		result = m_peer_stream->Send(socket_fd, m_json_data.GetAllInfo());
+		message = m_json_data.GetAllInfo();
 		break;
 	case EClientRequestType::PROCESSES_DATA:
 		CLOG_DEBUG("Send process info to the client");
-		result = m_peer_stream->Send(socket_fd, m_json_data.GetProcessesInfo());
+		message = m_json_data.GetProcessesInfo();
 		break;
 	case EClientRequestType::DISKS_DATA:
 		CLOG_DEBUG("Send dick info to the client");
-		result = m_peer_stream->Send(socket_fd, m_json_data.GetDisksInfo());
+		message = m_json_data.GetDisksInfo();
 		break;
 	default:
 		CLOG_DEBUG_WITH_PARAMS("Wrong parameter EClientRequestType, ",
 			" cannot send response to the client");
-		result = false;
+		return false;
 	}
+	result = m_peer_stream->Send(socket_fd, message);
 	CLOG_DEBUG_WITH_PARAMS("Send function returned result ", result);
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
@@ -110,6 +110,7 @@ bool CServiceConnectionHandler::HandleResponseExitEvent(const int socket_fd)
 	CLOG_DEBUG_START_FUNCTION();
 	CLOG_DEBUG_WITH_PARAMS("Send exit response to the socket ", socket_fd, 
 		" client can disconnect");
+	std::this_thread::sleep_for(std::chrono::nanoseconds(1000000));
 	result = m_peer_stream->Send(socket_fd, "Disconnect");
 	CLOG_DEBUG_WITH_PARAMS("Send function returned result ", result);
 	CLOG_DEBUG_END_FUNCTION();

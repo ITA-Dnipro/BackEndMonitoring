@@ -30,9 +30,8 @@
 void CService::RunServer()
 {
     //TODO Add XML Configuration interaction
-    Sleep(10000);
 
-    std::string path_to_log_file("F:\\Git\\Log.txt");
+    std::string path_to_log_file("C:\\Log.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if (!InitializeLogger(path_to_log_file, log_level))
     {

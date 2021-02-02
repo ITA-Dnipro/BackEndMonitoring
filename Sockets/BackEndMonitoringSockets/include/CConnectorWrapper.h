@@ -15,7 +15,7 @@ public:
 	CConnectorWrapper(int port, const std::string& ip_address);
 	~CConnectorWrapper();
 
-	std::string MakeRequest(EClientRequestType r_type) const;
+	bool MakeRequest(EClientRequestType r_type) const;
 	bool ConnectToServer() const;
 	void Exit();
 

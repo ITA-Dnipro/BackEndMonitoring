@@ -9,21 +9,29 @@ CClientConnectionHandler::CClientConnectionHandler()
 bool CClientConnectionHandler::HandleEvent(const int socket_fd, 
 	EventType type)
 {
-
+	bool result = true;
 	switch (type) {
 	case EventType::REQUEST_ALL_DATA:
-		return HandleRequestEvent(socket_fd, EventType::REQUEST_ALL_DATA);
+		result = HandleRequestEvent(socket_fd, EventType::REQUEST_ALL_DATA);
+		break;
 	case EventType::REQUEST_DISK_DATA:
-		return HandleRequestEvent(socket_fd, EventType::REQUEST_DISK_DATA);
+		result = HandleRequestEvent(socket_fd, EventType::REQUEST_DISK_DATA);
+		break;
 	case EventType::REQUEST_PROCESS_DATA:
-		return HandleRequestEvent(socket_fd, EventType::REQUEST_PROCESS_DATA);
+		result = HandleRequestEvent(socket_fd, EventType::REQUEST_PROCESS_DATA);
+		break;
 	case EventType::CLOSE_EVENT:
-		HandleExitEvent(socket_fd);
-		return false;
+		if (HandleExitEvent(socket_fd) == true)
+		{
+			result = false;
+		}
+		break;
 	default:
-		return false;
+		result = false;
+		break;
 	}
-	return true;
+
+	return result;
 }
 
 bool CClientConnectionHandler::HandleRequestEvent(const int socket_fd, 
@@ -43,7 +51,11 @@ bool CClientConnectionHandler::HandleRequestEvent(const int socket_fd,
 	default:
 		return false;
 	}
-	m_client_stream->Send(socket_fd, request_str);
+	if (m_client_stream->Send(socket_fd, request_str) == false)
+	{
+		return false;
+	}
+
 	return HandleResponseEvent(socket_fd);
 }
 
