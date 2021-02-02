@@ -34,6 +34,7 @@ add_executable(Server
 		${UTILS_SRC_DIR}/CThreadPoolSettings.cpp
 		${UTILS_SRC_DIR}/CComunicationSettings.cpp
 		${UTILS_SRC_DIR}/CServerSettings.cpp
+		${UTILS_SRC_DIR}/CSettings.cpp
 		${UTILS_SRC_DIR}/CTimeSettings.cpp
 		${UTILS_SRC_DIR}/CLoggingSettings.cpp
 		${UTILS_SRC_DIR}/CEvent.cpp

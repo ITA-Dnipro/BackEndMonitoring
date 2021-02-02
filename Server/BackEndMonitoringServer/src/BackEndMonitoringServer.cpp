@@ -10,7 +10,11 @@
 int main(int argc, char** argv)
 {
   std::fstream stream(
+#if defined(_WIN32) || defined(_WIN64)
 	CService::GetRelativePath() + "Log.txt",
+#elif defined(__linux__)
+    "Log.txt",
+#endif
 	std::ios_base::app);
 
 	CLOG_START_CREATION();

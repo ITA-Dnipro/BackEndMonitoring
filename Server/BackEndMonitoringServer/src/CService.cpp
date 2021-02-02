@@ -52,7 +52,13 @@ void CService::RunServer()
 {
     //TODO Add XML Configuration interaction
     //Sleep(20000);
+
+#if defined(_WIN32) || defined(_WIN64)
     std::string path_to_log_file(GetRelativePath() + "Log.txt");
+#elif defined(__linux__)
+    std::string path_to_log_file("/home/sasha/Log.txt");
+#endif
+
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if (!InitializeLogger(path_to_log_file, log_level))
     {
@@ -62,9 +68,14 @@ void CService::RunServer()
 
     std::shared_ptr<CXMLDataReader> xml_reader = std::make_shared<CXMLDataReader>();
     CLOG_TRACE_VAR_CREATION(xml_reader);
-    xml_reader->Initialize(GetRelativePath() + "../../../../../xgconsole.xml");
 
-    CLoggingSettings log_sett(xml_reader);
+#if defined(_WIN32) || defined(_WIN64)
+        xml_reader->Initialize(GetRelativePath() + "../../../../../xgconsole.xml");
+#elif defined(__linux__)
+        xml_reader->Initialize("/home/sasha/xgconsole.xml");
+#endif
+
+        CLoggingSettings log_sett(xml_reader);
     CLOG_TRACE_VAR_CREATION(log_sett);
     log_sett.ReadConfigurationFromFile();
 

@@ -43,7 +43,7 @@ namespace PlatformUtils
 	bool BindSocket(int socket, sockaddress& current_address)
 	{
 		if (::bind(socket, (struct sockaddr*)&current_address,
-			sizeof(current_address)) == SUCCESS)
+			sizeof(current_address)) == c_success)
 		{
 			return true;
 		}
@@ -52,7 +52,7 @@ namespace PlatformUtils
 
 	bool Listen(int socket, const int connections)
 	{
-		if (::listen(socket, connections) == SUCCESS)
+		if (::listen(socket, connections) == c_success)
 		{
 			return true;
 		}
@@ -69,13 +69,13 @@ namespace PlatformUtils
 	bool Connect(int socket, sockaddress& current_address)
 	{
 		return connect(socket, (struct sockaddr*)&current_address, 
-			sizeof(current_address)) == SUCCESS;
+			sizeof(current_address)) == c_success;
 	}
 
 	bool SetUnblockingSocket(int socket)
 	{
 		int dontblock = 1;
-		if (ioctl(socket, FIONBIO, (char*)&dontblock) == SUCCESS)
+		if (ioctl(socket, FIONBIO, (char*)&dontblock) == c_success)
 		{
 			return true;
 		}
@@ -84,9 +84,9 @@ namespace PlatformUtils
 
 	bool CloseSocket(int socket)
 	{
-		if (socket != SOCKET_INVALID)
+		if (socket != c_invalid_socket)
 		{
-			if (close(socket) != ERROR_SOCKET)
+			if (close(socket) != c_error_socket)
 			{
 				return true;
 			}
