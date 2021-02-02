@@ -1,7 +1,8 @@
 #pragma once
 #include "CDataReader.h"
+#include "CSettings.h"
 
-class CThreadPoolSettings
+class CThreadPoolSettings : public CSettings
 {
 public:
 	CThreadPoolSettings() = delete;
@@ -9,13 +10,12 @@ public:
 	CThreadPoolSettings(CThreadPoolSettings&&) = delete;
 
 	explicit CThreadPoolSettings(std::shared_ptr<CDataReader> p_data_reader);
-	~CThreadPoolSettings() = default;
+	~CThreadPoolSettings() override = default;
 
-	void ReadConfigurationFromFile();
+	void ReadConfigurationFromFile() override;
 
 	[[nodiscard]] int GetMaxWorkingThreads() const;
 
 private:
-	std::shared_ptr<CDataReader> m_p_data_reader_;
 	int m_max_working_threads_;
 };

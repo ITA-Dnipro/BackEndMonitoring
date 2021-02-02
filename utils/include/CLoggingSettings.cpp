@@ -3,7 +3,7 @@
 #include "CLogger/include/Log.h"
 
 CLoggingSettings::CLoggingSettings(std::shared_ptr<CDataReader> p_data_reader) :
-	m_p_data_reader_(p_data_reader), m_log_level_(static_cast<ELogLevel>(1)), 
+	CSettings(p_data_reader), m_log_level_(static_cast<ELogLevel>(1)), 
 	m_log_flush_(static_cast<ELogFlush>(1)), m_file_name_("serverlog.txt")
 {
 
