@@ -69,3 +69,13 @@ void CClientView::PrintGoodbye()
 	m_output_stream << "Goodbye\n";
 }
 
+void CClientView::PrintClientConnected()
+{
+	m_output_stream << "Connected to server\n";
+}
+
+void CClientView::PrintErrorConnection()
+{
+	m_output_stream << "Cannot connect to server, exit\n";
+}
+

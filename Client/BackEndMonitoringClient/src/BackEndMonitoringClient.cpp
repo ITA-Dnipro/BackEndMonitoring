@@ -12,9 +12,20 @@ int main()
 
 	CClientView view(std::cout, std::cin);
 	CClient client(port, ip_address);
-	client.Connect();
 	bool result = true;
 	ERequestType request;
+
+	if (client.Connect())
+	{
+		view.PrintClientConnected();
+	}
+	else
+	{
+		view.PrintErrorConnection();
+		system("pause");
+		return -1;
+	}
+
 	do
 	{
 		view.PrintMenu();
@@ -25,7 +36,7 @@ int main()
 			view.PrintError();
 			break;
 		case ERequestType::ALL_DATA_CYCLE:
-			for (unsigned i = 0u; i < 100; ++i)
+			for (unsigned i = 1u; i < 100; ++i)
 			{
 				std::cout << "\n_________" << i << "_________\n";
 				result = client.MakeRequest(ERequestType::ALL_DATA);
@@ -38,4 +49,5 @@ int main()
 	} while (result && request != ERequestType::EXIT);
 	view.PrintGoodbye();
 	system("pause");
+	return 0;
 }
