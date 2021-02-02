@@ -12,17 +12,17 @@ std::vector<std::string> Utils::SplitIntoWords(const std::string& str,
                                                const char delimiter)
 {
     std::vector<std::string> result;
-    CLOG_DEBUG_START_FUNCTION();
-    CLOG_TRACE_VAR_CREATION(result);
+    //CLOG_DEBUG_START_FUNCTION();
+    //CLOG_TRACE_VAR_CREATION(result);
     size_t pos = 0;
-    CLOG_TRACE_VAR_CREATION(pos);
+    //CLOG_TRACE_VAR_CREATION(pos);
     const size_t pos_end = str.npos;
-    CLOG_TRACE_VAR_CREATION(pos_end);
+    //CLOG_TRACE_VAR_CREATION(pos_end);
 
     while (true) 
     {
         size_t space = str.find(delimiter, pos);
-        CLOG_TRACE_VAR_CREATION(space);
+        //CLOG_TRACE_VAR_CREATION(space);
         result.push_back(
             space == pos_end
             ? str.substr(pos)
@@ -35,7 +35,7 @@ std::vector<std::string> Utils::SplitIntoWords(const std::string& str,
             pos = space + 1;
         }
     }
-    CLOG_DEBUG_END_FUNCTION();
+    //CLOG_DEBUG_END_FUNCTION();
     return result;
 }
 
@@ -178,10 +178,10 @@ bool Utils::IsFileEmpty(std::ofstream& file)
 
 void Utils::DisplayError(const std::string& message)
 {
-    CLOG_DEBUG_START_FUNCTION();
+    //CLOG_DEBUG_START_FUNCTION();
     // char*
     LPSTR error = NULL;
-    CLOG_TRACE_VAR_CREATION(error);
+    //CLOG_TRACE_VAR_CREATION(error);
 
     FormatMessage(
         FORMAT_MESSAGE_ALLOCATE_BUFFER |
@@ -196,7 +196,7 @@ void Utils::DisplayError(const std::string& message)
 
     std::cout << message << ". " << error;
     LocalFree(error);
-    CLOG_DEBUG_END_FUNCTION();
+    //CLOG_DEBUG_END_FUNCTION();
 }
 
 void Utils::DisplayMessage(const std::string& message)
