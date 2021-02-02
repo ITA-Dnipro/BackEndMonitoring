@@ -3,7 +3,8 @@
 #include "CLogger/include/Log.h"
 
 CHDDInfoSettings::CHDDInfoSettings(std::shared_ptr<CDataReader> p_data_reader) :
-	CSettings(p_data_reader), m_file_name_("hddinfo.txt"), m_check_hdd_(true), m_count_type_(0)
+	CSettings(p_data_reader), m_file_name_("hddinfo.txt"), m_check_hdd_(true), 
+	m_count_type_(0), m_period_time_(0)
 {
 
 }
