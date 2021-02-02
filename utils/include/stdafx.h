@@ -31,7 +31,7 @@
             #pragma warning(disable : 4251)
             #pragma warning(disable : 5105)
         #endif
-    #elif defined(BACK_END_MONITORING_SYS) || defined(BACK_END_MONITORING_SYS_MACOS)
+    #elif defined(BACK_END_MONITORING_SYS_LINUX) || defined(BACK_END_MONITORING_SYS_MACOS)
         #if _GNUC_ >= 4
             #define CLOGGER_API __attribute__((__visibility__("default")))
         #else
