@@ -27,8 +27,7 @@ void CService::RunServer()
 {
     //TODO Add XML Configuration interaction
     //Sleep(20000);
-    std::string path_to_log_file(
-        "D:/softserve/backend_monitoring/branches/Service-logger/stuff/Log.txt");
+    std::string path_to_log_file(GetRelativePath() + "Log.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if (!InitializeLogger(path_to_log_file, log_level))
     {
@@ -38,8 +37,7 @@ void CService::RunServer()
 
     std::shared_ptr<CXMLDataReader> xml_reader = std::make_shared<CXMLDataReader>();
     CLOG_TRACE_VAR_CREATION(xml_reader);
-    xml_reader->Initialize(
-        "D:/softserve/backend_monitoring/branches/Service-logger/xgconsole.xml");
+    xml_reader->Initialize(GetRelativePath() + "../../../../../xgconsole.xml");
 
     CLoggingSettings log_sett(xml_reader);
     CLOG_TRACE_VAR_CREATION(log_sett);
@@ -62,9 +60,9 @@ void CService::RunServer()
     if (InitializeLogicalDiscMonitoring(hdd_sett))
     {
         m_p_thread_pool->Enqueue([this] ( )
-                                 {
-                                     m_disks_monitor->StartMonitoringInfo( );
-                                 });
+        {
+            m_disks_monitor->StartMonitoringInfo( );
+        });
 
 
     }
@@ -81,9 +79,9 @@ void CService::RunServer()
     if (InitializeProcessesMonitoring(process_sett))
     {
         m_p_thread_pool->Enqueue([this] ( )
-                                 {
-                                     m_processes_monitor->StartMonitoringInfo( );
-                                 });
+        {
+            m_processes_monitor->StartMonitoringInfo( );
+        });
     }
     else
     {
@@ -211,6 +209,39 @@ CService::CService(const ServiceParameters& parameters)
         0,
         0}
 { }
+
+bool CService::GetModulePath(CString& module_path)
+{
+    bool success = true;
+
+    LPSTR path = module_path.GetBufferSetLength(MAX_PATH);
+
+    if (::GetModuleFileName(nullptr, path, MAX_PATH) == 0)
+    {
+        Utils::DisplayError("Failed to get module file name");
+        success = false;
+    }
+
+    module_path.ReleaseBuffer();
+    return success;
+}
+
+bool CService::EscapePath(CString& path)
+{
+    path.Remove('\"');
+    path = '\"' + path + '\"';
+    return true;
+}
+
+std::string CService::GetRelativePath()
+{
+    std::string executable = "BackEndMonitoringServer.exe";
+    CString module_path;
+    GetModulePath(module_path);
+    std::string path = static_cast<std::string>(module_path);
+    path = path.substr(0, path.length() - executable.length());
+    return path;
+}
 
 void CService::SetStatus(DWORD state, DWORD error_code, DWORD wait_hint)
 {

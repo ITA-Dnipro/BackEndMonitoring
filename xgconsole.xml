@@ -17,7 +17,7 @@
      </communicationsettings>
      <logging>
          <!--path to log file-->
-         <filename> "D:/softserve/backend_monitoring/branches/Service-logger/stuff/serverlog.txt"</filename>
+         <filename> "D:/softserve/backend_monitoring/branches/remove-absolute-paths/stuff/serverlog.txt"</filename>
          <!--supports only 3 levels of logging: 0 - No logs, 1 - Production logs/Warning/Erros, 2 - Debug logs, 3 - Trace logs-->
          <LogLevel> "2"</LogLevel>
          <!--parameter for flushing output to log file (1 - enable / 0 - disable). Warning this parameter will slow dowm output!-->
@@ -32,7 +32,7 @@
      </threadpool>
      <HDDinfo>
          <!--information about total and free space on disks-->
-         <filename> "D:/softserve/backend_monitoring/branches/Service-logger/stuff/hddinfo.txt"</filename>
+         <filename> "D:/softserve/backend_monitoring/branches/remove-absolute-paths/stuff/hddinfo.txt"</filename>
          <!--flag for checking hhd info (enable / disable)-->
          <checkhdd> "enable"</checkhdd>
 		 <!--CountType: Bytes(0) - Megabytes(1) - Gigabytes(2)-->
@@ -40,7 +40,7 @@
      </HDDinfo>
      <processesinfo>
          <!--information about processes which running on the system-->
-         <filename> "D:/softserve/backend_monitoring/branches/Service-logger/stuff/processesinfo.txt"</filename>
+         <filename> "D:/softserve/backend_monitoring/branches/remove-absolute-paths/stuff/processesinfo.txt"</filename>
          <!--flag for checking processes info  (enable / disable)-->
          <checkprocesses> "enable"</checkprocesses>
 		 <!--CountType: Bytes(0) - Megabytes(1) - Gigabytes(2)-->

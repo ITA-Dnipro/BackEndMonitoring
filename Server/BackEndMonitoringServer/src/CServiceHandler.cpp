@@ -46,11 +46,7 @@ bool ServiceHandler::Install() const
     do
     {
         CString escaped_path;
-        CLOG_TRACE_VAR_CREATION(escaped_path);
-        LPSTR module_path = escaped_path.GetBufferSetLength(MAX_PATH);
-        CLOG_TRACE_VAR_CREATION(module_path);
-        // TODO: Wrap
-        if (::GetModuleFileName(nullptr, module_path, MAX_PATH) == 0)
+        if (!CService::GetModulePath(escaped_path))
         {
             Utils::DisplayError("Failed to get module file name");
             success = false;
@@ -58,17 +54,14 @@ bool ServiceHandler::Install() const
             break;
         }
 
-        escaped_path.ReleaseBuffer();
-        escaped_path.Remove('\"');
+        CService::EscapePath(escaped_path);
 
-        escaped_path = '\"' + escaped_path + '\"';
-        CLOG_TRACE_VAR_CREATION(escaped_path);
-        // Chupakabra: maybe const
-        auto service_control_manager = std::make_unique<ServiceHandle>(
+        const auto service_control_manager = std::make_unique<ServiceHandle>(
             ::OpenSCManager(
                 nullptr, nullptr,
                 SC_MANAGER_CONNECT | 
                 SC_MANAGER_CREATE_SERVICE));
+
         CLOG_TRACE_VAR_CREATION(service_control_manager);
         if (service_control_manager->GetHandle() == nullptr)
         {

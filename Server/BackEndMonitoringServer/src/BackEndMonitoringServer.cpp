@@ -10,7 +10,7 @@
 int main(int argc, char** argv)
 {
     std::fstream stream(
-		"D:/softserve/backend_monitoring/branches/Service-logger/stuff/Log.txt",
+		CService::GetRelativePath() + "Log.txt",
 		std::ios_base::app);
 
 	CLOG_START_CREATION();

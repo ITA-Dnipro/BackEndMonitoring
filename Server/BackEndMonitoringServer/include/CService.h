@@ -40,6 +40,10 @@ public:
 
     CService(CService&& other) = delete;
     CService& operator=(CService&& other) = delete;
+    
+    static bool GetModulePath(CString& module_path);
+    static std::string GetRelativePath();
+    static bool EscapePath(CString& path);
 
     const CString& GetName() const;
     const CString& GetDisplayName() const;
