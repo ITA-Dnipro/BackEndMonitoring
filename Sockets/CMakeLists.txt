@@ -1,31 +1,30 @@
 cmake_minimum_required(VERSION 3.17)
-project(CLogger)
-
-set(CMAKE_CXX_STANDARD 17)
+project(BackEndMonitoring)
 
 link_directories(${CMAKE_SOURCE_DIR}/packages/CLogger/Debug/linux)
 
-include_directories(
-	BackEndMonitoringSockets/include
-	${CMAKE_SOURCE_DIR}
-	${CMAKE_SOURCE_DIR}/CLogger/include
-	${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/include
-	${CMAKE_SOURCE_DIR}/3rdParty/include
-	${CMAKE_SOURCE_DIR}/utils/include)
+include_directories(${CMAKE_SOURCE_DIR}
+		${CMAKE_SOURCE_DIR}/Sockets/BackEndMonitoringSockets/include
+		${CMAKE_SOURCE_DIR}/CLogger/include
+		${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/include
+		${CMAKE_SOURCE_DIR}/3rdParty/include
+		${CMAKE_SOURCE_DIR}/utils/include)
+
+set(SOCKETS_SRC_DIR ${CMAKE_SOURCE_DIR}/Sockets/BackEndMonitoringSockets/src)
 
 add_library(Sockets
-	${UTILS}
-	BackEndMonitoringSockets/src/CSocket.cpp
-	BackEndMonitoringSockets/src/CAcceptor.cpp
-	BackEndMonitoringSockets/src/CAcceptorWrapper.cpp
-	BackEndMonitoringSockets/src/CConnector.cpp
-	BackEndMonitoringSockets/src/CClientConnectionHandler.cpp
-	BackEndMonitoringSockets/src/CConnectorWrapper.cpp
-	BackEndMonitoringSockets/src/CServiceConnectionHandler.cpp
-	BackEndMonitoringSockets/src/CSocketWrapper.cpp
-	BackEndMonitoringSockets/src/CDataReceiver.cpp
-	${CMAKE_SOURCE_DIR}/utils/include/CThreadPool.cpp
-	${CMAKE_SOURCE_DIR}/utils/include/CEvent.cpp
-	${CMAKE_SOURCE_DIR}/utils/include/Utils.cpp)
+		${PLATFORM_SPECIFIC_UTILS}
+		${SOCKETS_SRC_DIR}/CSocket.cpp
+		${SOCKETS_SRC_DIR}/CAcceptor.cpp
+		${SOCKETS_SRC_DIR}/CAcceptorWrapper.cpp
+		${SOCKETS_SRC_DIR}/CConnector.cpp
+		${SOCKETS_SRC_DIR}/CClientConnectionHandler.cpp
+		${SOCKETS_SRC_DIR}/CConnectorWrapper.cpp
+		${SOCKETS_SRC_DIR}/CServiceConnectionHandler.cpp
+		${SOCKETS_SRC_DIR}/CSocketWrapper.cpp
+		${SOCKETS_SRC_DIR}/CDataReceiver.cpp
+		${UTILS_SRC_DIR}/CThreadPool.cpp
+		${UTILS_SRC_DIR}/CEvent.cpp
+		${UTILS_SRC_DIR}/Utils.cpp)
 
 target_link_libraries(Sockets CLogger)
