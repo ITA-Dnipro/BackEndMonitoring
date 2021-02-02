@@ -33,4 +33,4 @@
 	CLog::SetLogger(std::move(CLog::GetBuilder()->BuildUniqueLog())) \
 
 #define CLOG_DESTROY() \
-	CLog::GetLogger().reset() \
+	CLog::GetLogger().reset()
