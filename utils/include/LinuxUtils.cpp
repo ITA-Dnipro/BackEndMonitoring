@@ -1,23 +1,6 @@
 #ifdef __linux__
 #include "stdafx.h"
 
-#include <string>
-#include <memory>
-#include <vector>
-#include <filesystem>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/socket.h>
-#include <netinet/ip.h>
-#include <netdb.h>
-#include <arpa/inet.h>
-#include <sys/ioctl.h>
-#include <errno.h>
-
 #include "CNumericTypesParser.h"
 #include "CReadFileWrapper.h"
 #include "Utils.h"
