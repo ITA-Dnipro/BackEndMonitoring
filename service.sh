@@ -1,10 +1,13 @@
 #!/bin/bash
 
-MAIN_FOLDER=/usr/bin/backend-monitoring/
-
-BINARY_NAME=backend-monitoring
-DOT_SERVICE_NAME=backend-monitoring.service
 XML_CONFIG_NAME=xgconsole.xml
+
+SERVICE_NAME=$(grep -o -P '(?<=<servicename> ").*(?="</servicename>)' $XML_CONFIG_NAME)
+SERVICE_DESC=$(grep -o -P '(?<=<servicedesc> ").*(?="</servicedesc>)' $XML_CONFIG_NAME)
+
+MAIN_FOLDER=/usr/bin/$SERVICE_NAME/
+BINARY_NAME=$SERVICE_NAME
+DOT_SERVICE_NAME=$SERVICE_NAME.service
 
 DOT_SERVICE_ORIG=/lib/systemd/system/$DOT_SERVICE_NAME
 DOT_SERVICE_SYMLINK=/etc/systemd/system/$DOT_SERVICE_NAME
@@ -56,10 +59,11 @@ install()
     cd "$PARENT_PATH"
 
     mkdir $MAIN_FOLDER
+    
     cp ./Server/Server $BINARY_DEST
     cp xgconsole.xml $XML_CONFIG_DEST
 
-    cp ./Server/BackEndMonitoring.service $DOT_SERVICE_ORIG
+    generate_dot_service
     ln -s $DOT_SERVICE_ORIG $DOT_SERVICE_SYMLINK
 
     systemctl enable $DOT_SERVICE_NAME
@@ -108,6 +112,19 @@ show_help()
     echo "--start          - start the service"
     echo "--stop           - stop the service"
     echo "--status         - show current status"
+}
+
+generate_dot_service()
+{
+    touch $DOT_SERVICE_ORIG
+
+    echo "[Unit]" >> $DOT_SERVICE_ORIG
+    echo "Description=$SERVICE_DESC" >> $DOT_SERVICE_ORIG
+    echo "After=network.target" >> $DOT_SERVICE_ORIG
+    echo "[Service]" >> $DOT_SERVICE_ORIG
+    echo "ExecStart=$BINARY_DEST" >> $DOT_SERVICE_ORIG
+    echo "[Install]" >> $DOT_SERVICE_ORIG
+    echo "WantedBy=multi-user.target" >> $DOT_SERVICE_ORIG
 }
 
 main $1
