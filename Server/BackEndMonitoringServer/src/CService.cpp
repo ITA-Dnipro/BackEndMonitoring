@@ -55,8 +55,7 @@ void CService::RunServer()
     //std::this_thread::sleep_for(std::chrono::seconds(20));
 
     std::string path_to_log_file(GetRelativePath() + "Log.txt");
-
-    ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
+    ELogLevel log_level = ELogLevel::DEBUG_LEVEL;                                   // todo: MAKE READING LEVEL FROM XML PLS
     if (!InitializeLogger(path_to_log_file, log_level))
     {
         return;
@@ -228,7 +227,7 @@ bool CService::InitializeProcessesMonitoring(
 bool CService::InitializeSockets(const CServerSettings& server_sett)
 {
     CLOG_DEBUG_START_FUNCTION( );
-    m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(
+    m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(                   // todo: from dev move to Linux-Dev
         server_sett.GetListenerPort(), server_sett.GetServerIpAddress(),
         true, 5, m_stop_event);
     CLOG_TRACE_VAR_CREATION(m_p_acceptor_socket);
