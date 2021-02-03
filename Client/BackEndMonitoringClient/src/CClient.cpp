@@ -3,18 +3,11 @@
 #include "ERequestType.h"
 #include "ERequestType.h"
 #include "CClient.h"
-#include "CLogger/include/Log.h"
 #include "Utils.h"
 
 CClient::CClient() : m_port(0), is_connected(false)
 {
 	m_file_name = "ServerData_Client_.txt";
-	InitLogger();
-}
-
-CClient::~CClient()
-{
-	CLOG_DESTROY();
 }
 
 bool CClient::Init(const int arg_num, char** arguments)
@@ -38,25 +31,6 @@ bool CClient::Init(const int arg_num, char** arguments)
 	m_filePrinter = std::make_unique<CClientView>(m_response_data, std::cin);
 
 	return true;
-}
-
-void CClient::InitLogger()
-{
-
-	CLOG_START_CREATION();
-
-	CLOG_SET_LOG_NAME("Client Logger");
-	CLOG_SET_LOG_LEVEL(ELogLevel::DEBUG_LEVEL);
-	CLOG_SET_LOG_CONFIG(ELogConfig::LOG_NAME, ELogConfig::LOG_LEVEL,
-		ELogConfig::CALL_TIME, ELogConfig::THREAD_ID, ELogConfig::FILE_NAME,
-		ELogConfig::FUNCTION_NAME, ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE,
-		ELogConfig::PARAMS);
-
-	CLOG_ADD_SAFE_STREAM(m_log_file);
-
-	CLOG_BUILD();
-
-	CLOG_END_CREATION();
 }
 
 void CClient::Execute()

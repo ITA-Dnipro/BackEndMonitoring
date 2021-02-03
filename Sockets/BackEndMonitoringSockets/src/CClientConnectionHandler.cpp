@@ -81,10 +81,14 @@ bool CClientConnectionHandler::HandleExitEvent(const int socket_fd,
 	std::string& message)
 {
 	m_p_client_stream->Send(socket_fd, "Exit");
-
+	int count_iteration = 0;
 	while (true)
 	{
 		if (m_p_client_stream->Receive(socket_fd) == "Disconnect")
+		{
+			return true;
+		}
+		if (++count_iteration <= c_max_num_trial)
 		{
 			return true;
 		}

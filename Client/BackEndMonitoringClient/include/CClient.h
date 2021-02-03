@@ -8,7 +8,6 @@ class CClient
 {
 public:
 	explicit CClient();
-	~CClient();
 
 	void Execute();
 	bool Init(const int arg_num, char** argvuments);
@@ -20,7 +19,6 @@ private:
 
 	bool Connect();
 	bool MakeRequest(ERequestType type, std::string& message);
-	void InitLogger();
 	std::unique_ptr<CConnectorWrapper> InitConnector();
 	std::string RequestProcessesData();
 	std::string RequestDisksData();

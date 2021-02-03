@@ -122,12 +122,20 @@ bool CAcceptorWrapper::HandleEvents()
 
 void CAcceptorWrapper::AddClientToThread(int socket_fd)
 {
+	
 	m_p_pool->Enqueue([this, socket_fd]()
 		{
 			CLOG_DEBUG("New client was added to the thread");
+			int count_iteration = 0;
 			while (
 				m_p_service_handler->HandleEvent(socket_fd,
 					EEventType::REQUEST_DATA) &&
-				!m_event.WaitFor(std::chrono::nanoseconds(1000)));
+				!m_event.WaitFor(std::chrono::nanoseconds(1000)))
+			{
+				if (++count_iteration >= c_max_idle_iteration)
+				{
+					break;
+				}
+			}
 		});
 }
