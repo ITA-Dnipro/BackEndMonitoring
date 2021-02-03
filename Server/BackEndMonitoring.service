@@ -1,9 +1,0 @@
-[Unit]
-Description=Simple daemon template
-After=network.target
-
-[Service]
-ExecStart=/usr/bin/backend-monitoring/backend-monitoring
-
-[Install]
-WantedBy=multi-user.target

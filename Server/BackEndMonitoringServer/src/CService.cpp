@@ -247,7 +247,18 @@ std::string CService::GetRelativePath()
     path = path.substr(0, path.length() - executable.length());
     return path;
 #elif __linux__
-    return "/usr/bin/backend-monitoring/";
+    char buffer[BUFSIZ];
+    readlink("/proc/self/exe", buffer, BUFSIZ);
+    std::string path = buffer;
+    for (int i = path.length(); i != 0; --i)
+    {
+        if (path[i] == '/')
+        {
+            path.erase(i + 1);
+            break;
+        }
+    }
+    return path;
 #endif
 }
 

@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <root>
+     <service>
+         <servicename> "dick-service"</servicename>
+         <servicedesc> "It's a dick service"</servicedesc>
+     </service>
      <Server>
          <!--servername is name that server will have when it will be installed-->
-         <servername>  "ServTest"</servername>
+         <servername> "ServTest"</servername>
          <serverdisplayname> "ServTestserver"</serverdisplayname>
          <!--port which server is listen-->
          <listenerport> "1111"</listenerport>
@@ -32,7 +36,7 @@
      </threadpool>
      <HDDinfo>
          <!--information about total and free space on disks-->
-         <filename> "/usr/bin/backend-monitoring/asd.txt"</filename>
+         <filename> "/usr/bin/dick-service/asd.txt"</filename>
          <!--flag for checking hhd info (enable / disable)-->
          <checkhdd> "enable"</checkhdd>
 		 <!--CountType: Bytes(0) - Megabytes(1) - Gigabytes(2)-->
@@ -40,7 +44,7 @@
      </HDDinfo>
      <processesinfo>
          <!--information about processes which running on the system-->
-         <filename> "/usr/bin/backend-monitoring/processesinfo.txt"</filename>
+         <filename> "/usr/bin/dick-service/processesinfo.txt"</filename>
          <!--flag for checking processes info  (enable / disable)-->
          <checkprocesses> "enable"</checkprocesses>
 		 <!--CountType: Bytes(0) - Megabytes(1) - Gigabytes(2)-->
