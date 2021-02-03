@@ -67,7 +67,8 @@ bool CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
 	}
 
 	int error = 0;
-	if ((error = PlatformUtils::GetConnectionError(socket_fd)) == 10054)
+	if ((error = PlatformUtils::GetConnectionError(socket_fd)) == 
+		c_client_disconnected)
 	{
 		CLOG_TRACE_WITH_PARAMS("ERROR!!! On the socket ", socket_fd,
 			" has occured error ", error);

@@ -2,17 +2,18 @@
 
 #include "CClient.h"
 
-int main( )
+int main(const int argc, char* argv[])
 {
-	int port = 1111;
-	//std::string ip_address = "10.0.2.2";
-	std::string ip_address = "127.0.0.1";
-	std::string file_name = "ServerMessages.txt";
+	CClient client;
 
-	CClient client(port, ip_address, file_name);
+	if (client.Init(argc, argv))
+	{
+		client.Execute();
+	}
+	else
+	{
+		std::cout << "Wrong parameters for the network!" << std::endl;
+	}
 
-	client.Execute( );
-
-	system("pause");
 	return 0;
 }

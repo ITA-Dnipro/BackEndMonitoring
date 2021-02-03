@@ -42,7 +42,6 @@ bool CAcceptor::Initialize(const std::string& ip_address,
 
 bool CAcceptor::Accept(int& connected_socket_fd)
 {
-	CLOG_TRACE_START_FUNCTION();
 	connected_socket_fd = c_error_socket;
 
 	if (m_is_acceptor_initialized)
@@ -70,7 +69,6 @@ bool CAcceptor::Accept(int& connected_socket_fd)
 		}
 
 	}
-	CLOG_TRACE_END_FUNCTION();
 	return false;
 }
 

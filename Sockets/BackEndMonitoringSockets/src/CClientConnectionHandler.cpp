@@ -71,10 +71,8 @@ bool CClientConnectionHandler::HandleResponseEvent(const int socket_fd,
 	message = m_p_client_stream->Receive(socket_fd);
 	if (message == "-1")
 	{
-		//std::cout << "Error connection to the server, exit" << '\n';
 		return false;
 	}
-	//std::cout << message << '\n';
 
 	return HandleDataReceivedEvent(socket_fd);
 }

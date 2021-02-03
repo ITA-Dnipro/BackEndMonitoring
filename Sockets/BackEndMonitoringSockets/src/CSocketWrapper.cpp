@@ -76,7 +76,7 @@ bool CSocketWrapper::Send(const int socket, const std::string& line)
 
 		buff += CreateHeader(static_cast<int>(temp_line.length()));
 		buff += temp_line;
-		std::this_thread::sleep_for(std::chrono::nanoseconds(10000));
+		std::this_thread::sleep_for(std::chrono::nanoseconds(10000)); // TODO
 		if (send(socket, buff.c_str(), static_cast<int>(buff.length()), 0) == c_connection_error)
 		{
 			return false;
@@ -84,6 +84,7 @@ bool CSocketWrapper::Send(const int socket, const std::string& line)
 		line_length -= size_for_substring;
 		start_pos += size_for_substring;
 		buff.clear();
+		temp_line.clear();
 	}
 	return true;
 }

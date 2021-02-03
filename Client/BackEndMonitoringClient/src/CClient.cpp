@@ -4,13 +4,12 @@
 #include "ERequestType.h"
 #include "CClient.h"
 #include "CLogger/include/Log.h"
+#include "Utils.h"
 
-CClient::CClient(int port, const std::string& ip_address,
-	std::string file_name)
-	: m_port(port), m_ip_address(ip_address), is_connected(false),
-	m_response_data(file_name, std::ios_base::out)
+CClient::CClient() : m_port(0), is_connected(false)
 {
-	Init(file_name);
+	m_file_name = "ServerData_Client_.txt";
+	InitLogger();
 }
 
 CClient::~CClient()
@@ -18,11 +17,18 @@ CClient::~CClient()
 	CLOG_DESTROY();
 }
 
-void CClient::Init(std::string file_name)
+bool CClient::Init(const int arg_num, char** arguments)
 {
-	InitLogger();
+	if (arg_num != c_num_arguments)
+	{
+		return false;
+	}
+
+	m_port = std::stol(arguments[c_port_num]);
+	m_ip_address = arguments[c_ip_address_num];
+
 	m_connector = InitConnector();
-	std::filesystem::path path_to_file(file_name);
+	std::filesystem::path path_to_file(m_file_name);
 	std::filesystem::path extension = path_to_file.extension();
 	std::filesystem::path name = path_to_file.stem();
 	path_to_file.replace_filename(name.string() +
@@ -30,6 +36,8 @@ void CClient::Init(std::string file_name)
 	m_response_data = std::fstream(path_to_file, std::ios_base::out);
 	m_consolePrinter = std::make_unique<CClientView>(std::cout, std::cin);
 	m_filePrinter = std::make_unique<CClientView>(m_response_data, std::cin);
+
+	return true;
 }
 
 void CClient::InitLogger()
@@ -101,7 +109,8 @@ void CClient::Execute()
 				result = MakeRequest(ERequestType::ALL_DATA, message);
 				if (message.size() > 0)
 				{
-					PrintMessage("\n" + std::to_string(counter++) + "\n\n" + message + "\n\n");
+					PrintMessage("\n" + std::to_string(counter++) + "\n\n" +
+						message + "\n\n");
 					message.clear();
 				}
 				std::this_thread::sleep_for(std::chrono::seconds(5));
@@ -135,26 +144,26 @@ bool CClient::MakeRequest(ERequestType type, std::string& message)
 	{
 		switch (type)
 		{
-			case (ERequestType::PROCESSES_DATA):
-			{
-				message = RequestProcessesData();
-				break;
-			}
-			case (ERequestType::DISKS_DATA):
-			{
-				message = RequestDisksData();
-				break;
-			}
-			case (ERequestType::ALL_DATA):
-			{
-				message = RequestAllData();
-				break;
-			}
-			case (ERequestType::EXIT):
-			{
-				while(!m_connector->Exit())
+		case (ERequestType::PROCESSES_DATA):
+		{
+			message = RequestProcessesData();
+			break;
+		}
+		case (ERequestType::DISKS_DATA):
+		{
+			message = RequestDisksData();
+			break;
+		}
+		case (ERequestType::ALL_DATA):
+		{
+			message = RequestAllData();
+			break;
+		}
+		case (ERequestType::EXIT):
+		{
+			while (!m_connector->Exit())
 				return false;
-			}
+		}
 		}
 		if (message == "Error receiving data")
 		{
