@@ -1,10 +1,11 @@
 #include "stdafx.h"
 
-#include "CAcceptorWrapper.h"
 #include "CServiceConnectionHandler.h"
 #include "CEvent.h"
 #include "PlatformUtils.h"
 #include "CLogger/include/Log.h"
+#include "CThreadPool.h"
+#include "CAcceptorWrapper.h"
 
 CAcceptorWrapper::CAcceptorWrapper(int port, const std::string& ip_address,
 	bool is_blocked, int socket_timeout, CEvent& event) :
