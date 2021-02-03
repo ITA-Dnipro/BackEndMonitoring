@@ -15,7 +15,7 @@ public:
 	explicit CContainerOfLogicalDisk(const CHardwareStatusSpecification& orig);
 	explicit CContainerOfLogicalDisk(const CContainerOfLogicalDisk& orig);
 
-	CContainerOfLogicalDisk(const CContainerOfLogicalDisk&&) noexcept = delete;
+	CContainerOfLogicalDisk(const CContainerOfLogicalDisk&& orig) noexcept;
 
 	~CContainerOfLogicalDisk() noexcept;
 
@@ -26,8 +26,8 @@ public:
 	[[nodiscard]] bool TryUpdateInfoLogicalDiskToJSON(
 		CJSONFormatterLogicalDisk& json_formatter);
 
-	[[nodiscard]] const std::vector<CLogicalDiskInfo*>* GetAllLogicalDisk() 
-		const;
+	[[nodiscard]] const std::vector<std::shared_ptr<CLogicalDiskInfo>>*
+		GetAllLogicalDisk() const;
 	[[nodiscard]] const CHardwareStatusSpecification* GetSpecification() const;
 
 private:
@@ -35,7 +35,7 @@ private:
 
 private:
 	CHardwareStatusSpecification m_specification;
-	std::vector<CLogicalDiskInfo*> m_p_container_all_logical_disks;
+	std::vector<std::shared_ptr<CLogicalDiskInfo>> m_p_container_all_logical_disks;
 	bool m_is_initialized;
 };
 

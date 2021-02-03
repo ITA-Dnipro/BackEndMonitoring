@@ -17,12 +17,12 @@ public:
     /// <param name="specification"> must be in dynamic memory </param>
     explicit CLogicalDiskInfoMonitoring(
         CEvent& stop_event,
-        CHardwareStatusSpecification* specification,
+        std::shared_ptr<CHardwareStatusSpecification>&  specification,
         CThreadSafeVariable<CJSONFormatterLogicalDisk>& json_formatter);
 
     explicit CLogicalDiskInfoMonitoring(
-        CHardwareStatusSpecification* specification,
-        CContainerOfLogicalDisk* container_in_lifecircle,
+        std::shared_ptr<CHardwareStatusSpecification>&  specification,
+        std::shared_ptr<CContainerOfLogicalDisk>& container_in_lifecircle,
         CEvent& stop_event,
         CThreadSafeVariable<CJSONFormatterLogicalDisk>& json_formatter);
 
@@ -38,8 +38,8 @@ public:
     virtual bool StartMonitoringInfo() override;
 
 private:
-    CHardwareStatusSpecification* m_p_specification;
-    CContainerOfLogicalDisk* m_p_container;
+    std::shared_ptr<CHardwareStatusSpecification> m_p_specification;
+    std::shared_ptr<CContainerOfLogicalDisk> m_p_container;
     CThreadSafeVariable<CJSONFormatterLogicalDisk>& m_json_formatter;
 };
 

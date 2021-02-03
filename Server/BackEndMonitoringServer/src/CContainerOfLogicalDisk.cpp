@@ -28,20 +28,16 @@ CContainerOfLogicalDisk::CContainerOfLogicalDisk(
 	m_specification(orig.m_specification),
 	m_p_container_all_logical_disks(orig.m_p_container_all_logical_disks),
 	m_is_initialized(orig.m_is_initialized)
-{};
+{}
+CContainerOfLogicalDisk::CContainerOfLogicalDisk(
+	const CContainerOfLogicalDisk&& orig) : 
+	m_p_container_all_logical_disks(std::move(orig.m_p_container_all_logical_disks)),
+	m_specification(orig.m_specification),
+	m_is_initialized(orig.m_is_initialized)
+{ };
 
 CContainerOfLogicalDisk::~CContainerOfLogicalDisk() noexcept
-{
-	CLOG_DEBUG_START_FUNCTION();
-	for (const auto& disk : m_p_container_all_logical_disks)
-	{
-		if (nullptr != disk)
-		{
-			delete disk;
-		}
-	}
-	CLOG_DEBUG_END_FUNCTION();
-}
+{ }
 
 bool CContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 {
@@ -60,7 +56,8 @@ bool CContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 	{
 		for (const auto& disk_name : all_names_of_disks)
 		{
-			CLogicalDiskInfo* created_disk = new CLogicalDiskInfo();
+			auto created_disk = std::make_shared<CLogicalDiskInfo>
+				(CLogicalDiskInfo());
 			CLOG_TRACE_VAR_CREATION(created_disk);
 			//avoid floppy disk or another logical disk without capacity
 			if (created_disk->InitializeLogicalDiskStatus(
@@ -68,7 +65,6 @@ bool CContainerOfLogicalDisk::TryGetAllExistedLogicalDisksAndInfo()
 			{
 				m_p_container_all_logical_disks.push_back(created_disk);
 			}
-
 		}
 	}
 	else
@@ -124,7 +120,8 @@ bool CContainerOfLogicalDisk::TryUpdateInfoLogicalDiskToJSON(
 	return true;
 }
 
-const std::vector<CLogicalDiskInfo*>* CContainerOfLogicalDisk::GetAllLogicalDisk() const
+const std::vector<std::shared_ptr<CLogicalDiskInfo>>*
+	CContainerOfLogicalDisk::GetAllLogicalDisk() const
 {
 	CLOG_DEBUG_START_FUNCTION();
 	if (!IsInitialized())
@@ -136,7 +133,8 @@ const std::vector<CLogicalDiskInfo*>* CContainerOfLogicalDisk::GetAllLogicalDisk
 	return &m_p_container_all_logical_disks;
 }
 
-const CHardwareStatusSpecification* CContainerOfLogicalDisk::GetSpecification() const
+const CHardwareStatusSpecification* CContainerOfLogicalDisk::GetSpecification()
+	const
 {
 	return &m_specification;
 }

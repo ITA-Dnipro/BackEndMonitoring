@@ -19,6 +19,20 @@ CHardwareStatusSpecification::CHardwareStatusSpecification(
 	m_count_type(orig.m_count_type)
 { };
 
+CHardwareStatusSpecification::CHardwareStatusSpecification(
+	const CHardwareStatusSpecification&& orig) :
+	m_pause_duration(orig.m_pause_duration),
+	m_path_to_file(orig.m_path_to_file),
+	m_count_type(orig.m_count_type)
+{ };
+
+CHardwareStatusSpecification::CHardwareStatusSpecification(
+	const std::unique_ptr<CHardwareStatusSpecification>& orig) :
+	m_pause_duration(orig->m_pause_duration),
+	m_path_to_file(orig->m_path_to_file),
+	m_count_type(orig->m_count_type)
+{ };
+
 std::chrono::duration<int> 
 CHardwareStatusSpecification::GetPauseDuration() const
 { return m_pause_duration; }

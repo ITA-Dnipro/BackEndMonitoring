@@ -26,7 +26,7 @@
 void CService::RunServer()
 {
     //TODO Add XML Configuration interaction
-    //Sleep(20000);
+    Sleep(20000);
     std::string path_to_log_file(GetRelativePath() + "Log.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if (!InitializeLogger(path_to_log_file, log_level))
@@ -78,7 +78,7 @@ void CService::RunServer()
 
     if (InitializeProcessesMonitoring(process_sett))
     {
-        m_p_thread_pool->Enqueue([this] ( )
+            m_p_thread_pool->Enqueue([this] ( )
         {
             m_processes_monitor->StartMonitoringInfo( );
         });
@@ -158,11 +158,10 @@ bool CService::InitializeLogicalDiscMonitoring(
     const CHDDInfoSettings& xml_settings)
 {
     CLOG_DEBUG_START_FUNCTION( );
-    CHardwareStatusSpecification* specification = new
-        CHardwareStatusSpecification(
-        std::chrono::duration<int>(xml_settings.GetPeriodTime()),
-        xml_settings.GetFileName(),
-        Utils::DefineCountType(xml_settings.GetCountType()));
+    auto specification = std::make_shared<CHardwareStatusSpecification>(
+                std::chrono::duration<int>(xml_settings.GetPeriodTime()),
+                xml_settings.GetFileName(),
+                Utils::DefineCountType(xml_settings.GetCountType()));
     CLOG_TRACE_VAR_CREATION(specification);
     m_disks_monitor = std::make_unique<CLogicalDiskInfoMonitoring>(
         m_stop_event,

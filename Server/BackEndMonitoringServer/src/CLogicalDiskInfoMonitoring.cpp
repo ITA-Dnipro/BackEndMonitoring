@@ -11,7 +11,7 @@
 
 CLogicalDiskInfoMonitoring::CLogicalDiskInfoMonitoring(
 	CEvent& stop_event,
-	CHardwareStatusSpecification* specification,
+	std::shared_ptr<CHardwareStatusSpecification>& specification,
 	CThreadSafeVariable<CJSONFormatterLogicalDisk>& json_formatter) :
 	IHardwareInfoMonitoring(stop_event),
 	m_p_specification(std::move(specification)),
@@ -20,36 +20,26 @@ CLogicalDiskInfoMonitoring::CLogicalDiskInfoMonitoring(
 { };
 
 CLogicalDiskInfoMonitoring::CLogicalDiskInfoMonitoring(
-	CHardwareStatusSpecification* specification,
-	CContainerOfLogicalDisk* container_in_lifecircle,
+	std::shared_ptr<CHardwareStatusSpecification>& specification,
+	std::shared_ptr<CContainerOfLogicalDisk>& container_in_lifecircle,
 	CEvent& stop_event,
 	CThreadSafeVariable<CJSONFormatterLogicalDisk>& json_formatter) :
 	m_p_specification(std::move(specification)),
-	m_p_container(container_in_lifecircle),
+	m_p_container(std::move(container_in_lifecircle)),
 	IHardwareInfoMonitoring(stop_event),
 	m_json_formatter(json_formatter)
 { };
 
 CLogicalDiskInfoMonitoring::~CLogicalDiskInfoMonitoring()
-{
-	CLOG_DEBUG_START_FUNCTION();
-	if (nullptr != m_p_specification)
-	{
-		delete m_p_specification;
-	}
-	if (nullptr != m_p_container)
-	{
-		delete m_p_container;
-	}
-	CLOG_DEBUG_END_FUNCTION();
-}
+{ }
 
 bool CLogicalDiskInfoMonitoring::StartMonitoringInfo()
 {
 	CLOG_DEBUG_START_FUNCTION();
 	if (nullptr == m_p_container)
 	{
-		m_p_container = new CContainerOfLogicalDisk(*m_p_specification);
+		m_p_container = std::make_shared< CContainerOfLogicalDisk>(
+			CContainerOfLogicalDisk(*m_p_specification));
 	}
 	if (!m_p_container->InitializeContainerOfLogicalDisk())
 	{

@@ -13,6 +13,8 @@ CLogicalDiskInfo::CLogicalDiskInfo(const CLogicalDiskInfo& orig) :
 	m_disk_info(orig.m_disk_info),
 	m_count_type(orig.m_count_type),
 	m_is_initialize(orig.m_is_initialize)
+{ }
+CLogicalDiskInfo::CLogicalDiskInfo(const CLogicalDiskInfo && orig) noexcept
 { };
 
 CLogicalDiskInfo::CLogicalDiskInfo(
