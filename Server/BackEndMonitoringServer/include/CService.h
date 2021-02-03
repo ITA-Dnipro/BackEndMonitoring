@@ -44,12 +44,13 @@ public:
     CService(CService&& other) = delete;
     CService& operator=(CService&& other) = delete;
 
+    static std::string GetRelativePath();
+
     bool Run();
 
 #if defined(_WIN64) || defined(_WIN32)
 
     static bool GetModulePath(CString& module_path);
-    static std::string GetRelativePath();
     static bool EscapePath(CString& path);
 
     explicit CService(const ServiceParameters& parameters);

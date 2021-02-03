@@ -3,7 +3,7 @@ Description=Simple daemon template
 After=network.target
 
 [Service]
-ExecStart=/home/Server
+ExecStart=/usr/bin/backend-monitoring/backend-monitoring
 
 [Install]
 WantedBy=multi-user.target
