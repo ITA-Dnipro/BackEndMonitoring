@@ -64,7 +64,6 @@
     <ClInclude Include="..\..\utils\include\CThreadPoolSettings.h" />
     <ClInclude Include="..\..\utils\include\CTimeSettings.h" />
     <ClInclude Include="..\..\utils\include\CXMLDataReader.h" />
-    <ClInclude Include="..\..\utils\include\ISettings.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="..\..\utils\include\stdafx.h" />
     <ClInclude Include="include\CCommandLineHandler.h" />
