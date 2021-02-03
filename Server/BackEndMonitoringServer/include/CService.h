@@ -5,6 +5,7 @@
 #include "CAcceptorWrapper.h"
 #include "CJSONFormatterProcess.h"
 #include "CJSONFormatterLogicalDisk.h"
+#include "CDataReader.h"
 
 class CThreadPool;
 class CAcceptorWrapper;
@@ -67,9 +68,10 @@ public:
 private:
     bool InitializeLogger(const std::string& path_to_log_file, ELogLevel level);
     bool InitializeThreadPool(const CThreadPoolSettings& thread_pool_sett);
-    bool InitializeLogicalDiscMonitoring(const CHDDInfoSettings& xml_settings);
-    bool InitializeProcessesMonitoring(
-        const CProcessesInfoSettings& process_sett);
+    bool InitializeLogicalDiscMonitoring(const CHDDInfoSettings& xml_settings,
+                                         int tick);
+    bool InitializeProcessesMonitoring(const CProcessesInfoSettings& xml_settings,
+                                       int tick);
     bool InitializeSockets(const CServerSettings& server_sett);
 
     #if defined(_WIN64) || defined(_WIN32)

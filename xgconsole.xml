@@ -17,9 +17,9 @@
      </communicationsettings>
      <logging>
          <!--path to log file-->
-         <filename> "serverlog.txt"</filename>
+         <filename> "/home/serverlog.txt"</filename>
          <!--supports only 3 levels of logging: 0 - No logs, 1 - Production logs/Warning/Erros, 2 - Debug logs, 3 - Trace logs-->
-         <LogLevel> "2"</LogLevel>
+         <LogLevel> "1"</LogLevel>
          <!--parameter for flushing output to log file (1 - enable / 0 - disable). Warning this parameter will slow dowm output!-->
          <flush> "0"</flush>
      </logging>
@@ -40,7 +40,7 @@
      </HDDinfo>
      <processesinfo>
          <!--information about processes which running on the system-->
-         <filename> "/home/vytalyhorbatov/CPP_Projects/BackEndMonitoring-linux-dev/processesinfo.txt"</filename>
+         <filename> "/home/processesinfo.txt"</filename>
          <!--flag for checking processes info  (enable / disable)-->
          <checkprocesses> "enable"</checkprocesses>
 		 <!--CountType: Bytes(0) - Megabytes(1) - Gigabytes(2)-->

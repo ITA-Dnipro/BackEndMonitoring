@@ -20,6 +20,7 @@
 #include "CHDDInfoSettings.h"
 #include "CProcessesInfoSettings.h"
 #include "CServerSettings.h"
+#include "CTimeSettings.h"
 
 #include "CService.h"
 
@@ -51,12 +52,12 @@ bool CService::Run()
 void CService::RunServer()
 {
     //TODO Add XML Configuration interaction
-    //Sleep(20000);
+    //std::this_thread::sleep_for(std::chrono::seconds(20));
 
 #if defined(_WIN32) || defined(_WIN64)
     std::string path_to_log_file(GetRelativePath() + "Log.txt");
 #elif defined(__linux__)
-    std::string path_to_log_file("/home/sasha/Log.txt");
+    std::string path_to_log_file("/home/Log.txt");
 #endif
 
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
@@ -72,10 +73,10 @@ void CService::RunServer()
 #if defined(_WIN32) || defined(_WIN64)
         xml_reader->Initialize(GetRelativePath() + "../../../../../xgconsole.xml");
 #elif defined(__linux__)
-        xml_reader->Initialize("/home/sasha/xgconsole.xml");
+        xml_reader->Initialize("/home/xgconsole.xml");
 #endif
 
-        CLoggingSettings log_sett(xml_reader);
+    CLoggingSettings log_sett(xml_reader);
     CLOG_TRACE_VAR_CREATION(log_sett);
     log_sett.ReadConfigurationFromFile();
 
@@ -89,16 +90,34 @@ void CService::RunServer()
         return;
     }
 
-    CHDDInfoSettings hdd_sett(xml_reader);
-    CLOG_TRACE_VAR_CREATION(hdd_sett);
-    hdd_sett.ReadConfigurationFromFile();
+    CTimeSettings time_sett(xml_reader);
+    time_sett.ReadConfigurationFromFile();
 
-    if (InitializeLogicalDiscMonitoring(hdd_sett))
+    CProcessesInfoSettings process_sett(xml_reader);
+    process_sett.ReadConfigurationFromFile();
+
+    if (InitializeProcessesMonitoring(process_sett, time_sett.GetPeriodTime()))
     {
         m_p_thread_pool->Enqueue([this] ( )
-        {
-            m_disks_monitor->StartMonitoringInfo( );
-        });
+                                 {
+                                     m_processes_monitor->StartMonitoringInfo( );
+                                 });
+    }
+    else
+    {
+        CLOG_PROD("ERROR! Can't initialize processes monitoring!");
+        return;
+    }
+
+    CHDDInfoSettings hdd_sett(xml_reader);
+    hdd_sett.ReadConfigurationFromFile();
+
+    if (InitializeLogicalDiscMonitoring(hdd_sett, time_sett.GetPeriodTime()))
+    {
+        m_p_thread_pool->Enqueue([this] ( )
+                                 {
+                                     m_disks_monitor->StartMonitoringInfo( );
+                                 });
 
 
     }
@@ -106,23 +125,6 @@ void CService::RunServer()
     {
         CLOG_PROD("ERROR! Can't initialize logical disks monitoring!");
         return;
-    }
-
-    CProcessesInfoSettings process_sett(xml_reader);
-    CLOG_TRACE_VAR_CREATION(process_sett);
-    process_sett.ReadConfigurationFromFile();
-
-    if (InitializeProcessesMonitoring(process_sett))
-    {
-        m_p_thread_pool->Enqueue([this] ( )
-        {
-            m_processes_monitor->StartMonitoringInfo( );
-        });
-    }
-    else
-    {
-        CLOG_PROD("ERROR! Can't initialize processes monitoring!");
-//        return;
     }
 
     CServerSettings server_sett(xml_reader);
@@ -199,13 +201,12 @@ bool CService::InitializeThreadPool(
 }
 
 bool CService::InitializeLogicalDiscMonitoring(
-    const CHDDInfoSettings& xml_settings)
+    const CHDDInfoSettings& xml_settings,int tick)
 {
     CLOG_DEBUG_START_FUNCTION( );
     CHardwareStatusSpecification* specification = new
         CHardwareStatusSpecification(
-        std::chrono::duration<int>(xml_settings.GetPeriodTime()),
-        xml_settings.GetFileName(),
+        std::chrono::seconds(tick), xml_settings.GetFileName(),
         Utils::DefineCountType(xml_settings.GetCountType()));
     CLOG_TRACE_VAR_CREATION(specification);
     m_disks_monitor = std::make_unique<CLogicalDiskInfoMonitoring>(
@@ -220,12 +221,11 @@ bool CService::InitializeLogicalDiscMonitoring(
 }
 
 bool CService::InitializeProcessesMonitoring(
-    const CProcessesInfoSettings& process_sett)
+    const CProcessesInfoSettings& xml_settings, int tick)
 {
     m_processes_monitor = std::make_unique<CProcessesInfoMonitoring>(
-        std::chrono::duration<int>(process_sett.GetPeriodTime()),
-        process_sett.GetFileName(),
-        Utils::DefineCountType(process_sett.GetCountType()),
+        std::chrono::seconds(tick), xml_settings.GetFileName(),
+        Utils::DefineCountType(xml_settings.GetCountType()),
         m_stop_event, m_processes_json);
     CLOG_DEBUG_START_FUNCTION( );
     CLOG_TRACE_VAR_CREATION(m_processes_monitor);
