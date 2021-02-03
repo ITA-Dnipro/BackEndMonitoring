@@ -51,11 +51,11 @@ bool CService::Run()
 
 void CService::RunServer()
 {
-    //TODO Add XML Configuration interaction
+
     //std::this_thread::sleep_for(std::chrono::seconds(20));
 
     std::string path_to_log_file(GetRelativePath() + "Log.txt");
-    ELogLevel log_level = ELogLevel::DEBUG_LEVEL;                                   // todo: MAKE READING LEVEL FROM XML PLS
+    ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if (!InitializeLogger(path_to_log_file, log_level))
     {
         return;
@@ -81,13 +81,10 @@ void CService::RunServer()
         return;
     }
 
-    CTimeSettings time_sett(xml_reader);
-    time_sett.ReadConfigurationFromFile();
-
     CProcessesInfoSettings process_sett(xml_reader);
     process_sett.ReadConfigurationFromFile();
 
-    if (InitializeProcessesMonitoring(process_sett, time_sett.GetPeriodTime()))
+    if (InitializeProcessesMonitoring(process_sett))
     {
         m_p_thread_pool->Enqueue([this] ( )
                                  {
@@ -103,7 +100,7 @@ void CService::RunServer()
     CHDDInfoSettings hdd_sett(xml_reader);
     hdd_sett.ReadConfigurationFromFile();
 
-    if (InitializeLogicalDiscMonitoring(hdd_sett, time_sett.GetPeriodTime()))
+    if (InitializeLogicalDiscMonitoring(hdd_sett))
     {
         m_p_thread_pool->Enqueue([this] ( )
                                  {
@@ -192,12 +189,12 @@ bool CService::InitializeThreadPool(
 }
 
 bool CService::InitializeLogicalDiscMonitoring(
-    const CHDDInfoSettings& xml_settings,int tick)
+    const CHDDInfoSettings& xml_settings)
 {
     CLOG_DEBUG_START_FUNCTION( );
     CHardwareStatusSpecification* specification = new
         CHardwareStatusSpecification(
-        std::chrono::seconds(tick), xml_settings.GetFileName(),
+        std::chrono::seconds(xml_settings.GetPeriodTime()), xml_settings.GetFileName(),
         Utils::DefineCountType(xml_settings.GetCountType()));
     CLOG_TRACE_VAR_CREATION(specification);
     m_disks_monitor = std::make_unique<CLogicalDiskInfoMonitoring>(
@@ -212,10 +209,10 @@ bool CService::InitializeLogicalDiscMonitoring(
 }
 
 bool CService::InitializeProcessesMonitoring(
-    const CProcessesInfoSettings& xml_settings, int tick)
+    const CProcessesInfoSettings& xml_settings)
 {
     m_processes_monitor = std::make_unique<CProcessesInfoMonitoring>(
-        std::chrono::seconds(tick), xml_settings.GetFileName(),
+        std::chrono::seconds(xml_settings.GetPeriodTime()), xml_settings.GetFileName(),
         Utils::DefineCountType(xml_settings.GetCountType()),
         m_stop_event, m_processes_json);
     CLOG_DEBUG_START_FUNCTION( );
@@ -227,9 +224,9 @@ bool CService::InitializeProcessesMonitoring(
 bool CService::InitializeSockets(const CServerSettings& server_sett)
 {
     CLOG_DEBUG_START_FUNCTION( );
-    m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(                   // todo: from dev move to Linux-Dev
+    m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(
         server_sett.GetListenerPort(), server_sett.GetServerIpAddress(),
-        true, 5, m_stop_event);
+        server_sett.GetBlocking(), server_sett.GetSocketTimeout(), m_stop_event);
     CLOG_TRACE_VAR_CREATION(m_p_acceptor_socket);
 
     CLOG_DEBUG_END_FUNCTION( );
