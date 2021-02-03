@@ -7,10 +7,13 @@ include_directories(${CMAKE_SOURCE_DIR}
 		${CMAKE_SOURCE_DIR}/3rdParty/include)
 
 set(CLOGGER_SRC_DIR ${CMAKE_SOURCE_DIR}/CLogger/src)
+
+# Comment if you want to build dynamic library
 set(CLOG_STATIC_BUILD 1)
 
 if (CLOG_STATIC_BUILD)
 	set(CLOG_BUILD STATIC)
+	# Set predefined macro to build static library
 	set(CMAKE_CXX_COMPILER_PREDEFINES_COMMAND "${CMAKE_CXX_COMPILER_PREDEFINES_COMMAND} CLOG_STATIC_BUILD")
 else()
 	set(CLOG_BUILD SHARED)

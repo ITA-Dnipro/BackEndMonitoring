@@ -27,4 +27,5 @@ add_library(Sockets
 		${UTILS_SRC_DIR}/CEvent.cpp
 		${UTILS_SRC_DIR}/Utils.cpp)
 
+# Link this library to this build
 target_link_libraries(Sockets CLogger)
