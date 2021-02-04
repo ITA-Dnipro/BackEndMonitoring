@@ -4,11 +4,11 @@ project(BackEndMonitoring)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED 17)
 
-if (MSVC)
+if (${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
     # Using the modern MSVC preprocessor.
     # It is necessary for the correct work of the CLogger's macros.
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:preprocessor")
-endif(MSVC)
+endif(${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
 
 set(UTILS_SRC_DIR ${CMAKE_SOURCE_DIR}/utils/include)
 set(THIRD_PARTY_DIR ${CMAKE_SOURCE_DIR}/3rdParty/include)
