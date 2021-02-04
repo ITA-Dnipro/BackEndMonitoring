@@ -9,20 +9,20 @@
 
 CJSONFormatSaver::CJSONFormatSaver(const std::string& path_to_file) :
 	m_path_to_file(path_to_file), m_number_of_spaces(3),
-	m_num_of_bities_to_last_data(5)
+	m_num_of_bities_to_last_data(3)
 { };
 
 bool CJSONFormatSaver::TrySaveToFile(const CJSONFormatter& formatted_data)
 const
 {
-	CLOG_DEBUG_START_FUNCTION();
+	CLOG_DEBUG_START_FUNCTION(); 
 	if (Utils::TryCreateFileIfNotExist(m_path_to_file))
 	{
 		//write to log??
 	}
 
 	std::ofstream JSON_file_to_save(m_path_to_file, std::ios::binary |
-									std::ios_base::app);
+									std::ios_base::in);
 	CLOG_TRACE_VAR_CREATION(JSON_file_to_save);
 
 	if (!JSON_file_to_save.is_open())
