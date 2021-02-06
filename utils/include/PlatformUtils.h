@@ -62,6 +62,7 @@ namespace PlatformUtils
 						 unsigned long long& user_time);
 	bool GetProcessMemoryUsage(unsigned PID, unsigned long long& ram_usage,
 		unsigned long long& pagefile_usage);
+
 	bool TryGetLogicalDisksNames(std::vector<std::string>& all_disks_names);
 	bool InitializeWinLibrary();
 	bool FinalizeWinLibrary();

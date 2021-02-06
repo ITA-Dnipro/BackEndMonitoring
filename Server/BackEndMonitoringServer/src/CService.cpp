@@ -65,7 +65,7 @@ void CService::RunServer()
     std::shared_ptr<CXMLDataReader> xml_reader = std::make_shared<CXMLDataReader>();
     CLOG_TRACE_VAR_CREATION(xml_reader);
 
-    xml_reader->Initialize(GetRelativePath() + "xgconsole.xml");
+    xml_reader->Initialize(GetRelativePath() + "config.xml");
 
     CLoggingSettings log_sett(xml_reader);
     CLOG_TRACE_VAR_CREATION(log_sett);

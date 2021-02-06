@@ -4,6 +4,7 @@
 #include "CNumericTypesParser.h"
 #include "CReadFileWrapper.h"
 #include "Utils.h"
+#include "Clogger/include/Log.h"
 
 #include "PlatformUtils.h"
 
@@ -185,7 +186,11 @@ namespace PlatformUtils
 	bool GetExistingProcessIds(std::vector<unsigned>& container_of_PIDs)
 	{
 		bool success = false;
+		CLOG_DEBUG_START_FUNCTION();
+		CLOG_TRACE_VAR_CREATION(success);
+
 		std::filesystem::path proc_dir("/proc");
+		CLOG_TRACE_VAR_CREATION(proc_dir);
 		for (auto& proc : std::filesystem::directory_iterator(proc_dir))
 		{
 			unsigned PID;
@@ -195,24 +200,35 @@ namespace PlatformUtils
 				success = true;
 			}
 		}
+		CLOG_DEBUG_END_FUNCTION_WITH_RETURN(success);
 		return success;
 	}
 
 	bool CheckIsProcessActive(unsigned PID)
 	{
+		bool success = false;
+		CLOG_TRACE_START_FUNCTION();
+		CLOG_TRACE_VAR_CREATION(success);
+
 		std::filesystem::path proc_dir("/proc");
 		proc_dir /= std::to_string(PID);
-		bool success = std::filesystem::exists(proc_dir / "status");
+		CLOG_TRACE_VAR_CREATION(proc_dir);
+
+		success = std::filesystem::exists(proc_dir / "status");
 		if (success)
 		{
 			success = std::filesystem::exists(proc_dir / "stat");
 		}
+
+		CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
 		return success;
 	}
 
 	std::vector<std::string> ParseProcStatFile(const std::string& line)
 	{
-		std::vector<std::string> values = Utils::SplitIntoWords(line, ' ');
+		std::vector<std::string> values;
+		CLOG_TRACE_START_FUNCTION_WITH_PARAMS(line);
+		values = Utils::SplitIntoWords(line, ' ');
 
 		size_t opened_brace_pos = 0;
 		for (const auto& value : values)
@@ -245,23 +261,32 @@ namespace PlatformUtils
 				values.erase(values.begin() + i);
 			}
 		}
+
+		CLOG_TRACE_END_FUNCTION();
 		return values;
 	}
 
 	bool GetSysTime(unsigned long long& sys_time)
 	{
+		bool success = false;
+		CLOG_TRACE_START_FUNCTION( );
+
 		std::filesystem::path proc_dir("/proc");
 		proc_dir /= "stat";
+		CLOG_TRACE_VAR_CREATION(proc_dir);
+
 		CReadFileWrapper proc_status(std::move(proc_dir));
-		bool success = proc_status.Initialize();
+		success = proc_status.Initialize();
 		if (!success)
 		{
+			CLOG_WARNING_WITH_PARAMS("Can't open file ", proc_dir);
 			return success;
 		}
 
 		std::string line;
 		if (!(success = proc_status.ReadLine(line)))
 		{
+			CLOG_WARNING_WITH_PARAMS("Can't read line from file ", proc_dir);
 			return success;
 		}
 
@@ -276,6 +301,8 @@ namespace PlatformUtils
 				sys_time += val;
 			}
 		}
+
+		CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
 		return success;
 	}
 
@@ -284,24 +311,32 @@ namespace PlatformUtils
 		unsigned long long& user_time)
 	{
 		bool success = GetSysTime(system_time);
+
+		CLOG_TRACE_START_FUNCTION();
+		CLOG_TRACE_VAR_CREATION(success);
 		if (!success)
 		{
+			CLOG_TRACE("Can't get system time");
 			return success;
 		}
 
 		std::filesystem::path proc_dir("/proc");
 		proc_dir /= std::to_string(PID);
 		proc_dir /= "stat";
+		CLOG_TRACE_VAR_CREATION(proc_dir);
+
 		CReadFileWrapper proc_status(std::move(proc_dir));
 		success = proc_status.Initialize();
 		if (!success)
 		{
+			CLOG_TRACE_WITH_PARAMS("Can't open ", proc_dir);
 			return success;
 		}
 
 		std::string line;
 		if (!(success = proc_status.ReadLine(line)))
 		{
+			CLOG_TRACE_WITH_PARAMS("Can't read from ", proc_dir);
 			return success;
 		}
 
@@ -310,16 +345,27 @@ namespace PlatformUtils
 		success = CNumericTypesParser(values[13]).AsUnsignedNumber(user_time);
 		success = CNumericTypesParser(values[14]).AsUnsignedNumber(kernel_time);
 
+		CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
 		return success;
 	}
 
 	bool GetPagefileUsage(unsigned PID, unsigned long long& value) {
+		bool success = false;
+		CLOG_TRACE_START_FUNCTION();
+		CLOG_TRACE_VAR_CREATION(success);
+
 		std::filesystem::path proc_dir("/proc");
 		proc_dir /= std::to_string(PID);
 		proc_dir /= "status";
+		CLOG_TRACE_VAR_CREATION(proc_dir);
+
 		CReadFileWrapper proc_status(std::move(proc_dir));
-		bool success = proc_status.Initialize();
-		if (!success) { return success; }
+		success = proc_status.Initialize();
+		if (!success) 
+		{ 
+			CLOG_TRACE_WITH_PARAMS("Can't open ", proc_dir);
+			return success;
+		}
 
 		std::string line;
 
@@ -339,18 +385,30 @@ namespace PlatformUtils
 				break;
 			}
 			success = false;
+			CLOG_TRACE_WITH_PARAMS("File ", proc_dir, "doesn't contain VmSize");
 		}
+
+		CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
 		return success;
 	}
 
 	bool GetRamUsage(unsigned PID, unsigned long long& value) {
+		bool success = false;
+		CLOG_TRACE_START_FUNCTION();
+		CLOG_TRACE_VAR_CREATION(success);
+
 		std::filesystem::path proc_dir("/proc");
 		proc_dir /= std::to_string(PID);
 		proc_dir /= "status";
+		CLOG_TRACE_VAR_CREATION(proc_dir);
 
 		CReadFileWrapper proc_status(std::move(proc_dir));
-		bool success = proc_status.Initialize();
-		if (!success) { return success; }
+		success = proc_status.Initialize();
+		if (!success)
+		{
+			CLOG_TRACE_WITH_PARAMS("Can't open ", proc_dir);
+			return success;
+		}
 
 		std::string line;
 
@@ -369,7 +427,9 @@ namespace PlatformUtils
 				break;
 			}
 			success = false;
+			CLOG_TRACE_WITH_PARAMS("File ", proc_dir, "doesn't contain VmRSS");
 		}
+		CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
 		return success;
 	}
 

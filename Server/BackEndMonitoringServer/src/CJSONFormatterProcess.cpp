@@ -21,13 +21,16 @@ bool CJSONFormatterProcess::TryAddProcessData(
     CLOG_TRACE_VAR_CREATION(ram_usage);
     long double pagefile_usage;
     CLOG_TRACE_VAR_CREATION(pagefile_usage);
+
     if (!process_to_json.GetPID(PID) ||
         !process_to_json.GetCpuUsage(cpu_usage) ||
         !process_to_json.GetRamUsage(ram_usage) ||
         !process_to_json.GetPagefileUsage(pagefile_usage))
     {
         return false;
+        CLOG_WARNING("Can't get some process info");
     }
+
     json_format_data["PID " + std::to_string(PID)] = {
         CreatePair<double>("CPU_usage", cpu_usage),
         CreatePair<long double>("RAM_usage", ram_usage),
@@ -35,10 +38,12 @@ bool CJSONFormatterProcess::TryAddProcessData(
     };
     if (json_format_data.is_null())
     {
+        CLOG_ERROR("Can't format processes info to json");
         return false;
     }
     if (!TryAddJSONFormattedData(json_format_data))
     {
+        CLOG_ERROR("Can't add processes info to json");
         return false;
     }
     CLOG_DEBUG_END_FUNCTION();

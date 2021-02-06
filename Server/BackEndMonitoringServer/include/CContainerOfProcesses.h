@@ -8,7 +8,7 @@ class CContainerOfProcesses
 public:
 	CContainerOfProcesses() = delete;
 	explicit CContainerOfProcesses(std::chrono::duration<int>,
-		std::string, EMemoryConvertType);
+		const std::string&, EMemoryConvertType);
 	CContainerOfProcesses(const CContainerOfProcesses&) = delete;
 	CContainerOfProcesses(CContainerOfProcesses&&) noexcept = delete;
 	~CContainerOfProcesses() noexcept = default;
@@ -21,6 +21,8 @@ public:
 	[[nodiscard]]const CHardwareStatusSpecification* GetSpecification() const;
 
 private:
+	void EraseDeadProcesses( );
+
 	CHardwareStatusSpecification m_specification;
 	std::list<CProcessInfo> m_container;
 	bool m_is_initialized;
