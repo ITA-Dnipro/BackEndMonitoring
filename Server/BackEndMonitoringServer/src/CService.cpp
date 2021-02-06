@@ -83,36 +83,40 @@ void CService::RunServer()
 
     CProcessesInfoSettings process_sett(xml_reader);
     process_sett.ReadConfigurationFromFile();
-
-    if (InitializeProcessesMonitoring(process_sett))
+    if (process_sett.GetCheckProcesses())
     {
-        m_p_thread_pool->Enqueue([this] ( )
-                                 {
-                                     m_processes_monitor->StartMonitoringInfo( );
-                                 });
-    }
-    else
-    {
-        CLOG_PROD("ERROR! Can't initialize processes monitoring!");
-        return;
+        if (InitializeProcessesMonitoring(process_sett))
+        {
+            m_p_thread_pool->Enqueue([this]()
+                {
+                    m_processes_monitor->StartMonitoringInfo();
+                });
+        }
+        else
+        {
+            CLOG_PROD("ERROR! Can't initialize processes monitoring!");
+            return;
+        }
     }
 
     CHDDInfoSettings hdd_sett(xml_reader);
     hdd_sett.ReadConfigurationFromFile();
-
-    if (InitializeLogicalDiscMonitoring(hdd_sett))
+    if (hdd_sett.GetCheckHdd())
     {
-        m_p_thread_pool->Enqueue([this] ( )
-                                 {
-                                     m_disks_monitor->StartMonitoringInfo( );
-                                 });
+        if (InitializeLogicalDiscMonitoring(hdd_sett))
+        {
+            m_p_thread_pool->Enqueue([this]()
+                {
+                    m_disks_monitor->StartMonitoringInfo();
+                });
 
 
-    }
-    else
-    {
-        CLOG_PROD("ERROR! Can't initialize logical disks monitoring!");
-        return;
+        }
+        else
+        {
+            CLOG_PROD("ERROR! Can't initialize logical disks monitoring!");
+            return;
+        }
     }
 
     CServerSettings server_sett(xml_reader);

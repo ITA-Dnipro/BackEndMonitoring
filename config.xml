@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <root>
      <service>
-         <servicename> "backend-unique-name-service"</servicename>
-         <servicedesc> "It's a backend-unique-name-service"</servicedesc>
+         <servicename> "BackEndMOnitoringService"</servicename>
+         <servicedesc> "Server monitors information about all running processes and all logical disc drives, saves this data to the files and can send data to client."</servicedesc>
      </service>
      <Server>
          <!--servername is name that server will have when it will be installed-->
@@ -29,25 +29,25 @@
      </logging>
      <time>
          <!--time in seconds with interval which we call threads-->
-         <Period_time> "30"</Period_time>
+         <Period_time> "20"</Period_time>
      </time>
      <threadpool>
          <maxworkingthreads> "10"</maxworkingthreads>
      </threadpool>
      <HDDinfo>
          <!--information about total and free space on disks-->
-         <filename> "/usr/bin/backend-unique-name-service/asd.txt"</filename>
+         <filename> "C:\hddinfo.txt"</filename>
          <!--flag for checking hhd info (enable / disable)-->
          <checkhdd> "enable"</checkhdd>
-		 <!--CountType: Bytes(0) - Megabytes(1) - Gigabytes(2)-->
+		 <!--CountType: Bytes(0) - Kilobytes(1) - Megabytes(2) - Gigabytes(3)-->
 		 <counttype> "1"</counttype>
      </HDDinfo>
      <processesinfo>
          <!--information about processes which running on the system-->
-         <filename> "/usr/bin/backend-unique-name-service/processesinfo.txt"</filename>
+         <filename> "C:\processesinfo.txt"</filename>
          <!--flag for checking processes info  (enable / disable)-->
-         <checkprocesses> "enable"</checkprocesses>
-		 <!--CountType: Bytes(0) - Megabytes(1) - Gigabytes(2)-->
+         <checkprocesses> "disable"</checkprocesses>
+		 <!--CountType: Bytes(0) - Kilobytes(1) - Megabytes(2) - Gigabytes(3)-->
 		 <counttype> "1"</counttype>
      </processesinfo>
 </root>
