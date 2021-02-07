@@ -15,7 +15,7 @@ public:
 	explicit CContainerOfLogicalDisk(const CHardwareStatusSpecification& orig);
 	explicit CContainerOfLogicalDisk(const CContainerOfLogicalDisk& orig);
 
-	CContainerOfLogicalDisk(const CContainerOfLogicalDisk&& orig) noexcept;
+	CContainerOfLogicalDisk(CContainerOfLogicalDisk&& orig) noexcept;
 
 	~CContainerOfLogicalDisk() noexcept;
 

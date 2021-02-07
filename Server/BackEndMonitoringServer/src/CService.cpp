@@ -52,7 +52,7 @@ bool CService::Run()
 void CService::RunServer()
 {
 
-    std::this_thread::sleep_for(std::chrono::seconds(10));
+    //std::this_thread::sleep_for(std::chrono::seconds(10));
 
     std::string path_to_log_file(GetRelativePath() + "Log.txt");
     ELogLevel log_level = ELogLevel::PROD_LEVEL;

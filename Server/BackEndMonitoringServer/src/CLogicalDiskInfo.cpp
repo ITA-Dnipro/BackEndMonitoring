@@ -14,7 +14,11 @@ CLogicalDiskInfo::CLogicalDiskInfo(const CLogicalDiskInfo& orig) :
 	m_count_type(orig.m_count_type),
 	m_is_initialize(orig.m_is_initialize)
 { }
-CLogicalDiskInfo::CLogicalDiskInfo(const CLogicalDiskInfo && orig) noexcept
+CLogicalDiskInfo::CLogicalDiskInfo(CLogicalDiskInfo && orig) noexcept :
+	m_disk_name(std::move(orig.m_disk_name)),
+	m_disk_info(std::move(orig.m_disk_info)),
+	m_count_type(std::move(orig.m_count_type)),
+	m_is_initialize(std::move(orig.m_is_initialize))
 { };
 
 CLogicalDiskInfo::CLogicalDiskInfo(

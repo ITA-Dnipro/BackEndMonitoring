@@ -188,6 +188,9 @@
     <ClInclude Include="..\..\utils\include\PlatformUtils.h">
       <Filter>Utils\Platform Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\utils\include\CJSONFormatter.h">
+      <Filter>Utils\JSON Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />

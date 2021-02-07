@@ -31,7 +31,7 @@ CContainerOfLogicalDisk::CContainerOfLogicalDisk(
 {}
 
 CContainerOfLogicalDisk::CContainerOfLogicalDisk(
-	const CContainerOfLogicalDisk&& move_orig) noexcept :
+	CContainerOfLogicalDisk&& move_orig) noexcept :
 	m_specification(std::move(move_orig.m_specification)),
 	m_p_container_all_logical_disks(std::move(move_orig.m_p_container_all_logical_disks)),
 	m_is_initialized(std::move(move_orig.m_is_initialized))

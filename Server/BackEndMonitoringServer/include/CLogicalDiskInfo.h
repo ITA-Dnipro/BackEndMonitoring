@@ -7,7 +7,7 @@ class CLogicalDiskInfo
 public:
 	CLogicalDiskInfo();
 	explicit CLogicalDiskInfo(const CLogicalDiskInfo& orig);
-	CLogicalDiskInfo(const CLogicalDiskInfo&& orig) noexcept;
+	CLogicalDiskInfo(CLogicalDiskInfo&& orig) noexcept;
 
 	[[nodiscard]] bool InitializeLogicalDiskStatus(
 		const std::string& disk_name,
