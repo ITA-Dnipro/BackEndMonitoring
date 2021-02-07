@@ -4,7 +4,7 @@
 /// <summary>
 ///		Enumeration that indicates if logger must flushes the stream
 /// </summary>
-enum class CLOGGER_API ELogFlush : unsigned short
+enum class ELogFlush : unsigned short
 {
 	NONE, FLUSH, NOT_FLUSH
 };

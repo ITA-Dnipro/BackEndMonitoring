@@ -4,7 +4,7 @@
 /// <summary>
 ///		Enumeration indicates level of logging
 /// </summary>
-enum class CLOGGER_API ELogLevel : unsigned short
+enum class ELogLevel : unsigned short
 {
 	NONE_LEVEL, PROD_LEVEL, DEBUG_LEVEL, TRACE_LEVEL
 };
