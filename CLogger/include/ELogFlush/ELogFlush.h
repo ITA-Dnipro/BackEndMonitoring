@@ -1,5 +1,5 @@
 #pragma once
-#include "stdafx.h"
+#include "../include/stdafx.h"
 
 /// <summary>
 ///		Enumeration that indicates if logger must flushes the stream

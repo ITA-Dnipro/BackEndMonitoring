@@ -3,7 +3,7 @@
 #include "CLogger/include/Log.h"
 
 CProcessesInfoSettings::CProcessesInfoSettings(std::shared_ptr<CDataReader> p_data_reader) :
-	CSettings(p_data_reader), m_file_name_("processesinfo.txt"), m_check_processes_(true), 
+	CSettings(p_data_reader), m_file_name_("processesinfo.txt"), m_check_processes_(true),
 	m_count_type_(0), m_period_time_(30)
 {
 
@@ -20,11 +20,9 @@ void CProcessesInfoSettings::ReadConfigurationFromFile()
 	}
 
 	std::string tmp_string;
-	CLOG_TRACE_VAR_CREATION(tmp_string);
 	int tmp_int = 0;
-	CLOG_TRACE_VAR_CREATION(tmp_int);
 	bool tmp_bool = false;
-	CLOG_TRACE_VAR_CREATION(tmp_bool);
+
 	if (m_p_data_reader_->TryToGetStringData("//root/processesinfo/filename", tmp_string))
 		m_file_name_ = tmp_string != "" ? tmp_string : m_file_name_;
 
@@ -45,7 +43,7 @@ std::string CProcessesInfoSettings::GetFileName() const
 	return m_file_name_;
 }
 
-bool CProcessesInfoSettings::GetCheckHdd() const
+bool CProcessesInfoSettings::GetCheckProcesses() const
 {
 	return m_check_processes_;
 }

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+
 #include "CConnector.h"
 
 CConnector::CConnector(const int port, const std::string& ip_address)

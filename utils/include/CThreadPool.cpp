@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include "CThreadSafeVariable.h"
 #include "CThreadPool.h"
 
 CThreadPool::CThreadPool(std::size_t num_threads, CEvent& stop_event)

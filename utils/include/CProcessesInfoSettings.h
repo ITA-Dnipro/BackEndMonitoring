@@ -15,7 +15,7 @@ public:
 	void ReadConfigurationFromFile() override;
 
 	[[nodiscard]] std::string GetFileName() const;
-	[[nodiscard]] bool GetCheckHdd() const;
+	[[nodiscard]] bool GetCheckProcesses() const;
 	[[nodiscard]] int GetCountType() const;
 	[[nodiscard]] int GetPeriodTime() const;
 

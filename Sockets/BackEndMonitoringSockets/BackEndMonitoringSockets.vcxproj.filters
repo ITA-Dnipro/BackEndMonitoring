@@ -101,9 +101,6 @@
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\LinuxUtils.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
     <ClCompile Include="src\CDataReceiver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

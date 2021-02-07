@@ -3,52 +3,34 @@
 #include "ERequestType.h"
 #include "ERequestType.h"
 #include "CClient.h"
-#include "CLogger/include/Log.h"
+#include "Utils.h"
 
-CClient::CClient(int port, const std::string& ip_address,
-	std::string file_name)
-	: m_port(port), m_ip_address(ip_address), is_connected(false), 
-	m_response_data(file_name, std::ios_base::out)
+CClient::CClient() : m_port(0), is_connected(false)
 {
-	Init(file_name);
+	m_file_name = "ServerData_Client_.txt";
 }
 
-CClient::~CClient()
+bool CClient::Init(const int arg_num, char** arguments)
 {
-	CLOG_DESTROY();
-}
+	if (arg_num != c_num_arguments)
+	{
+		return false;
+	}
 
-void CClient::Init(std::string file_name)
-{
-	InitLogger();
+	m_port = std::stol(arguments[c_port_num]);
+	m_ip_address = arguments[c_ip_address_num];
+
 	m_connector = InitConnector();
-	std::filesystem::path path_to_file(file_name);
+	std::filesystem::path path_to_file(m_file_name);
 	std::filesystem::path extension = path_to_file.extension();
 	std::filesystem::path name = path_to_file.stem();
-	path_to_file.replace_filename(name.string() + 
+	path_to_file.replace_filename(name.string() +
 		std::to_string(m_connector->GetClientSocket()) + extension.string());
 	m_response_data = std::fstream(path_to_file, std::ios_base::out);
 	m_consolePrinter = std::make_unique<CClientView>(std::cout, std::cin);
 	m_filePrinter = std::make_unique<CClientView>(m_response_data, std::cin);
-}
 
-void CClient::InitLogger()
-{
-
-	CLOG_START_CREATION();
-
-	CLOG_SET_LOG_NAME("Client Logger");
-	CLOG_SET_LOG_LEVEL(ELogLevel::DEBUG_LEVEL);
-	CLOG_SET_LOG_CONFIG(ELogConfig::LOG_NAME, ELogConfig::LOG_LEVEL,
-		ELogConfig::CALL_TIME, ELogConfig::THREAD_ID, ELogConfig::FILE_NAME,
-		ELogConfig::FUNCTION_NAME, ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE,
-		ELogConfig::PARAMS);
-
-	CLOG_ADD_SAFE_STREAM(m_log_file);
-
-	CLOG_BUILD();
-
-	CLOG_END_CREATION();
+	return true;
 }
 
 void CClient::Execute()
@@ -101,7 +83,8 @@ void CClient::Execute()
 				result = MakeRequest(ERequestType::ALL_DATA, message);
 				if (message.size() > 0)
 				{
-					PrintMessage("\n" + std::to_string(counter++) + "\n\n" + message + "\n\n");
+					PrintMessage("\n" + std::to_string(counter++) + "\n\n" +
+						message + "\n\n");
 					message.clear();
 				}
 				std::this_thread::sleep_for(std::chrono::seconds(5));
@@ -135,26 +118,26 @@ bool CClient::MakeRequest(ERequestType type, std::string& message)
 	{
 		switch (type)
 		{
-			case (ERequestType::PROCESSES_DATA):
-			{
-				message = RequestProcessesData();
-				break;
-			}
-			case (ERequestType::DISKS_DATA):
-			{
-				message = RequestDisksData();
-				break;
-			}
-			case (ERequestType::ALL_DATA):
-			{
-				message = RequestAllData();
-				break;
-			}
-			case (ERequestType::EXIT):
-			{
-				while(!m_connector->Exit())
+		case (ERequestType::PROCESSES_DATA):
+		{
+			message = RequestProcessesData();
+			break;
+		}
+		case (ERequestType::DISKS_DATA):
+		{
+			message = RequestDisksData();
+			break;
+		}
+		case (ERequestType::ALL_DATA):
+		{
+			message = RequestAllData();
+			break;
+		}
+		case (ERequestType::EXIT):
+		{
+			while (!m_connector->Exit())
 				return false;
-			}
+		}
 		}
 		if (message == "Error receiving data")
 		{

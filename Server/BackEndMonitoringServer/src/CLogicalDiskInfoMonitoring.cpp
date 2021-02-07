@@ -9,6 +9,8 @@
 #include "CEvent.h"
 #include "CLogger/include/Log.h"
 
+#include "CLogger/include/Log.h"
+
 CLogicalDiskInfoMonitoring::CLogicalDiskInfoMonitoring(
 	CEvent& stop_event,
 	std::shared_ptr<CHardwareStatusSpecification>& specification,
@@ -71,6 +73,7 @@ bool CLogicalDiskInfoMonitoring::StartMonitoringInfo()
 
 		if (!json_saver.TrySaveToFile(json_formatter))
 		{
+			CLOG_DEBUG("ERROR! FiseSave doesn't work!");
 			//exception handler
 			continue;
 		}

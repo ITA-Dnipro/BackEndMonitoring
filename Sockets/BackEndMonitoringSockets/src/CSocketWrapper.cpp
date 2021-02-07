@@ -1,4 +1,5 @@
 #include "stdafx.h"
+
 #include "CSocketWrapper.h"
 #include "CLogger/include/Log.h"
 
@@ -8,7 +9,7 @@ std::string CSocketWrapper::Receive(const int socket)
 	int msg_size = GetSizeFromHeader(socket);
 	int current_message_size = 0;
 	int total_received_bytes = 0;
-	char* buff = NULL;
+	char* buff = nullptr;
 
 	if (msg_size == 0)
 	{
@@ -30,7 +31,7 @@ std::string CSocketWrapper::Receive(const int socket)
 
 	while (current_message_size > 0)
 	{
-		int received_bytes = recv(socket, buff, current_message_size, NULL);
+		int received_bytes = recv(socket, buff, current_message_size, 0);
 		total_received_bytes += received_bytes;
 		received_line.append(buff, current_message_size);
 
@@ -72,10 +73,10 @@ bool CSocketWrapper::Send(const int socket, const std::string& line)
 		}
 
 		temp_line = line.substr(start_pos, size_for_substring);
-		
+
 		buff += CreateHeader(static_cast<int>(temp_line.length()));
 		buff += temp_line;
-		std::this_thread::sleep_for(std::chrono::nanoseconds(10000));
+		std::this_thread::sleep_for(std::chrono::nanoseconds(10000)); // TODO
 		if (send(socket, buff.c_str(), static_cast<int>(buff.length()), 0) == c_connection_error)
 		{
 			return false;
@@ -83,6 +84,7 @@ bool CSocketWrapper::Send(const int socket, const std::string& line)
 		line_length -= size_for_substring;
 		start_pos += size_for_substring;
 		buff.clear();
+		temp_line.clear();
 	}
 	return true;
 }
@@ -113,7 +115,7 @@ int CSocketWrapper::GetSizeFromHeader(const int socket) const
 
 	while (true)
 	{
-		if (recv(socket, buff, 1, NULL) == c_connection_error)
+		if (recv(socket, buff, 1, 0) == c_connection_error)
 		{
 			return 0;
 		}
@@ -157,4 +159,3 @@ int CSocketWrapper::ConvertDataToInt(const std::string& data) const
 
 	return msg_size;
 }
-

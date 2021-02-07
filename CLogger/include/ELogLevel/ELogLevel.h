@@ -1,5 +1,5 @@
 #pragma once
-#include "stdafx.h"
+#include "../include/stdafx.h"
 
 /// <summary>
 ///		Enumeration indicates level of logging

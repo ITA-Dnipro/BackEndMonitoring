@@ -26,6 +26,7 @@ public:
 	bool StopSocket();
 
 private:
+	const int c_max_idle_iteration = 60000;
 	void InitAcceptor(int port, const std::string& address);
 	void InitServiceHandler(CDataReceiver& json_data);
 	void InitSocketWrapper();

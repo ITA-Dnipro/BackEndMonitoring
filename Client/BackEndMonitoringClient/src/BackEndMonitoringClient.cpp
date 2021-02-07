@@ -1,18 +1,33 @@
 ﻿#include "stdafx.h"
+#include "CLogger/include/Log.h"
 
 #include "CClient.h"
 
-int main()
+int main(const int argc, char* argv[])
 {
-	int port = 1111;
-	//std::string ip_address = "10.0.2.2";
-	std::string ip_address = "127.0.0.1";
-	std::string file_name = "ServerMessages.txt";
+	CLOG_START_CREATION();
 
-	CClient client(port, ip_address, file_name);
+	CLOG_SET_LOG_NAME("Client Logger");
+	CLOG_SET_LOG_LEVEL(ELogLevel::DEBUG_LEVEL);
+	CLOG_SET_LOG_CONFIG(ELogConfig::LOG_NAME, ELogConfig::LOG_LEVEL,
+		ELogConfig::CALL_TIME, ELogConfig::THREAD_ID, ELogConfig::FILE_NAME,
+		ELogConfig::FUNCTION_NAME, ELogConfig::LINE_NUMBER, ELogConfig::MESSAGE,
+		ELogConfig::PARAMS);
 
-	client.Execute();
+	CLOG_BUILD();
 
-	system("pause");
+	CLOG_END_CREATION();
+
+	CClient client;
+
+	if (client.Init(argc, argv))
+	{
+		client.Execute();
+	}
+	else
+	{
+		std::cout << "Wrong parameters for the network!" << std::endl;
+	}
+	CLOG_DESTROY();
 	return 0;
 }

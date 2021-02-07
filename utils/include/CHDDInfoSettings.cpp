@@ -3,8 +3,8 @@
 #include "CLogger/include/Log.h"
 
 CHDDInfoSettings::CHDDInfoSettings(std::shared_ptr<CDataReader> p_data_reader) :
-	CSettings(p_data_reader), m_file_name_("hddinfo.txt"), m_check_hdd_(true), 
-	m_count_type_(0), m_period_time_(0)
+	CSettings(p_data_reader), m_file_name_("hddinfo.txt"), m_check_hdd_(true),
+	m_count_type_(0), m_period_time_(30)
 {
 
 }
@@ -20,25 +20,17 @@ void CHDDInfoSettings::ReadConfigurationFromFile()
 	}
 
 	std::string tmp_string;
-	CLOG_TRACE_VAR_CREATION(tmp_string);
 	int tmp_int = 0;
-	CLOG_TRACE_VAR_CREATION(tmp_int);
 	bool tmp_bool = false;
-	CLOG_TRACE_VAR_CREATION(tmp_bool);
 
-	if (m_p_data_reader_->TryToGetStringData("//root/HDDinfo/filename",
-		tmp_string))
+	if (m_p_data_reader_->TryToGetStringData("//root/HDDinfo/filename", tmp_string))
 		m_file_name_ = tmp_string != "" ? tmp_string : m_file_name_;
 
-	if (m_p_data_reader_->TryToGetStringData("//root/HDDinfo/checkhdd",
-		tmp_string))
-		m_check_hdd_ = CDataReader::TryToConvertToBool(tmp_string, tmp_bool) ?
-		tmp_bool : m_check_hdd_;
+	if (m_p_data_reader_->TryToGetStringData("//root/HDDinfo/checkhdd", tmp_string))
+		m_check_hdd_ = CDataReader::TryToConvertToBool(tmp_string, tmp_bool) ? tmp_bool : m_check_hdd_;
 
-	if (m_p_data_reader_->TryToGetStringData("//root/HDDinfo/counttype",
-		tmp_string))
-		m_count_type_ = CDataReader::TryToConvertToInteger(tmp_string, tmp_int)
-		? tmp_int : m_count_type_;
+	if (m_p_data_reader_->TryToGetStringData("//root/HDDinfo/counttype", tmp_string))
+		m_count_type_ = CDataReader::TryToConvertToInteger(tmp_string, tmp_int) ? tmp_int : m_count_type_;
 
 	if (m_p_data_reader_->TryToGetStringData("//root/time/Period_time",
 		tmp_string))

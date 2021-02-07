@@ -14,6 +14,7 @@ public:
 	bool HandleEvent(const int socket, EEventType type, std::string& message);
 
 private:
+	const int c_max_num_trial = 50;
 	bool HandleRequestEvent(const int socket, EEventType type, 
 		std::string& message);
 	bool HandleResponseEvent(const int socket, std::string& message);

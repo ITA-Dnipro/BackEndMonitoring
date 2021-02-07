@@ -173,7 +173,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\utils\include\CStringCleaner.cpp" />
-    <ClCompile Include="..\..\utils\include\LinuxUtils.cpp" />
     <ClCompile Include="..\..\utils\include\Utils.cpp" />
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
     <ClCompile Include="src\BackEndMonitoringClient.cpp" />
@@ -189,10 +188,10 @@
   <ItemGroup>
     <ClInclude Include="..\..\utils\include\CStringCleaner.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
+    <ClInclude Include="..\..\utils\include\stdafx.h" />
     <ClInclude Include="include\CClient.h" />
     <ClInclude Include="include\CClientView.h" />
     <ClInclude Include="include\ERequestType.h" />
-    <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />

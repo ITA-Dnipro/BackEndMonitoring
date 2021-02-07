@@ -2,9 +2,10 @@
 
 #include "CThreadSafeVariable.h"
 #include "CEvent.h"
-#include "Sockets/BackEndMonitoringSockets/include/CAcceptorWrapper.h"
+#include "CAcceptorWrapper.h"
 #include "CJSONFormatterProcess.h"
 #include "CJSONFormatterLogicalDisk.h"
+#include "CDataReader.h"
 
 class CThreadPool;
 class CAcceptorWrapper;
@@ -21,6 +22,8 @@ class CHDDInfoSettings;
 class CProcessesInfoSettings;
 class CServerSettings;
 
+#if defined(_WIN64) || defined(_WIN32)
+
 struct ServiceParameters
 {
     const CString& name = "BackendMonitoringService";
@@ -30,33 +33,54 @@ struct ServiceParameters
     DWORD accepted_cmds = SERVICE_ACCEPT_STOP;
 };
 
+#endif
+
 class CService
 {
 public:
-    explicit CService(const ServiceParameters& parameters);
-
     CService(const CService& other) = delete;
     CService& operator=(const CService& other) = delete;
 
     CService(CService&& other) = delete;
     CService& operator=(CService&& other) = delete;
-    
-    static bool GetModulePath(CString& module_path);
-    static std::string GetRelativePath();
-    static bool EscapePath(CString& path);
 
-    const CString& GetName() const;
-    const CString& GetDisplayName() const;
-    const DWORD GetStartType() const;
-    const DWORD GetErrorControlType() const;
-  
+    static std::string GetRelativePath();
+
     bool Run();
 
+#if defined(_WIN64) || defined(_WIN32)
+
+    static bool GetModulePath(CString& module_path);
+    static bool EscapePath(CString& path);
+
+    explicit CService(const ServiceParameters& parameters);
+
+    const CString& GetName( ) const;
+    const CString& GetDisplayName( ) const;
+    const DWORD GetStartType( ) const;
+    const DWORD GetErrorControlType( ) const;
+
+#elif __linux__
+
+    CService( );
+
+#endif
+
 private:
+    bool InitializeLogger(const std::string& path_to_log_file, ELogLevel level);
+    bool InitializeThreadPool(const CThreadPoolSettings& thread_pool_sett);
+    bool InitializeLogicalDiscMonitoring(const CHDDInfoSettings& xml_settings);
+
+    bool InitializeProcessesMonitoring(const CProcessesInfoSettings& xml_settings);
+
+    bool InitializeSockets(const CServerSettings& server_sett);
+
+    #if defined(_WIN64) || defined(_WIN32)
+
     static DWORD WINAPI ServiceCtrlHandler(
-        DWORD control_code, 
+        DWORD control_code,
         DWORD event_type,
-        void* event_data, 
+        void* event_data,
         void* context);
 
     static void WINAPI SvcMain(DWORD argc, CHAR** argv);
@@ -67,32 +91,39 @@ private:
         DWORD wait_hint = 0);
 
     void Start(DWORD argc, CHAR** argv);
-    void Stop();
+    void Stop( );
     void OnStart(DWORD, CHAR**);
-    void OnStop();
-    void RunServer();
-    bool InitializeLogger(const std::string& path_to_log_file, ELogLevel level);
-    bool InitializeThreadPool(const CThreadPoolSettings& thread_pool_sett);
-    bool InitializeLogicalDiscMonitoring(const CHDDInfoSettings& xml_settings);
-    bool InitializeProcessesMonitoring(
-        const CProcessesInfoSettings& process_sett);
-    bool InitializeSockets(const CServerSettings& server_sett);
+    void OnStop( );
+
+#elif __linux__
+
+    static void HandleSignal(int signal);
+
+#endif
+
+    void RunServer( );
 
 private:
+    static CService* m_p_service;
     CEvent m_stop_event;
+    std::shared_ptr<CThreadPool> m_p_thread_pool;
+    std::unique_ptr<CAcceptorWrapper> m_p_acceptor_socket;
     CThreadSafeVariable<CJSONFormatterProcess> m_processes_json;
     CThreadSafeVariable<CJSONFormatterLogicalDisk> m_disks_json;
-    SERVICE_STATUS m_status;
-    std::thread m_main_thread;
-    std::shared_ptr<CThreadPool> m_p_thread_pool;
     std::shared_ptr <CProcessesInfoMonitoring> m_processes_monitor;
     std::shared_ptr<CLogicalDiskInfoMonitoring> m_disks_monitor;
+    std::unique_ptr<std::fstream> m_log_stream;
+
+    #if defined(_WIN64) || defined(_WIN32)
+
+    SERVICE_STATUS m_status;
+    std::thread m_main_thread;
     CString m_name;
     CString m_display_name;
     DWORD m_start_type;
     DWORD m_error_control_type;
-    std::unique_ptr<CAcceptorWrapper> m_p_acceptor_socket;
-    std::unique_ptr<std::fstream> m_log_stream;
-    static CService* m_p_service;
-    SERVICE_STATUS_HANDLE m_status_handle;  
+    SERVICE_STATUS_HANDLE m_status_handle;
+
+    #endif
+
 };

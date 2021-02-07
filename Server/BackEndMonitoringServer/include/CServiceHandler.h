@@ -1,6 +1,8 @@
 #pragma once
+
 #include "CService.h"
 
+#if defined(_WIN64) || defined(_WIN32)
 class ServiceHandler
 {
 public:
@@ -24,3 +26,4 @@ private:
 private:
 	std::unique_ptr<CService> m_p_service;
 };
+#endif

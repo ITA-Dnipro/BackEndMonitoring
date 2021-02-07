@@ -61,9 +61,9 @@ bool CLogicalDiskInfo::TryUpdateCurrentStatus()
 	{
 		return false;
 	}
-	if (m_disk_info.capacity == NULL &&
-		m_disk_info.available == NULL &&
-		m_disk_info.free == NULL)
+	if (m_disk_info.capacity == 0 &&
+		m_disk_info.available == 0 &&
+		m_disk_info.free == 0)
 	{
 		return false;
 	}

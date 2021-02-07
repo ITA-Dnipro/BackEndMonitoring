@@ -19,7 +19,7 @@ std::vector<std::string> Utils::SplitIntoWords(const std::string& str,
     const size_t pos_end = str.npos;
     //CLOG_TRACE_VAR_CREATION(pos_end);
 
-    while (true) 
+    while (true)
     {
         size_t space = str.find(delimiter, pos);
         //CLOG_TRACE_VAR_CREATION(space);
@@ -48,7 +48,7 @@ bool Utils::TryGetCurrentDateAndTimeFormatted(std::string&
 
 #ifdef _MSC_VER
     localtime_s(time.get(), &current_time);
-#else 
+#else
     localtime_r(&current_time, time.get());
 #endif
 
@@ -155,6 +155,7 @@ bool Utils::IsFileEmpty(std::ofstream& file)
     return answer;
 }
 
+#if defined(_WIN64) || defined(_WIN32)
 #define EN_US 0x0409
 
 void Utils::DisplayError(const std::string& message)
@@ -164,25 +165,45 @@ void Utils::DisplayError(const std::string& message)
     LPSTR error = NULL;
     //CLOG_TRACE_VAR_CREATION(error);
 
-    FormatMessage(
+    if (FormatMessage(
         FORMAT_MESSAGE_ALLOCATE_BUFFER |
         FORMAT_MESSAGE_FROM_SYSTEM |
         FORMAT_MESSAGE_IGNORE_INSERTS,
         NULL,
-        GetLastError(),
+        GetLastError( ),
         EN_US,
         reinterpret_cast<LPSTR>(&error),
         0,
-        NULL);
+        NULL) == 0)
+    {
+        return;
+    }
 
     std::cout << message << ". " << error;
     LocalFree(error);
     //CLOG_DEBUG_END_FUNCTION();
 }
+#endif
+
+void Utils::DisplayHelp( )
+{
+#if defined(_WIN64) || defined(_WIN32)
+	std::cout << "\nUsage:\n"
+				 "Enter \"install\" to install and start the service.\n"
+				 "Enter \"uninstall\" to stop and delete the service.\n"
+				 "Enter \"help\" to show help."
+			  << std::endl;
+#elif linux
+	std::cout << "\nUsage:\n"
+				"Enter \"help\" to show help."
+			  << std::endl;
+#endif
+}
 
 void Utils::DisplayMessage(const std::string& message)
-{ std::cout << message << ". " << std::endl; }
-
+{
+	std::cout << message << ". " << std::endl;
+}
 
 long double Utils::ConvertToCountType(
     uintmax_t const value_to_calculate, EMemoryConvertType convert_type)
@@ -202,7 +223,7 @@ EMemoryConvertType Utils::DefineCountType(int count_type_from_xml)
     {
     case 0:
         return EMemoryConvertType::BYTES;
-        
+
     case 1:
         return EMemoryConvertType::KILOBYTES;
 

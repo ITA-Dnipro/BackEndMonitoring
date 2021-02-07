@@ -7,17 +7,18 @@ enum class ERequestType;
 class CClient
 {
 public:
-	explicit CClient(int port, const std::string& ip_address, 
-		std::string file_name);
-	~CClient();
+	explicit CClient();
 
 	void Execute();
+	bool Init(const int arg_num, char** argvuments);
 
 private:
+	const int c_num_arguments = 3;
+	const int c_ip_address_num = 2;
+	const int c_port_num = 1;
+
 	bool Connect();
 	bool MakeRequest(ERequestType type, std::string& message);
-	void Init(std::string file_name);
-	void InitLogger();
 	std::unique_ptr<CConnectorWrapper> InitConnector();
 	std::string RequestProcessesData();
 	std::string RequestDisksData();
@@ -25,6 +26,7 @@ private:
 	void PrintMessage(const std::string& message) const;
 
 	std::string m_ip_address;
+	std::string m_file_name;
 	std::unique_ptr<CConnectorWrapper> m_connector;
 	std::unique_ptr<CClientView> m_consolePrinter;
 	std::unique_ptr<CClientView> m_filePrinter;

@@ -36,6 +36,8 @@ namespace PlatformUtils
 	{
 		bool success = false;
 		CLOG_DEBUG_START_FUNCTION();
+		CLOG_TRACE_VAR_CREATION(success);
+
 		unsigned short m_max_process_count = 1024;
 		CLOG_TRACE_VAR_CREATION(m_max_process_count);
 		std::unique_ptr<DWORD> p_process_ids(new DWORD[m_max_process_count]);
@@ -46,31 +48,36 @@ namespace PlatformUtils
 		CLOG_TRACE_VAR_CREATION(bytes_returned);
 
 		success = (EnumProcesses(p_process_ids.get(), cb, &bytes_returned) != 0);
-		CLOG_TRACE_VAR_CREATION(success);
 
 		if (success)
 		{
 			const int size = bytes_returned / sizeof(DWORD);
+			CLOG_TRACE_VAR_CREATION(size);
 			container_of_PIDs.assign(p_process_ids.get(), p_process_ids.get() + size);
+			CLOG_TRACE("PID's enumerated successfiully");
 		}
-		CLOG_DEBUG_END_FUNCTION();
+		else
+		{ CLOG_TRACE("Can't enumerate PID's.");}
+
+		CLOG_DEBUG_END_FUNCTION_WITH_RETURN(success);
 		return success;
 	}
 
 	bool CheckIsProcessActive(unsigned PID)
 	{
 		bool success = false;
-		CLOG_DEBUG_START_FUNCTION();
+		CLOG_TRACE_START_FUNCTION();
+		CLOG_TRACE_VAR_CREATION(success);
+
 		HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
 			FALSE, PID);
 
 		success = (process != 0);
-		CLOG_TRACE_VAR_CREATION(success);
 		if (success)
 		{
 			CloseHandle(process);
 		}
-		CLOG_DEBUG_END_FUNCTION();
+		CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
 		return success;
 	}
 
@@ -79,14 +86,14 @@ namespace PlatformUtils
 						 unsigned long long& user_time)
 	{
 		bool success = false;
-		CLOG_DEBUG_START_FUNCTION();
+		CLOG_TRACE_START_FUNCTION();
+		CLOG_TRACE_VAR_CREATION(success);
+
 		HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
 			FALSE, PID);
 		CLOG_TRACE_VAR_CREATION(process);
 
 		success = (process != nullptr);
-		CLOG_TRACE_VAR_CREATION(success);
-
 		if (success)
 		{
 			unsigned processors_count = std::thread::hardware_concurrency();
@@ -95,6 +102,7 @@ namespace PlatformUtils
 			if (processors_count == 0)
 			{
 				CloseHandle(process);
+				CLOG_ERROR("Can't get count of logical CPU's.");
 				return false;
 			}
 
@@ -102,36 +110,35 @@ namespace PlatformUtils
 			CLOG_TRACE_VAR_CREATION(ftime);
 			CLOG_TRACE_VAR_CREATION(fsys);
 			CLOG_TRACE_VAR_CREATION(fuser);
+
+			ULARGE_INTEGER temp_uli;
+			CLOG_TRACE_VAR_CREATION(temp_uli);
+
 			GetSystemTimeAsFileTime(&ftime);
-			{
-				ULARGE_INTEGER system_time_uli;
-				CLOG_TRACE_VAR_CREATION(system_time_uli);
-				memcpy(&system_time_uli, &ftime, sizeof(FILETIME));
-				system_time = system_time_uli.QuadPart;
-			}
+			memcpy(&temp_uli, &ftime, sizeof(FILETIME));
+			system_time = temp_uli.QuadPart;
 
 			success = (GetProcessTimes(process, &ftime, &ftime, &fsys, &fuser)
 				!= 0);
 			if (success)
 			{
-				{
-					ULARGE_INTEGER kernel_time_uli;
-					CLOG_TRACE_VAR_CREATION(kernel_time_uli);
-					memcpy(&kernel_time_uli, &fsys, sizeof(FILETIME));
-					kernel_time = kernel_time_uli.QuadPart;
-					kernel_time /= processors_count;
-				}
-				{
-					ULARGE_INTEGER user_time_uli;
-					CLOG_TRACE_VAR_CREATION(user_time_uli);
-					memcpy(&user_time_uli, &fuser, sizeof(FILETIME));
-					user_time = user_time_uli.QuadPart;
-					user_time /= processors_count;
-				}
+				memcpy(&temp_uli, &fsys, sizeof(FILETIME));
+				kernel_time = temp_uli.QuadPart;
+				kernel_time /= processors_count;
+
+				memcpy(&temp_uli, &fuser, sizeof(FILETIME));
+				user_time = temp_uli.QuadPart;
+				user_time /= processors_count;
 			}
+			else
+			{ CLOG_WARNING("Can't fet processor times for process.");}
+
 			CloseHandle(process);
 		}
-		CLOG_DEBUG_END_FUNCTION();
+		else
+		{ CLOG_TRACE_WITH_PARAMS("Can't open HANDLE for process ", PID);}
+
+		CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
 		return success;
 	}
 
@@ -140,11 +147,12 @@ namespace PlatformUtils
 	{
 		bool success = false;
 		CLOG_DEBUG_START_FUNCTION();
+		CLOG_TRACE_VAR_CREATION(success);
+
 		HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
 			FALSE, PID);
 		CLOG_TRACE_VAR_CREATION(process);
 		success = (process != 0);
-		CLOG_TRACE_VAR_CREATION(success);
 		if (success)
 		{
 			PROCESS_MEMORY_COUNTERS pmc;
@@ -157,7 +165,10 @@ namespace PlatformUtils
 			}
 			CloseHandle(process);
 		}
-		CLOG_DEBUG_END_FUNCTION();
+		else
+		{ CLOG_TRACE_WITH_PARAMS("Can't open HANDLE for process ", PID);}
+
+		CLOG_DEBUG_END_FUNCTION_WITH_RETURN(success);
 		return success;
 	}
 

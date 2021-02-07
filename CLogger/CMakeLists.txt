@@ -1,20 +1,27 @@
 cmake_minimum_required(VERSION 3.17)
-project(CLogger)
+project(BackEndMonitoring)
 
-set(CMAKE_CXX_STANDARD 17)
+include_directories(${CMAKE_SOURCE_DIR}
+		${CMAKE_SOURCE_DIR}/CLogger/include
+		${CMAKE_SOURCE_DIR}/utils/include
+		${CMAKE_SOURCE_DIR}/3rdParty/include)
 
-include_directories(include)
+set(CLOGGER_SRC_DIR ${CMAKE_SOURCE_DIR}/CLogger/src)
 
-add_library(StaticCLogger src/CLogBuilder/CLogBuilder.cpp
-        src/CLogger/CLogger.cpp
-        src/ELogConfig/ELogConfig.cpp
-        src/ELogFlush/ELogFlush.cpp
-        src/ELogLevel/ELogLevel.cpp
-        src/DllMain.cpp)
+# Comment if you want to build dynamic library
+set(CLOG_STATIC_BUILD 1)
 
-add_library(CLogger SHARED src/CLogBuilder/CLogBuilder.cpp
-        src/CLogger/CLogger.cpp
-        src/ELogConfig/ELogConfig.cpp
-        src/ELogFlush/ELogFlush.cpp
-        src/ELogLevel/ELogLevel.cpp
-        src/DllMain.cpp)
+if (CLOG_STATIC_BUILD)
+	set(CLOG_BUILD STATIC)
+	# Set predefined macro to build static library
+	set(CMAKE_CXX_COMPILER_PREDEFINES_COMMAND "${CMAKE_CXX_COMPILER_PREDEFINES_COMMAND} CLOG_STATIC_BUILD")
+else()
+	set(CLOG_BUILD SHARED)
+endif(CLOG_STATIC_BUILD)
+
+add_library(CLogger ${CLOG_BUILD}
+		${CLOGGER_SRC_DIR}/CLogBuilder/CLogBuilder.cpp
+		${CLOGGER_SRC_DIR}/CLogger/CLogger.cpp
+		${CLOGGER_SRC_DIR}/ELogConfig/ELogConfig.cpp
+		${CLOGGER_SRC_DIR}/ELogFlush/ELogFlush.cpp
+		${CLOGGER_SRC_DIR}/ELogLevel/ELogLevel.cpp)

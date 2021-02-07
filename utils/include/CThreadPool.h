@@ -8,7 +8,7 @@
 #include "CEvent.h"
 #include "CThreadSafeVariable.h"
 #include "STaskInQueue.h"
-#include "CLogger/include/Log.h"
+#include "Log.h"
 
 class CThreadPool
 {
@@ -35,7 +35,6 @@ public:
 			decltype(task( ))()>>(std::move(task));
 		CLOG_TRACE_VAR_CREATION(p_task_wrapper);
 
-		STaskInQueue<decltype(task( ))> future_and_pos;
 		{
 			auto [queue, mtx] = m_tasks_queue.GetAccess( );
 			CLOG_DEBUG("Obtained queue mutex");

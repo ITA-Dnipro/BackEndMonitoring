@@ -33,7 +33,7 @@ bool CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
 		std::string message = m_p_peer_stream->Receive(socket_fd);
 		if (m_can_receive_data && message == "ALL_DATA")
 		{
-			CLOG_TRACE_WITH_PARAMS("All data request from the socket ", 
+			CLOG_TRACE_WITH_PARAMS("All data request from the socket ",
 				socket_fd);
 			m_can_receive_data = false;
 			HandleResponseEvent(socket_fd, EClientRequestType::ALL_DATA);
@@ -62,22 +62,24 @@ bool CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
 			HandleEvent(socket_fd, EEventType::CLOSE_EVENT);
 			can_continue = false;
 		}
-		
+
 		CLOG_TRACE_WITH_PARAMS("value can_continue = ", can_continue);
 	}
 
 	int error = 0;
-	if ((error = PlatformUtils::GetConnectionError(socket_fd)) == 10054)
+	if ((error = PlatformUtils::GetConnectionError(socket_fd)) == 
+		c_client_disconnected)
 	{
 		CLOG_TRACE_WITH_PARAMS("ERROR!!! On the socket ", socket_fd,
 			" has occured error ", error);
 		can_continue = false;
 		CLOG_DEBUG_WITH_PARAMS("value can_continue = ", can_continue);
 	}
+
 	return can_continue;
 }
 
-bool CServiceConnectionHandler::HandleResponseEvent(const int socket_fd, 
+bool CServiceConnectionHandler::HandleResponseEvent(const int socket_fd,
 	EClientRequestType type)
 {
 	bool result = false;
@@ -127,4 +129,3 @@ void CServiceConnectionHandler::InitPeerStream()
 	CLOG_TRACE_VAR_CREATION(m_p_peer_stream);
 	CLOG_DEBUG_END_FUNCTION();
 }
-

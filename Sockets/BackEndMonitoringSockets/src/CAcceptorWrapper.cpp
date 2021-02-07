@@ -1,10 +1,11 @@
 #include "stdafx.h"
 
-#include "CAcceptorWrapper.h"
 #include "CServiceConnectionHandler.h"
 #include "CEvent.h"
 #include "PlatformUtils.h"
 #include "CLogger/include/Log.h"
+#include "CThreadPool.h"
+#include "CAcceptorWrapper.h"
 
 CAcceptorWrapper::CAcceptorWrapper(int port, const std::string& ip_address,
 	bool is_blocked, int socket_timeout, CEvent& event) :
@@ -19,7 +20,7 @@ CAcceptorWrapper::~CAcceptorWrapper()
 	PlatformUtils::FinalizeWinLibrary();
 }
 
-bool CAcceptorWrapper::Initialize(std::shared_ptr<CThreadPool> pool, 
+bool CAcceptorWrapper::Initialize(std::shared_ptr<CThreadPool> pool,
 	CDataReceiver& json_data, const int connections)
 {
 	CLOG_DEBUG_START_FUNCTION();
@@ -67,11 +68,11 @@ bool CAcceptorWrapper::StopSocket()
 	return m_p_server_acceptor->CloseSocket();
 }
 
-void CAcceptorWrapper::InitAcceptor(int port, 
+void CAcceptorWrapper::InitAcceptor(int port,
 	const std::string& address)
 {
 	CLOG_DEBUG_START_FUNCTION();
-	m_p_server_acceptor = std::make_unique<CAcceptor>(m_is_socket_blocked, 
+	m_p_server_acceptor = std::make_unique<CAcceptor>(m_is_socket_blocked,
 		m_socket_timeout, m_event);
 	CLOG_TRACE_VAR_CREATION(m_p_server_acceptor);
 	CLOG_DEBUG_END_FUNCTION();
@@ -81,7 +82,7 @@ void CAcceptorWrapper::InitServiceHandler(
 		CDataReceiver& json_data)
 {
 	CLOG_DEBUG_START_FUNCTION();
-	m_p_service_handler = 
+	m_p_service_handler =
 		std::make_unique<CServiceConnectionHandler>(std::move(json_data));
 	CLOG_TRACE_VAR_CREATION(m_p_service_handler);
 	CLOG_DEBUG_END_FUNCTION();
@@ -121,14 +122,20 @@ bool CAcceptorWrapper::HandleEvents()
 
 void CAcceptorWrapper::AddClientToThread(int socket_fd)
 {
+	
 	m_p_pool->Enqueue([this, socket_fd]()
 		{
 			CLOG_DEBUG("New client was added to the thread");
+			int count_iteration = 0;
 			while (
 				m_p_service_handler->HandleEvent(socket_fd,
 					EEventType::REQUEST_DATA) &&
 				!m_event.WaitFor(std::chrono::nanoseconds(1000)))
 			{
+				if (++count_iteration >= c_max_idle_iteration)
+				{
+					break;
+				}
 			}
 		});
 }

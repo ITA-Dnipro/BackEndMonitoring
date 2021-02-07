@@ -1,8 +1,7 @@
 #pragma once
-#include "ISettings.h"
 #include "CDataReader.h"
 
-class CSettings : public ISettings
+class CSettings
 {
 public:
 	CSettings() = delete;
@@ -12,7 +11,7 @@ public:
 	explicit CSettings(std::shared_ptr<CDataReader> p_data_reader);
 	virtual ~CSettings() = default;
 
-	void ReadConfigurationFromFile() override = 0;
+	virtual void ReadConfigurationFromFile() = 0;
 protected:
 	std::shared_ptr<CDataReader> m_p_data_reader_;
 

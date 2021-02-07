@@ -1,10 +1,10 @@
-#include "stdafx.h"
-
 #ifdef __linux__
+#include "stdafx.h"
 
 #include "CNumericTypesParser.h"
 #include "CReadFileWrapper.h"
 #include "Utils.h"
+#include "Clogger/include/Log.h"
 
 #include "PlatformUtils.h"
 
@@ -18,7 +18,7 @@ CBaseSocket::~CBaseSocket()
 	PlatformUtils::CloseSocket(m_socket);
 }
 
-int CSocket::GetSocketFD() const
+int CBaseSocket::GetSocketFD() const
 {
 	return m_socket;
 }
@@ -44,7 +44,7 @@ namespace PlatformUtils
 	bool BindSocket(int socket, sockaddress& current_address)
 	{
 		if (::bind(socket, (struct sockaddr*)&current_address,
-			sizeof(current_address)) == SUCCESS)
+			sizeof(current_address)) == c_success)
 		{
 			return true;
 		}
@@ -53,7 +53,7 @@ namespace PlatformUtils
 
 	bool Listen(int socket, const int connections)
 	{
-		if (::listen(socket, connections) == SUCCESS)
+		if (::listen(socket, connections) == c_success)
 		{
 			return true;
 		}
@@ -70,13 +70,13 @@ namespace PlatformUtils
 	bool Connect(int socket, sockaddress& current_address)
 	{
 		return connect(socket, (struct sockaddr*)&current_address, 
-			sizeof(current_address)) == SUCCESS;
+			sizeof(current_address)) == c_success;
 	}
 
 	bool SetUnblockingSocket(int socket)
 	{
 		int dontblock = 1;
-		if (ioctl(socket, FIONBIO, (char*)&dontblock) == SUCCESS)
+		if (ioctl(socket, FIONBIO, (char*)&dontblock) == c_success)
 		{
 			return true;
 		}
@@ -85,9 +85,9 @@ namespace PlatformUtils
 
 	bool CloseSocket(int socket)
 	{
-		if (socket != SOCKET_INVALID)
+		if (socket != c_invalid_socket)
 		{
-			if (close(socket) != ERROR_SOCKET)
+			if (close(socket) != c_error_socket)
 			{
 				return true;
 			}
@@ -99,8 +99,8 @@ namespace PlatformUtils
 	{
 		int error = 0;
 		socklen_t size = sizeof(error);
-		return getsockopt(socket_fd, SOL_SOCKET, SO_ERROR, (char*)&error,
-			&size);
+		getsockopt(socket_fd, SOL_SOCKET, SO_ERROR, (char*)&error, &size);
+		return error;
 	}
 
 	bool TryGetAllNamesAllDisksInSystem(std::vector<std::string>& names)
@@ -161,7 +161,7 @@ namespace PlatformUtils
 			//NULL, 0, NULL);
 
 			const std::string system_utils_mount_disk =
-				(std::string("mount ") + path_dev + "/" +
+				(std::string("mount ") + "/dev" + "/" +
 					all_received_names[i] + " " + path_to_mount_dir);
 			system(system_utils_mount_disk.c_str());
 			system("clear");
@@ -181,205 +181,266 @@ namespace PlatformUtils
 
 		return !all_disks_names.empty();
 	}
-}
 
-bool GetExistingProcessIds(std::vector<unsigned>& container_of_PIDs)
-{
-	bool success = false;
-	std::filesystem::path proc_dir("/proc");
-	for (auto& proc : std::filesystem::directory_iterator(proc_dir))
+
+	bool GetExistingProcessIds(std::vector<unsigned>& container_of_PIDs)
 	{
-		unsigned PID;
-		if (CNumericTypesParser(proc.path().stem().string()).AsUnsignedNumber(PID))
+		bool success = false;
+		CLOG_DEBUG_START_FUNCTION();
+		CLOG_TRACE_VAR_CREATION(success);
+
+		std::filesystem::path proc_dir("/proc");
+		CLOG_TRACE_VAR_CREATION(proc_dir);
+		for (auto& proc : std::filesystem::directory_iterator(proc_dir))
 		{
-			container_of_PIDs.push_back(PID);
-			success = true;
-		}
-	}
-	return success;
-}
-
-bool CheckIsProcessActive(unsigned PID)
-{
-	std::filesystem::path proc_dir("/proc");
-	proc_dir /= std::to_string(PID);
-	bool success = std::filesystem::exists(proc_dir / "status");
-	if (success)
-	{
-		success = std::filesystem::exists(proc_dir / "stat");
-	}
-	return success;
-}
-
-std::vector<std::string> ParseProcStatFile(const std::string& line)
-{
-	std::vector<std::string> values = Utils::SplitIntoWords(line, ' ');
-
-	size_t opened_brace_pos = 0;
-	for (const auto& value : values)
-	{
-		size_t opened_brace = value.find("(");
-		if (opened_brace != value.npos)
-		{
-			break;
-		}
-		++opened_brace_pos;
-	}
-
-	size_t closed_brace_pos = 0;
-	for (const auto& value : values)
-	{
-		size_t closed_brace = value.find(")");
-		if (closed_brace != value.npos)
-		{
-			break;
-		}
-		++closed_brace_pos;
-	}
-
-	if (closed_brace_pos != opened_brace_pos)
-	{
-		for (unsigned i = opened_brace_pos; i <= closed_brace_pos; ++i)
-		{
-			values[opened_brace_pos].append(" ");
-			values[opened_brace_pos].append(values[i]);
-			values.erase(values.begin() + i);
-		}
-	}
-	return values;
-}
-
-bool GetSysTime(unsigned long long& sys_time)
-{
-	std::filesystem::path proc_dir("/proc");
-	proc_dir /= "stat";
-	CReadFileWrapper proc_status(std::move(proc_dir));
-	bool success = proc_status.Initialize();
-	if (!success)
-	{
-		return success;
-	}
-
-	std::string line;
-	if (!(success = proc_status.ReadLine(line)))
-	{
-		return success;
-	}
-
-	auto values = ParseProcStatFile(std::move(line));
-	sys_time = 0;
-	for (auto& i : values)
-	{
-		std::string num(i.begin(), i.end());
-		unsigned long long val;
-		if (CNumericTypesParser(num).AsUnsignedNumber(val))
-		{
-			sys_time += val;
-		}
-	}
-	return success;
-}
-
-bool GetProcessTimes(unsigned PID, unsigned long long& system_time,
-	unsigned long long& kernel_time,
-	unsigned long long& user_time)
-{
-	bool success = GetSysTime(system_time);
-	if (!success)
-	{
-		return success;
-	}
-
-	std::filesystem::path proc_dir("/proc");
-	proc_dir /= std::to_string(PID);
-	proc_dir /= "stat";
-	CReadFileWrapper proc_status(std::move(proc_dir));
-	success = proc_status.Initialize();
-	if (!success)
-	{
-		return success;
-	}
-
-	std::string line;
-	if (!(success = proc_status.ReadLine(line)))
-	{
-		return success;
-	}
-
-	auto values = Utils::SplitIntoWords(std::move(line), ' ');
-
-	success = CNumericTypesParser(values[13]).AsUnsignedNumber(user_time);
-	success = CNumericTypesParser(values[14]).AsUnsignedNumber(kernel_time);
-
-	return success;
-}
-
-bool GetPagefileUsage(unsigned PID, unsigned long long& value) {
-	std::filesystem::path proc_dir("/proc");
-	proc_dir /= std::to_string(PID);
-	proc_dir /= "status";
-	CReadFileWrapper proc_status(std::move(proc_dir));
-	bool success = proc_status.Initialize();
-	if (!success) { return success; }
-
-	std::string line;
-
-	while (proc_status.ReadLine(line)) {
-		std::string_view line_view(line);
-		if (line_view.substr(0, 7) == "VmSize:") {
-			size_t from = line.find_first_of("0123456789");
-			line.erase(0, from);
-
-			size_t to = line.find_last_of("0123456789");
-			line.erase(to + 1, line.npos);
-
-			if ((success = CNumericTypesParser(line).AsUnsignedNumber(value)))
+			unsigned PID;
+			if (CNumericTypesParser(proc.path().stem().string()).AsUnsignedNumber(PID))
 			{
-				value *= 1024;
+				container_of_PIDs.push_back(PID);
+				success = true;
 			}
-			break;
 		}
-		success = false;
+		CLOG_DEBUG_END_FUNCTION_WITH_RETURN(success);
+		return success;
 	}
-	return success;
-}
 
-bool GetRamUsage(unsigned PID, unsigned long long& value) {
-	std::filesystem::path proc_dir("/proc");
-	proc_dir /= std::to_string(PID);
-	proc_dir /= "status";
+	bool CheckIsProcessActive(unsigned PID)
+	{
+		bool success = false;
+		CLOG_TRACE_START_FUNCTION();
+		CLOG_TRACE_VAR_CREATION(success);
 
-	CReadFileWrapper proc_status(std::move(proc_dir));
-	bool success = proc_status.Initialize();
-	if (!success) { return success; }
+		std::filesystem::path proc_dir("/proc");
+		proc_dir /= std::to_string(PID);
+		CLOG_TRACE_VAR_CREATION(proc_dir);
 
-	std::string line;
+		success = std::filesystem::exists(proc_dir / "status");
+		if (success)
+		{
+			success = std::filesystem::exists(proc_dir / "stat");
+		}
 
-	while (proc_status.ReadLine(line)) {
-		if (line.substr(0, 6) == "VmRSS:") {
-			size_t from = line.find_first_of("0123456789");
-			line.erase(0, from);
+		CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
+		return success;
+	}
 
-			size_t to = line.find_last_of("0123456789");
-			line.erase(to + 1, line.npos);
+	std::vector<std::string> ParseProcStatFile(const std::string& line)
+	{
+		std::vector<std::string> values;
+		CLOG_TRACE_START_FUNCTION_WITH_PARAMS(line);
+		values = Utils::SplitIntoWords(line, ' ');
 
-			if ((success = CNumericTypesParser(line).AsUnsignedNumber(value)))
+		size_t opened_brace_pos = 0;
+		for (const auto& value : values)
+		{
+			size_t opened_brace = value.find("(");
+			if (opened_brace != value.npos)
 			{
-				value *= 1024;
+				break;
 			}
-			break;
+			++opened_brace_pos;
 		}
-		success = false;
-	}
-	return success;
-}
 
-bool GetProcessMemoryUsage(unsigned PID, unsigned long long& ram_usage,
-	unsigned long long& pagefile_usage)
-{
-	bool success = GetRamUsage(PID, ram_usage) 
-		&& GetPagefileUsage(PID, pagefile_usage);
-	return success;
+		size_t closed_brace_pos = 0;
+		for (const auto& value : values)
+		{
+			size_t closed_brace = value.find(")");
+			if (closed_brace != value.npos)
+			{
+				break;
+			}
+			++closed_brace_pos;
+		}
+
+		if (closed_brace_pos != opened_brace_pos)
+		{
+			for (unsigned i = opened_brace_pos; i <= closed_brace_pos; ++i)
+			{
+				values[opened_brace_pos].append(" ");
+				values[opened_brace_pos].append(values[i]);
+				values.erase(values.begin() + i);
+			}
+		}
+
+		CLOG_TRACE_END_FUNCTION();
+		return values;
+	}
+
+	bool GetSysTime(unsigned long long& sys_time)
+	{
+		bool success = false;
+		CLOG_TRACE_START_FUNCTION( );
+
+		std::filesystem::path proc_dir("/proc");
+		proc_dir /= "stat";
+		CLOG_TRACE_VAR_CREATION(proc_dir);
+
+		CReadFileWrapper proc_status(std::move(proc_dir));
+		success = proc_status.Initialize();
+		if (!success)
+		{
+			CLOG_WARNING_WITH_PARAMS("Can't open file ", proc_dir);
+			return success;
+		}
+
+		std::string line;
+		if (!(success = proc_status.ReadLine(line)))
+		{
+			CLOG_WARNING_WITH_PARAMS("Can't read line from file ", proc_dir);
+			return success;
+		}
+
+		auto values = ParseProcStatFile(std::move(line));
+		sys_time = 0;
+		for (auto& i : values)
+		{
+			std::string num(i.begin(), i.end());
+			unsigned long long val;
+			if (CNumericTypesParser(num).AsUnsignedNumber(val))
+			{
+				sys_time += val;
+			}
+		}
+
+		CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
+		return success;
+	}
+
+	bool GetProcessTimes(unsigned PID, unsigned long long& system_time,
+		unsigned long long& kernel_time,
+		unsigned long long& user_time)
+	{
+		bool success = GetSysTime(system_time);
+
+		CLOG_TRACE_START_FUNCTION();
+		CLOG_TRACE_VAR_CREATION(success);
+		if (!success)
+		{
+			CLOG_TRACE("Can't get system time");
+			return success;
+		}
+
+		std::filesystem::path proc_dir("/proc");
+		proc_dir /= std::to_string(PID);
+		proc_dir /= "stat";
+		CLOG_TRACE_VAR_CREATION(proc_dir);
+
+		CReadFileWrapper proc_status(std::move(proc_dir));
+		success = proc_status.Initialize();
+		if (!success)
+		{
+			CLOG_TRACE_WITH_PARAMS("Can't open ", proc_dir);
+			return success;
+		}
+
+		std::string line;
+		if (!(success = proc_status.ReadLine(line)))
+		{
+			CLOG_TRACE_WITH_PARAMS("Can't read from ", proc_dir);
+			return success;
+		}
+
+		auto values = Utils::SplitIntoWords(std::move(line), ' ');
+
+		success = CNumericTypesParser(values[13]).AsUnsignedNumber(user_time);
+		success = CNumericTypesParser(values[14]).AsUnsignedNumber(kernel_time);
+
+		CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
+		return success;
+	}
+
+	bool GetPagefileUsage(unsigned PID, unsigned long long& value) {
+		bool success = false;
+		CLOG_TRACE_START_FUNCTION();
+		CLOG_TRACE_VAR_CREATION(success);
+
+		std::filesystem::path proc_dir("/proc");
+		proc_dir /= std::to_string(PID);
+		proc_dir /= "status";
+		CLOG_TRACE_VAR_CREATION(proc_dir);
+
+		CReadFileWrapper proc_status(std::move(proc_dir));
+		success = proc_status.Initialize();
+		if (!success) 
+		{ 
+			CLOG_TRACE_WITH_PARAMS("Can't open ", proc_dir);
+			return success;
+		}
+
+		std::string line;
+
+		while (proc_status.ReadLine(line)) {
+			std::string_view line_view(line);
+			if (line_view.substr(0, 7) == "VmSize:") {
+				size_t from = line.find_first_of("0123456789");
+				line.erase(0, from);
+
+				size_t to = line.find_last_of("0123456789");
+				line.erase(to + 1, line.npos);
+
+				if ((success = CNumericTypesParser(line).AsUnsignedNumber(value)))
+				{
+					value *= 1024;
+				}
+				break;
+			}
+			success = false;
+			CLOG_TRACE_WITH_PARAMS("File ", proc_dir, "doesn't contain VmSize");
+		}
+
+		CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
+		return success;
+	}
+
+	bool GetRamUsage(unsigned PID, unsigned long long& value) {
+		bool success = false;
+		CLOG_TRACE_START_FUNCTION();
+		CLOG_TRACE_VAR_CREATION(success);
+
+		std::filesystem::path proc_dir("/proc");
+		proc_dir /= std::to_string(PID);
+		proc_dir /= "status";
+		CLOG_TRACE_VAR_CREATION(proc_dir);
+
+		CReadFileWrapper proc_status(std::move(proc_dir));
+		success = proc_status.Initialize();
+		if (!success)
+		{
+			CLOG_TRACE_WITH_PARAMS("Can't open ", proc_dir);
+			return success;
+		}
+
+		std::string line;
+
+		while (proc_status.ReadLine(line)) {
+			if (line.substr(0, 6) == "VmRSS:") {
+				size_t from = line.find_first_of("0123456789");
+				line.erase(0, from);
+
+				size_t to = line.find_last_of("0123456789");
+				line.erase(to + 1, line.npos);
+
+				if ((success = CNumericTypesParser(line).AsUnsignedNumber(value)))
+				{
+					value *= 1024;
+				}
+				break;
+			}
+			success = false;
+			CLOG_TRACE_WITH_PARAMS("File ", proc_dir, "doesn't contain VmRSS");
+		}
+		CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
+		return success;
+	}
+
+	bool GetProcessMemoryUsage(unsigned PID, unsigned long long& ram_usage,
+		unsigned long long& pagefile_usage)
+	{
+		bool success = GetRamUsage(PID, ram_usage) 
+			&& GetPagefileUsage(PID, pagefile_usage);
+		return success;
+	}
+
 }
 
 #endif

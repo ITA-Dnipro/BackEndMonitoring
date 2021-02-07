@@ -35,7 +35,6 @@
     <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\utils\include\LinuxUtils.cpp" />
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
     <ClCompile Include="src\CAcceptor.cpp" />
     <ClCompile Include="src\CAcceptorWrapper.cpp" />

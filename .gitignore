@@ -50,6 +50,9 @@ Server/BackEndMonitoringServer/Build/**
 Server/BackEndMonitoringServerTests/Build/**
 CLogger/Build/**
 Sockets/BackEndMonitoringSockets/Build/**
+.idea/**
+cmake-build-debug/**
+cmake-build-release/**
 
 # Dont ingore files in "packages" dir
 !packages/**
