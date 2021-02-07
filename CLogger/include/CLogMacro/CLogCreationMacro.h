@@ -1,6 +1,6 @@
 #pragma once
-#include "../CLogBuilder/CLogBuilder.h"
-#include "CLogger/include/CLoggerGlobal/GlobalLogger.h"
+#include "CLogBuilder/CLogBuilder.h"
+#include "CLoggerGlobal/GlobalLogger.h"
 
 #define CLOG_START_CREATION() \
 	CLog::SetBuilder(std::move(std::make_unique<CLogBuilder>("", ELogLevel::NONE_LEVEL))) \

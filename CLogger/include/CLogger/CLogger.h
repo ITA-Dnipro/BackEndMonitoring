@@ -1,12 +1,12 @@
 #pragma once
-#include "../include/stdafx.h"
+#include "stdafx.h"
 
 #include <functional>
 
-#include "../ELogConfig/ELogConfig.h"
-#include "../ELogLevel/ELogLevel.h"
-#include "../ELogFlush/ELogFlush.h"
-#include "../CLogMessage/CLogMessage.h"
+#include "ELogConfig/ELogConfig.h"
+#include "ELogLevel/ELogLevel.h"
+#include "ELogFlush/ELogFlush.h"
+#include "CLogMessage/CLogMessage.h"
 
 /// <summary>
 ///		Class to output <c>CLogMessage</c>
