@@ -12,10 +12,10 @@ public:
 		EMemoryConvertType count_type);
 	explicit CHardwareStatusSpecification(
 		const CHardwareStatusSpecification& orig);
-	CHardwareStatusSpecification(const CHardwareStatusSpecification&& orig) 
-		noexcept;
 	CHardwareStatusSpecification(
 		const std::unique_ptr<CHardwareStatusSpecification>& orig);
+	CHardwareStatusSpecification(const CHardwareStatusSpecification&& orig) noexcept;
+
 	[[nodiscard]] std::chrono::duration<int> GetPauseDuration() const;
 	[[nodiscard]] EMemoryConvertType GetCountType() const;
 	[[nodiscard]] const std::string* GetPathToSaveFile() const;

@@ -20,10 +20,11 @@ CHardwareStatusSpecification::CHardwareStatusSpecification(
 { };
 
 CHardwareStatusSpecification::CHardwareStatusSpecification(
-	const CHardwareStatusSpecification&& orig) :
-	m_pause_duration(orig.m_pause_duration),
-	m_path_to_file(orig.m_path_to_file),
-	m_count_type(orig.m_count_type)
+	const CHardwareStatusSpecification&& orig) noexcept :
+	m_pause_duration(std::move(orig.m_pause_duration)),
+	m_path_to_file(std::move(orig.m_path_to_file)),
+	m_count_type(std::move(orig.m_count_type))
+
 { };
 
 CHardwareStatusSpecification::CHardwareStatusSpecification(

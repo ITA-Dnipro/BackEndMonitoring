@@ -29,12 +29,13 @@ CContainerOfLogicalDisk::CContainerOfLogicalDisk(
 	m_p_container_all_logical_disks(orig.m_p_container_all_logical_disks),
 	m_is_initialized(orig.m_is_initialized)
 {}
+
 CContainerOfLogicalDisk::CContainerOfLogicalDisk(
-	const CContainerOfLogicalDisk&& orig) : 
-	m_p_container_all_logical_disks(std::move(orig.m_p_container_all_logical_disks)),
-	m_specification(orig.m_specification),
-	m_is_initialized(orig.m_is_initialized)
-{ };
+	const CContainerOfLogicalDisk&& move_orig) noexcept :
+	m_specification(std::move(move_orig.m_specification)),
+	m_p_container_all_logical_disks(std::move(move_orig.m_p_container_all_logical_disks)),
+	m_is_initialized(std::move(move_orig.m_is_initialized))
+{};
 
 CContainerOfLogicalDisk::~CContainerOfLogicalDisk() noexcept
 { }
