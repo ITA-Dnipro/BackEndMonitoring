@@ -153,11 +153,11 @@ bool CService::InitializeLogger(
 
     if (m_log_stream->is_open())
     {
-        CLOG_START_CREATION( );
+        CLOG_CREATION_START( );
 
-        CLOG_SET_LOG_NAME("Logger");
-        CLOG_SET_LOG_LEVEL(level);
-        CLOG_SET_LOG_CONFIG(
+        CLOG_CREATION_SET_LOG_NAME("Logger");
+        CLOG_CREATION_SET_LOG_LEVEL(level);
+        CLOG_CREATION_SET_LOG_CONFIG(
             ELogConfig::LOG_NAME,
             ELogConfig::LOG_LEVEL,
             ELogConfig::CALL_TIME,
@@ -168,11 +168,11 @@ bool CService::InitializeLogger(
             ELogConfig::MESSAGE,
             ELogConfig::PARAMS);
 
-        CLOG_ADD_SAFE_STREAM(*m_log_stream);
+        CLOG_CREATION_ADD_SAFE_STREAM(*m_log_stream);
 
         CLOG_BUILD( );
 
-        CLOG_END_CREATION( );
+        CLOG_CREATION_END( );
         return true;
     }
     //CLOG_DEBUG_END_FUNCTION();
