@@ -176,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CLogBuilder\CLogBuilder.h" />
+    <ClInclude Include="include\CLoggerGlobal\GlobalLogger.h" />
     <ClInclude Include="include\CLogger\CLogger.h" />
     <ClInclude Include="include\CLogMacro\CLogCreationMacro.h" />
     <ClInclude Include="include\CLogMacro\CLogUsageMacro.h" />
@@ -183,7 +184,6 @@
     <ClInclude Include="include\ELogConfig\ELogConfig.h" />
     <ClInclude Include="include\ELogFlush\ELogFlush.h" />
     <ClInclude Include="include\ELogLevel\ELogLevel.h" />
-    <ClInclude Include="include\GlobalLogger.h" />
     <ClInclude Include="include\Log.h" />
     <ClInclude Include="include\stdafx.h" />
     <ClInclude Include="include\Utils\Utils.h" />
