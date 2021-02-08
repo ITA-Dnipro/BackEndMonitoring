@@ -29,6 +29,33 @@
 #define CLOG_ADD_LOG_CONFIG(logConfig) \
 	CLog::GetBuilder()->AddLogConfig(logConfig) \
 
+#define CLOG_ADD_LOG_LEVEL() \
+	CLog::GetBuilder()->AddLogConfig(ELogConfig::LOG_LEVEL) \
+
+#define CLOG_ADD_LOG_NAME() \
+	CLog::GetBuilder()->AddLogConfig(ELogConfig::LOG_NAME) \
+
+#define CLOG_ADD_LINE_NUMBER() \
+	CLog::GetBuilder()->AddLogConfig(ELogConfig::LINE_NUMBER) \
+
+#define CLOG_ADD_FILE_NAME() \
+	CLog::GetBuilder()->AddLogConfig(ELogConfig::FILE_NAME) \
+
+#define CLOG_ADD_FUNCTION_NAME() \
+	CLog::GetBuilder()->AddLogConfig(ELogConfig::FUNCTION_NAME) \
+
+#define CLOG_ADD_THREAD_ID() \
+	CLog::GetBuilder()->AddLogConfig(ELogConfig::THREAD_ID) \
+
+#define CLOG_ADD_CALL_TIME() \
+	CLog::GetBuilder()->AddLogConfig(ELogConfig::CALL_TIME) \
+
+#define CLOG_ADD_MESSAGE() \
+	CLog::GetBuilder()->AddLogConfig(ELogConfig::MESSAGE) \
+
+#define CLOG_ADD_PARAMS() \
+	CLog::GetBuilder()->AddLogConfig(ELogConfig::PARAMS) \
+
 #define CLOG_BUILD() \
 	CLog::SetLogger(std::move(CLog::GetBuilder()->BuildUniqueLog())) \
 
