@@ -106,6 +106,14 @@
 #define CLOG_WARNING_WITH_PARAMS(messageString, ...) \
 	CLOG_PROD_WITH_PARAMS(std::string("WARNING!!") + " " + (messageString), __VA_ARGS__) \
 
+// Creates and prints INFO: CLogMessage via CLogger
+#define CLOG_INFO(messageString) \
+	CLOG_PROD(std::string("INFO:") + " " + (messageString)) \
+
+// Creates and prints INFO: CLogMessage via CLogger with variable parameters
+#define CLOG_INFO_WITH_PARAMS(messageString, ...) \
+	CLOG_PROD_WITH_PARAMS(std::string("INFO:") + " " + (messageString), __VA_ARGS__) \
+
 // Creates and prints ERROR!!! CLogMessage via CLogger
 #define CLOG_ERROR(messageString) \
 	CLOG_PROD(std::string("ERROR!!!") + " " + (messageString)) \
