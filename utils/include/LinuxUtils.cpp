@@ -4,7 +4,7 @@
 #include "CNumericTypesParser.h"
 #include "CReadFileWrapper.h"
 #include "Utils.h"
-#include "Clogger/include/Log.h"
+#include "CLogger/include/Log.h"
 
 #include "PlatformUtils.h"
 
