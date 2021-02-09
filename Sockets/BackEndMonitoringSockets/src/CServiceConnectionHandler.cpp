@@ -33,7 +33,13 @@ bool CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
 {
 	bool can_continue = true;
 	std::string message;
-	if (m_p_peer_stream->CanReceiveData(socket_fd) && 
+	if (m_p_peer_stream->IsErrorOccured(socket_fd))
+	{
+	CLOG_ERROR_WITH_PARAMS("Lost connection with the client", socket_fd);
+	can_continue = false;
+	CLOG_DEBUG_WITH_PARAMS("value can_continue = ", can_continue);
+	}
+	else if (m_p_peer_stream->CanReceiveData(socket_fd) && 
 		m_p_peer_stream->Receive(socket_fd, message))
 	{
 		if (m_can_receive_data && IsEqualStrings(message, "ALL_DATA"))
@@ -57,7 +63,7 @@ bool CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
 			m_can_receive_data = false;
 			HandleResponseEvent(socket_fd, EClientRequestType::PROCESSES_DATA);
 		}
-		else if (!m_can_receive_data && IsEqualStrings(message, "DATA RECEIVED"))
+		else if (IsEqualStrings(message, "DATA RECEIVED"))
 		{
 			m_can_receive_data = true;
 		}
@@ -76,12 +82,6 @@ bool CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
 		}
 
 		CLOG_TRACE_WITH_PARAMS("value can_continue = ", can_continue);
-	}
-	else if (m_p_peer_stream->IsErrorOccured(socket_fd))
-	{
-		CLOG_ERROR_WITH_PARAMS("Lost connection with the client", socket_fd);
-		can_continue = false;
-		CLOG_DEBUG_WITH_PARAMS("value can_continue = ", can_continue);
 	}
 
 	return can_continue;

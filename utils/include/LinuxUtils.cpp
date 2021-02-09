@@ -85,6 +85,7 @@ namespace PlatformUtils
 
 	bool CloseSocket(int socket)
 	{
+		shutdown(socket, 2);
 		if (socket != c_invalid_socket)
 		{
 			if (close(socket) != c_error_socket)

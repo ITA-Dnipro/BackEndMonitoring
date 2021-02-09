@@ -35,7 +35,7 @@ namespace PlatformUtils
 	bool GetExistingProcessIds(std::vector<unsigned>& container_of_PIDs)
 	{
 		bool success = false;
-		CLOG_DEBUG_START_FUNCTION();
+		CLOG_TRACE_START_FUNCTION();
 		CLOG_TRACE_VAR_CREATION(success);
 
 		unsigned short m_max_process_count = 1024;
@@ -59,7 +59,7 @@ namespace PlatformUtils
 		else
 		{ CLOG_TRACE("Can't enumerate PID's.");}
 
-		CLOG_DEBUG_END_FUNCTION_WITH_RETURN(success);
+		CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
 		return success;
 	}
 
@@ -146,7 +146,7 @@ namespace PlatformUtils
 		unsigned long long& pagefile_usage)
 	{
 		bool success = false;
-		CLOG_DEBUG_START_FUNCTION();
+		CLOG_TRACE_START_FUNCTION();
 		CLOG_TRACE_VAR_CREATION(success);
 
 		HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
@@ -168,7 +168,7 @@ namespace PlatformUtils
 		else
 		{ CLOG_TRACE_WITH_PARAMS("Can't open HANDLE for process ", PID);}
 
-		CLOG_DEBUG_END_FUNCTION_WITH_RETURN(success);
+		CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
 		return success;
 	}
 
