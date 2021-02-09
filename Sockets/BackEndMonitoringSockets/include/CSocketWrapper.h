@@ -9,12 +9,13 @@ public:
 	CSocketWrapper(CSocketWrapper&&) noexcept = delete;
 	~CSocketWrapper() noexcept = default;
 
-	[[nodiscard]] std::string Receive(const int client_socket);
+	bool Receive(const int client_socket, std::string& message);
 	bool Send(const int client_socket, const std::string& line);
 	bool CanReceiveData(const int socket) const;
+	bool IsErrorOccured(const int socket) const;
 
 private:
-	const size_t c_max_buffer_size = 2000u;
+	const size_t c_max_buffer_size = 500u;
 	const int c_connection_error = -1;
 
 	[[nodiscard]] std::string CreateHeader(const int size);

@@ -21,57 +21,65 @@ bool CServiceConnectionHandler::HandleEvent(const int socket_fd, EEventType type
 	case EEventType::CLOSE_EVENT:
 		can_continue = HandleResponseExitEvent(socket_fd);
 		break;
+	case EEventType::LOST_REQUEST:
+		can_continue = HandleWrongRequestEvent(socket_fd);
+		break;
 	}
+
 	return can_continue;
 }
 
 bool CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
 {
 	bool can_continue = true;
-	if (m_p_peer_stream->CanReceiveData(socket_fd))
+	std::string message;
+	if (m_p_peer_stream->CanReceiveData(socket_fd) && 
+		m_p_peer_stream->Receive(socket_fd, message))
 	{
-		std::string message = m_p_peer_stream->Receive(socket_fd);
-		if (m_can_receive_data && message == "ALL_DATA")
+		if (m_can_receive_data && IsEqualStrings(message, "ALL_DATA"))
 		{
-			CLOG_TRACE_WITH_PARAMS("All data request from the socket ",
+			CLOG_DEBUG_WITH_PARAMS("All data request from the socket ",
 				socket_fd);
 			m_can_receive_data = false;
 			HandleResponseEvent(socket_fd, EClientRequestType::ALL_DATA);
 		}
-		else if (m_can_receive_data && message == "DISK_DATA")
+		else if (m_can_receive_data && IsEqualStrings(message, "DISK_DATA"))
 		{
-			CLOG_TRACE_WITH_PARAMS("Disks data request from the socket ",
+			CLOG_DEBUG_WITH_PARAMS("Disks data request from the socket ",
 				socket_fd);
 			m_can_receive_data = false;
 			HandleResponseEvent(socket_fd, EClientRequestType::DISKS_DATA);
 		}
-		else if (m_can_receive_data && message == "PROCESS_DATA")
+		else if (m_can_receive_data && IsEqualStrings(message, "PROCESS_DATA"))
 		{
-			CLOG_TRACE_WITH_PARAMS("Processes data request from the socket ",
+			CLOG_DEBUG_WITH_PARAMS("Processes data request from the socket ",
 				socket_fd);
 			m_can_receive_data = false;
 			HandleResponseEvent(socket_fd, EClientRequestType::PROCESSES_DATA);
 		}
-		else if (!m_can_receive_data && message == "DATA RECEIVED")
+		else if (!m_can_receive_data && IsEqualStrings(message, "DATA RECEIVED"))
 		{
 			m_can_receive_data = true;
 		}
-		else if (message == "Exit")
+		else if (IsEqualStrings(message, "Exit"))
 		{
-			CLOG_TRACE("Exit request from the client, handling close event");
+			CLOG_DEBUG("Exit request from the client, handling close event");
 			HandleEvent(socket_fd, EEventType::CLOSE_EVENT);
 			can_continue = false;
+		}
+		else
+		{
+			CLOG_ERROR_WITH_PARAMS("Part of the data is lost, we receive", message);
+			can_continue = true;
+			m_can_receive_data = true;
+			HandleEvent(socket_fd, EEventType::LOST_REQUEST);
 		}
 
 		CLOG_TRACE_WITH_PARAMS("value can_continue = ", can_continue);
 	}
-
-	int error = 0;
-	if ((error = PlatformUtils::GetConnectionError(socket_fd)) == 
-		c_client_disconnected)
+	else if (m_p_peer_stream->IsErrorOccured(socket_fd))
 	{
-		CLOG_TRACE_WITH_PARAMS("ERROR!!! On the socket ", socket_fd,
-			" has occured error ", error);
+		CLOG_ERROR_WITH_PARAMS("Lost connection with the client", socket_fd);
 		can_continue = false;
 		CLOG_DEBUG_WITH_PARAMS("value can_continue = ", can_continue);
 	}
@@ -96,7 +104,7 @@ bool CServiceConnectionHandler::HandleResponseEvent(const int socket_fd,
 		message = m_json_data.GetProcessesInfo();
 		break;
 	case EClientRequestType::DISKS_DATA:
-		CLOG_TRACE("Send dick info to the client");
+		CLOG_TRACE("Send disk info to the client");
 		message = m_json_data.GetDisksInfo();
 		break;
 	default:
@@ -105,6 +113,7 @@ bool CServiceConnectionHandler::HandleResponseEvent(const int socket_fd,
 		return false;
 	}
 	result = m_p_peer_stream->Send(socket_fd, message);
+	m_can_receive_data = true;
 	CLOG_TRACE_WITH_PARAMS("Send function returned result ", result);
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
@@ -120,6 +129,31 @@ bool CServiceConnectionHandler::HandleResponseExitEvent(const int socket_fd)
 	CLOG_DEBUG_WITH_PARAMS("Send function returned result ", result);
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
+}
+
+bool CServiceConnectionHandler::HandleWrongRequestEvent(const int socket_fd)
+{
+	bool result = false;
+	CLOG_DEBUG_START_FUNCTION();
+	result = m_p_peer_stream->Send(socket_fd, "Request lost");
+	CLOG_DEBUG_END_FUNCTION();
+
+	return result;
+}
+
+bool CServiceConnectionHandler::IsEqualStrings(const std::string first_str, const std::string second_str) const
+{
+	CLOG_DEBUG_START_FUNCTION();
+	for (size_t i = 0; i < second_str.size(); i++)
+	{
+		if (first_str[i] != second_str[i])
+		{
+			CLOG_DEBUG_WITH_PARAMS("This strings aren't equal", first_str, second_str);
+			return false;
+		}
+	}
+	CLOG_DEBUG_END_FUNCTION();
+	return true;
 }
 
 void CServiceConnectionHandler::InitPeerStream()

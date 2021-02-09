@@ -100,7 +100,7 @@ bool CAcceptorWrapper::HandleEvents()
 {
 	CLOG_DEBUG_START_FUNCTION();
 	int socket_fd = c_error_socket;
-	while (!m_event.WaitFor(std::chrono::nanoseconds(1000)))
+	while (!m_event.WaitFor(std::chrono::milliseconds(100)))
 	{
 		if (m_p_server_acceptor->Accept(socket_fd))
 		{
@@ -125,17 +125,14 @@ void CAcceptorWrapper::AddClientToThread(int socket_fd)
 	
 	m_p_pool->Enqueue([this, socket_fd]()
 		{
-			CLOG_DEBUG("New client was added to the thread");
-			int count_iteration = 0;
+			CLOG_DEBUG_WITH_PARAMS("New client was added to the thread with socket ", 
+				socket_fd);
 			while (
 				m_p_service_handler->HandleEvent(socket_fd,
 					EEventType::REQUEST_DATA) &&
-				!m_event.WaitFor(std::chrono::nanoseconds(1000)))
-			{
-				if (++count_iteration >= c_max_idle_iteration)
-				{
-					break;
-				}
-			}
+				!m_event.WaitFor(std::chrono::milliseconds(100)))
+			{ }
+			CLOG_DEBUG_WITH_PARAMS("Exit thread for the client with socket ", 
+				socket_fd);
 		});
 }

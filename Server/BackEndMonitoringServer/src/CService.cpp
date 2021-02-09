@@ -55,7 +55,7 @@ void CService::RunServer()
     //std::this_thread::sleep_for(std::chrono::seconds(20));
 
     std::string path_to_log_file(GetRelativePath() + "Log.txt");
-    ELogLevel log_level = ELogLevel::PROD_LEVEL;
+    ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if (!InitializeLogger(path_to_log_file, log_level))
     {
         return;

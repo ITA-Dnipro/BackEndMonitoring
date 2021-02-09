@@ -28,7 +28,7 @@ int CConnectorWrapper::GetClientSocket() const
 std::string CConnectorWrapper::MakeRequest(EClientRequestType r_type) const
 {
 	std::string message;
-	EEventType request_event = EEventType::REQUEST_ALL_DATA;
+	EEventType request_event = EEventType::LOST_REQUEST;
 	if( r_type == EClientRequestType::ALL_DATA)
 	{
 		request_event = EEventType::REQUEST_ALL_DATA;
@@ -60,8 +60,9 @@ bool CConnectorWrapper::Exit()
 	std::string message;
 	m_p_client_handler->HandleEvent(m_p_connector->GetSocketFD(),
 		EEventType::CLOSE_EVENT, message);
-	if (message == "Disconnect")
+	if (message == "Disconnect" || message == "-1")
 	{
+		CLOG_DEBUG_WITH_PARAMS("Disconnect from the server, we receive response", message);
 		return true;
 	}
 	return false;

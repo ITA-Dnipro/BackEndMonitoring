@@ -18,7 +18,7 @@ CThreadPool::CThreadPool(std::size_t num_threads, CEvent& stop_event)
 							   {
 								   ThreadWork( );
 							   });
-		CLOG_TRACE("Pushed thread " + std::to_string(i) + " in pool");
+		CLOG_DEBUG("Pushed thread " + std::to_string(i) + " in pool");
 	}
 	CLOG_DEBUG_END_FUNCTION( );
 }

@@ -35,7 +35,7 @@ namespace PlatformUtils
 	bool GetExistingProcessIds(std::vector<unsigned>& container_of_PIDs)
 	{
 		bool success = false;
-		CLOG_DEBUG_START_FUNCTION();
+		CLOG_TRACE_START_FUNCTION();
 		unsigned short m_max_process_count = 1024;
 		CLOG_TRACE_VAR_CREATION(m_max_process_count);
 		std::unique_ptr<DWORD> p_process_ids(new DWORD[m_max_process_count]);
@@ -53,14 +53,14 @@ namespace PlatformUtils
 			const int size = bytes_returned / sizeof(DWORD);
 			container_of_PIDs.assign(p_process_ids.get(), p_process_ids.get() + size);
 		}
-		CLOG_DEBUG_END_FUNCTION();
+		CLOG_TRACE_END_FUNCTION();
 		return success;
 	}
 
 	bool CheckIsProcessActive(unsigned PID)
 	{
 		bool success = false;
-		CLOG_DEBUG_START_FUNCTION();
+		CLOG_TRACE_START_FUNCTION();
 		HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
 			FALSE, PID);
 
@@ -70,7 +70,7 @@ namespace PlatformUtils
 		{
 			CloseHandle(process);
 		}
-		CLOG_DEBUG_END_FUNCTION();
+		CLOG_TRACE_END_FUNCTION();
 		return success;
 	}
 
@@ -79,7 +79,7 @@ namespace PlatformUtils
 						 unsigned long long& user_time)
 	{
 		bool success = false;
-		CLOG_DEBUG_START_FUNCTION();
+		CLOG_TRACE_START_FUNCTION();
 		HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
 			FALSE, PID);
 		CLOG_TRACE_VAR_CREATION(process);
@@ -131,7 +131,7 @@ namespace PlatformUtils
 			}
 			CloseHandle(process);
 		}
-		CLOG_DEBUG_END_FUNCTION();
+		CLOG_TRACE_END_FUNCTION();
 		return success;
 	}
 
@@ -139,7 +139,7 @@ namespace PlatformUtils
 		unsigned long long& pagefile_usage)
 	{
 		bool success = false;
-		CLOG_DEBUG_START_FUNCTION();
+		CLOG_TRACE_START_FUNCTION();
 		HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
 			FALSE, PID);
 		CLOG_TRACE_VAR_CREATION(process);
@@ -157,13 +157,13 @@ namespace PlatformUtils
 			}
 			CloseHandle(process);
 		}
-		CLOG_DEBUG_END_FUNCTION();
+		CLOG_TRACE_END_FUNCTION();
 		return success;
 	}
 
 	bool TryGetLogicalDisksNames(std::vector<std::string>& all_disks_names)
 	{
-		CLOG_DEBUG_START_FUNCTION();
+		CLOG_TRACE_START_FUNCTION();
 		const unsigned short c_size_of_buffer_for_api = 1024U;
 		CLOG_TRACE_VAR_CREATION(c_size_of_buffer_for_api);
 		//We just skip some chars
@@ -202,7 +202,7 @@ namespace PlatformUtils
 			return true;
 		}
 		// exception
-		CLOG_DEBUG_END_FUNCTION();
+		CLOG_TRACE_END_FUNCTION();
 		return false;
 	}
 

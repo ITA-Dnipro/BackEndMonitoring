@@ -18,11 +18,11 @@ public:
 	bool HandleEvent(const int socket_fd, EEventType type);
 
 private:
-	const int c_client_disconnected = 10054;
-
 	bool HandleRequestEvent(const int socket_fd);
 	bool HandleResponseEvent(const int socket_fd, EClientRequestType type);
 	bool HandleResponseExitEvent(const int socket_fd);
+	bool HandleWrongRequestEvent(const int socket_fd);
+	bool IsEqualStrings(const std::string first_str, const std::string second_str) const;
 	void InitPeerStream();
 
 	CDataReceiver m_json_data;
