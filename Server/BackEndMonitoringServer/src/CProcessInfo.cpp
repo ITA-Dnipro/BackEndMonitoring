@@ -14,7 +14,7 @@ CProcessInfo::CProcessInfo(unsigned PID,
     m_last_sys_time(0ULL), m_last_kernel_time(0ULL), m_last_user_time(0ULL),
     m_is_initialized(false)
 { 
-    CLOG_TRACE("Process " + std::to_string(m_PID) + " created");
+    CLOG_TRACE_WITH_PARAMS("Process ", m_PID, " created");
 }
 
 CProcessInfo::CProcessInfo(const CProcessInfo& other) : m_PID(other.m_PID), 
@@ -27,7 +27,7 @@ CProcessInfo::CProcessInfo(const CProcessInfo& other) : m_PID(other.m_PID),
         m_last_user_time(other.m_last_user_time),
         m_is_initialized(other.m_is_initialized)
 { 
-    CLOG_TRACE("Process " + std::to_string(m_PID) + " created using copy c-tor");
+    CLOG_TRACE_WITH_PARAMS("Process ", m_PID, " created via copy c-tor");
 }
 
 CProcessInfo::CProcessInfo(CProcessInfo&& other) noexcept: m_PID(other.m_PID),
@@ -40,13 +40,13 @@ CProcessInfo::CProcessInfo(CProcessInfo&& other) noexcept: m_PID(other.m_PID),
         m_last_user_time(other.m_last_user_time),
         m_is_initialized(other.m_is_initialized)
 { 
-    CLOG_TRACE("Process " + std::to_string(m_PID) + " created using move c-tor");
+    CLOG_TRACE_WITH_PARAMS("Process ", m_PID, " created via move c-tor");
 }
 
 CProcessInfo& CProcessInfo::operator=(const CProcessInfo& other)
 {
-    CLOG_TRACE("Process " + std::to_string(other.m_PID) + " asigned to process "
-               + std::to_string(m_PID) + "using operator=");
+    CLOG_TRACE_WITH_PARAMS("Process ", other.m_PID, " asigned to process ", 
+        m_PID ," using operator=");
 
     m_PID = other.m_PID;
     m_cpu_usage = other.m_cpu_usage;
@@ -66,7 +66,7 @@ bool CProcessInfo::Initialize()
 
     if(m_is_initialized)
     { 
-        CLOG_PROD("WARNING!!! Called initialize on already initialized process");
+        CLOG_WARNING("Called initialize on already initialized process");
         return false;
     }
  
@@ -75,8 +75,8 @@ bool CProcessInfo::Initialize()
                                                  m_last_user_time);
     if (!success)
     {
-        CLOG_PROD("WARNING!!! Can't get process times for PID: " +
-                  std::to_string(m_PID));
+        CLOG_TRACE_WITH_PARAMS("WARNING!!! Can't get process times for PID: ",
+                               m_PID);
         return success;
     }
 
@@ -84,17 +84,17 @@ bool CProcessInfo::Initialize()
                                                    m_pagefile_usage);
     if (!success)
     {
-        CLOG_PROD("WARNING!!! Can't get memory usage for PID: " +
-                  std::to_string(m_PID));
+        CLOG_TRACE_WITH_PARAMS("WARNING!!! Can't get memory usage for PID: ",
+                               m_PID);
     }
 
     if (m_is_initialized = success)
     {
-        CLOG_TRACE("Process " + std::to_string(m_PID) + "was isitialized");
+        CLOG_TRACE_WITH_PARAMS("Process ", m_PID, "was isitialized");
     }
     else
     {
-        CLOG_DEBUG("Process " + std::to_string(m_PID) + "wasn't isitialized");
+        CLOG_TRACE_WITH_PARAMS("Process ", m_PID, "wasn't isitialized");
     }
     CLOG_TRACE_END_FUNCTION( );
     return m_is_initialized;
@@ -106,17 +106,18 @@ bool CProcessInfo::TryToUpdateCurrentStatus()
     CLOG_TRACE_START_FUNCTION( );
     if(!m_is_initialized)
     { 
-        CLOG_PROD("ERROR!!! Called function on non initialized process");
+        CLOG_ERROR("Called function on non initialized process");
         return false;
     }
 
     if (success = CountCpuUsage( ))
     {
-        CLOG_TRACE("CPU usage of process " + std::to_string(m_PID) + " counted successfully");
+        CLOG_TRACE_WITH_PARAMS("CPU usage of process ", m_PID, 
+            " counted successfully");
     }
     else
     {
-        CLOG_DEBUG("Failed to count CPU usage of process " + std::to_string(m_PID));
+        CLOG_TRACE_WITH_PARAMS("Failed to count CPU usage of process ", m_PID);
         return success;
     }
 
@@ -124,11 +125,12 @@ bool CProcessInfo::TryToUpdateCurrentStatus()
                                                    m_pagefile_usage);
     if (success)
     {
-        CLOG_TRACE("Memory usage of process " + std::to_string(m_PID) + " counted successfully");
+        CLOG_TRACE_WITH_PARAMS("Memory usage of process ", m_PID,
+            " counted successfully");
     }
     else
     {
-        CLOG_DEBUG("Failed to count memory usage of process " + std::to_string(m_PID));
+        CLOG_TRACE_WITH_PARAMS("Failed to count memory usage of process ",m_PID);
     }
 
     CLOG_TRACE_END_FUNCTION( );
@@ -140,7 +142,7 @@ bool CProcessInfo::IsActive() const
     CLOG_TRACE_START_FUNCTION( );
     if (!m_is_initialized)
     {
-        CLOG_PROD("ERROR!!! Called function on non initialized process");
+        CLOG_ERROR("Called function on non initialized process");
         return false;
     }
     CLOG_TRACE_END_FUNCTION( );
@@ -157,7 +159,7 @@ bool CProcessInfo::GetPID(unsigned& value) const
     }
     else
     {
-        CLOG_PROD("ERROR!!! Called function on non initialized process");
+        CLOG_ERROR("Called function on non initialized process");
     }
     CLOG_TRACE_END_FUNCTION( );
     return m_is_initialized;
@@ -173,7 +175,7 @@ bool CProcessInfo::GetCpuUsage(double& value) const
     }
     else
     {
-        CLOG_PROD("ERROR!!! Called function on non initialized process");
+        CLOG_ERROR("Called function on non initialized process");
     }
     CLOG_TRACE_END_FUNCTION( );
     return m_is_initialized;
@@ -190,7 +192,7 @@ bool CProcessInfo::GetRamUsage(long double& value) const
     }
     else
     {
-        CLOG_PROD("ERROR!!! Called function on non initialized process");
+        CLOG_ERROR("Called function on non initialized process");
     }
     CLOG_TRACE_END_FUNCTION( );
     return m_is_initialized;
@@ -207,7 +209,7 @@ bool CProcessInfo::GetPagefileUsage(long double& value) const
     }
     else
     {
-        CLOG_PROD("ERROR!!! Called function on non initialized process");
+        CLOG_ERROR("Called function on non initialized process");
     }
     CLOG_TRACE_END_FUNCTION( );
     return m_is_initialized;
@@ -239,35 +241,34 @@ bool CProcessInfo::CountCpuUsage()
                                              cur_kernel_time, cur_user_time);
     if (success)
     {
-        CLOG_TRACE("Processor times of process " + std::to_string(m_PID) +
-                    " getted successfully");
+        CLOG_TRACE_WITH_PARAMS("Processor times of process ", m_PID,
+            " getted successfully");
     }
     else
     {
-        CLOG_PROD("WARNING!!! Can't Get process " + std::to_string(m_PID) +
-                    " processor times");
+        CLOG_TRACE_WITH_PARAMS("WARNING!!! Can't Get process ", m_PID,
+            " processor times");
         return success;
     }
 
     if (cur_sys_time <= m_last_sys_time)
     {
-        CLOG_PROD("WARNING!!! System times of process " + std::to_string(m_PID)
-                  + "is equal");
-        CLOG_DEBUG("Sleep thread");
+        CLOG_WARNING_WITH_PARAMS("System times of process ", m_PID, "is equal");
+        CLOG_TRACE("Sleep thread");
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        CLOG_DEBUG("Thread awaked");
+        CLOG_TRACE("Thread awaked");
         success = PlatformUtils::GetProcessTimes(m_PID, cur_sys_time,
                                                  cur_kernel_time, 
                                                  cur_user_time);
         if (success)
         {
-            CLOG_TRACE("Processor times of process " + std::to_string(m_PID) +
-                       " getted successfully");
+            CLOG_TRACE_WITH_PARAMS("Processor times of process ", m_PID,
+                " getted successfully");
         }
         else
         {
-            CLOG_PROD("WARNING!!! Can't Get process " + std::to_string(m_PID) +
-                      " processor times");
+            CLOG_TRACE_WITH_PARAMS("WARNING!!! Can't Get process ", m_PID,
+                " processor times");
             return success;
         }
     }

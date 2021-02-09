@@ -27,9 +27,7 @@ CProcessesInfoMonitoring::CProcessesInfoMonitoring(
 bool CProcessesInfoMonitoring::Initialize()
 {
 	CLOG_DEBUG_START_FUNCTION( );
-	m_is_initialized = m_container.Initialize( ) && 
-		m_container.TryToUpdateCurrentStatus();
-	if (m_is_initialized)
+	if (m_is_initialized = m_container.Initialize())
 	{
 		CLOG_DEBUG("CProcessesInfoMonitoring was initialized");
 	}
@@ -46,10 +44,9 @@ bool CProcessesInfoMonitoring::StartMonitoringInfo( )
 	CLOG_DEBUG_START_FUNCTION( );
 	if(!m_is_initialized)
 	{
-		CLOG_PROD("ERROR!!! CProcessesInfoMonitoring function was called on uninitialized object");
+		CLOG_ERROR("CProcessesInfoMonitoring function was called on uninitialized object");
 		return false;
 	}
-
 
 	CJSONFormatSaver json_saver(
 		*m_container.GetSpecification()->GetPathToSaveFile( ));
@@ -58,12 +55,17 @@ bool CProcessesInfoMonitoring::StartMonitoringInfo( )
 	while (!m_stop_event.WaitFor(
 		m_container.GetSpecification()->GetPauseDuration( )))
 	{
+		if (!m_container.TryToUpdateCurrentStatus())
+		{
+			CLOG_ERROR("CProcessesInfoMonitoring can't update processes container.");
+		}
+
 		{
 			auto [json_formatter, mtx] = m_json_formatter.GetAccess( );
 			CLOG_DEBUG("CProcessesInfoMonitoring obtained the json data mutex");
 			if (!json_formatter.TryEraseAllData( ))
 			{
-				CLOG_PROD("WARNING!!! CProcessesInfoMonitoring can't delete data from json.");
+				CLOG_WARNING("CProcessesInfoMonitoring can't delete data from json.");
 				continue;
 			}
 			else
@@ -78,21 +80,15 @@ bool CProcessesInfoMonitoring::StartMonitoringInfo( )
 				{
 					if (!json_formatter.TryAddProcessData(process))
 					{
-						CLOG_PROD("WARNING!!! CProcessesInfoMonitoring can't add data about process to json.");
-						continue;
+						CLOG_WARNING("CProcessesInfoMonitoring can't add data about process to json.");
 					}
 				}
 				if (!json_saver.TrySaveToFile(json_formatter))
 				{
-					CLOG_PROD("ERROR!!! CProcessesInfoMonitoring can't save json data to file.");
+					CLOG_ERROR("CProcessesInfoMonitoring can't save json data to file.");
 					//exception handler
-					continue;
 				}
 			}
-		}
-		if (!m_container.TryToUpdateCurrentStatus( ))
-		{
-			CLOG_PROD("ERROR!!! CProcessesInfoMonitoring can't update processes container.");
 		}
 	}
 	CLOG_DEBUG_END_FUNCTION( );

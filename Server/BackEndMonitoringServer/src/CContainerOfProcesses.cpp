@@ -7,7 +7,8 @@
 #include "CContainerOfProcesses.h"
 
 CContainerOfProcesses::CContainerOfProcesses(std::chrono::duration<int>
-	pause_duration, std::string path_to_file, EMemoryConvertType count_type) :
+		pause_duration, const std::string& path_to_file, 
+		EMemoryConvertType count_type) :
 	m_specification(pause_duration, path_to_file, count_type),
 	m_is_initialized(false)
 { }
@@ -28,14 +29,13 @@ bool CContainerOfProcesses::Initialize()
 			CLOG_TRACE_VAR_CREATION(temp);
 			if (success = temp.Initialize( ))
 			{
-				CLOG_DEBUG("Process " + std::to_string(PID) +
-						   " added to container");
-					m_container.push_back(std::move(temp));
+				CLOG_TRACE_WITH_PARAMS("Process ", PID,	" added to container");
+				m_container.push_back(std::move(temp));
 			}
 			else
 			{
-				CLOG_DEBUG("WARNING!!! Can't initialize process " + 
-						   std::to_string(PID));
+				CLOG_TRACE_WITH_PARAMS("WARNING!!! Can't initialize process ",
+					PID);
 			}
 		}
 	}
@@ -55,7 +55,7 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 	CLOG_DEBUG_START_FUNCTION( );
 	if (!m_is_initialized)
 	{ 
-		CLOG_PROD("ERROR!!! Call function on uninitialized container of processes");
+		CLOG_ERROR("Call function on uninitialized container of processes");
 		return false;
 	}
 
@@ -82,11 +82,13 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 				if (temp.Initialize())
 				{
 					m_container.push_back(std::move(temp));
-					CLOG_TRACE("Process " + std::to_string(PID) + " was added to container");
+					CLOG_TRACE_WITH_PARAMS("Process ", PID,
+						" was added to container");
 				}
 				else
 				{
-					CLOG_TRACE("Process " + std::to_string(PID) + " wasn't initialised");
+					CLOG_TRACE_WITH_PARAMS("Process ", PID, 
+						" wasn't initialised");
 				}
 			}
 			else
@@ -94,36 +96,21 @@ bool CContainerOfProcesses::TryToUpdateCurrentStatus()
 				if (!it->TryToUpdateCurrentStatus())
 				{
 					m_container.erase(it);
-					CLOG_TRACE("Process " + std::to_string(PID) + " was erased from container");
+					CLOG_TRACE_WITH_PARAMS("Process ", PID,
+						" was erased from container");
 				}
 				else
 				{
-					CLOG_TRACE("Process " + std::to_string(PID) + " was updated");
+					CLOG_TRACE_WITH_PARAMS("Process ", PID, " was updated");
 				}
 			}
 		}
 
-		auto dead_process = std::find_if(m_container.begin(), 
-										 m_container.end(), 
-										 [](const CProcessInfo& proc)
-		{
-			return !proc.IsActive();
-		});
-
-		while (dead_process != m_container.end())
-		{
-			m_container.erase(dead_process);
-			CLOG_TRACE("Inactive process was erased from container");
-			dead_process = std::find_if(m_container.begin(), m_container.end(),
-									    [](const CProcessInfo& proc)
-			{
-				return !proc.IsActive();
-			});
-		}
+		EraseDeadProcesses( );
 	}
 	else
 	{
-		CLOG_PROD("ERROR!!! Can't get existing PID's");
+		CLOG_ERROR("Can't get existing PID's");
 	}
 	CLOG_DEBUG_END_FUNCTION( );
 	return success;
@@ -139,7 +126,7 @@ bool CContainerOfProcesses::GetAllProcesses(std::list<CProcessInfo>& to_list)
 	}
 	else
 	{
-		CLOG_TRACE("ERROR!!! Call function on uninitialized container of processes");
+		CLOG_ERROR("Call function on uninitialized container of processes");
 	}
 	CLOG_DEBUG_END_FUNCTION( );
 	return m_is_initialized;
@@ -151,4 +138,27 @@ const
 	CLOG_TRACE_START_FUNCTION( );
 	CLOG_TRACE_END_FUNCTION( );
 	return &m_specification;
+}
+
+void CContainerOfProcesses::EraseDeadProcesses()
+{
+	CLOG_TRACE_START_FUNCTION()
+	auto dead_process = std::find_if(m_container.begin(),
+		m_container.end(),
+		[](const CProcessInfo& proc)
+		{
+			return !proc.IsActive();
+		});
+
+	while (dead_process != m_container.end())
+	{
+		m_container.erase(dead_process);
+		CLOG_TRACE("Inactive process was erased from container");
+		dead_process = std::find_if(m_container.begin(), m_container.end(),
+			[](const CProcessInfo& proc)
+			{
+				return !proc.IsActive();
+			});
+	}
+	CLOG_TRACE_END_FUNCTION();
 }

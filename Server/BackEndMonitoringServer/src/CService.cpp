@@ -65,7 +65,7 @@ void CService::RunServer()
     std::shared_ptr<CXMLDataReader> xml_reader = std::make_shared<CXMLDataReader>();
     CLOG_TRACE_VAR_CREATION(xml_reader);
 
-    xml_reader->Initialize(GetRelativePath() + "xgconsole.xml");
+    xml_reader->Initialize(GetRelativePath() + "config.xml");
 
     CLoggingSettings log_sett(xml_reader);
     CLOG_TRACE_VAR_CREATION(log_sett);
@@ -83,36 +83,40 @@ void CService::RunServer()
 
     CProcessesInfoSettings process_sett(xml_reader);
     process_sett.ReadConfigurationFromFile();
-
-    if (InitializeProcessesMonitoring(process_sett))
+    if (process_sett.GetCheckProcesses())
     {
-        m_p_thread_pool->Enqueue([this] ( )
-                                 {
-                                     m_processes_monitor->StartMonitoringInfo( );
-                                 });
-    }
-    else
-    {
-        CLOG_PROD("ERROR! Can't initialize processes monitoring!");
-        return;
+        if (InitializeProcessesMonitoring(process_sett))
+        {
+            m_p_thread_pool->Enqueue([this]()
+                {
+                    m_processes_monitor->StartMonitoringInfo();
+                });
+        }
+        else
+        {
+            CLOG_PROD("ERROR! Can't initialize processes monitoring!");
+            return;
+        }
     }
 
     CHDDInfoSettings hdd_sett(xml_reader);
     hdd_sett.ReadConfigurationFromFile();
-
-    if (InitializeLogicalDiscMonitoring(hdd_sett))
+    if (hdd_sett.GetCheckHdd())
     {
-        m_p_thread_pool->Enqueue([this] ( )
-                                 {
-                                     m_disks_monitor->StartMonitoringInfo( );
-                                 });
+        if (InitializeLogicalDiscMonitoring(hdd_sett))
+        {
+            m_p_thread_pool->Enqueue([this]()
+                {
+                    m_disks_monitor->StartMonitoringInfo();
+                });
 
 
-    }
-    else
-    {
-        CLOG_PROD("ERROR! Can't initialize logical disks monitoring!");
-        return;
+        }
+        else
+        {
+            CLOG_PROD("ERROR! Can't initialize logical disks monitoring!");
+            return;
+        }
     }
 
     CServerSettings server_sett(xml_reader);
