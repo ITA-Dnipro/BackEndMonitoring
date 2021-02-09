@@ -61,7 +61,7 @@ install()
     mkdir $MAIN_FOLDER
     
     cp ./Server/Server $BINARY_DEST
-    cp xgconsole.xml $XML_CONFIG_DEST
+    cp $XML_CONFIG_NAME $XML_CONFIG_DEST
 
     generate_dot_service
     ln -s $DOT_SERVICE_ORIG $DOT_SERVICE_SYMLINK
