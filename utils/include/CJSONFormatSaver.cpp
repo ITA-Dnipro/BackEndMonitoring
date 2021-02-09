@@ -64,7 +64,8 @@ bool CJSONFormatSaver::TryWriteToFile(std::ofstream& JSON_file_to_save,
 	const CJSONFormatter& formatted_data) const
 {
 	CLOG_DEBUG_START_FUNCTION();
-	if (!JSON_file_to_save.is_open())
+	if (!JSON_file_to_save.is_open() || 
+		nullptr == formatted_data.GetJSONFormattedData())
 	{
 		return false;
 	}
