@@ -8,6 +8,7 @@ class CClient
 {
 public:
 	explicit CClient();
+	~CClient()noexcept = default;
 
 	void Execute();
 	bool Init(const int arg_num, char** argvuments);

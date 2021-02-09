@@ -4,6 +4,7 @@
 #include "ERequestType.h"
 #include "CClient.h"
 #include "Utils.h"
+#include "CLogger/include/Log.h"
 
 CClient::CClient() : m_port(0), is_connected(false)
 {
