@@ -1,6 +1,6 @@
 #!/bin/bash
 
-XML_CONFIG_NAME=xgconsole.xml
+XML_CONFIG_NAME=config.xml
 
 SERVICE_NAME=$(grep -o -P '(?<=<servicename> ").*(?="</servicename>)' $XML_CONFIG_NAME)
 SERVICE_DESC=$(grep -o -P '(?<=<servicedesc> ").*(?="</servicedesc>)' $XML_CONFIG_NAME)
