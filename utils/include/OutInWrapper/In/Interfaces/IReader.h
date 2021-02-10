@@ -12,4 +12,9 @@ struct IReader : public IRead, public IReadLine
 	IReader& operator=(IReader&&) noexcept = default;
 
 	~IReader() override = default;
+
+	bool Read(char& value) override = 0;
+	bool Read(std::string& value) override = 0;
+
+	bool ReadLine(std::string& value) override = 0;
 };

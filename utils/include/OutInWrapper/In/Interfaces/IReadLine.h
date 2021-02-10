@@ -9,6 +9,5 @@ struct IReadLine
 
 	virtual ~IReadLine() = default;
 
-	virtual bool ReadLine(char* value, std::streamsize size) = 0;
 	virtual bool ReadLine(std::string& value) = 0;
 };

@@ -13,4 +13,12 @@ struct IWriter : public IWrite, public IWriteLine, public IBreakLine
 	IWriter& operator=(IWriter&&) noexcept = default;
 
 	~IWriter() override = default;
+
+	bool Write(char value) override = 0;
+	bool Write(const std::string& value) override = 0;
+
+	bool WriteLine(char value) override = 0;
+	bool WriteLine(const std::string& value) override = 0;
+
+	bool BreakLine() override = 0;
 };
