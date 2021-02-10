@@ -63,6 +63,70 @@ bool Utils::TryGetCurrentDateAndTimeFormatted(std::string&
     return !date_time_var_to_save.empty();
 }
 
+bool Utils::TryGetCurrentDay(std::string&
+    date_time_var_to_save)
+{
+    const auto time = std::make_unique<tm>();
+    auto current_time = std::chrono::system_clock::to_time_t
+    (std::chrono::system_clock::now());
+
+#ifdef _MSC_VER
+    localtime_s(time.get(), &current_time);
+#else
+    localtime_r(&current_time, time.get());
+#endif
+
+    date_time_var_to_save;
+    date_time_var_to_save.resize(10u);
+    std::strftime(date_time_var_to_save.data(),
+        date_time_var_to_save.capacity(), "%d", time.get());
+    // Clean redundant \0 symbols, that fills resized string
+    date_time_var_to_save.erase(std::remove(date_time_var_to_save.begin(),
+        date_time_var_to_save.end(), '\0'), date_time_var_to_save.end());
+
+    return !date_time_var_to_save.empty();
+
+}
+
+bool Utils::TryGetCurrentTime(std::string& date_time_var_to_save)
+{
+    const auto time = std::make_unique<tm>();
+    auto current_time = std::chrono::system_clock::to_time_t
+    (std::chrono::system_clock::now());
+
+#ifdef _MSC_VER
+    localtime_s(time.get(), &current_time);
+#else
+    localtime_r(&current_time, time.get());
+#endif
+
+    date_time_var_to_save;
+    date_time_var_to_save.resize(5u);
+    std::strftime(date_time_var_to_save.data(),
+        date_time_var_to_save.capacity(), "%X", time.get());
+    // Clean redundant \0 symbols, that fills resized string
+    date_time_var_to_save.erase(std::remove(date_time_var_to_save.begin(),
+        date_time_var_to_save.end(), '\0'), date_time_var_to_save.end());
+
+    return !date_time_var_to_save.empty();
+}
+
+bool Utils::IsHourPassed(const std::string& time)
+{
+    if (time == "")
+    {
+        return true;
+    }
+    std::string curr_time;
+    Utils::TryGetCurrentTime(curr_time);
+    if ((std::stoi(curr_time.substr(2)) - std::stoi(time.substr(2))) >= 1)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 bool Utils::TrySetMonthAsNumber(std::string& p_month)
 {
     CLOG_DEBUG_START_FUNCTION();
@@ -237,4 +301,18 @@ EMemoryConvertType Utils::DefineCountType(int count_type_from_xml)
         //write to logger
         return EMemoryConvertType::BYTES;
     }
+}
+
+bool Utils::TryCreateDirectory(const std::string& path,
+    std::filesystem::perms permission,
+    std::filesystem::perm_options perms_action)
+{
+    if (std::filesystem::create_directory(path))
+    {
+        //for windows will be a little different
+        std::filesystem::permissions(path, permission, perms_action);
+        return true;
+    }
+
+    return false;
 }

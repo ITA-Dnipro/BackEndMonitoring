@@ -39,4 +39,14 @@ namespace Utils
 
 	[[nodiscard]] EMemoryConvertType DefineCountType(int count_type_from_xml);
 
+	[[nodiscard]] bool TryCreateDirectory(const std::string& path,
+		std::filesystem::perms permission = std::filesystem::perms::all,
+		std::filesystem::perm_options perms_action =
+		std::filesystem::perm_options::replace);
+	
+	[[nodiscard]] bool TryGetCurrentDay(std::string&
+		date_time_var_to_save);
+	[[nodiscard]] bool TryGetCurrentTime(std::string&
+		date_time_var_to_save);
+	[[nodiscard]] bool IsHourPassed(const std::string& time);
 }

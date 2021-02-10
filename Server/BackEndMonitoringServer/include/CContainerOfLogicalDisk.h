@@ -28,7 +28,7 @@ public:
 
 	[[nodiscard]] const std::vector<CLogicalDiskInfo*>* GetAllLogicalDisk() 
 		const;
-	[[nodiscard]] const CHardwareStatusSpecification* GetSpecification() const;
+	[[nodiscard]] CHardwareStatusSpecification* GetSpecification();
 
 private:
 	[[nodiscard]] bool TryGetAllExistedLogicalDisksAndInfo();

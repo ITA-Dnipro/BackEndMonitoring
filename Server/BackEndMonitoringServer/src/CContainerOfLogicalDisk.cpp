@@ -136,7 +136,7 @@ const std::vector<CLogicalDiskInfo*>* CContainerOfLogicalDisk::GetAllLogicalDisk
 	return &m_p_container_all_logical_disks;
 }
 
-const CHardwareStatusSpecification* CContainerOfLogicalDisk::GetSpecification() const
+CHardwareStatusSpecification* CContainerOfLogicalDisk::GetSpecification()
 {
 	return &m_specification;
 }

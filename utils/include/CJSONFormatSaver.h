@@ -17,7 +17,7 @@ protected:
 		const CJSONFormatter& formatted_data) const;
 
 private:
-	const std::string m_path_to_file;
+	const std::string& m_path_to_file;
 	const unsigned short m_number_of_spaces;
 	const unsigned short m_num_of_bities_to_last_data;
 };

@@ -8,6 +8,7 @@
 #include "CLogicalDiskInfoMonitoring.h"
 #include "CEvent.h"
 #include "CLogger/include/Log.h"
+#include "Utils.h"
 
 #include "CLogger/include/Log.h"
 
@@ -66,6 +67,14 @@ bool CLogicalDiskInfoMonitoring::StartMonitoringInfo()
 		std::cout << "Problem with creating container!";
 		return false;
 	}
+	if (!Utils::TryCreateDirectory(
+		*m_p_container->GetSpecification()->GetPathToSaveFile()))
+	{
+		return false;
+	}
+	m_p_container->GetSpecification()->AddBranchToPath("/");
+	std::string common_path = *m_p_container->GetSpecification()->GetPathToSaveFile();
+
 	while (!m_stop_event.WaitFor(m_p_specification->GetPauseDuration()))
 	{
 		auto [json_formatter, mtx] = m_json_formatter.GetAccess();
@@ -74,7 +83,28 @@ bool CLogicalDiskInfoMonitoring::StartMonitoringInfo()
 		{
 			continue;
 		}
-		
+		std::string current_day;
+		std::string current_time;
+		Utils::TryGetCurrentDay(current_day);
+		Utils::TryGetCurrentTime(current_time);
+		if (m_p_container->GetSpecification()->GetPathToSaveFile()->substr(
+			common_path.length(),
+			m_p_container->GetSpecification()->GetPathToSaveFile()->find_last_of('/')) 
+			!= current_day)
+		{
+			if (!Utils::TryCreateDirectory(common_path + current_day))
+			{
+				//log
+				return false;
+			}
+
+			m_p_container->GetSpecification()->SetNewPath(common_path + current_day);
+		}
+		if (Utils::IsHourPassed(m_p_container->GetSpecification()->GetPathToSaveFile()->substr(
+			m_p_container->GetSpecification()->GetPathToSaveFile()->find_last_of("/"), 8)))
+		{
+			m_p_container->GetSpecification()->SetNewPath(common_path + current_day + current_time);
+		}
 		if (!m_p_container->TryUpdateInfoLogicalDiskToJSON(json_formatter))
 		{
 			//exception handler
