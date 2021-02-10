@@ -44,6 +44,8 @@ bool CService::Run()
 
 #elif __linux__
 
+    m_p_service = this;
+
     RunServer( );
 
 #endif

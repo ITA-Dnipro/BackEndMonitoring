@@ -31,7 +31,7 @@ bool CServiceConnectionHandler::HandleEvent(const int socket_fd, EEventType type
 
 bool CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
 {
-	bool should_not_close_thread = true;
+	bool should_not_close_thread = false;
 	std::string message;
 
 	if (m_p_peer_stream->CanReceiveData(socket_fd) && 

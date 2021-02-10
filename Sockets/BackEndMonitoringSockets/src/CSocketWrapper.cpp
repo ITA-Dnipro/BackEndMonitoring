@@ -9,7 +9,7 @@ bool CSocketWrapper::Receive(const int socket_fd, std::string& message)
 	int total_received_bytes = 0;
 	int received_bytes = 0;
 	int current_message_size = 0;
-	char* buff = new char[c_max_buffer_size];
+	char buff[c_max_buffer_size];
 	std::string received_line;
 
 	int total_msg_size = GetSizeFromHeader(socket_fd);
@@ -47,7 +47,6 @@ bool CSocketWrapper::Receive(const int socket_fd, std::string& message)
 				"socket", socket_fd);
 			message.append(received_line, 0U, received_line.size());
 			CLOG_DEBUG_WITH_PARAMS("Size of the string", message.size());
-			delete[] buff;
 			return true;
 		}
 		current_message_size = GetSizeFromHeader(socket_fd);
@@ -55,7 +54,6 @@ bool CSocketWrapper::Receive(const int socket_fd, std::string& message)
 	}
 	CLOG_ERROR_WITH_PARAMS("Error receiving data, we should receive/we receive/broken message/socket descriptor", 
 		total_msg_size, total_received_bytes, message, socket_fd);
-	delete[] buff;
 
 	return false;
 }

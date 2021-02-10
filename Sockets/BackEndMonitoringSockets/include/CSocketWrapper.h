@@ -15,7 +15,7 @@ public:
 	bool IsErrorOccured(const int socket) const;
 
 private:
-	const size_t c_max_buffer_size = 500u;
+	static const int c_max_buffer_size = 500u;
 	const int c_connection_error = -1;
 
 	[[nodiscard]] std::string CreateHeader(const int size);
