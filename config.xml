@@ -36,7 +36,7 @@
      </threadpool>
      <HDDinfo>
          <!--information about total and free space on disks-->
-         <filename> "C:\hddinfo.txt"</filename>
+         <filename> "/usr/bin/BackEndMOnitoringService/hddinfo.txt"</filename>
          <!--flag for checking hhd info (enable / disable)-->
          <checkhdd> "enable"</checkhdd>
 		 <!--CountType: Bytes(0) - Kilobytes(1) - Megabytes(2) - Gigabytes(3)-->
@@ -44,9 +44,9 @@
      </HDDinfo>
      <processesinfo>
          <!--information about processes which running on the system-->
-         <filename> "C:\processesinfo.txt"</filename>
+         <filename> "/usr/bin/BackEndMOnitoringService/processesinfo.txt"</filename>
          <!--flag for checking processes info  (enable / disable)-->
-         <checkprocesses> "disable"</checkprocesses>
+         <checkprocesses> "enable"</checkprocesses>
 		 <!--CountType: Bytes(0) - Kilobytes(1) - Megabytes(2) - Gigabytes(3)-->
 		 <counttype> "1"</counttype>
      </processesinfo>

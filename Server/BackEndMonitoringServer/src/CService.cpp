@@ -24,8 +24,6 @@
 
 #include "CService.h"
 
-CService* CService::m_p_service = nullptr;
-
 bool CService::Run()
 {
 #if defined(_WIN64) || defined(_WIN32)
@@ -42,20 +40,11 @@ bool CService::Run()
 
     return ::StartServiceCtrlDispatcher(table_entry) == TRUE;
 
-#elif __linux__
-
-    m_p_service = this;
-    RunServer();
-    return true;
-
 #endif
 }
 
 void CService::RunServer()
 {
-
-    //std::this_thread::sleep_for(std::chrono::seconds(20));
-
     std::string path_to_log_file(GetRelativePath() + "Log.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if (!InitializeLogger(path_to_log_file, log_level))
@@ -148,7 +137,7 @@ bool CService::InitializeLogger(
     const std::string& path_to_log_file,
     ELogLevel level)
 {
-    //CLOG_DEBUG_START_FUNCTION();
+    CLOG_DEBUG_START_FUNCTION();
     m_log_stream = std::make_unique<std::fstream>(
         path_to_log_file,
         std::ios_base::app);
@@ -177,7 +166,7 @@ bool CService::InitializeLogger(
         CLOG_END_CREATION( );
         return true;
     }
-    //CLOG_DEBUG_END_FUNCTION();
+    CLOG_DEBUG_END_FUNCTION();
     return false;
 }
 
@@ -402,25 +391,6 @@ void CService::Stop()
     SetStatus(SERVICE_STOP_PENDING);
     OnStop( );
     SetStatus(SERVICE_STOPPED);
-}
-
-#elif __linux__
-
-CService::CService()
-{
-    signal(SIGTERM, CService::HandleSignal);
-}
-
-void CService::HandleSignal(int signal)
-{
-    if (signal == SIGTERM)
-    {
-        m_p_service->m_stop_event.Set();
-        CLOG_DEBUG("Stop event setted");
-        m_p_service->m_p_acceptor_socket->StopSocket();
-        CLOG_DEBUG("Acceptor socket stopped!");
-        return;
-    }
 }
 
 #endif

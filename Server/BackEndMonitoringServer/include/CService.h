@@ -38,6 +38,8 @@ struct ServiceParameters
 class CService
 {
 public:
+    CService() = default;
+
     CService(const CService& other) = delete;
     CService& operator=(const CService& other) = delete;
 
@@ -46,7 +48,7 @@ public:
 
     static std::string GetRelativePath();
 
-    bool Run();
+    virtual bool Run();
 
 #if defined(_WIN64) || defined(_WIN32)
 
@@ -60,13 +62,9 @@ public:
     const DWORD GetStartType( ) const;
     const DWORD GetErrorControlType( ) const;
 
-#elif __linux__
-
-    CService( );
-
 #endif
 
-private:
+protected:
     bool InitializeLogger(const std::string& path_to_log_file, ELogLevel level);
     bool InitializeThreadPool(const CThreadPoolSettings& thread_pool_sett);
     bool InitializeLogicalDiscMonitoring(const CHDDInfoSettings& xml_settings);
@@ -95,15 +93,11 @@ private:
     void OnStart(DWORD, CHAR**);
     void OnStop( );
 
-#elif __linux__
-
-    static void HandleSignal(int signal);
-
 #endif
 
     void RunServer( );
 
-private:
+protected:
     static CService* m_p_service;
     CEvent m_stop_event;
     std::shared_ptr<CThreadPool> m_p_thread_pool;

@@ -56,7 +56,7 @@ bool CommandLineHandler::Parse( )
 
     return success;
 #elif __linux__
-    auto service = std::make_unique<CService>( );
+    auto service = std::make_unique<CLinuxService>( );
     bool success = true;
 
     do
