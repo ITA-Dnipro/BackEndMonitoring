@@ -24,25 +24,6 @@
 
 #include "CService.h"
 
-bool CService::Run()
-{
-#if defined(_WIN64) || defined(_WIN32)
-
-    m_p_service = this;
-
-    CHAR* name = const_cast<CString&>(m_name).GetBuffer();
-
-    SERVICE_TABLE_ENTRY table_entry[] =
-    {
-        { name, SvcMain },
-        { nullptr, nullptr }
-    };
-
-    return ::StartServiceCtrlDispatcher(table_entry) == TRUE;
-
-#endif
-}
-
 void CService::RunServer()
 {
     std::string path_to_log_file(GetRelativePath() + "Log.txt");
@@ -255,22 +236,6 @@ std::string CService::GetRelativePath()
 
 #if defined(_WIN64) || defined(_WIN32)
 
-CService::CService(const ServiceParameters& parameters)
-    : m_name(parameters.name),
-    m_display_name(parameters.display_name),
-    m_start_type(parameters.start_type),
-    m_error_control_type(parameters.err_ctrl_type),
-    m_status_handle(nullptr),
-    m_status{
-        SERVICE_WIN32_OWN_PROCESS,
-        SERVICE_START_PENDING,
-        parameters.accepted_cmds,
-        NO_ERROR,
-        0,
-        0,
-        0 }
-{ }
-
 bool CService::GetModulePath(CString& module_path)
 {
     bool success = true;
@@ -292,105 +257,6 @@ bool CService::EscapePath(CString& path)
     path.Remove('\"');
     path = '\"' + path + '\"';
     return true;
-}
-
-void CService::SetStatus(DWORD state, DWORD error_code, DWORD wait_hint)
-{
-    m_status.dwCurrentState = state;
-    m_status.dwWin32ExitCode = error_code;
-    m_status.dwWaitHint = wait_hint;
-
-    ::SetServiceStatus(m_status_handle, &m_status);
-}
-
-DWORD WINAPI CService::ServiceCtrlHandler(
-    DWORD control_code, DWORD event_type,
-    void* event_data, void* context)
-{
-    if (control_code == SERVICE_CONTROL_STOP)
-    {
-        m_p_service->Stop( );
-    }
-
-    return 0;
-}
-
-void WINAPI CService::SvcMain(DWORD argc, CHAR** argv)
-{
-    assert(m_p_service);
-
-    m_p_service->m_status_handle = ::RegisterServiceCtrlHandlerEx(
-        m_p_service->GetName( ),
-        ServiceCtrlHandler, NULL);
-
-    if (!m_p_service->m_status_handle)
-    {
-        return;
-    }
-
-    m_p_service->Start(argc, argv);
-}
-
-const CString& CService::GetName( ) const
-{
-    return m_name;
-}
-
-const CString& CService::GetDisplayName( ) const
-{
-    return m_display_name;
-}
-
-// Chupakabra: returning copy of var, const redundant
-const DWORD CService::GetStartType( ) const
-{
-    return m_start_type;
-}
-
-// Chupakabra: returning copy of var, const redundant
-const DWORD CService::GetErrorControlType( ) const
-{
-    return m_error_control_type;
-}
-
-void CService::OnStart(DWORD, CHAR**)
-{
-    m_main_thread = std::thread([this] ( )
-                                {
-                                    RunServer( );
-                                });
-}
-
-void CService::OnStop()
-{
-    CLOG_DEBUG_START_FUNCTION( );
-    m_stop_event.Set( );
-    CLOG_DEBUG("Stop event setted");
-    m_p_acceptor_socket->StopSocket( );
-    CLOG_DEBUG("Acceptor socket stopped!");
-    m_main_thread.join( );
-    CLOG_TRACE("Main thread joined stopped!");
-    m_p_acceptor_socket.reset( );
-    CLOG_TRACE("Acceptor socket deleted!");
-    m_p_thread_pool.reset( );
-    CLOG_TRACE("Thread pool deleted!");
-    CLOG_TRACE("Main logger deleted");
-    CLOG_DEBUG_END_FUNCTION( );
-    CLOG_DESTROY( );
-}
-
-void CService::Start(DWORD argc, CHAR** argv)
-{
-    SetStatus(SERVICE_START_PENDING);
-    OnStart(argc, argv);
-    SetStatus(SERVICE_RUNNING);
-}
-
-void CService::Stop()
-{
-    SetStatus(SERVICE_STOP_PENDING);
-    OnStop( );
-    SetStatus(SERVICE_STOPPED);
 }
 
 #endif

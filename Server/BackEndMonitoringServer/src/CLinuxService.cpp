@@ -2,6 +2,8 @@
 
 #include "CLinuxService.h"
 
+#ifdef __linux__
+
 CLinuxService* CLinuxService::m_p_instance = nullptr;
 
 CLinuxService::CLinuxService()
@@ -27,3 +29,5 @@ void CLinuxService::HandleSignal(int signal)
         return;
     }
 }
+
+#endif

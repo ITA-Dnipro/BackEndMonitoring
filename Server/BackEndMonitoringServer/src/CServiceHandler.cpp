@@ -33,7 +33,7 @@ private:
     SC_HANDLE m_handle = nullptr;
 };
 
-ServiceHandler::ServiceHandler(std::unique_ptr<CService> service)
+ServiceHandler::ServiceHandler(std::unique_ptr<CWindowsService> service)
   : m_p_service(std::move(service))
 { }
 

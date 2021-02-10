@@ -101,6 +101,12 @@
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp">
       <Filter>Utils\Platform Utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\CLinuxService.cpp">
+      <Filter>Service subsystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CWindowsService.cpp">
+      <Filter>Service subsystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\utils\include\stdafx.h" />
@@ -187,6 +193,12 @@
     </ClInclude>
     <ClInclude Include="..\..\utils\include\PlatformUtils.h">
       <Filter>Utils\Platform Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CLinuxService.h">
+      <Filter>Service subsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CWindowsService.h">
+      <Filter>Service subsystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

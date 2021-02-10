@@ -2,6 +2,8 @@
 
 #include "CService.h"
 
+#ifdef __linux__
+
 class CLinuxService : public CService
 {
 public:
@@ -15,3 +17,5 @@ private:
 private:
     static CLinuxService* m_p_instance;
 };
+
+#endif
