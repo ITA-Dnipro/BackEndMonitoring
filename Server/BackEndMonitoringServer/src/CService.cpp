@@ -44,7 +44,9 @@ bool CService::Run()
 
 #elif __linux__
 
-    RunServer( );
+    m_p_service = this;
+    RunServer();
+    return true;
 
 #endif
 }
@@ -55,7 +57,7 @@ void CService::RunServer()
     //std::this_thread::sleep_for(std::chrono::seconds(20));
 
     std::string path_to_log_file(GetRelativePath() + "Log.txt");
-    ELogLevel log_level = ELogLevel::PROD_LEVEL;
+    ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if (!InitializeLogger(path_to_log_file, log_level))
     {
         return;
@@ -413,17 +415,11 @@ void CService::HandleSignal(int signal)
 {
     if (signal == SIGTERM)
     {
-	m_p_service->m_stop_event.Set();
-	CLOG_DEBUG("Stop event setted");
-	m_p_service->m_p_acceptor_socket->StopSocket();
-	CLOG_DEBUG("Acceptor socket stopped!");
-	m_p_service->m_p_acceptor_socket.reset( );
-	CLOG_TRACE("Acceptor socket deleted!");
-	m_p_service->m_p_thread_pool.reset( );
-	CLOG_TRACE("Thread pool deleted!");
-	CLOG_TRACE("Main logger deleted");
-	CLOG_DESTROY( );
-	return;
+        m_p_service->m_stop_event.Set();
+        CLOG_DEBUG("Stop event setted");
+        m_p_service->m_p_acceptor_socket->StopSocket();
+        CLOG_DEBUG("Acceptor socket stopped!");
+        return;
     }
 }
 
