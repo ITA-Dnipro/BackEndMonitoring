@@ -6,85 +6,85 @@
 #include "CServiceConnectionHandler.h"
 
 CServiceConnectionHandler::CServiceConnectionHandler(CDataReceiver json_data) :
-	m_json_data(json_data), m_can_receive_data(true)
+	m_json_data(json_data)
 {
 	InitPeerStream();
 }
 
 bool CServiceConnectionHandler::HandleEvent(const int socket_fd, EEventType type)
 {
-	bool can_continue = true;
+	bool result = true;
 	switch (type) {
 	case EEventType::REQUEST_DATA:
-		can_continue = HandleRequestEvent(socket_fd);
+		result = HandleRequestEvent(socket_fd);
 		break;
 	case EEventType::CLOSE_EVENT:
-		can_continue = HandleResponseExitEvent(socket_fd);
+		result = HandleResponseExitEvent(socket_fd);
 		break;
 	case EEventType::LOST_REQUEST:
-		can_continue = HandleWrongRequestEvent(socket_fd);
+		result = HandleWrongRequestEvent(socket_fd);
 		break;
 	}
 
-	return can_continue;
+	return result;
 }
 
 bool CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
 {
-	bool can_continue = true;
+	bool should_not_close_thread = true;
 	std::string message;
-	if (m_p_peer_stream->IsErrorOccured(socket_fd))
-	{
-	CLOG_ERROR_WITH_PARAMS("Lost connection with the client", socket_fd);
-	can_continue = false;
-	CLOG_DEBUG_WITH_PARAMS("value can_continue = ", can_continue);
-	}
-	else if (m_p_peer_stream->CanReceiveData(socket_fd) && 
+
+	if (m_p_peer_stream->CanReceiveData(socket_fd) && 
 		m_p_peer_stream->Receive(socket_fd, message))
 	{
-		if (m_can_receive_data && IsEqualStrings(message, "ALL_DATA"))
+		if (IsEqualStrings(message, "ALL_DATA"))
 		{
 			CLOG_DEBUG_WITH_PARAMS("All data request from the socket ",
 				socket_fd);
-			m_can_receive_data = false;
-			HandleResponseEvent(socket_fd, EClientRequestType::ALL_DATA);
+			 should_not_close_thread = HandleResponseEvent(socket_fd, 
+				 EClientRequestType::ALL_DATA);
 		}
-		else if (m_can_receive_data && IsEqualStrings(message, "DISK_DATA"))
+		else if (IsEqualStrings(message, "DISK_DATA"))
 		{
 			CLOG_DEBUG_WITH_PARAMS("Disks data request from the socket ",
 				socket_fd);
-			m_can_receive_data = false;
-			HandleResponseEvent(socket_fd, EClientRequestType::DISKS_DATA);
+			should_not_close_thread = HandleResponseEvent(socket_fd, 
+				EClientRequestType::DISKS_DATA);
 		}
-		else if (m_can_receive_data && IsEqualStrings(message, "PROCESS_DATA"))
+		else if (IsEqualStrings(message, "PROCESS_DATA"))
 		{
 			CLOG_DEBUG_WITH_PARAMS("Processes data request from the socket ",
 				socket_fd);
-			m_can_receive_data = false;
-			HandleResponseEvent(socket_fd, EClientRequestType::PROCESSES_DATA);
+			should_not_close_thread = HandleResponseEvent(socket_fd, 
+				EClientRequestType::PROCESSES_DATA);
 		}
 		else if (IsEqualStrings(message, "DATA RECEIVED"))
 		{
-			m_can_receive_data = true;
+			should_not_close_thread = true;
 		}
 		else if (IsEqualStrings(message, "Exit"))
 		{
 			CLOG_DEBUG("Exit request from the client, handling close event");
-			HandleEvent(socket_fd, EEventType::CLOSE_EVENT);
-			can_continue = false;
+			should_not_close_thread = !HandleEvent(socket_fd, 
+				EEventType::CLOSE_EVENT);
 		}
 		else
 		{
 			CLOG_ERROR_WITH_PARAMS("Part of the data is lost, we receive", message);
-			can_continue = true;
-			m_can_receive_data = true;
-			HandleEvent(socket_fd, EEventType::LOST_REQUEST);
+			should_not_close_thread = HandleEvent(socket_fd, 
+				EEventType::LOST_REQUEST);
 		}
 
-		CLOG_TRACE_WITH_PARAMS("value can_continue = ", can_continue);
+		CLOG_DEBUG_WITH_PARAMS("Should not close thread equal", should_not_close_thread);
+	}
+	else if (m_p_peer_stream->IsErrorOccured(socket_fd))
+	{
+		CLOG_ERROR_WITH_PARAMS("Lost connection with the client", socket_fd);
+		should_not_close_thread = false;
+		CLOG_DEBUG_WITH_PARAMS("value can_continue = ", should_not_close_thread);
 	}
 
-	return can_continue;
+	return should_not_close_thread;
 }
 
 bool CServiceConnectionHandler::HandleResponseEvent(const int socket_fd,
@@ -113,7 +113,6 @@ bool CServiceConnectionHandler::HandleResponseEvent(const int socket_fd,
 		return false;
 	}
 	result = m_p_peer_stream->Send(socket_fd, message);
-	m_can_receive_data = true;
 	CLOG_TRACE_WITH_PARAMS("Send function returned result ", result);
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
@@ -136,6 +135,7 @@ bool CServiceConnectionHandler::HandleWrongRequestEvent(const int socket_fd)
 	bool result = false;
 	CLOG_DEBUG_START_FUNCTION();
 	result = m_p_peer_stream->Send(socket_fd, "Request lost");
+	result = HandleRequestEvent(socket_fd);
 	CLOG_DEBUG_END_FUNCTION();
 
 	return result;

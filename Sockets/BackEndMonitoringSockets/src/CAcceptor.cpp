@@ -40,32 +40,30 @@ bool CAcceptor::Initialize(const std::string& ip_address,
 	return m_is_acceptor_initialized;
 }
 
-bool CAcceptor::Accept(int& connected_socket_fd)
+bool CAcceptor::AcceptNewClient(int& socket_fd)
 {
-	connected_socket_fd = c_error_socket;
+	int connected_socket_fd = c_error_socket;
 
 	if (m_is_acceptor_initialized)
 	{
-		while (!m_event.WaitFor(std::chrono::nanoseconds(1000)))
+		if (m_is_socket_blocked)
 		{
-			if (m_is_socket_blocked)
-			{
-				connected_socket_fd = AcceptBlockingSockets();
-			}
-			else
-			{
-				connected_socket_fd = AcceptNonBlockingSockets();
-			}
+			connected_socket_fd = AcceptBlockingSockets();
+		}
+		else
+		{
+			connected_socket_fd = AcceptNonBlockingSockets();
+		}
 
-			if (connected_socket_fd > 0)
-			{
-				CLOG_DEBUG_WITH_PARAMS("Acctpted socket ", connected_socket_fd);
-				return true;
-			}
-			else if (connected_socket_fd == c_error_socket)
-			{
-				return false;
-			}
+		if (connected_socket_fd > 0)
+		{
+			CLOG_DEBUG_WITH_PARAMS("Accepted socket", connected_socket_fd);
+			socket_fd = connected_socket_fd;
+			return true;
+		}
+		else if (connected_socket_fd == c_error_socket)
+		{
+			return false;
 		}
 
 	}
@@ -102,7 +100,7 @@ bool CAcceptor::BindSocket()
 	sockaddress current_address = m_p_socket_acceptor->GetSocketAddress();
 	result = PlatformUtils::BindSocket(m_p_socket_acceptor->GetSocketFD(),
 		current_address);
-	CLOG_DEBUG_WITH_PARAMS("Bind socket returned ", result);
+	CLOG_DEBUG_WITH_PARAMS("Bind socket returned", result);
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
 }
@@ -113,7 +111,7 @@ bool CAcceptor::StartListening(const int connections)
 	CLOG_DEBUG_START_FUNCTION();
 	result = PlatformUtils::Listen(m_p_socket_acceptor->GetSocketFD(),
 		connections);
-	CLOG_DEBUG_WITH_PARAMS("Listen socket returned ", result);
+	CLOG_DEBUG_WITH_PARAMS("Listen socket returned", result);
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
 }
@@ -125,11 +123,11 @@ bool CAcceptor::MakeSocketMulticonnected()
 	if (setsockopt(m_p_socket_acceptor->GetSocketFD(), SOL_SOCKET, SO_REUSEADDR,
 		(char*)&on, sizeof(on)) != c_error_socket)
 	{
-		CLOG_DEBUG_WITH_PARAMS("Setsockopt was successful, the socket ",
-			m_p_socket_acceptor->GetSocketFD(), " was made multiconnected");
+		CLOG_DEBUG_WITH_PARAMS("Setsockopt was successful, the socket",
+			m_p_socket_acceptor->GetSocketFD(), "was made multiconnected");
 		return true;
 	}
-	CLOG_DEBUG("Setsockopt returned -1");
+	CLOG_DEBUG("Setsockopt failed");
 	CLOG_DEBUG_END_FUNCTION();
 	return false;
 }
@@ -158,6 +156,7 @@ int CAcceptor::AcceptNonBlockingSockets()
 int CAcceptor::AcceptBlockingSockets()
 {
 	CLOG_TRACE_START_FUNCTION();
+	m_is_time_out = false;
 	int max_sd = 0;
 	fd_set read_fds;
 	int socket_fd = c_error_socket;

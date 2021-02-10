@@ -120,9 +120,8 @@ bool CClientConnectionHandler::HandleLostRequestEvent(const int socket_fd,
 			m_can_make_request = false;
 			if (message != "Request lost")
 			{
-				return true;
+				return HandleDataReceivedEvent(socket_fd);
 			}
-			HandleDataReceivedEvent(socket_fd);
 		}
 	}
 	return false;

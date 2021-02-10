@@ -6,9 +6,11 @@
 #include "CLogger/include/Log.h"
 #include "CThreadPool.h"
 #include "CAcceptorWrapper.h"
+#include <map>
+
 
 CAcceptorWrapper::CAcceptorWrapper(int port, const std::string& ip_address,
-	bool is_blocked, int socket_timeout, CEvent& event) :
+                                   bool is_blocked, int socket_timeout, CEvent& event) :
 	m_port(port), m_ip_address(ip_address), m_event(event),
 	m_is_socket_blocked(is_blocked), m_socket_timeout(socket_timeout)
 { }
@@ -100,39 +102,98 @@ bool CAcceptorWrapper::HandleEvents()
 {
 	CLOG_DEBUG_START_FUNCTION();
 	int socket_fd = c_error_socket;
+	bool is_broken_socket = false;
+
 	while (!m_event.WaitFor(std::chrono::milliseconds(100)))
 	{
-		if (m_p_server_acceptor->Accept(socket_fd))
+		if(m_p_server_acceptor->AcceptNewClient(socket_fd))
 		{
-			CLOG_DEBUG_WITH_PARAMS("New client with socket desciptor ",
-				socket_fd, " was accepted");
-			AddClientToThread(socket_fd);
+			m_clients_statuses.insert(std::pair<int, bool>(socket_fd, false));
+			socket_fd = c_error_socket;
 		}
-		else
+
+		if (AcceptRequest())
 		{
-			if (m_p_server_acceptor->IsTimeOutWithoutConnections())
-			{
-				CLOG_TRACE("Connection timeout for the client");
-			}
+			CheckBrokenSockets();
 		}
 	}
 	CLOG_DEBUG_END_FUNCTION();
 	return true;
 }
 
-void CAcceptorWrapper::AddClientToThread(int socket_fd)
+bool CAcceptorWrapper::AcceptRequest()
 {
+	int max_sd = 0;
+	fd_set read_fds;
+	fd_set error_fds;
 	
-	m_p_pool->Enqueue([this, socket_fd]()
+	FD_ZERO(&read_fds);
+	FD_ZERO(&error_fds);
+
+	for (auto sock : m_clients_statuses)
+	{
+		FD_SET(sock.first, &read_fds);
+		FD_SET(sock.first, &error_fds);
+		if (sock.first > max_sd)
 		{
-			CLOG_DEBUG_WITH_PARAMS("New client was added to the thread with socket ", 
+			max_sd = sock.first;
+		}
+	}
+
+	select(max_sd + 1, &read_fds, 0, &error_fds, 0);
+
+	auto it = m_clients_statuses.begin();
+	while (it != m_clients_statuses.end())
+	{
+		if (FD_ISSET(it->first, &error_fds))
+		{
+			it->second = true;
+			CLOG_DEBUG_WITH_PARAMS("FD_ISSET found broken socket", it->first);
+			continue;
+		}
+		else if (FD_ISSET(it->first, &read_fds))
+		{
+			CLOG_DEBUG_WITH_PARAMS("FD_ISSET accepted new request from the socket",
+				it->first);
+			AddClientToThread(it->first, it->second);
+		}
+
+		++it;
+	}
+
+	return true;
+}
+
+void CAcceptorWrapper::AddClientToThread(int socket_fd, bool& is_broken_socket)
+{
+	m_p_pool->Enqueue([this, socket_fd, &is_broken_socket]()
+		{
+			CLOG_DEBUG_WITH_PARAMS("New client was added to the thread with socket ",
 				socket_fd);
-			while (
-				m_p_service_handler->HandleEvent(socket_fd,
-					EEventType::REQUEST_DATA) &&
-				!m_event.WaitFor(std::chrono::milliseconds(100)))
-			{ }
-			CLOG_DEBUG_WITH_PARAMS("Exit thread for the client with socket ", 
+			if (!m_p_service_handler->HandleEvent(socket_fd,
+				EEventType::REQUEST_DATA))
+			{
+				is_broken_socket = true;
+			}
+			CLOG_DEBUG_WITH_PARAMS("Exit thread for the client with socket ",
 				socket_fd);
 		});
+}
+
+void CAcceptorWrapper::CheckBrokenSockets()
+{
+	auto it = m_clients_statuses.begin();
+	while (it != m_clients_statuses.end())
+	{
+		if (it->second == true)		// if socket is broken
+		{
+			CLOG_DEBUG_WITH_PARAMS("Erase client", it->first, m_clients_statuses.size());
+			m_clients_statuses.erase(it);
+			it = m_clients_statuses.begin();
+			CLOG_DEBUG_WITH_PARAMS("Now we have clients", m_clients_statuses.size());
+			continue;
+		}
+
+		++it;
+	}
 }

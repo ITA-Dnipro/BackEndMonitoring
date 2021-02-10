@@ -27,5 +27,4 @@ private:
 
 	CDataReceiver m_json_data;
 	std::unique_ptr<CSocketWrapper> m_p_peer_stream;
-	bool m_can_receive_data;
 };

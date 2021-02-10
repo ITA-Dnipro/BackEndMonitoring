@@ -11,7 +11,7 @@ class CSocketWrapper;
 
 // This class works with server 
 class CAcceptorWrapper
-{
+{	
 public:
 	CAcceptorWrapper() = delete;
 	explicit CAcceptorWrapper(int port, const std::string& ip_address, 
@@ -30,9 +30,12 @@ private:
 	void InitServiceHandler(CDataReceiver& json_data);
 	void InitSocketWrapper();
 	bool HandleEvents();
-	void AddClientToThread(int socket_fd);
+	bool AcceptRequest();
+	void AddClientToThread(int socket_fd, bool& is_broken_socket);
+	void CheckBrokenSockets();
 
 	std::string m_ip_address;
+	std::map<int, bool> m_clients_statuses;
 	std::shared_ptr<CThreadPool> m_p_pool;
 	std::unique_ptr<CAcceptor> m_p_server_acceptor;
 	std::unique_ptr<CServiceConnectionHandler> m_p_service_handler;
