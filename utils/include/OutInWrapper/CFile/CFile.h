@@ -1,13 +1,11 @@
 #pragma once
 #include <filesystem>
 
-#include "../../CDummyPointer.h"
-
 class CFile
 {
 public:
 	CFile() : CFile(nullptr) {}
-	CFile(const CFile& copy) = default;
+	CFile(const CFile& copy) = delete;
 	CFile(CFile&& move) noexcept;
 	explicit CFile(const std::string& path);
 	explicit CFile(const std::filesystem::path& path);
@@ -35,7 +33,7 @@ public:
 
 	operator FILE* () const;
 private:
-	CDummyPointer<FILE> m_file;
+	FILE* m_file;
 	bool m_is_open;
 	bool m_is_closable;
 
@@ -98,9 +96,9 @@ inline bool CFile::TryClose()
 		return m_is_closable;
 	}
 	
-	if (m_is_open && m_file.GetCount() == 1u)
+	if (m_is_open)
 	{
-		fclose(m_file.GetPointer());
+		fclose(m_file);
 	}
 	
 	m_is_open = false;
@@ -121,7 +119,7 @@ inline bool CFile::IsClosable() const
 
 inline FILE* CFile::GetFile() const
 {
-	return m_file.GetPointer();
+	return m_file;
 }
 
 inline CFile::operator FILE*() const
@@ -134,7 +132,7 @@ inline bool CFile::WrapperTryOpen(const std::string & path, const std::string & 
 	if (!m_is_open)
 	{
 		const auto* temp = path.c_str();
-		m_is_open = nullptr != (m_file = CDummyPointer<FILE>(fopen(temp, mode.c_str()))).GetPointer();
+		m_is_open = nullptr != (m_file = fopen(temp, mode.c_str()));
 	}
 	return m_is_open;
 }

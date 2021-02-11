@@ -6,8 +6,8 @@
 class CLegacyOut : public IWriter
 {
 public:
-	CLegacyOut();
-	explicit CLegacyOut(const CFile& out);
+	CLegacyOut() = delete;
+	explicit CLegacyOut(CFile& out);
 	CLegacyOut(const CLegacyOut& copy) = delete;
 	CLegacyOut(CLegacyOut&& move) noexcept;
 
@@ -24,7 +24,7 @@ public:
 	bool BreakLine() override;
 
 private:
-	CFile out_;
+	std::reference_wrapper<CFile> out_;
 
 	template<typename Type>
 	bool Write(const char* format, Type value);
@@ -33,12 +33,9 @@ private:
 	bool WriteLine(const char* format, Type value);
 };
 
-inline CLegacyOut::CLegacyOut(): CLegacyOut(CFile(stdout))
-{}
-
-inline CLegacyOut::CLegacyOut(const CFile& out) : out_(out)
+inline CLegacyOut::CLegacyOut(CFile& out) : out_(out)
 {
-	setvbuf(out_, nullptr, _IONBF, 0u);
+	setvbuf(out_.get(), nullptr, _IONBF, 0u);
 }
 
 inline CLegacyOut::CLegacyOut(CLegacyOut&& move) noexcept            = default;
@@ -75,7 +72,7 @@ inline bool CLegacyOut::BreakLine()
 template<typename Type>
 bool CLegacyOut::Write(const char* const format, Type value)
 {
-	return fprintf(out_, format, value) ? true : false;
+	return fprintf(out_.get(), format, value) ? true : false;
 }
 
 template<typename Type>
@@ -84,4 +81,5 @@ bool CLegacyOut::WriteLine(const char* const format, Type value)
 	return Write(format, value) && BreakLine() ? true : false;
 }
 
-inline CLegacyOut LCout;
+inline CFile lStdOut(stdout);
+inline CLegacyOut LCout(lStdOut);
