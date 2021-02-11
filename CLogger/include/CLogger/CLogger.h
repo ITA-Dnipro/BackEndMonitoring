@@ -335,9 +335,6 @@ private:
 	/// </param>
 	void PrintToAllStreams(const std::string& info) const;
 
-	std::ostream& PrintLogInfo(const std::string& info,
-		std::ostream& stream) const;
-
 	inline std::ostream& FlushFunction(std::ostream&) const;
 };
 
