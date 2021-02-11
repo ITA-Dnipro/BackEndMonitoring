@@ -58,7 +58,7 @@
 	std::make_pair(std::string(GET_TYPE(x)) + " " + GET_NAME(x), x) \
 
 // Prints all info-configs of logger
-#define CLOG_INFO() \
+#define CLOG_CONFIG() \
 	CLog::GetLogger()->PrintLogInfo() \
 
 // Creates and prints CLogMessage of some CLogLevel via CLogger
