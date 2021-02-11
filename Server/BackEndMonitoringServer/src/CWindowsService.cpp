@@ -37,29 +37,6 @@ CWindowsService::CWindowsService(const ServiceParameters& parameters)
         0 }
 { }
 
-bool CWindowsService::GetModulePath(CString& module_path)
-{
-    bool success = true;
-
-    LPSTR path = module_path.GetBufferSetLength(MAX_PATH);
-
-    if (::GetModuleFileName(nullptr, path, MAX_PATH) == 0)
-    {
-        Utils::DisplayError("Failed to get module file name");
-        success = false;
-    }
-
-    module_path.ReleaseBuffer();
-    return success;
-}
-
-bool CWindowsService::EscapePath(CString& path)
-{
-    path.Remove('\"');
-    path = '\"' + path + '\"';
-    return true;
-}
-
 void CWindowsService::SetStatus(DWORD state, DWORD error_code, DWORD wait_hint)
 {
     m_status.dwCurrentState = state;
@@ -75,7 +52,7 @@ DWORD WINAPI CWindowsService::ServiceCtrlHandler(
 {
     if (control_code == SERVICE_CONTROL_STOP)
     {
-        m_p_instance->Stop( );
+        m_p_instance->Stop();
     }
 
     return 0;
@@ -86,7 +63,7 @@ void WINAPI CWindowsService::SvcMain(DWORD argc, CHAR** argv)
     assert(m_p_instance);
 
     m_p_instance->m_status_handle = ::RegisterServiceCtrlHandlerEx(
-        m_p_instance->GetName( ),
+        m_p_instance->GetName(),
         ServiceCtrlHandler, NULL);
 
     if (!m_p_instance->m_status_handle)
@@ -97,33 +74,33 @@ void WINAPI CWindowsService::SvcMain(DWORD argc, CHAR** argv)
     m_p_instance->Start(argc, argv);
 }
 
-const CString& CWindowsService::GetName( ) const
+const CString& CWindowsService::GetName() const
 {
     return m_name;
 }
 
-const CString& CWindowsService::GetDisplayName( ) const
+const CString& CWindowsService::GetDisplayName() const
 {
     return m_display_name;
 }
 
 // Chupakabra: returning copy of var, const redundant
-const DWORD CWindowsService::GetStartType( ) const
+const DWORD CWindowsService::GetStartType() const
 {
     return m_start_type;
 }
 
 // Chupakabra: returning copy of var, const redundant
-const DWORD CWindowsService::GetErrorControlType( ) const
+const DWORD CWindowsService::GetErrorControlType() const
 {
     return m_error_control_type;
 }
 
 void CWindowsService::OnStart(DWORD, CHAR**)
 {
-    m_main_thread = std::thread([this] ( )
+    m_main_thread = std::thread([this] ()
     {
-        RunServer( );
+        RunServer();
     });
 }
 
@@ -155,6 +132,6 @@ void CWindowsService::Start(DWORD argc, CHAR** argv)
 void CWindowsService::Stop()
 {
     SetStatus(SERVICE_STOP_PENDING);
-    OnStop( );
+    OnStop();
     SetStatus(SERVICE_STOPPED);
 }

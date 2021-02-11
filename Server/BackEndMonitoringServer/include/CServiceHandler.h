@@ -5,6 +5,7 @@
 #include "CWindowsService.h"
 
 #if defined(_WIN64) || defined(_WIN32)
+
 class ServiceHandler
 {
 public:
@@ -28,4 +29,5 @@ private:
 private:
 	std::unique_ptr<CWindowsService> m_p_service;
 };
+
 #endif

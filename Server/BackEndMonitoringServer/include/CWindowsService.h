@@ -14,26 +14,23 @@ struct ServiceParameters
 class CWindowsService : public CService
 {
 public:
-    static bool GetModulePath(CString& module_path);
-    static bool EscapePath(CString& path);
-
     explicit CWindowsService(const ServiceParameters& parameters);
 
-    const CString& GetName( ) const;
-    const CString& GetDisplayName( ) const;
-    const DWORD GetStartType( ) const;
-    const DWORD GetErrorControlType( ) const;
+    const CString& GetName() const;
+    const CString& GetDisplayName() const;
+    const DWORD GetStartType() const;
+    const DWORD GetErrorControlType() const;
 
-    virtual bool Run();
+    bool Run();
 
 private:
+    static void WINAPI SvcMain(DWORD argc, CHAR** argv);
+
     static DWORD WINAPI ServiceCtrlHandler(
         DWORD control_code,
         DWORD event_type,
         void* event_data,
         void* context);
-
-    static void WINAPI SvcMain(DWORD argc, CHAR** argv);
 
     void SetStatus(
         DWORD state,
@@ -41,9 +38,9 @@ private:
         DWORD wait_hint = 0);
 
     void Start(DWORD argc, CHAR** argv);
-    void Stop( );
+    void Stop();
     void OnStart(DWORD, CHAR**);
-    void OnStop( );
+    void OnStop();
 
 private:
     static CWindowsService* m_p_instance;
