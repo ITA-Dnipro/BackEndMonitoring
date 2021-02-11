@@ -26,6 +26,7 @@
 
 void CService::RunServer()
 {
+    Sleep(20000);
     std::string path_to_log_file(GetRelativePath() + "Log.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if (!InitializeLogger(path_to_log_file, log_level))
@@ -34,7 +35,7 @@ void CService::RunServer()
     }
     CLOG_DEBUG_START_FUNCTION();
 
-    std::shared_ptr<CXMLDataReader> xml_reader = std::make_shared<CXMLDataReader>();
+    auto xml_reader = std::make_shared<CXMLDataReader>();
     CLOG_TRACE_VAR_CREATION(xml_reader);
 
     xml_reader->Initialize(GetRelativePath() + "config.xml");
@@ -60,9 +61,9 @@ void CService::RunServer()
         if (InitializeProcessesMonitoring(process_sett))
         {
             m_p_thread_pool->Enqueue([this]()
-                {
-                    m_processes_monitor->StartMonitoringInfo();
-                });
+            {
+                m_processes_monitor->StartMonitoringInfo();
+            });
         }
         else
         {
@@ -78,11 +79,9 @@ void CService::RunServer()
         if (InitializeLogicalDiscMonitoring(hdd_sett))
         {
             m_p_thread_pool->Enqueue([this]()
-                {
-                    m_disks_monitor->StartMonitoringInfo();
-                });
-
-
+            {
+                m_disks_monitor->StartMonitoringInfo();
+            });
         }
         else
         {
@@ -188,9 +187,12 @@ bool CService::InitializeProcessesMonitoring(
     const CProcessesInfoSettings& xml_settings)
 {
     m_processes_monitor = std::make_unique<CProcessesInfoMonitoring>(
-        std::chrono::seconds(xml_settings.GetPeriodTime()), xml_settings.GetFileName(),
+        std::chrono::seconds(xml_settings.GetPeriodTime()), 
+        xml_settings.GetFileName(),
         Utils::DefineCountType(xml_settings.GetCountType()),
-        m_stop_event, m_processes_json);
+        m_stop_event, 
+        m_processes_json);
+
     CLOG_DEBUG_START_FUNCTION( );
     CLOG_TRACE_VAR_CREATION(m_processes_monitor);
     CLOG_DEBUG_END_FUNCTION( );
@@ -201,8 +203,12 @@ bool CService::InitializeSockets(const CServerSettings& server_sett)
 {
     CLOG_DEBUG_START_FUNCTION( );
     m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(
-        server_sett.GetListenerPort(), server_sett.GetServerIpAddress(),
-        server_sett.GetBlocking(), server_sett.GetSocketTimeout(), m_stop_event);
+        server_sett.GetListenerPort(),
+        server_sett.GetServerIpAddress(),
+        server_sett.GetBlocking(),
+        server_sett.GetSocketTimeout(),
+        m_stop_event);
+
     CLOG_TRACE_VAR_CREATION(m_p_acceptor_socket);
 
     CLOG_DEBUG_END_FUNCTION( );
@@ -211,14 +217,18 @@ bool CService::InitializeSockets(const CServerSettings& server_sett)
 
 std::string CService::GetRelativePath()
 {
+
 #if defined(_WIN64) || defined(_WIN32)
+
     std::string executable = "BackEndMonitoringServer.exe";
     CString module_path;
     GetModulePath(module_path);
     std::string path = static_cast<std::string>(module_path);
     path = path.substr(0, path.length() - executable.length());
     return path;
+
 #elif __linux__
+
     char buffer[BUFSIZ];
     readlink("/proc/self/exe", buffer, BUFSIZ);
     std::string path = buffer;
@@ -231,7 +241,9 @@ std::string CService::GetRelativePath()
         }
     }
     return path;
+
 #endif
+
 }
 
 #if defined(_WIN64) || defined(_WIN32)

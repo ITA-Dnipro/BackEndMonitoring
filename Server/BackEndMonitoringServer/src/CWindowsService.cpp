@@ -22,7 +22,7 @@ bool CWindowsService::Run()
 }
 
 CWindowsService::CWindowsService(const ServiceParameters& parameters)
-    : m_name(parameters.name),
+  : m_name(parameters.name),
     m_display_name(parameters.display_name),
     m_start_type(parameters.start_type),
     m_error_control_type(parameters.err_ctrl_type),
@@ -122,27 +122,27 @@ const DWORD CWindowsService::GetErrorControlType( ) const
 void CWindowsService::OnStart(DWORD, CHAR**)
 {
     m_main_thread = std::thread([this] ( )
-                                {
-                                    RunServer( );
-                                });
+    {
+        RunServer( );
+    });
 }
 
 void CWindowsService::OnStop()
 {
-    CLOG_DEBUG_START_FUNCTION( );
-    m_stop_event.Set( );
+    CLOG_DEBUG_START_FUNCTION();
+    m_stop_event.Set();
     CLOG_DEBUG("Stop event setted");
-    m_p_acceptor_socket->StopSocket( );
+    m_p_acceptor_socket->StopSocket();
     CLOG_DEBUG("Acceptor socket stopped!");
-    m_main_thread.join( );
+    m_main_thread.join();
     CLOG_TRACE("Main thread joined stopped!");
-    m_p_acceptor_socket.reset( );
+    m_p_acceptor_socket.reset();
     CLOG_TRACE("Acceptor socket deleted!");
-    m_p_thread_pool.reset( );
+    m_p_thread_pool.reset();
     CLOG_TRACE("Thread pool deleted!");
     CLOG_TRACE("Main logger deleted");
     CLOG_DEBUG_END_FUNCTION( );
-    CLOG_DESTROY( );
+    CLOG_DESTROY();
 }
 
 void CWindowsService::Start(DWORD argc, CHAR** argv)
