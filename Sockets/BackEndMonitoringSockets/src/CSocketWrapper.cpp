@@ -34,7 +34,7 @@ bool CSocketWrapper::Receive(const int socket_fd, std::string& message)
 	{
 		received_bytes = recv(socket_fd, buff, current_message_size, 0);
 
-		if (received_bytes == -1)
+		if (received_bytes <= 0)
 		{
 			message = "-1";
 			return false;
@@ -139,7 +139,8 @@ int CSocketWrapper::GetSizeFromHeader(const int socket_fd) const
 
 	while (true)
 	{
-		if (recv(socket_fd, buff, 1, 0) == c_connection_error)
+		int received_bytes = recv(socket_fd, buff, 1, 0);
+		if (received_bytes <= 0)
 		{
 			return 0;
 		}

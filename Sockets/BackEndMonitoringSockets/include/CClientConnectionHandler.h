@@ -25,5 +25,4 @@ private:
 
 	std::unique_ptr<CSocketWrapper> m_p_client_stream;
 	EEventType m_current_request;
-	bool m_can_make_request;
 };

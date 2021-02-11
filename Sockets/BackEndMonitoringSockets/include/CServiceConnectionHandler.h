@@ -20,7 +20,6 @@ public:
 private:
 	bool HandleRequestEvent(const int socket_fd);
 	bool HandleResponseEvent(const int socket_fd, EClientRequestType type);
-	bool HandleResponseExitEvent(const int socket_fd);
 	bool HandleWrongRequestEvent(const int socket_fd);
 	bool IsEqualStrings(const std::string first_str, const std::string second_str) const;
 	void InitPeerStream();

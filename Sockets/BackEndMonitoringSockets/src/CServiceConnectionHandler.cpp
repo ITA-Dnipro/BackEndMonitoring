@@ -13,17 +13,16 @@ CServiceConnectionHandler::CServiceConnectionHandler(CDataReceiver json_data) :
 
 bool CServiceConnectionHandler::HandleEvent(const int socket_fd, EEventType type)
 {
-	bool result = true;
+	bool result = false;
 	switch (type) {
 	case EEventType::REQUEST_DATA:
 		result = HandleRequestEvent(socket_fd);
 		break;
-	case EEventType::CLOSE_EVENT:
-		result = HandleResponseExitEvent(socket_fd);
-		break;
 	case EEventType::LOST_REQUEST:
 		result = HandleWrongRequestEvent(socket_fd);
 		break;
+	default:
+		return false;
 	}
 
 	return result;
@@ -31,7 +30,7 @@ bool CServiceConnectionHandler::HandleEvent(const int socket_fd, EEventType type
 
 bool CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
 {
-	bool should_not_close_thread = false;
+	bool should_not_close_client = false;
 	std::string message;
 
 	if (m_p_peer_stream->CanReceiveData(socket_fd) && 
@@ -41,50 +40,48 @@ bool CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
 		{
 			CLOG_DEBUG_WITH_PARAMS("All data request from the socket ",
 				socket_fd);
-			 should_not_close_thread = HandleResponseEvent(socket_fd, 
+			 should_not_close_client = HandleResponseEvent(socket_fd, 
 				 EClientRequestType::ALL_DATA);
 		}
 		else if (IsEqualStrings(message, "DISK_DATA"))
 		{
 			CLOG_DEBUG_WITH_PARAMS("Disks data request from the socket ",
 				socket_fd);
-			should_not_close_thread = HandleResponseEvent(socket_fd, 
+			should_not_close_client = HandleResponseEvent(socket_fd, 
 				EClientRequestType::DISKS_DATA);
 		}
 		else if (IsEqualStrings(message, "PROCESS_DATA"))
 		{
 			CLOG_DEBUG_WITH_PARAMS("Processes data request from the socket ",
 				socket_fd);
-			should_not_close_thread = HandleResponseEvent(socket_fd, 
+			should_not_close_client = HandleResponseEvent(socket_fd, 
 				EClientRequestType::PROCESSES_DATA);
 		}
 		else if (IsEqualStrings(message, "DATA RECEIVED"))
 		{
-			should_not_close_thread = true;
+			should_not_close_client = true;
 		}
 		else if (IsEqualStrings(message, "Exit"))
 		{
-			CLOG_DEBUG("Exit request from the client, handling close event");
-			should_not_close_thread = !HandleEvent(socket_fd, 
-				EEventType::CLOSE_EVENT);
+			CLOG_DEBUG("Exit request from the client");
+			should_not_close_client = false;
 		}
 		else
 		{
 			CLOG_ERROR_WITH_PARAMS("Part of the data is lost, we receive", message);
-			should_not_close_thread = HandleEvent(socket_fd, 
+			should_not_close_client = HandleEvent(socket_fd, 
 				EEventType::LOST_REQUEST);
 		}
 
-		CLOG_DEBUG_WITH_PARAMS("Should not close thread equal", should_not_close_thread);
+		CLOG_DEBUG_WITH_PARAMS("Should not close client equal", should_not_close_client);
 	}
 	else if (m_p_peer_stream->IsErrorOccured(socket_fd))
 	{
 		CLOG_ERROR_WITH_PARAMS("Lost connection with the client", socket_fd);
-		should_not_close_thread = false;
-		CLOG_DEBUG_WITH_PARAMS("value can_continue = ", should_not_close_thread);
+		should_not_close_client = false;
 	}
 
-	return should_not_close_thread;
+	return should_not_close_client;
 }
 
 bool CServiceConnectionHandler::HandleResponseEvent(const int socket_fd,
@@ -114,18 +111,6 @@ bool CServiceConnectionHandler::HandleResponseEvent(const int socket_fd,
 	}
 	result = m_p_peer_stream->Send(socket_fd, message);
 	CLOG_TRACE_WITH_PARAMS("Send function returned result ", result);
-	CLOG_DEBUG_END_FUNCTION();
-	return result;
-}
-
-bool CServiceConnectionHandler::HandleResponseExitEvent(const int socket_fd)
-{
-	bool result = false;
-	CLOG_DEBUG_START_FUNCTION();
-	CLOG_TRACE_WITH_PARAMS("Send exit response to the socket ", socket_fd,
-		" client can disconnect");
-	result = m_p_peer_stream->Send(socket_fd, "Disconnect");
-	CLOG_DEBUG_WITH_PARAMS("Send function returned result ", result);
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
 }

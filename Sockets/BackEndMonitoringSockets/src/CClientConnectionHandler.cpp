@@ -4,7 +4,7 @@
 #include "CLogger/include/Log.h"
 
 CClientConnectionHandler::CClientConnectionHandler()
-	: m_can_make_request(true), m_current_request()
+	: m_current_request(EEventType::REQUEST_ALL_DATA)
 {
 	m_p_client_stream = InitClientStream();
 }
@@ -25,8 +25,8 @@ bool CClientConnectionHandler::HandleEvent(const int socket_fd,
 		result = HandleRequestEvent(socket_fd, EEventType::REQUEST_PROCESS_DATA);
 		break;
 	case EEventType::CLOSE_EVENT:
-		result = !(HandleExitEvent(socket_fd)); // If we can exit result equal false
-		break;
+		HandleExitEvent(socket_fd); // If we can exit result equal false
+		return false;
 	default:
 		result = false;
 		break;
@@ -48,7 +48,6 @@ bool CClientConnectionHandler::HandleRequestEvent(const int socket_fd,
 	CLOG_DEBUG_WITH_PARAMS("Convert event type to the string", request_str);
 	if (SendRequestToServer(socket_fd, request_str))
 	{
-		m_can_make_request = false;
 		return true;
 	}
 	return false;
@@ -58,11 +57,11 @@ bool CClientConnectionHandler::HandleResponseEvent(const int socket_fd,
 	std::string& message)
 {
 	bool result = m_p_client_stream->Receive(socket_fd, message);
-
+	CLOG_DEBUG_WITH_PARAMS("We send request to the server, result", result);
 	if (result)
 	{
 		// If we get the wrong request from the server
-		if (message.size() == 0 || message == "-1")
+		if (message.empty() || message == "-1")
 		{
 			CLOG_ERROR_WITH_PARAMS("Response from the server", message);
 			return false;
@@ -74,33 +73,21 @@ bool CClientConnectionHandler::HandleResponseEvent(const int socket_fd,
 		}
 	}
 
-	if (result)
+	if(result)
 	{
-		return HandleDataReceivedEvent(socket_fd);
+		return HandleDataReceivedEvent(socket_fd);       
 	}
+
 	return false;
 }
 
 bool CClientConnectionHandler::HandleExitEvent(const int socket_fd)
 {
-	std::string response;
-
-	if (SendRequestToServer(socket_fd, "Exit"))
-	{
-		m_p_client_stream->Receive(socket_fd, response);
-
-		if (response == "Disconnect" || response == "-1")
-		{
-			return true;
-		}
-	}
-
-	return true;
+	return SendRequestToServer(socket_fd, "Exit");
 }
 
 bool CClientConnectionHandler::HandleDataReceivedEvent(const int socket_fd)
 {
-	m_can_make_request = true;
 	CLOG_DEBUG("Handle data received event");
 	return m_p_client_stream->Send(socket_fd, "DATA RECEIVED");
 }
@@ -108,17 +95,20 @@ bool CClientConnectionHandler::HandleDataReceivedEvent(const int socket_fd)
 bool CClientConnectionHandler::HandleLostRequestEvent(const int socket_fd, 
 	std::string& message)
 {
-	const int max_trials = 10;
+	const int max_trials = 5;
 	int count_trials = 0;
 	std::string request_str = ConvertRequestToString(m_current_request);
+
+	if(request_str == "ERROR")
+	{
+		return false;
+	}
 	while (count_trials++ < max_trials)
 	{
-		m_can_make_request = true;
 		if (SendRequestToServer(socket_fd, request_str)
 			&& m_p_client_stream->Receive(socket_fd, message))
 		{
-			m_can_make_request = false;
-			if (message != "Request lost")
+			if (message != "Request lost" && message != "-1" && !message.empty())
 			{
 				return HandleDataReceivedEvent(socket_fd);
 			}
