@@ -33,26 +33,16 @@ public:
     CService(CService&& other) = delete;
     CService& operator=(CService&& other) = delete;
 
-    // TODO: move to utils
-    static std::string GetRelativePath();
-
-#if defined(_WIN64) || defined(_WIN32)
-
-    static bool GetModulePath(CString& module_path);
-    static bool EscapePath(CString& path);
-
-#endif
-
     virtual bool Run() = 0;
 
 protected:
-    bool InitializeLogger(const std::string& path_to_log_file, ELogLevel level);
-    bool InitializeThreadPool(const CThreadPoolSettings& thread_pool_sett);
-    bool InitializeLogicalDiscMonitoring(const CHDDInfoSettings& xml_settings);
-    bool InitializeProcessesMonitoring(const CProcessesInfoSettings& xml_settings);
-    bool InitializeSockets(const CServerSettings& server_sett);
+    [[nodiscard]] bool InitializeLogger(const std::string& path_to_log_file, ELogLevel level);
+    [[nodiscard]] bool InitializeThreadPool(const CThreadPoolSettings& thread_pool_sett);
+    [[nodiscard]] bool InitializeLogicalDiscMonitoring(const CHDDInfoSettings& xml_settings);
+    [[nodiscard]] bool InitializeProcessesMonitoring(const CProcessesInfoSettings& xml_settings);
+    [[nodiscard]] bool InitializeSockets(const CServerSettings& server_sett);
 
-    void RunServer( );
+    void RunServer();
 
 protected:
     CEvent m_stop_event;

@@ -27,16 +27,23 @@ namespace Utils
 	[[nodiscard]] bool IsFileEmpty(std::fstream& file);
 	[[nodiscard]] bool IsFileEmpty(std::ofstream& file);
 
-	#if defined(_WIN64) || defined(_WIN32)
-	void DisplayError(const std::string& message);
-	#endif
-	void DisplayMessage(const std::string& message);
-	void DisplayHelp();
-
 	[[nodiscard]] long double ConvertToCountType(
 		uintmax_t const value_to_calculate, EMemoryConvertType convert_type);
 	[[nodiscard]] long double RoundToDecimal(long double const value_to_round);
 
 	[[nodiscard]] EMemoryConvertType DefineCountType(int count_type_from_xml);
 
+#if defined(_WIN64) || defined(_WIN32)
+
+	void DisplayError(const std::string& message);
+
+    bool GetModulePath(CString& module_path);
+    bool EscapePath(CString& path);
+
+#endif
+
+	void DisplayMessage(const std::string& message);
+	void DisplayHelp();
+
+	std::string GetRelativePath();
 }

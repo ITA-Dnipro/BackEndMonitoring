@@ -238,3 +238,61 @@ EMemoryConvertType Utils::DefineCountType(int count_type_from_xml)
         return EMemoryConvertType::BYTES;
     }
 }
+
+std::string Utils::GetRelativePath()
+{
+
+#if defined(_WIN64) || defined(_WIN32)
+
+    std::string executable = "BackEndMonitoringServer.exe";
+    CString module_path;
+    GetModulePath(module_path);
+    std::string path = static_cast<std::string>(module_path);
+    path = path.substr(0, path.length() - executable.length());
+    return path;
+
+#elif __linux__
+
+    char buffer[BUFSIZ];
+    readlink("/proc/self/exe", buffer, BUFSIZ);
+    std::string path = buffer;
+    for (int i = path.length(); i != 0; --i)
+    {
+        if (path[i] == '/')
+        {
+            path.erase(i + 1);
+            break;
+        }
+    }
+    return path;
+
+#endif
+
+}
+
+#if defined(_WIN64) || defined(_WIN32)
+
+bool Utils::GetModulePath(CString& module_path)
+{
+    bool success = true;
+
+    LPSTR path = module_path.GetBufferSetLength(MAX_PATH);
+
+    if (::GetModuleFileName(nullptr, path, MAX_PATH) == 0)
+    {
+        Utils::DisplayError("Failed to get module file name");
+        success = false;
+    }
+
+    module_path.ReleaseBuffer();
+    return success;
+}
+
+bool Utils::EscapePath(CString& path)
+{
+    path.Remove('\"');
+    path = '\"' + path + '\"';
+    return true;
+}
+
+#endif

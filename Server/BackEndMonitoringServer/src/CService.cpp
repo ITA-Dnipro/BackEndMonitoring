@@ -26,8 +26,8 @@
 
 void CService::RunServer()
 {
-    Sleep(20000);
-    std::string path_to_log_file(GetRelativePath() + "Log.txt");
+    //Sleep(20000);
+    std::string path_to_log_file(Utils::GetRelativePath() + "Log.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
     if (!InitializeLogger(path_to_log_file, log_level))
     {
@@ -38,7 +38,7 @@ void CService::RunServer()
     auto xml_reader = std::make_shared<CXMLDataReader>();
     CLOG_TRACE_VAR_CREATION(xml_reader);
 
-    xml_reader->Initialize(GetRelativePath() + "config.xml");
+    xml_reader->Initialize(Utils::GetRelativePath() + "config.xml");
 
     CLoggingSettings log_sett(xml_reader);
     CLOG_TRACE_VAR_CREATION(log_sett);
@@ -214,61 +214,3 @@ bool CService::InitializeSockets(const CServerSettings& server_sett)
     CLOG_DEBUG_END_FUNCTION( );
     return true;
 }
-
-std::string CService::GetRelativePath()
-{
-
-#if defined(_WIN64) || defined(_WIN32)
-
-    std::string executable = "BackEndMonitoringServer.exe";
-    CString module_path;
-    GetModulePath(module_path);
-    std::string path = static_cast<std::string>(module_path);
-    path = path.substr(0, path.length() - executable.length());
-    return path;
-
-#elif __linux__
-
-    char buffer[BUFSIZ];
-    readlink("/proc/self/exe", buffer, BUFSIZ);
-    std::string path = buffer;
-    for (int i = path.length(); i != 0; --i)
-    {
-        if (path[i] == '/')
-        {
-            path.erase(i + 1);
-            break;
-        }
-    }
-    return path;
-
-#endif
-
-}
-
-#if defined(_WIN64) || defined(_WIN32)
-
-bool CService::GetModulePath(CString& module_path)
-{
-    bool success = true;
-
-    LPSTR path = module_path.GetBufferSetLength(MAX_PATH);
-
-    if (::GetModuleFileName(nullptr, path, MAX_PATH) == 0)
-    {
-        Utils::DisplayError("Failed to get module file name");
-        success = false;
-    }
-
-    module_path.ReleaseBuffer();
-    return success;
-}
-
-bool CService::EscapePath(CString& path)
-{
-    path.Remove('\"');
-    path = '\"' + path + '\"';
-    return true;
-}
-
-#endif

@@ -17,14 +17,14 @@ public:
     ServiceHandler(ServiceHandler&& other) = delete;
     ServiceHandler& operator=(ServiceHandler&& other) = delete;
 
-	bool Install() const;
-	bool Uninstall() const;
+	[[nodiscard]] bool Install() const;
+	[[nodiscard]] bool Uninstall() const;
 
-	bool Run() const;
+	[[nodiscard]] bool Run() const;
 
 private:
-	bool Start() const;
-	bool Stop() const;
+	[[nodiscard]] bool Start() const;
+	[[nodiscard]] bool Stop() const;
 
 private:
 	std::unique_ptr<CWindowsService> m_p_service;

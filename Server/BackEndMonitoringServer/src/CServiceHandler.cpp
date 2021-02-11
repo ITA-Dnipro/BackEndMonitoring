@@ -48,7 +48,7 @@ bool ServiceHandler::Install() const
     do
     {
         CString escaped_path;
-        if (!CService::GetModulePath(escaped_path))
+        if (!Utils::GetModulePath(escaped_path))
         {
             Utils::DisplayError("Failed to get module file name");
             success = false;
@@ -56,7 +56,7 @@ bool ServiceHandler::Install() const
             break;
         }
 
-        CService::EscapePath(escaped_path);
+        Utils::EscapePath(escaped_path);
 
         const auto service_control_manager = std::make_unique<ServiceHandle>(
             ::OpenSCManager(

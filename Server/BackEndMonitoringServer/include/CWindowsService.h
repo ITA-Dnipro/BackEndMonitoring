@@ -21,7 +21,7 @@ public:
     const DWORD GetStartType() const;
     const DWORD GetErrorControlType() const;
 
-    bool Run();
+    [[nodiscard]] bool Run();
 
 private:
     static void WINAPI SvcMain(DWORD argc, CHAR** argv);

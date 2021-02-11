@@ -64,7 +64,8 @@ void WINAPI CWindowsService::SvcMain(DWORD argc, CHAR** argv)
 
     m_p_instance->m_status_handle = ::RegisterServiceCtrlHandlerEx(
         m_p_instance->GetName(),
-        ServiceCtrlHandler, NULL);
+        ServiceCtrlHandler,
+        NULL);
 
     if (!m_p_instance->m_status_handle)
     {

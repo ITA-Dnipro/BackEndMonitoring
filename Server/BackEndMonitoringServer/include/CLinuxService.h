@@ -9,7 +9,7 @@ class CLinuxService : public CService
 public:
     CLinuxService();
 
-    bool Run();
+    [[nodiscard]] bool Run();
 
 private:
     static void HandleSignal(int signal);
