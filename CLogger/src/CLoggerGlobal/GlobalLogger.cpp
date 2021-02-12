@@ -2,9 +2,14 @@
 
 #include "CLoggerGlobal/GlobalLogger.h"
 
-std::unique_ptr<CLoggerWrapper> global_logger_wrapper = nullptr;
 std::unique_ptr<CLogger> CLoggerWrapper::logger_ = nullptr;
 std::unique_ptr<CLogBuilder> CLoggerWrapper::logger_builder_ = nullptr;
+
+CLoggerWrapper::CLoggerWrapper() {}
+
+CLoggerWrapper::CLoggerWrapper(CLoggerWrapper&&) noexcept            = default;
+CLoggerWrapper::~CLoggerWrapper()                                    = default;
+CLoggerWrapper& CLoggerWrapper::operator=(CLoggerWrapper&&) noexcept = default;
 
 std::unique_ptr<CLogBuilder>& CLoggerWrapper::GetBuilder() {
 	if (nullptr == logger_builder_) {

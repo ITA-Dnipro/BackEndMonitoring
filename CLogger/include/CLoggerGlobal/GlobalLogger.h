@@ -6,15 +6,15 @@
 class CLOGGER_API CLoggerWrapper
 {
 public:
-	//CLoggerWrapper() = default;
+	CLoggerWrapper();
 	CLoggerWrapper(const CLoggerWrapper&)     = delete;
-	CLoggerWrapper(CLoggerWrapper&&) noexcept = default;
+	CLoggerWrapper(CLoggerWrapper&&) noexcept;
 	
-	~CLoggerWrapper() = default;
+	~CLoggerWrapper();
 	
 	CLoggerWrapper& operator=(const CLoggerWrapper&) = delete;
-	CLoggerWrapper& operator=(CLoggerWrapper&&) noexcept = default;
-
+	CLoggerWrapper& operator=(CLoggerWrapper&&) noexcept;
+	
 	static std::unique_ptr<CLogBuilder>& GetBuilder();
 	static std::unique_ptr<CLogger>& GetLogger();
 	
@@ -26,10 +26,10 @@ public:
 
 private:
 	static std::unique_ptr<CLogger> logger_;
-	//static std::mutex logger_mutex_;
+	static std::mutex logger_mutex_;
 	
 	static std::unique_ptr<CLogBuilder> logger_builder_;
-	//static std::mutex logger_builder_mutex_;
+	static std::mutex logger_builder_mutex_;
 };
 
-extern CLOGGER_API std::unique_ptr<CLoggerWrapper> global_logger_wrapper;
+inline auto global_logger_wrapper = std::make_unique<CLoggerWrapper>();
