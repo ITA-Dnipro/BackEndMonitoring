@@ -3,15 +3,30 @@
 #include "CConnector.h"
 
 CConnector::CConnector(const int port, const std::string& ip_address)
+	: m_socket_connector(port, ip_address)
 {
-	m_p_socket_connector = InitSocketConnector(port, ip_address);
 }
 
-bool CConnector::Connect()
+CConnector::~CConnector() noexcept
 {
-	sockaddress current_address = m_p_socket_connector->GetSocketAddress();
+	PlatformUtils::CloseSocket(m_socket_connector.GetSocketFD());
+}
 
-	if (PlatformUtils::Connect(m_p_socket_connector->GetSocketFD(), 
+bool CConnector::Initialize()
+{
+	return m_socket_connector.InitSocket();
+}
+
+bool CConnector::Connect() const
+{
+	if(!m_socket_connector.IsValidSocket())
+	{
+		return false;
+	}
+	
+	sockaddress current_address = m_socket_connector.GetSocketAddress();
+
+	if (PlatformUtils::Connect(m_socket_connector.GetSocketFD(), 
 		current_address))
     {
 		return true;
@@ -19,13 +34,8 @@ bool CConnector::Connect()
 	return false;
 }
 
-int CConnector::GetSocketFD() const
+CSocket& CConnector::GetSocket()
 {
-	return m_p_socket_connector->GetSocketFD();
+	return m_socket_connector;
 }
 
-std::unique_ptr<CSocket> CConnector::InitSocketConnector
-	(const int port, const std::string& ip_address)
-{
-	return std::move(std::make_unique<CSocket>(port, ip_address));
-}

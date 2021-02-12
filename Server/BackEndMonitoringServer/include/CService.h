@@ -2,13 +2,14 @@
 
 #include "CThreadSafeVariable.h"
 #include "CEvent.h"
-#include "CAcceptorWrapper.h"
+#include "CServiceHost.h"
 #include "CJSONFormatterProcess.h"
 #include "CJSONFormatterLogicalDisk.h"
 #include "CDataReader.h"
+#include "CLogger/include/Log.h"
 
 class CThreadPool;
-class CAcceptorWrapper;
+class CServiceHost;
 enum class EMemoryConvertType;
 class CProcessInfo;
 class CHardwareStatusSpecification;
@@ -107,7 +108,7 @@ private:
     static CService* m_p_service;
     CEvent m_stop_event;
     std::shared_ptr<CThreadPool> m_p_thread_pool;
-    std::unique_ptr<CAcceptorWrapper> m_p_acceptor_socket;
+    std::unique_ptr<CServiceHost> m_p_acceptor_socket;
     CThreadSafeVariable<CJSONFormatterProcess> m_processes_json;
     CThreadSafeVariable<CJSONFormatterLogicalDisk> m_disks_json;
     std::shared_ptr <CProcessesInfoMonitoring> m_processes_monitor;

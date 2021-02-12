@@ -5,7 +5,7 @@
 #include "CCommandLineHandler.h"
 #include "CServiceHandler.h"
 #include "Utils.h"
-
+#include "CLogger/include/Log.h"
 
 int main(int argc, char** argv)
 {

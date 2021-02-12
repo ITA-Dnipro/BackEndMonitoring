@@ -1,19 +1,21 @@
 #include "stdafx.h"
 
 #include "CAcceptor.h"
-#include "CServiceConnectionHandler.h"
-#include "EEventType.h"
 #include "CLogger/include/Log.h"
 #include "CEvent.h"
 
 CAcceptor::CAcceptor(bool is_blocked, int socket_timeout, CEvent& event)
 	: m_is_socket_blocked(is_blocked), m_socket_timeout(socket_timeout),
-	m_event(event), m_port(c_not_initialized_port),
-	m_is_acceptor_initialized(false), m_is_time_out(false)
+	m_event(event), m_is_acceptor_initialized(false), m_is_time_out(false)
 { }
 
+CAcceptor::~CAcceptor() noexcept
+{
+	PlatformUtils::CloseSocket(m_p_socket_acceptor->GetSocketFD());
+}
+
 bool CAcceptor::Initialize(const std::string& ip_address,
-	const int listener_port, const int connections)
+                           const int listener_port, const int connections)
 {
 	CLOG_DEBUG_START_FUNCTION();
 
@@ -25,8 +27,7 @@ bool CAcceptor::Initialize(const std::string& ip_address,
 		if (!m_is_socket_blocked)
 		{
 			CLOG_DEBUG("Set unblocking socket");
-			m_is_acceptor_initialized =
-				PlatformUtils::SetUnblockingSocket
+			m_is_acceptor_initialized = PlatformUtils::SetUnblockingSocket
 				(m_p_socket_acceptor->GetSocketFD());
 		}
 		else
@@ -40,60 +41,29 @@ bool CAcceptor::Initialize(const std::string& ip_address,
 	return m_is_acceptor_initialized;
 }
 
-bool CAcceptor::AcceptNewClient(int& socket_fd)
+CSocket CAcceptor::AcceptNewClient()
 {
-	int connected_socket_fd = c_error_socket;
-
+	CSocket invalid_client(c_invalid_socket);
 	if (m_is_acceptor_initialized)
 	{
 		if (m_is_socket_blocked)
 		{
-			connected_socket_fd = AcceptBlockingSockets();
+			return AcceptBlockingSockets();
 		}
 		else
 		{
-			connected_socket_fd = AcceptNonBlockingSockets();
+			return AcceptNonBlockingSockets();
 		}
-
-		if (connected_socket_fd > 0)
-		{
-			CLOG_DEBUG_WITH_PARAMS("Accepted socket", connected_socket_fd);
-			socket_fd = connected_socket_fd;
-			return true;
-		}
-		else if (connected_socket_fd == c_error_socket)
-		{
-			return false;
-		}
-
 	}
-	return false;
+	return invalid_client;
 }
 
-bool CAcceptor::IsTimeOutWithoutConnections()
+bool CAcceptor::IsTimeOutWithoutConnections() const
 {
 	return m_is_time_out;
 }
 
-bool CAcceptor::CloseSocket()
-{
-	bool result = false;
-	CLOG_DEBUG_START_FUNCTION();
-	CLOG_DEBUG_WITH_PARAMS("Try close socket descriptor ",
-	m_p_socket_acceptor->GetSocketFD());
-	if (m_p_socket_acceptor->CloseSocket())
-	{
-		result = true;
-		CLOG_DEBUG_WITH_PARAMS("Socket was succesfully closed, result of the function - ",
-			result);
-	}
-	CLOG_DEBUG_WITH_PARAMS("Cannot close socket, result of the function - ",
-		result);
-	CLOG_DEBUG_END_FUNCTION();
-	return result;
-}
-
-bool CAcceptor::BindSocket()
+bool CAcceptor::BindSocket() const
 {
 	bool result = false;
 	CLOG_DEBUG_START_FUNCTION();
@@ -105,7 +75,7 @@ bool CAcceptor::BindSocket()
 	return result;
 }
 
-bool CAcceptor::StartListening(const int connections)
+bool CAcceptor::StartListening(const int connections) const
 {
 	bool result = false;
 	CLOG_DEBUG_START_FUNCTION();
@@ -116,7 +86,7 @@ bool CAcceptor::StartListening(const int connections)
 	return result;
 }
 
-bool CAcceptor::MakeSocketMulticonnected()
+bool CAcceptor::MakeSocketMulticonnected() const
 {
 	CLOG_DEBUG_START_FUNCTION();
 	int on = 1;
@@ -132,34 +102,39 @@ bool CAcceptor::MakeSocketMulticonnected()
 	return false;
 }
 
-void CAcceptor::InitSocket(const int port,
+bool CAcceptor::InitSocket(const int port,
 	const std::string& ip_address)
 {
+	bool result = false;
 	CLOG_DEBUG_START_FUNCTION();
 	m_p_socket_acceptor = std::make_unique<CSocket>(port, ip_address);
 	CLOG_TRACE_VAR_CREATION(m_p_socket_acceptor);
+	result = m_p_socket_acceptor->InitSocket();
 	CLOG_DEBUG_END_FUNCTION();
+	return result;
 }
 
-int CAcceptor::AcceptNonBlockingSockets()
+CSocket CAcceptor::AcceptNonBlockingSockets()
 {
 	sockaddress current_address = m_p_socket_acceptor->GetSocketAddress();
-	CLOG_DEBUG_START_FUNCTION();
-	CLOG_DEBUG_WITH_PARAMS("In the class CAcceptor was accepted socket ",
-		m_p_socket_acceptor->GetSocketFD());
-
-	CLOG_DEBUG_END_FUNCTION();
-	return PlatformUtils::Accept(m_p_socket_acceptor->GetSocketFD(),
+	CSocket client_socket = PlatformUtils::Accept(m_p_socket_acceptor->GetSocketFD(),
 		current_address);
+	if (client_socket.IsValidSocket())
+	{
+		CLOG_DEBUG_WITH_PARAMS("In the class CAcceptor was accepted socket ",
+			client_socket.GetSocketFD());
+	}
+	return client_socket;
 }
 
-int CAcceptor::AcceptBlockingSockets()
+CSocket CAcceptor::AcceptBlockingSockets()
 {
+	CSocket invalid_client(c_invalid_socket);
 	CLOG_TRACE_START_FUNCTION();
 	m_is_time_out = false;
 	int max_sd = 0;
+	int result_of_select = 0;
 	fd_set read_fds;
-	int socket_fd = c_error_socket;
 	timeval time_out;
 
 	sockaddress current_address = m_p_socket_acceptor->GetSocketAddress();
@@ -172,7 +147,17 @@ int CAcceptor::AcceptBlockingSockets()
 		FD_SET(m_p_socket_acceptor->GetSocketFD(), &read_fds);
 		max_sd = m_p_socket_acceptor->GetSocketFD();
 
-		select(max_sd + 1, &read_fds, NULL, NULL, &time_out);
+		result_of_select = select(max_sd + 1, &read_fds, NULL, NULL, &time_out);
+		if(result_of_select < 0)
+		{
+			return invalid_client;
+		}
+		else if(result_of_select == 0)
+		{
+			m_is_time_out = true;
+			CLOG_DEBUG("Timeout while accepting clients");
+			return invalid_client;
+		}
 
 		if (FD_ISSET(m_p_socket_acceptor->GetSocketFD(), &read_fds))
 		{
@@ -181,12 +166,7 @@ int CAcceptor::AcceptBlockingSockets()
 			return PlatformUtils::Accept(m_p_socket_acceptor->GetSocketFD(),
 				current_address);
 		}
-		else
-		{
-			m_is_time_out = true;
-			return c_error_socket;
-		}
 	}
 	CLOG_TRACE_END_FUNCTION();
-	return c_error_socket;
+	return invalid_client;
 }

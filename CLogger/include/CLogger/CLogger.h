@@ -363,10 +363,6 @@ CLogger& CLogger::AddLogConfig(const ELogConfig log_config, Args... args)
 template<typename... Args>
 void CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message) const
 {
-	if(this == nullptr)
-	{
-		return;
-	}
 	if (m_log_level < log_message.GetLogLevel()
 		|| m_write_stream_list.empty()
 		|| m_log_config_list.empty())

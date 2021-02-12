@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+class CSocket;
 
 #if defined(_WIN64) || defined(_WIN32)
 
@@ -35,17 +36,17 @@ class CBaseSocket
 {
 public:
 	CBaseSocket();
-	~CBaseSocket();
+	CBaseSocket(int socket_fd);
+	~CBaseSocket() = default;
 
-	int GetSocketFD() const;
+	[[nodiscard]]int GetSocketFD() const;
+	bool InitSocket();
 
 protected:
 #if defined(_WIN64) || defined(_WIN32)
-	SOCKET InitSocket();
 
 	SOCKET m_socket;
 #elif __linux__
-	int InitSocket();
 
 	int m_socket;
 #endif
@@ -69,11 +70,10 @@ namespace PlatformUtils
 
 	bool BindSocket(int socket, sockaddress& current_address);
 	bool Listen(int socket, const int connections);
-	int Accept(int socket, sockaddress& current_address);
+	CSocket Accept(int socket, sockaddress& current_address);
 	bool Connect(int socket, sockaddress& current_address);
 	bool SetUnblockingSocket(int socket);
 	bool CloseSocket(int socket);
-	int GetConnectionError(int socket_fd);
 
 }
 

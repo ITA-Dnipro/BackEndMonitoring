@@ -8,10 +8,11 @@
 
 #include "PlatformUtils.h"
 
-CBaseSocket::CBaseSocket()
-{
-	m_socket = InitSocket();
-}
+CBaseSocket::CBaseSocket() : m_socket(c_invalid_socket)
+{ }
+
+CBaseSocket::CBaseSocket(int socket_fd) : m_socket(socket_fd)
+{ }
 
 CBaseSocket::~CBaseSocket()
 { 
@@ -23,9 +24,14 @@ int CBaseSocket::GetSocketFD() const
 	return m_socket;
 }
 
-int CBaseSocket::InitSocket()
+bool CBaseSocket::InitSocket()
 {
-	return ::socket(AF_INET, SOCK_STREAM, 0);
+	m_socket = socket(AF_INET, SOCK_STREAM, NULL);
+	if (m_socket != c_error_socket)
+	{
+		return true;
+	}
+	return false;
 }
 
 
@@ -60,11 +66,13 @@ namespace PlatformUtils
 		return false;
 	}
 
-	int Accept(int socket, sockaddress& current_address)
+	CSocket Accept(int socket, sockaddress& current_address)
 	{
+		
 		int addrlen = sizeof(current_address);
-		return static_cast<int>(accept(socket, 
-			(struct sockaddr*)&current_address, (socklen_t*)&addrlen));
+		CSocket client_socket(accept(socket, (struct sockaddr*)&current_address,
+			(socklen_t*)&addrlen));
+		return client_socket;
 	}
 
 	bool Connect(int socket, sockaddress& current_address)
@@ -94,14 +102,6 @@ namespace PlatformUtils
 			}
 		}
 		return false;
-	}
-
-	int GetConnectionError(int socket_fd)
-	{
-		int error = 0;
-		socklen_t size = sizeof(error);
-		getsockopt(socket_fd, SOL_SOCKET, SO_ERROR, (char*)&error, &size);
-		return error;
 	}
 
 	bool TryGetAllNamesAllDisksInSystem(std::vector<std::string>& names)

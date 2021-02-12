@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "CClientConnectionHandler.h"
+#include "CSocket.h"
 #include "CLogger/include/Log.h"
 
 CClientConnectionHandler::CClientConnectionHandler()
@@ -9,23 +10,23 @@ CClientConnectionHandler::CClientConnectionHandler()
 	m_p_client_stream = InitClientStream();
 }
 
-bool CClientConnectionHandler::HandleEvent(const int socket_fd, 
+bool CClientConnectionHandler::HandleEvent(const CSocket& client_socket,
 	EEventType type, std::string& message)
 {
 	m_current_request = type;
 	bool result = true;
 	switch (type) {
 	case EEventType::REQUEST_ALL_DATA:
-		result = HandleRequestEvent(socket_fd, EEventType::REQUEST_ALL_DATA);
+		result = HandleRequestEvent(client_socket, EEventType::REQUEST_ALL_DATA);
 		break;
 	case EEventType::REQUEST_DISK_DATA:
-		result = HandleRequestEvent(socket_fd, EEventType::REQUEST_DISK_DATA);
+		result = HandleRequestEvent(client_socket, EEventType::REQUEST_DISK_DATA);
 		break;
 	case EEventType::REQUEST_PROCESS_DATA:
-		result = HandleRequestEvent(socket_fd, EEventType::REQUEST_PROCESS_DATA);
+		result = HandleRequestEvent(client_socket, EEventType::REQUEST_PROCESS_DATA);
 		break;
 	case EEventType::CLOSE_EVENT:
-		HandleExitEvent(socket_fd); // If we can exit result equal false
+		HandleExitEvent(client_socket); // If we can exit result equal false
 		return false;
 	default:
 		result = false;
@@ -34,93 +35,96 @@ bool CClientConnectionHandler::HandleEvent(const int socket_fd,
 
 	if (result)
 	{
-		CLOG_DEBUG_WITH_PARAMS("Result is true, start HandleResponseEvent, for the socket", socket_fd);
-		result = HandleResponseEvent(socket_fd, message);
+		CLOG_DEBUG_WITH_PARAMS("Start HandleResponseEvent, for the socket", 
+			client_socket.GetSocketFD());
+		result = HandleResponseEvent(client_socket, message);
 	}
 
 	return result;
 }
 
-bool CClientConnectionHandler::HandleRequestEvent(const int socket_fd, 
-	EEventType type)
+bool CClientConnectionHandler::HandleRequestEvent(const CSocket& client_socket,
+	EEventType type) const
 {
 	std::string request_str = ConvertRequestToString(type);
 	CLOG_DEBUG_WITH_PARAMS("Convert event type to the string", request_str);
-	if (SendRequestToServer(socket_fd, request_str))
+	if (SendRequestToServer(client_socket, request_str))
 	{
 		return true;
 	}
 	return false;
 }
 
-bool CClientConnectionHandler::HandleResponseEvent(const int socket_fd, 
+bool CClientConnectionHandler::HandleResponseEvent(const CSocket& client_socket,
 	std::string& message)
 {
-	bool result = m_p_client_stream->Receive(socket_fd, message);
+	bool result = m_p_client_stream->Receive(client_socket, message);
 	CLOG_DEBUG_WITH_PARAMS("We send request to the server, result", result);
 	if (result)
 	{
 		// If we get the wrong request from the server
-		if (message.empty() || message == "-1")
+		if (message.compare("-1") == c_equal)
 		{
 			CLOG_ERROR_WITH_PARAMS("Response from the server", message);
 			return false;
 		}
-		else if (message == "Request lost") // If we lost request
+		else if (message.compare("Request lost") == c_equal) // If we lost request
 		{
 			CLOG_ERROR_WITH_PARAMS("Response from the server", message);
-			result = HandleLostRequestEvent(socket_fd, message);
+			result = HandleLostRequestEvent(client_socket, message);
 		}
 	}
 
 	if(result)
 	{
-		return HandleDataReceivedEvent(socket_fd);       
+		return HandleDataReceivedEvent(client_socket);
 	}
 
 	return false;
 }
 
-bool CClientConnectionHandler::HandleExitEvent(const int socket_fd)
+bool CClientConnectionHandler::HandleExitEvent(const CSocket& client_socket)
 {
-	return SendRequestToServer(socket_fd, "Exit");
+	return SendRequestToServer(client_socket, "Exit");
 }
 
-bool CClientConnectionHandler::HandleDataReceivedEvent(const int socket_fd)
+bool CClientConnectionHandler::HandleDataReceivedEvent(const CSocket& 
+	client_socket) const
 {
 	CLOG_DEBUG("Handle data received event");
-	return m_p_client_stream->Send(socket_fd, "DATA RECEIVED");
+	return m_p_client_stream->Send(client_socket, "DATA RECEIVED");
 }
 
-bool CClientConnectionHandler::HandleLostRequestEvent(const int socket_fd, 
+bool CClientConnectionHandler::HandleLostRequestEvent(const CSocket& client_socket,
 	std::string& message)
 {
 	const int max_trials = 5;
 	int count_trials = 0;
 	std::string request_str = ConvertRequestToString(m_current_request);
 
-	if(request_str == "ERROR")
+	if(request_str.compare("ERROR") == c_equal)
 	{
 		return false;
 	}
 	while (count_trials++ < max_trials)
 	{
-		if (SendRequestToServer(socket_fd, request_str)
-			&& m_p_client_stream->Receive(socket_fd, message))
+		if (SendRequestToServer(client_socket, request_str)
+			&& m_p_client_stream->Receive(client_socket, message))
 		{
-			if (message != "Request lost" && message != "-1" && !message.empty())
+			if (!message.empty() && message.compare("Request lost") != c_equal 
+				&& message.compare("-1") != c_equal)
 			{
-				return HandleDataReceivedEvent(socket_fd);
+				return HandleDataReceivedEvent(client_socket);
 			}
 		}
 	}
 	return false;
 }
 
-bool CClientConnectionHandler::SendRequestToServer(const int socket_fd, 
-	const std::string& request_message) 
+bool CClientConnectionHandler::SendRequestToServer(const CSocket& client_socket,
+	const std::string& request_message) const
 {
-	return m_p_client_stream->Send(socket_fd, request_message);
+	return m_p_client_stream->Send(client_socket, request_message);
 }
 
 std::string CClientConnectionHandler::ConvertRequestToString(EEventType type) const

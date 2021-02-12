@@ -2,6 +2,7 @@
 
 #include "CServiceHandler.h"
 #include "Utils.h"
+#include "CLogger/include/Log.h"
 
 #if defined(_WIN64) || defined(_WIN32)
 class ServiceHandle

@@ -9,13 +9,12 @@ public:
 	explicit CConnector(const int port, const std::string& address);
 	CConnector(const CConnector&) = delete;
 	CConnector(CConnector&&) noexcept = delete;
-	~CConnector() noexcept = default;
+	~CConnector() noexcept;
 
-	bool Connect();
-	[[nodiscard]] int GetSocketFD() const;
+	bool Initialize();
+	bool Connect() const;
+	[[nodiscard]] CSocket& GetSocket();
+
 private:
-	[[nodiscard]] std::unique_ptr<CSocket> InitSocketConnector(const int port,
-		const std::string& ip_address);
-
-	std::unique_ptr<CSocket> m_p_socket_connector;
+	CSocket m_socket_connector;
 };

@@ -3,12 +3,16 @@
 #include "CSocket.h"
 
 CSocket::CSocket(const int port, const std::string& ip_address)
+	: CBaseSocket(c_invalid_socket)
 {
-	SetSocketAddress(port, ip_address);
+	InitAddress(port, ip_address);
 }
 
-void CSocket::SetSocketAddress(const int port,
-	const std::string& ip_address)
+CSocket::CSocket(int socket_fd) : CBaseSocket(socket_fd)
+{ }
+
+void CSocket::InitAddress(const int port,
+                          const std::string& ip_address)
 {
 	m_address.sin_family = AF_INET;
 	m_address.sin_port = htons(port);
@@ -17,16 +21,11 @@ void CSocket::SetSocketAddress(const int port,
 
 bool CSocket::IsValidSocket() const
 {
-	if (m_socket == c_invalid_socket)
+	if (m_socket == c_invalid_socket || m_socket == c_error_socket)
 	{
 		return false;
 	}
 	return true;
-}
-
-bool CSocket::CloseSocket()
-{
-	return PlatformUtils::CloseSocket(static_cast<int>(m_socket));
 }
 
 sockaddr_in CSocket::GetSocketAddress() const

@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#include "CSocket.h"
+
 #if defined(_WIN64) || defined(_WIN32)
 
 #include "Utils.h"
@@ -9,24 +11,25 @@
 #pragma warning(disable : 6385)
 
 
-CBaseSocket::CBaseSocket( )
-{
-	m_socket = InitSocket( );
-}
+CBaseSocket::CBaseSocket( ) : m_socket(c_invalid_socket)
+{ }
 
-CBaseSocket::~CBaseSocket( )
-{
-	PlatformUtils::CloseSocket(static_cast<int>(m_socket));
-}
+CBaseSocket::CBaseSocket(int socket_fd) : m_socket(socket_fd)
+{ }
 
 int CBaseSocket::GetSocketFD() const
 {
 	return static_cast<int>(m_socket);
 }
 
-SOCKET CBaseSocket::InitSocket( )
+bool CBaseSocket::InitSocket( )
 {
-	return socket(AF_INET, SOCK_STREAM, NULL);
+	m_socket = socket(AF_INET, SOCK_STREAM, NULL);
+	if(m_socket != c_error_socket)
+	{
+		return true;
+	}
+	return false;
 }
 
 
@@ -262,9 +265,10 @@ namespace PlatformUtils
 		return false;
 	}
 
-	int Accept(int socket, sockaddress& current_address)
+	CSocket Accept(int socket, sockaddress& current_address)
 	{
-		return static_cast<int>(accept(socket, NULL, NULL));
+		CSocket client_socket(static_cast<int>(accept(socket, NULL, NULL)));
+		return client_socket;
 	}
 
 	bool Connect(int socket, sockaddress& current_address)
@@ -298,14 +302,6 @@ namespace PlatformUtils
 		return false;
 	}
 
-	int GetConnectionError(int socket_fd)
-	{
-		//int error = 0;
-		//socklen_t size = sizeof(error);
-		//return getsockopt(socket_fd, SOL_SOCKET, SO_ERROR, (char*)&error,
-		//	&size);
-		return WSAGetLastError();
-	}
 }
 
 #endif
