@@ -5,10 +5,13 @@
 #include "CCommandLineHandler.h"
 #include "CServiceHandler.h"
 #include "Utils.h"
-
+#include "CDateTimePathConstructor.h"
 
 int main(int argc, char** argv)
 {
+	std::string g = "D:/poplp";
+	CDateTimePathConstructor h("D:/World");
+	h.UpdatePathToFile(g);
   std::fstream stream(
 	CService::GetRelativePath() + "Log.txt",
 	std::ios_base::app);

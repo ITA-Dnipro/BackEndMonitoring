@@ -34,11 +34,6 @@ void CHardwareStatusSpecification::SetNewPath(const std::string & new_path)
 	m_path_to_file = new_path;
 }
 
-void CHardwareStatusSpecification::AddBranchToPath(const std::string& new_branch)
-{
-	m_path_to_file += new_branch;
-}
-
 bool CHardwareStatusSpecification::CloneObject(
 	const CHardwareStatusSpecification& orig)
 {

@@ -101,6 +101,10 @@
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp">
       <Filter>Utils\Platform Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\utils\include\IPathConstructor.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CDateTimePathConstructor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\utils\include\stdafx.h" />
@@ -188,6 +192,10 @@
     <ClInclude Include="..\..\utils\include\PlatformUtils.h">
       <Filter>Utils\Platform Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\utils\include\IPathConstructor.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CDateTimePathConstructor.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />

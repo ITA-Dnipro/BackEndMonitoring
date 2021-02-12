@@ -72,7 +72,6 @@ bool CLogicalDiskInfoMonitoring::StartMonitoringInfo()
 	{
 		return false;
 	}
-	m_p_container->GetSpecification()->AddBranchToPath("/");
 	std::string common_path = *m_p_container->GetSpecification()->GetPathToSaveFile();
 
 	while (!m_stop_event.WaitFor(m_p_specification->GetPauseDuration()))
@@ -82,28 +81,6 @@ bool CLogicalDiskInfoMonitoring::StartMonitoringInfo()
 		if (!json_formatter.TryEraseAllData())
 		{
 			continue;
-		}
-		std::string current_day;
-		std::string current_time;
-		Utils::TryGetCurrentDay(current_day);
-		Utils::TryGetCurrentTime(current_time);
-		if (m_p_container->GetSpecification()->GetPathToSaveFile()->substr(
-			common_path.length(),
-			m_p_container->GetSpecification()->GetPathToSaveFile()->find_last_of('/')) 
-			!= current_day)
-		{
-			if (!Utils::TryCreateDirectory(common_path + current_day))
-			{
-				//log
-				return false;
-			}
-
-			m_p_container->GetSpecification()->SetNewPath(common_path + current_day);
-		}
-		if (Utils::IsHourPassed(m_p_container->GetSpecification()->GetPathToSaveFile()->substr(
-			m_p_container->GetSpecification()->GetPathToSaveFile()->find_last_of("/"), 8)))
-		{
-			m_p_container->GetSpecification()->SetNewPath(common_path + current_day + current_time);
 		}
 		if (!m_p_container->TryUpdateInfoLogicalDiskToJSON(json_formatter))
 		{

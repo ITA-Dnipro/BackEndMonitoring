@@ -15,7 +15,7 @@ namespace Utils
 		const char delimiter);
 
 	[[nodiscard]] bool TryGetCurrentDateAndTimeFormatted(std::string&
-														 date_time_var_to_save);
+														 date_time_var_to_save, const std::string& format = "%d.%m.%Y %X");
 
 	[[nodiscard]] bool TrySetMonthAsNumber(std::string& p_month);
 
@@ -44,9 +44,7 @@ namespace Utils
 		std::filesystem::perm_options perms_action =
 		std::filesystem::perm_options::replace);
 	
-	[[nodiscard]] bool TryGetCurrentDay(std::string&
-		date_time_var_to_save);
-	[[nodiscard]] bool TryGetCurrentTime(std::string&
-		date_time_var_to_save);
-	[[nodiscard]] bool IsHourPassed(const std::string& time);
+	[[nodiscard]] bool IsDayPassed(std::string& day);
+
+	[[nodiscard]] bool IsHourPassed(std::string& time);
 }

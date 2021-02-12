@@ -21,8 +21,6 @@ public:
 
 	void SetNewPath(const std::string& new_path);
 
-	void AddBranchToPath(const std::string& new_branch);
-
 	[[nodiscard]] bool CloneObject(const CHardwareStatusSpecification& orig);
 
 protected:
