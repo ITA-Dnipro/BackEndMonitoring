@@ -3,19 +3,19 @@
 #include "CLoggerGlobal/GlobalLogger.h"
 
 #define CLOG_EDIT_ADD_SAFE_STREAM(stream) \
-	CLog::GetLogger()->AddThreadSafeStream(stream) \
+	global_logger_wrapper->GetLogger()->AddThreadSafeStream(stream) \
 
 #define CLOG_EDIT_ADD_UNSAFE_STREAM(stream) \
-	CLog::GetLogger()->AddThreadUnsafeStream(stream) \
+	global_logger_wrapper->GetLogger()->AddThreadUnsafeStream(stream) \
 
 #define CLOG_EDIT_SET_LOG_NAME(logName) \
-	CLog::GetLogger()->SetLogName(logName) \
+	global_logger_wrapper->GetLogger()->SetLogName(logName) \
 
 #define CLOG_EDIT_SET_LOG_FLUSH(logFlush) \
-	CLog::GetLogger()->SetLogFlush(logFlush) \
+	global_logger_wrapper->GetLogger()->SetLogFlush(logFlush) \
 
 #define CLOG_EDIT_SET_LOG_LEVEL(logLevel) \
-	CLog::GetLogger()->SetLogLevel(logLevel) \
+	global_logger_wrapper->GetLogger()->SetLogLevel(logLevel) \
 
 #define CLOG_EDIT_SET_NONE() \
 	CLOG_EDIT_SET_LOG_LEVEL(ELogLevel::NONE_LEVEL) \
@@ -30,10 +30,10 @@
 	CLOG_EDIT_SET_LOG_LEVEL(ELogLevel::TRACE_LEVEL) \
 
 #define CLOG_EDIT_SET_LOG_CONFIG(...) \
-	CLog::GetLogger()->SetLogConfig(__VA_ARGS__) \
+	global_logger_wrapper->GetLogger()->SetLogConfig(__VA_ARGS__) \
 
 #define CLOG_EDIT_ADD_LOG_CONFIG(logConfig) \
-	CLog::GetLogger()->AddLogConfig(logConfig) \
+	global_logger_wrapper->GetLogger()->AddLogConfig(logConfig) \
 
 #define CLOG_EDIT_ADD_LOG_LEVEL() \
 	CLOG_EDIT_ADD_LOG_CONFIG(ELogConfig::LOG_LEVEL) \

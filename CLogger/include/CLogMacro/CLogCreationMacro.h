@@ -3,25 +3,25 @@
 #include "CLoggerGlobal/GlobalLogger.h"
 
 #define CLOG_CREATION_START() \
-	CLog::SetBuilder(std::move(std::make_unique<CLogBuilder>("", ELogLevel::NONE_LEVEL))) \
+	global_logger_wrapper->GetBuilder() \
 
 #define CLOG_CREATION_END() \
-	CLog::GetBuilder().reset() \
+	global_logger_wrapper->GetBuilder().reset() \
 
 #define CLOG_CREATION_ADD_SAFE_STREAM(stream) \
-	CLog::GetBuilder()->AddThreadSafeStream(stream) \
+	global_logger_wrapper->GetBuilder()->AddThreadSafeStream(stream) \
 
 #define CLOG_CREATION_ADD_UNSAFE_STREAM(stream) \
-	CLog::GetBuilder()->AddThreadUnsafeStream(stream) \
+	global_logger_wrapper->GetBuilder()->AddThreadUnsafeStream(stream) \
 
 #define CLOG_CREATION_SET_LOG_NAME(logName) \
-	CLog::GetBuilder()->SetLogName(logName) \
+	global_logger_wrapper->GetBuilder()->SetLogName(logName) \
 
 #define CLOG_CREATION_SET_LOG_FLUSH(logFlush) \
-	CLog::GetBuilder()->SetLogFlush(logFlush) \
+	global_logger_wrapper->GetBuilder()->SetLogFlush(logFlush) \
 
 #define CLOG_CREATION_SET_LOG_LEVEL(logLevel) \
-	CLog::GetBuilder()->SetLogLevel(logLevel) \
+	global_logger_wrapper->GetBuilder()->SetLogLevel(logLevel) \
 
 #define CLOG_CREATION_SET_NONE() \
 	CLOG_CREATION_SET_LOG_LEVEL(ELogLevel::NONE_LEVEL) \
@@ -36,10 +36,10 @@
 	CLOG_CREATION_SET_LOG_LEVEL(ELogLevel::TRACE_LEVEL) \
 
 #define CLOG_CREATION_SET_LOG_CONFIG(...) \
-	CLog::GetBuilder()->SetLogConfig(__VA_ARGS__) \
+	global_logger_wrapper->GetBuilder()->SetLogConfig(__VA_ARGS__) \
 
 #define CLOG_CREATION_ADD_LOG_CONFIG(logConfig) \
-	CLog::GetBuilder()->AddLogConfig(logConfig) \
+	global_logger_wrapper->GetBuilder()->AddLogConfig(logConfig) \
 
 #define CLOG_CREATION_ADD_LOG_LEVEL() \
 	CLOG_CREATION_ADD_LOG_CONFIG(ELogConfig::LOG_LEVEL) \
@@ -69,7 +69,7 @@
 	CLOG_CREATION_ADD_LOG_CONFIG(ELogConfig::PARAMS) \
 
 #define CLOG_BUILD() \
-	CLog::SetLogger(std::move(CLog::GetBuilder()->BuildUniqueLog())) \
+	global_logger_wrapper->SetLogger(std::move(global_logger_wrapper->GetBuilder()->BuildUniqueLog())) \
 
 #define CLOG_DESTROY() \
-	CLog::GetLogger().reset()
+	global_logger_wrapper->ResetLogger()

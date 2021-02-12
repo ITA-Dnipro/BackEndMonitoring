@@ -3,33 +3,33 @@
 
 #include "CLogBuilder/CLogBuilder.h"
 
-namespace CLog
+class CLOGGER_API CLoggerWrapper
 {
-	inline std::unique_ptr<CLogBuilder> loggerBuilder = std::unique_ptr<CLogBuilder>(nullptr);
-	inline std::unique_ptr<CLogger> logger = std::unique_ptr<CLogger>(nullptr);
-
-	inline std::mutex loggerBuilderMutex = std::mutex();
-	inline std::mutex loggerMutex = std::mutex();
+public:
+	//CLoggerWrapper() = default;
+	CLoggerWrapper(const CLoggerWrapper&)     = delete;
+	CLoggerWrapper(CLoggerWrapper&&) noexcept = default;
 	
-	inline std::unique_ptr<CLogBuilder>& GetBuilder()
-	{
-		return loggerBuilder;
-	}
+	~CLoggerWrapper() = default;
+	
+	CLoggerWrapper& operator=(const CLoggerWrapper&) = delete;
+	CLoggerWrapper& operator=(CLoggerWrapper&&) noexcept = default;
 
-	inline std::unique_ptr<CLogger>& GetLogger()
-	{
-		return logger;
-	}
+	static std::unique_ptr<CLogBuilder>& GetBuilder();
+	static std::unique_ptr<CLogger>& GetLogger();
+	
+	static void SetBuilder(std::unique_ptr<CLogBuilder>&& build);
+	static void SetLogger(std::unique_ptr<CLogger>&& log);
+	
+	static void ResetBuilder();
+	static void ResetLogger();
 
-	inline void SetBuilder(std::unique_ptr<CLogBuilder>&& build)
-	{
-		std::unique_lock<std::mutex> lock(loggerBuilderMutex);
-		loggerBuilder = std::move(build);
-	}
+private:
+	static std::unique_ptr<CLogger> logger_;
+	//static std::mutex logger_mutex_;
+	
+	static std::unique_ptr<CLogBuilder> logger_builder_;
+	//static std::mutex logger_builder_mutex_;
+};
 
-	inline void SetLogger(std::unique_ptr<CLogger>&& log)
-	{
-		std::unique_lock<std::mutex> lock(loggerMutex);
-		logger = std::move(log);
-	}
-}
+extern CLOGGER_API std::unique_ptr<CLoggerWrapper> global_logger_wrapper;

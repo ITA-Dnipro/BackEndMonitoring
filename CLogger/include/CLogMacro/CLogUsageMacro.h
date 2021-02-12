@@ -59,17 +59,17 @@
 
 // Prints all info-configs of logger
 #define CLOG_CONFIG() \
-	CLog::GetLogger()->PrintLogInfo() \
+	global_logger_wrapper->GetLogger()->PrintLogInfo() \
 
 // Creates and prints CLogMessage of some CLogLevel via CLogger
 #define CLOG_WRITE(messageString, logLevel) \
-    CLog::GetLogger()->PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
+   global_logger_wrapper->GetLogger()->PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
                             LogUtils::GetFileNameByPath(__FILE__), __FUNCTION__, \
                             LogUtils::GetTime(), LogUtils::GetThisThreadIdString())) \
 
 // Creates and prints CLogMessage with variable parameters of some CLogLevel via CLogger
 #define CLOG_WRITE_WITH_PARAMS(messageString, logLevel, ...) \
-    CLog::GetLogger()->PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
+   global_logger_wrapper->GetLogger()->PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
                             LogUtils::GetFileNameByPath(__FILE__), __FUNCTION__, \
                             LogUtils::GetTime(), LogUtils::GetThisThreadIdString(), \
 							std::make_tuple(FOR_EACH(MAKE_PAIR, __VA_ARGS__)))) \
