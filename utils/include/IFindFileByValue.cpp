@@ -17,6 +17,7 @@ bool IFindFileByValue::TryFindFileByValueInFolder(const std::string& value,
         {
             path_to_file += folder.path().filename().string();
             return true;
+         
         }
     }
 
