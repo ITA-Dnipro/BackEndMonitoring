@@ -280,3 +280,9 @@ bool Utils::IsDayPassed(std::string& day)
 
     return false;
 }
+
+char Utils::DetermineSectDividingSymbol(const std::string& path)
+{
+    return path.find_last_of('/') == std::string::npos ? '\\' : '/';
+}
+

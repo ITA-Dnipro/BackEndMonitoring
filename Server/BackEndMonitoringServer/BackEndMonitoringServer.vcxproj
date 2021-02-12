@@ -186,9 +186,11 @@
     <ClInclude Include="..\..\utils\include\CThreadPoolSettings.h" />
     <ClInclude Include="..\..\utils\include\CTimeSettings.h" />
     <ClInclude Include="..\..\utils\include\CXMLDataReader.h" />
+    <ClInclude Include="..\..\utils\include\IFindFileByValue.h" />
     <ClInclude Include="..\..\utils\include\IPathConstructor.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="..\..\utils\include\stdafx.h" />
+    <ClInclude Include="CFindFileByDateTime.h" />
     <ClInclude Include="include\CCommandLineHandler.h" />
     <ClInclude Include="include\CContainerOfLogicalDisk.h" />
     <ClInclude Include="include\CContainerOfProcesses.h" />
@@ -224,6 +226,7 @@
     <ClCompile Include="..\..\utils\include\CNumericTypesParser.cpp" />
     <ClCompile Include="..\..\utils\include\CReadFileWrapper.cpp" />
     <ClCompile Include="..\..\utils\include\CSettings.cpp" />
+    <ClCompile Include="..\..\utils\include\IFindFileByValue.cpp" />
     <ClCompile Include="..\..\utils\include\IPathConstructor.cpp" />
     <ClCompile Include="..\..\utils\include\StrToNumWrapper.cpp" />
     <ClCompile Include="..\..\utils\include\CLoggingSettings.cpp" />
@@ -235,6 +238,7 @@
     <ClCompile Include="..\..\utils\include\CXMLDataReader.cpp" />
     <ClCompile Include="..\..\utils\include\Utils.cpp" />
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
+    <ClCompile Include="CFindFileByDateTime.cpp" />
     <ClCompile Include="src\BackEndMonitoringServer.cpp" />
     <ClCompile Include="src\CCommandLineHandler.cpp" />
     <ClCompile Include="src\CContainerOfLogicalDisk.cpp" />

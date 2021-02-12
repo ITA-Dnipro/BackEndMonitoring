@@ -13,8 +13,7 @@ public:
 	
 private:
 	bool IsCreatedGeneralFolder() const;
-	char DetermineSectDividingSymbol(const std::string& path);
-
+	
 private:
 	bool m_is_created_general_folder;
 	const std::string m_general_folder;

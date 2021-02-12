@@ -6,12 +6,17 @@
 #include "CServiceHandler.h"
 #include "Utils.h"
 #include "CDateTimePathConstructor.h"
+#include "CFindFileByDateTime.h"
 
 int main(int argc, char** argv)
 {
-	std::string g = "D:/poplp";
-	CDateTimePathConstructor h("D:/World");
-	h.UpdatePathToFile(g);
+	std::string f = "D:/poplp";
+	//CDateTimePathConstructor h("D:/World");
+	//h.UpdatePathToFile(g);
+
+	CFindFileByDateTime g;
+	g.TryFindFileByValue("12.02.2021 16:16:00", "D:/World", f);
+
   std::fstream stream(
 	CService::GetRelativePath() + "Log.txt",
 	std::ios_base::app);
