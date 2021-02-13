@@ -1,8 +1,7 @@
 #pragma once
-#include "IRead.h"
-#include "IReadLine.h"
+#include <string>
 
-struct IReader : public IRead, public IReadLine
+struct IReader
 {
 	IReader() = default;
 	IReader(const IReader&) = delete;
@@ -11,10 +10,10 @@ struct IReader : public IRead, public IReadLine
 	IReader& operator=(const IReader&) = delete;
 	IReader& operator=(IReader&&) noexcept = default;
 
-	~IReader() override = default;
+	virtual ~IReader() = default;
 
-	bool Read(char& value) override = 0;
-	bool Read(std::string& value) override = 0;
+	virtual bool Read(char& value) = 0;
+	virtual bool Read(std::string& value) = 0;
 
-	bool ReadLine(std::string& value) override = 0;
+	virtual bool ReadLine(std::string& value) = 0;
 };

@@ -1,9 +1,7 @@
 #pragma once
-#include "IBreakLine.h"
-#include "IWrite.h"
-#include "IWriteLine.h"
+#include <string>
 
-struct IWriter : public IWrite, public IWriteLine, public IBreakLine
+struct IWriter
 {
 	IWriter() = default;
 	IWriter(const IWriter&) = delete;
@@ -12,13 +10,13 @@ struct IWriter : public IWrite, public IWriteLine, public IBreakLine
 	IWriter& operator=(const IWriter&) = delete;
 	IWriter& operator=(IWriter&&) noexcept = default;
 
-	~IWriter() override = default;
+	virtual ~IWriter() = default;
 
-	bool Write(char value) override = 0;
-	bool Write(const std::string& value) override = 0;
+	virtual bool Write(char value) = 0;
+	virtual bool Write(const std::string& value) = 0;
 
-	bool WriteLine(char value) override = 0;
-	bool WriteLine(const std::string& value) override = 0;
+	virtual bool WriteLine(char value) = 0;
+	virtual bool WriteLine(const std::string& value) = 0;
 
-	bool BreakLine() override = 0;
+	virtual bool BreakLine() = 0;
 };
