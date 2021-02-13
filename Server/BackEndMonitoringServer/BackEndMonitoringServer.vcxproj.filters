@@ -116,6 +116,18 @@
     <ClCompile Include="..\..\utils\include\CMonitoringJSONDataContainer.cpp">
       <Filter>Monitoring subsystem\Database subsystem\JSON</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\utils\include\IPathConstructor.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CDateTimePathConstructor.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\IFindFileByValue.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CFindFileByDateTime.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\utils\include\stdafx.h" />
@@ -220,6 +232,18 @@
     </ClInclude>
     <ClInclude Include="..\..\utils\include\CMonitoringJSONDataContainer.h">
       <Filter>Monitoring subsystem\Database subsystem\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\IPathConstructor.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CDateTimePathConstructor.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\IFindFileByValue.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CFindFileByDateTime.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

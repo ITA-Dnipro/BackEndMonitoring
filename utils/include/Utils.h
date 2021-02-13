@@ -15,7 +15,7 @@ namespace Utils
 		const char delimiter);
 
 	[[nodiscard]] bool TryGetCurrentDateAndTimeFormatted(std::string&
-														 date_time_var_to_save);
+														 date_time_var_to_save, const std::string& format = "%d.%m.%Y %X");
 
 	[[nodiscard]] bool TrySetMonthAsNumber(std::string& p_month);
 
@@ -40,5 +40,15 @@ namespace Utils
 	[[nodiscard]] EMemoryConvertType DefineCountType(int count_type_from_xml);
 
 	bool StringToDate(const std::string& date_str, const std::string& date_format,
-					  time_t& result);
+					          time_t& result);
+										
+	[[nodiscard]] bool TryCreateDirectory(const std::string& path,
+		std::filesystem::perms permission = std::filesystem::perms::all,
+		std::filesystem::perm_options perms_action =
+		std::filesystem::perm_options::replace);
+
+	[[nodiscard]] bool IsDayPassed(std::string& day);
+	[[nodiscard]] bool IsHourPassed(std::string& time);
+	[[nodiscard]] char DetermineSectDividingSymbol(const std::string& path);
+
 }

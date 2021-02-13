@@ -40,7 +40,8 @@ std::vector<std::string> Utils::SplitIntoWords(const std::string& str,
 }
 
 bool Utils::TryGetCurrentDateAndTimeFormatted(std::string&
-                                              date_time_var_to_save)
+                                              date_time_var_to_save,
+                                              const std::string& format)
 {
     const auto time = std::make_unique<tm>();
     auto current_time = std::chrono::system_clock::to_time_t
@@ -51,16 +52,29 @@ bool Utils::TryGetCurrentDateAndTimeFormatted(std::string&
 #else
     localtime_r(&current_time, time.get());
 #endif
-
-    date_time_var_to_save;
-    date_time_var_to_save.resize(50u);
-    std::strftime(date_time_var_to_save.data(),
-        date_time_var_to_save.capacity(), "%d.%m.%Y %X", time.get());
+    char buff[50]{};
+    std::strftime(buff, 50, format.c_str(), time.get());
     // Clean redundant \0 symbols, that fills resized string
+    date_time_var_to_save = buff;
     date_time_var_to_save.erase(std::remove(date_time_var_to_save.begin(),
         date_time_var_to_save.end(), '\0'), date_time_var_to_save.end());
 
     return !date_time_var_to_save.empty();
+}
+
+bool Utils::IsHourPassed(std::string& hour)
+{
+    std::string curr_time;
+    if(Utils::TryGetCurrentDateAndTimeFormatted(curr_time, "%H"))
+    {
+        if (curr_time != hour)
+        {
+            hour = curr_time;
+            return true;
+        }
+    }
+
+    return false;
 }
 
 bool Utils::TrySetMonthAsNumber(std::string& p_month)
@@ -253,4 +267,37 @@ bool Utils::StringToDate(const std::string& date_str,
     { return false;}
 
     return true;
+}
+
+bool Utils::TryCreateDirectory(const std::string& path,
+    std::filesystem::perms permission,
+    std::filesystem::perm_options perms_action)
+{
+    if (std::filesystem::create_directory(path))
+    {
+        //for windows will be a little different
+        std::filesystem::permissions(path, permission, perms_action);
+        return true;
+    }
+
+    return std::filesystem::is_directory(path);
+}
+
+bool Utils::IsDayPassed(std::string& day)
+{
+    std::string curr_day;
+    if (Utils::TryGetCurrentDateAndTimeFormatted(curr_day, "%d"))
+    {
+        if (curr_day != day)
+        {
+            return TryGetCurrentDateAndTimeFormatted(day, "%d.%m.%Y");
+        }
+    }
+
+    return false;
+}
+
+char Utils::DetermineSectDividingSymbol(const std::string& path)
+{
+    return path.find_last_of('/') == std::string::npos ? '\\' : '/';
 }
