@@ -11,6 +11,8 @@ public:
 	CJSONFormatSaver(const CJSONFormatSaver&&) = delete;
 	
 	[[nodiscard]] bool TrySaveToFile(const CJSONFormatter& formatted_data) const;
+	[[nodiscard]] bool TrySaveToFile(const CJSONFormatter& formatted_data,
+					std::streampos& block_begin, std::streampos& block_end) const;
 
 protected:
 	[[nodiscard]] bool TryWriteToFile(std::ofstream& JSON_file_to_save, 
@@ -19,6 +21,6 @@ protected:
 private:
 	const std::string m_path_to_file;
 	const unsigned short m_number_of_spaces;
-	const unsigned short m_num_of_bities_to_last_data;
+	const unsigned short m_bytes_to_last_data;
 };
 

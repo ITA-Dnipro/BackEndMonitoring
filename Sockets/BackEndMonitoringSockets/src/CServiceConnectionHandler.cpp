@@ -6,7 +6,7 @@
 #include "CSocketWrapper.h"
 #include "CSocket.h"
 
-CServiceConnectionHandler::CServiceConnectionHandler(CDataReceiver json_data) :
+CServiceConnectionHandler::CServiceConnectionHandler(CDataProvider json_data) :
 	m_json_data(json_data)
 {
 	InitPeerStream();

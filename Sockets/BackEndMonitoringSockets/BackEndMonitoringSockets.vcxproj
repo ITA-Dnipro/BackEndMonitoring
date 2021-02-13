@@ -30,7 +30,7 @@
     <ClInclude Include="include\EEventType.h" />
     <ClInclude Include="include\CSocket.h" />
     <ClInclude Include="include\CSocketWrapper.h" />
-    <ClInclude Include="include\CDataReceiver.h" />
+    <ClInclude Include="include\CDataProvider.h" />
     <ClInclude Include="include\EClientRequestType.h" />
     <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
@@ -44,7 +44,7 @@
     <ClCompile Include="src\CServiceConnectionHandler.cpp" />
     <ClCompile Include="src\CSocket.cpp" />
     <ClCompile Include="src\CSocketWrapper.cpp" />
-    <ClCompile Include="src\CDataReceiver.cpp" />
+    <ClCompile Include="src\CDataProvider.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

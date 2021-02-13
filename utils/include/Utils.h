@@ -39,4 +39,6 @@ namespace Utils
 
 	[[nodiscard]] EMemoryConvertType DefineCountType(int count_type_from_xml);
 
+	bool StringToDate(const std::string& date_str, const std::string& date_format,
+					  time_t& result);
 }

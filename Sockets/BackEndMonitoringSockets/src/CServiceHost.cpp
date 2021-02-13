@@ -19,7 +19,7 @@ CServiceHost::~CServiceHost()
 }
 
 bool CServiceHost::Initialize(std::shared_ptr<CThreadPool> pool,
-	CDataReceiver& json_data, const int connections)
+	CDataProvider& json_data, const int connections)
 {
 	CLOG_DEBUG_START_FUNCTION();
 	m_p_pool = pool;
@@ -68,7 +68,7 @@ void CServiceHost::InitAcceptor()
 }
 
 void CServiceHost::InitServiceHandler(
-		CDataReceiver& json_data)
+		CDataProvider& json_data)
 {
 	CLOG_DEBUG_START_FUNCTION();
 	m_p_service_handler =

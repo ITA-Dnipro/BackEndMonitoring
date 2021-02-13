@@ -11,23 +11,21 @@
 
 CProcessesInfoMonitoring::CProcessesInfoMonitoring(
 	std::chrono::duration<int> pause_duration,
-	std::string path_to_file,
-	EMemoryConvertType count_type,
-	CEvent& stop_event,
-	CThreadSafeVariable<CJSONFormatterProcess>& json_formatter) :
-		m_container(pause_duration, path_to_file, count_type),
-		m_json_formatter(json_formatter),
-		IHardwareInfoMonitoring(stop_event),
-		m_is_initialized(false)
+	EMemoryConvertType count_type, CEvent& stop_event,
+	std::shared_ptr<CProcessesInfoJSONDatabase> database) :
+	m_container(pause_duration, count_type),
+	m_p_database(database),
+	IHardwareInfoMonitoring(stop_event),
+	m_is_initialized(false)
 {
 	CLOG_TRACE_START_FUNCTION( );
 	CLOG_TRACE_END_FUNCTION( );
 }
 
-bool CProcessesInfoMonitoring::Initialize()
+bool CProcessesInfoMonitoring::Initialize( )
 {
 	CLOG_DEBUG_START_FUNCTION( );
-	if (m_is_initialized = m_container.Initialize())
+	if (m_is_initialized = m_container.Initialize( ))
 	{
 		CLOG_DEBUG("CProcessesInfoMonitoring was initialized");
 	}
@@ -42,28 +40,22 @@ bool CProcessesInfoMonitoring::Initialize()
 bool CProcessesInfoMonitoring::StartMonitoringInfo( )
 {
 	CLOG_DEBUG_START_FUNCTION( );
-	if(!m_is_initialized)
+	if (!m_is_initialized)
 	{
 		CLOG_ERROR("CProcessesInfoMonitoring function was called on uninitialized object");
 		return false;
 	}
 
-	CJSONFormatSaver json_saver(
-		*m_container.GetSpecification()->GetPathToSaveFile( ));
-	CLOG_TRACE_VAR_CREATION(json_saver);
-
 	while (!m_stop_event.WaitFor(
-		m_container.GetSpecification()->GetPauseDuration( )))
+		m_container.GetSpecification( )->GetPauseDuration( )))
 	{
-		if (!m_container.TryToUpdateCurrentStatus())
+		if (!m_container.TryToUpdateCurrentStatus( ))
 		{
 			CLOG_ERROR("CProcessesInfoMonitoring can't update processes container.");
 		}
 
 		{
-			auto [json_formatter, mtx] = m_json_formatter.GetAccess( );
-			CLOG_DEBUG("CProcessesInfoMonitoring obtained the json data mutex");
-			if (!json_formatter.TryEraseAllData( ))
+			if (!m_p_database->ClearCommitedData( ))
 			{
 				CLOG_WARNING("CProcessesInfoMonitoring can't delete data from json.");
 				continue;
@@ -78,15 +70,14 @@ bool CProcessesInfoMonitoring::StartMonitoringInfo( )
 			{
 				for (auto& process : processes)
 				{
-					if (!json_formatter.TryAddProcessData(process))
+					if (!m_p_database->CommitDataAdd(process))
 					{
 						CLOG_WARNING("CProcessesInfoMonitoring can't add data about process to json.");
 					}
 				}
-				if (!json_saver.TrySaveToFile(json_formatter))
+				if (!m_p_database->InsertCommitedData( ))
 				{
 					CLOG_ERROR("CProcessesInfoMonitoring can't save json data to file.");
-					//exception handler
 				}
 			}
 		}

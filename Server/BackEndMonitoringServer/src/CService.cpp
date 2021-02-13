@@ -11,7 +11,7 @@
 #include "CContainerOfLogicalDisk.h"
 #include "CProcessesInfoMonitoring.h"
 #include "CLogicalDiskInfoMonitoring.h"
-#include "Sockets/BackEndMonitoringSockets/include/CDataReceiver.h"
+#include "Sockets/BackEndMonitoringSockets/include/CDataProvider.h"
 #include "Utils.h"
 #include "CXMLDataReader.h"
 #include "CLoggingSettings.h"
@@ -128,7 +128,7 @@ void CService::RunServer()
         CLOG_PROD("ERROR! Can't create sockets!");
         return;
     }
-    CDataReceiver json_data(m_processes_json, m_disks_json);
+    CDataProvider json_data(m_p_processes_data, m_p_drives_data);
     CLOG_TRACE_VAR_CREATION(json_data);
 
     if (!m_p_acceptor_socket->Initialize(std::move(m_p_thread_pool),
@@ -139,7 +139,7 @@ void CService::RunServer()
     }
 
     m_p_acceptor_socket->Execute( );
-    CLOG_DEBUG_END_FUNCTION();
+    CLOG_DEBUG_END_FUNCTION( );
 }
 
 bool CService::InitializeLogger(
@@ -151,7 +151,7 @@ bool CService::InitializeLogger(
         path_to_log_file,
         std::ios_base::app);
 
-    if (m_log_stream->is_open())
+    if (m_log_stream->is_open( ))
     {
         CLOG_START_CREATION( );
 
@@ -198,13 +198,17 @@ bool CService::InitializeLogicalDiscMonitoring(
     CLOG_DEBUG_START_FUNCTION( );
     CHardwareStatusSpecification* specification = new
         CHardwareStatusSpecification(
-        std::chrono::seconds(xml_settings.GetPeriodTime()), xml_settings.GetFileName(),
-        Utils::DefineCountType(xml_settings.GetCountType()));
+        std::chrono::seconds(xml_settings.GetPeriodTime( )),
+        Utils::DefineCountType(xml_settings.GetCountType( )));
+
+    m_p_drives_data = std::make_shared<CDrivesInfoJSONDatabase>(
+        xml_settings.GetFileName( ));
+
     CLOG_TRACE_VAR_CREATION(specification);
     m_disks_monitor = std::make_unique<CLogicalDiskInfoMonitoring>(
         m_stop_event,
         specification,
-        m_disks_json);
+        m_p_drives_data);
 
     CLOG_TRACE_VAR_CREATION(m_disks_monitor);
     CLOG_DEBUG_END_FUNCTION( );
@@ -215,10 +219,13 @@ bool CService::InitializeLogicalDiscMonitoring(
 bool CService::InitializeProcessesMonitoring(
     const CProcessesInfoSettings& xml_settings)
 {
+    m_p_processes_data = std::make_shared<CProcessesInfoJSONDatabase>(
+        xml_settings.GetFileName( ));
+
     m_processes_monitor = std::make_unique<CProcessesInfoMonitoring>(
-        std::chrono::seconds(xml_settings.GetPeriodTime()), xml_settings.GetFileName(),
+        std::chrono::seconds(xml_settings.GetPeriodTime()),
         Utils::DefineCountType(xml_settings.GetCountType()),
-        m_stop_event, m_processes_json);
+        m_stop_event, m_p_processes_data);
     CLOG_DEBUG_START_FUNCTION( );
     CLOG_TRACE_VAR_CREATION(m_processes_monitor);
     CLOG_DEBUG_END_FUNCTION( );

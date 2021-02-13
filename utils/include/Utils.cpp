@@ -238,3 +238,19 @@ EMemoryConvertType Utils::DefineCountType(int count_type_from_xml)
         return EMemoryConvertType::BYTES;
     }
 }
+
+bool Utils::StringToDate(const std::string& date_str,
+                         const std::string& date_format, time_t& result)
+{
+    tm temp_date;
+    std::istringstream ss_date(date_str);
+    ss_date >> std::get_time(&temp_date, date_format.c_str());
+    if(ss_date.fail())
+    { return false;}
+
+    time_t date = mktime(&temp_date);
+    if(date == -1)
+    { return false;}
+
+    return true;
+}

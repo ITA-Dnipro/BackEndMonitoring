@@ -14,22 +14,22 @@
 CLogicalDiskInfoMonitoring::CLogicalDiskInfoMonitoring(
 	CEvent& stop_event,
 	CHardwareStatusSpecification* specification,
-	CThreadSafeVariable<CJSONFormatterLogicalDisk>& json_formatter) :
+	std::shared_ptr<CDrivesInfoJSONDatabase> p_database) :
 	IHardwareInfoMonitoring(stop_event),
 	m_p_specification(std::move(specification)),
 	m_p_container(nullptr),
-	m_json_formatter(json_formatter)
+	m_p_database(p_database)
 { };
 
 CLogicalDiskInfoMonitoring::CLogicalDiskInfoMonitoring(
 	CHardwareStatusSpecification* specification,
 	CContainerOfLogicalDisk* container_in_lifecircle,
 	CEvent& stop_event,
-	CThreadSafeVariable<CJSONFormatterLogicalDisk>& json_formatter) :
+	std::shared_ptr<CDrivesInfoJSONDatabase> p_database) :
 	m_p_specification(std::move(specification)),
 	m_p_container(container_in_lifecircle),
 	IHardwareInfoMonitoring(stop_event),
-	m_json_formatter(json_formatter)
+	m_p_database(p_database)
 { };
 
 CLogicalDiskInfoMonitoring::~CLogicalDiskInfoMonitoring()
@@ -55,36 +55,45 @@ bool CLogicalDiskInfoMonitoring::StartMonitoringInfo()
 	}
 	if (!m_p_container->InitializeContainerOfLogicalDisk())
 	{
-		// error
 		return false;
 	}
-	CJSONFormatSaver json_saver(
-		*m_p_container->GetSpecification()->GetPathToSaveFile());
-	CLOG_TRACE_VAR_CREATION(json_saver);
+
 	if (nullptr == m_p_container)
 	{
-		std::cout << "Problem with creating container!";
+		CLOG_WARNING("Problem with creating container!");
 		return false;
 	}
 	while (!m_stop_event.WaitFor(m_p_specification->GetPauseDuration()))
 	{
-		auto [json_formatter, mtx] = m_json_formatter.GetAccess();
-		CLOG_TRACE_VAR_CREATION(json_formatter);
-		if (!json_formatter.TryEraseAllData())
+		if (!m_p_database->ClearCommitedData())
 		{
 			continue;
 		}
 		
-		if (!m_p_container->TryUpdateInfoLogicalDiskToJSON(json_formatter))
+		const std::vector<CLogicalDiskInfo*>* p_logical_disks =
+			m_p_container->GetAllLogicalDisk( );
+
+		unsigned short disk_number = 0;
+		CLOG_TRACE_VAR_CREATION(disk_number);
+		for (const auto& disk : *p_logical_disks)
 		{
-			//exception handler
-			continue;
+			if (!disk->TryUpdateCurrentStatus( ))
+			{
+				// exception
+				CLOG_ERROR( "Unable to update logical disks info!" );
+				continue;
+			}
+			if (!m_p_database->CommitDataAdd(*disk, disk_number))
+			{
+				//exception handler
+				continue;
+			}
+			disk_number++;
 		}
 
-		if (!json_saver.TrySaveToFile(json_formatter))
+		if (!m_p_database->InsertCommitedData( ))
 		{
-			CLOG_DEBUG("ERROR! FiseSave doesn't work!");
-			//exception handler
+			CLOG_ERROR("FiseSave doesn't work!");
 			continue;
 		}
 	}

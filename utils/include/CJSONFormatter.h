@@ -30,7 +30,7 @@ protected:
 	}
 
 private:
-	nlohmann::json m_formatted_data{};
+	nlohmann::json m_formatted_data;
 	std::optional<std::string> m_date_and_time;
 };
 
