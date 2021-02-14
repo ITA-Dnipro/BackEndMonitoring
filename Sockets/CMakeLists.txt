@@ -16,10 +16,10 @@ add_library(Sockets
 		${PLATFORM_SPECIFIC_UTILS}
 		${SOCKETS_SRC_DIR}/CSocket.cpp
 		${SOCKETS_SRC_DIR}/CAcceptor.cpp
-		${SOCKETS_SRC_DIR}/CAcceptorWrapper.cpp
+		${SOCKETS_SRC_DIR}/CServiceHost.cpp
 		${SOCKETS_SRC_DIR}/CConnector.cpp
 		${SOCKETS_SRC_DIR}/CClientConnectionHandler.cpp
-		${SOCKETS_SRC_DIR}/CConnectorWrapper.cpp
+		${SOCKETS_SRC_DIR}/CClientConnectorHost.cpp
 		${SOCKETS_SRC_DIR}/CServiceConnectionHandler.cpp
 		${SOCKETS_SRC_DIR}/CSocketWrapper.cpp
 		${SOCKETS_SRC_DIR}/CDataReceiver.cpp

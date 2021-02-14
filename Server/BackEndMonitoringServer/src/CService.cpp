@@ -415,8 +415,8 @@ void CService::HandleSignal(int signal)
     {
 	m_p_service->m_stop_event.Set();
 	CLOG_DEBUG("Stop event setted");
-	m_p_service->m_p_acceptor_socket->StopSocket();
-	CLOG_DEBUG("Acceptor socket stopped!");
+	m_p_service->m_p_acceptor_socket->ShutDown();
+	CLOG_DEBUG("Close acception");
 	m_p_service->m_p_acceptor_socket.reset( );
 	CLOG_TRACE("Acceptor socket deleted!");
 	m_p_service->m_p_thread_pool.reset( );

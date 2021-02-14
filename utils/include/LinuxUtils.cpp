@@ -5,7 +5,7 @@
 #include "CReadFileWrapper.h"
 #include "Utils.h"
 #include "CLogger/include/Log.h"
-
+#include "CSocket.h"
 #include "PlatformUtils.h"
 
 CBaseSocket::CBaseSocket() : m_socket(c_invalid_socket)
@@ -19,6 +19,10 @@ int CBaseSocket::GetSocketFD() const
 	return m_socket;
 }
 
+void CBaseSocket::SetSocket(int socket_fd)
+{
+	m_socket = socket_fd;
+}
 bool CBaseSocket::InitSocket()
 {
 	m_socket = socket(AF_INET, SOCK_STREAM, NULL);
@@ -61,7 +65,7 @@ namespace PlatformUtils
 		return false;
 	}
 
-	bool Accept(int socket, CSocket& client)
+	bool Accept(int socket_fd, CSocket& client)
 	{
 		int accepted_socket = accept(socket_fd, NULL, NULL);
 		if (accepted_socket < 0)
