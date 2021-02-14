@@ -6,7 +6,7 @@ class CMonitoringJSONDataContainer
 {
 public:
 	CMonitoringJSONDataContainer(const std::filesystem::path& path_to_file,
-							 const std::string& date_format);
+							     const std::string& date_format);
 	CMonitoringJSONDataContainer(const CMonitoringJSONDataContainer&) = default;
 	CMonitoringJSONDataContainer(CMonitoringJSONDataContainer&&) noexcept = default;
 	~CMonitoringJSONDataContainer() noexcept = default;
@@ -19,7 +19,7 @@ public:
 	bool GetSelectedInfo(time_t from, time_t to, std::string& data);
 
 private:
-	std::filesystem::path m_path_to_file;
+	const std::filesystem::path& m_path_to_file;
 	const std::string m_date_format;
 	std::vector<CMonitoringJSONDataEntry> m_data_container;
 };

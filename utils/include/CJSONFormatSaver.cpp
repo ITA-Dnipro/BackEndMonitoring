@@ -7,10 +7,13 @@
 #include "CJSONFormatSaver.h"
 #include "CLogger/include/Log.h"
 
-CJSONFormatSaver::CJSONFormatSaver(const std::string& path_to_file) :
+CJSONFormatSaver::CJSONFormatSaver(const std::filesystem::path& path_to_file) :
 	m_path_to_file(path_to_file), m_number_of_spaces(3),
 	m_bytes_to_last_data(3)
-{ };
+{
+	CLOG_DEBUG_START_FUNCTION( );
+	CLOG_DEBUG_END_FUNCTION( );
+};
 
 bool CJSONFormatSaver::TrySaveToFile(const CJSONFormatter& formatted_data)
 const
@@ -18,15 +21,19 @@ const
 	CLOG_DEBUG_START_FUNCTION( );
 	if (Utils::TryCreateFileIfNotExist(m_path_to_file))
 	{
-		//write to log??
+		CLOG_DEBUG("New file created");
 	}
-
+	else
+	{
+		CLOG_ERROR("Can't create new file");
+	}
 	std::ofstream JSON_file_to_save(m_path_to_file, std::ios::binary |
 									std::ios_base::in);
 	CLOG_TRACE_VAR_CREATION(JSON_file_to_save);
 
 	if (!JSON_file_to_save.is_open( ))
 	{
+		CLOG_ERROR("Can't open file");
 		return false;
 	}
 	if (Utils::IsFileEmpty(JSON_file_to_save))
@@ -35,7 +42,7 @@ const
 		{
 			return true;
 		}
-
+		CLOG_ERROR("Can't write to file");
 		return false;
 	}
 	JSON_file_to_save.seekp(0, std::ios::end);
@@ -48,7 +55,7 @@ const
 	position = JSON_file_to_save.tellp( );
 	if (!TryWriteToFile(JSON_file_to_save, formatted_data))
 	{
-		// exception
+		CLOG_ERROR("Can't write to file");
 		return false;
 	}
 	constexpr char symbol_instead_brace[] = { ',' };
@@ -66,7 +73,11 @@ bool CJSONFormatSaver::TrySaveToFile(const CJSONFormatter& formatted_data,
 	CLOG_DEBUG_START_FUNCTION( );
 	if (Utils::TryCreateFileIfNotExist(m_path_to_file))
 	{
-		//write to log??
+		CLOG_DEBUG("New file created");
+	}
+	else
+	{
+		CLOG_ERROR("Can't create new file");
 	}
 
 	std::ofstream JSON_file_to_save(m_path_to_file, std::ios::binary |
@@ -75,6 +86,7 @@ bool CJSONFormatSaver::TrySaveToFile(const CJSONFormatter& formatted_data,
 
 	if (!JSON_file_to_save.is_open( ))
 	{
+		CLOG_ERROR("Can't open file");
 		return false;
 	}
 	if (Utils::IsFileEmpty(JSON_file_to_save))
@@ -93,7 +105,7 @@ bool CJSONFormatSaver::TrySaveToFile(const CJSONFormatter& formatted_data,
 
 			return true;
 		}
-
+		CLOG_ERROR("Can't write to file");
 		return false;
 	}
 	JSON_file_to_save.seekp(0, std::ios::end);
@@ -106,7 +118,7 @@ bool CJSONFormatSaver::TrySaveToFile(const CJSONFormatter& formatted_data,
 	position = JSON_file_to_save.tellp( );
 	if (!TryWriteToFile(JSON_file_to_save, formatted_data))
 	{
-		// exception
+		CLOG_ERROR("Can't write to file");
 		return false;
 	}
 	block_end = JSON_file_to_save.tellp( );
@@ -132,6 +144,7 @@ bool CJSONFormatSaver::TryWriteToFile(std::ofstream& JSON_file_to_save,
 	if (!JSON_file_to_save.is_open() || 
 		nullptr == formatted_data.GetJSONFormattedData())
 	{
+		CLOG_WARNING("Error with file writing");
 		return false;
 	}
 	nlohmann::json temp_array;
