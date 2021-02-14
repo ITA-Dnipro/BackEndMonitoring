@@ -41,21 +41,20 @@ bool CAcceptor::Initialize(const std::string& ip_address,
 	return m_is_acceptor_initialized;
 }
 
-CSocket CAcceptor::AcceptNewClient()
+bool CAcceptor::AcceptNewClient(CSocket& client)
 {
-	CSocket invalid_client(c_invalid_socket);
 	if (m_is_acceptor_initialized)
 	{
 		if (m_is_socket_blocked)
 		{
-			return AcceptBlockingSockets();
+			return AcceptBlockingSockets(client);
 		}
 		else
 		{
-			return AcceptNonBlockingSockets();
+			return AcceptNonBlockingSockets(client);
 		}
 	}
-	return invalid_client;
+	return false;
 }
 
 bool CAcceptor::IsTimeOutWithoutConnections() const
@@ -114,22 +113,22 @@ bool CAcceptor::InitSocket(const int port,
 	return result;
 }
 
-CSocket CAcceptor::AcceptNonBlockingSockets()
+bool CAcceptor::AcceptNonBlockingSockets(CSocket& client)
 {
+	bool result = false;
 	sockaddress current_address = m_p_socket_acceptor->GetSocketAddress();
-	CSocket client_socket = PlatformUtils::Accept(m_p_socket_acceptor->GetSocketFD(),
-		current_address);
-	if (client_socket.IsValidSocket())
+	result = PlatformUtils::Accept(m_p_socket_acceptor->GetSocketFD(), client);
+	if (client.IsValidSocket())
 	{
 		CLOG_DEBUG_WITH_PARAMS("In the class CAcceptor was accepted socket ",
-			client_socket.GetSocketFD());
+			client.GetSocketFD());
+		return true;
 	}
-	return client_socket;
+	return false;
 }
 
-CSocket CAcceptor::AcceptBlockingSockets()
+bool CAcceptor::AcceptBlockingSockets(CSocket& client)
 {
-	CSocket invalid_client(c_invalid_socket);
 	CLOG_TRACE_START_FUNCTION();
 	m_is_time_out = false;
 	int max_sd = 0;
@@ -147,26 +146,25 @@ CSocket CAcceptor::AcceptBlockingSockets()
 		FD_SET(m_p_socket_acceptor->GetSocketFD(), &read_fds);
 		max_sd = m_p_socket_acceptor->GetSocketFD();
 
-		result_of_select = select(max_sd + 1, &read_fds, NULL, NULL, &time_out);
+		result_of_select = select(max_sd + 1, &read_fds, NULL, 
+			NULL, &time_out);
 		if(result_of_select < 0)
 		{
-			return invalid_client;
+			return false;
 		}
 		else if(result_of_select == 0)
 		{
 			m_is_time_out = true;
-			CLOG_DEBUG("Timeout while accepting clients");
-			return invalid_client;
+			return false;
 		}
 
 		if (FD_ISSET(m_p_socket_acceptor->GetSocketFD(), &read_fds))
 		{
 			CLOG_DEBUG_WITH_PARAMS("FD_ISSET reacted to the event in the socket ",
 				m_p_socket_acceptor->GetSocketFD());
-			return PlatformUtils::Accept(m_p_socket_acceptor->GetSocketFD(),
-				current_address);
+			return PlatformUtils::Accept(m_p_socket_acceptor->GetSocketFD(), client);
 		}
 	}
 	CLOG_TRACE_END_FUNCTION();
-	return invalid_client;
+	return false;
 }

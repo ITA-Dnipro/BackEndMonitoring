@@ -14,11 +14,6 @@ CBaseSocket::CBaseSocket() : m_socket(c_invalid_socket)
 CBaseSocket::CBaseSocket(int socket_fd) : m_socket(socket_fd)
 { }
 
-CBaseSocket::~CBaseSocket()
-{ 
-	PlatformUtils::CloseSocket(m_socket);
-}
-
 int CBaseSocket::GetSocketFD() const
 {
 	return m_socket;
@@ -66,13 +61,15 @@ namespace PlatformUtils
 		return false;
 	}
 
-	CSocket Accept(int socket, sockaddress& current_address)
+	bool Accept(int socket, CSocket& client)
 	{
-		
-		int addrlen = sizeof(current_address);
-		CSocket client_socket(accept(socket, (struct sockaddr*)&current_address,
-			(socklen_t*)&addrlen));
-		return client_socket;
+		int accepted_socket = accept(socket_fd, NULL, NULL);
+		if (accepted_socket < 0)
+		{
+			return false;
+		}
+		client.SetSocket(accepted_socket);
+		return true;
 	}
 
 	bool Connect(int socket, sockaddress& current_address)

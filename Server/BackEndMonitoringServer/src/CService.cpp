@@ -375,6 +375,8 @@ void CService::OnStop()
     CLOG_DEBUG_START_FUNCTION( );
     m_stop_event.Set( );
     CLOG_DEBUG("Stop event setted");
+    m_p_acceptor_socket->ShutDown();
+    CLOG_DEBUG("Close acception");
     m_main_thread.join( );
     CLOG_TRACE("Main thread joined stopped!");
     m_p_acceptor_socket.reset( );

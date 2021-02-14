@@ -8,7 +8,14 @@ CSocket::CSocket(const int port, const std::string& ip_address)
 	InitAddress(port, ip_address);
 }
 
-CSocket::CSocket(int socket_fd) : CBaseSocket(socket_fd)
+CSocket::CSocket(const int port, const std::string& ip_address, int socket_fd)
+	: CBaseSocket(socket_fd)
+{
+	InitAddress(port, ip_address);
+}
+
+CSocket::CSocket(sockaddress address, int socket_fd)
+	: CBaseSocket(socket_fd), m_address(address)
 { }
 
 void CSocket::InitAddress(const int port,

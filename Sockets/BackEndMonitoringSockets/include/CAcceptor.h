@@ -16,7 +16,7 @@ public:
 
 	bool Initialize(const std::string& ip_address, const int listener_port, 
 		const int connections);
-	CSocket AcceptNewClient();
+	bool AcceptNewClient(CSocket& client);
 	bool IsTimeOutWithoutConnections() const;
 
 private:
@@ -24,8 +24,8 @@ private:
 	bool StartListening(const int connections) const;
 	bool MakeSocketMulticonnected() const;
 	bool InitSocket(const int port, const std::string& ip_address);
-	CSocket AcceptNonBlockingSockets();
-	CSocket AcceptBlockingSockets();
+	bool AcceptNonBlockingSockets(CSocket& client);
+	bool AcceptBlockingSockets(CSocket& client);
 
 	std::unique_ptr<CSocket> m_p_socket_acceptor;
 	CEvent& m_event;
