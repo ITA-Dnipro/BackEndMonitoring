@@ -37,6 +37,10 @@ bool CAcceptor::Initialize(const std::string& ip_address,
 		CLOG_DEBUG_WITH_PARAMS("m_is_acceptor_initialized equal ",
 			m_is_acceptor_initialized);
 	}
+	else
+	{
+		CLOG_ERROR("Cannot initialize server acceptor socket!!!");
+	}
 	CLOG_DEBUG_END_FUNCTION();
 	return m_is_acceptor_initialized;
 }
@@ -53,6 +57,10 @@ bool CAcceptor::AcceptNewClient(CSocket& client)
 		{
 			return AcceptNonBlockingSockets(client);
 		}
+	}
+	else
+	{
+		CLOG_ERROR("CAcceptor socket is not initialized!!!");
 	}
 	return false;
 }
@@ -89,8 +97,8 @@ bool CAcceptor::MakeSocketMulticonnected() const
 {
 	CLOG_DEBUG_START_FUNCTION();
 	int on = 1;
-	if (setsockopt(m_p_socket_acceptor->GetSocketFD(), SOL_SOCKET, SO_REUSEADDR,
-		(char*)&on, sizeof(on)) != c_error_socket)
+	if (setsockopt(m_p_socket_acceptor->GetSocketFD(), SOL_SOCKET, 
+		SO_REUSEADDR,	(char*)&on, sizeof(on)) != c_error_socket)
 	{
 		CLOG_DEBUG_WITH_PARAMS("Setsockopt was successful, the socket",
 			m_p_socket_acceptor->GetSocketFD(), "was made multiconnected");
@@ -116,15 +124,17 @@ bool CAcceptor::InitSocket(const int port,
 bool CAcceptor::AcceptNonBlockingSockets(CSocket& client)
 {
 	bool result = false;
+	CLOG_TRACE_START_FUNCTION();
+	
 	sockaddress current_address = m_p_socket_acceptor->GetSocketAddress();
 	result = PlatformUtils::Accept(m_p_socket_acceptor->GetSocketFD(), client);
 	if (client.IsValidSocket())
 	{
 		CLOG_DEBUG_WITH_PARAMS("In the class CAcceptor was accepted socket ",
 			client.GetSocketFD());
-		return true;
 	}
-	return false;
+	CLOG_TRACE_END_FUNCTION();
+	return result;
 }
 
 bool CAcceptor::AcceptBlockingSockets(CSocket& client)
@@ -134,6 +144,8 @@ bool CAcceptor::AcceptBlockingSockets(CSocket& client)
 	int max_sd = 0;
 	int result_of_select = 0;
 	fd_set read_fds;
+	fd_set error_fds;
+	fd_set write_fds;
 	timeval time_out;
 
 	sockaddress current_address = m_p_socket_acceptor->GetSocketAddress();
@@ -141,13 +153,19 @@ bool CAcceptor::AcceptBlockingSockets(CSocket& client)
 	while (!m_event.WaitFor(std::chrono::nanoseconds(1000)))
 	{
 		FD_ZERO(&read_fds);
+		FD_ZERO(&write_fds);
+		FD_ZERO(&error_fds);
+
 		time_out.tv_sec = m_socket_timeout;
 
 		FD_SET(m_p_socket_acceptor->GetSocketFD(), &read_fds);
+		FD_SET(m_p_socket_acceptor->GetSocketFD(), &write_fds);
+		FD_SET(m_p_socket_acceptor->GetSocketFD(), &error_fds);
+
 		max_sd = m_p_socket_acceptor->GetSocketFD();
 
-		result_of_select = select(max_sd + 1, &read_fds, NULL, 
-			NULL, &time_out);
+		result_of_select = select(max_sd + 1, &read_fds, &write_fds,
+			&error_fds, &time_out);
 		if(result_of_select < 0)
 		{
 			return false;
@@ -163,6 +181,12 @@ bool CAcceptor::AcceptBlockingSockets(CSocket& client)
 			CLOG_DEBUG_WITH_PARAMS("FD_ISSET reacted to the event in the socket ",
 				m_p_socket_acceptor->GetSocketFD());
 			return PlatformUtils::Accept(m_p_socket_acceptor->GetSocketFD(), client);
+		}
+		if (FD_ISSET(m_p_socket_acceptor->GetSocketFD(), &error_fds))
+		{
+			CLOG_ERROR_WITH_PARAMS("Error on the server socket",
+				m_p_socket_acceptor->GetSocketFD());
+			return false;
 		}
 	}
 	CLOG_TRACE_END_FUNCTION();
