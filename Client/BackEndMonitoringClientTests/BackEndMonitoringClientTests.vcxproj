@@ -54,13 +54,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\BackEndMonitoringClient\BackEndMonitoringClient.vcxproj">
       <Project>{753765df-b310-4626-a659-86490d3df917}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
