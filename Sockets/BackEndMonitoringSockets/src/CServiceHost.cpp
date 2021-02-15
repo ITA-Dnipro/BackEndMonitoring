@@ -149,6 +149,9 @@ bool CServiceHost::AcceptRequest()
 		return false;
 	}
 	{
+		return false;
+	}
+	{
 		std::lock_guard<std::mutex> lock(m_mutex);
 
 		auto it = m_clients.begin();
