@@ -97,7 +97,6 @@ void CServiceHost::InitSocketWrapper()
 bool CServiceHost::HandleEvents()
 {
 	CLOG_DEBUG_START_FUNCTION();
-	bool is_thread_working = false;
 	CLOG_DEBUG("Start accepting clients");
 	AcceptClients();
 	CLOG_DEBUG("Start handling clients");
@@ -148,9 +147,7 @@ bool CServiceHost::AcceptRequest()
 	{
 		return false;
 	}
-	{
-		return false;
-	}
+
 	{
 		std::lock_guard<std::mutex> lock(m_mutex);
 
