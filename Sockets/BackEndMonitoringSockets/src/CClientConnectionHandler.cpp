@@ -85,7 +85,7 @@ bool CClientConnectionHandler::HandleResponseEvent(const CSocket& client_socket,
 
 bool CClientConnectionHandler::HandleExitEvent(const CSocket& client_socket)
 {
-	return SendRequestToServer(client_socket, "Exit");
+	return SendRequestToServer(client_socket, "EXIT");
 }
 
 bool CClientConnectionHandler::HandleDataReceivedEvent(const CSocket& 
