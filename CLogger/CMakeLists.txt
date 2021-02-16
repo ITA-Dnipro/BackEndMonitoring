@@ -24,4 +24,5 @@ add_library(CLogger ${CLOG_BUILD}
 		${CLOGGER_SRC_DIR}/CLogger/CLogger.cpp
 		${CLOGGER_SRC_DIR}/ELogConfig/ELogConfig.cpp
 		${CLOGGER_SRC_DIR}/ELogFlush/ELogFlush.cpp
-		${CLOGGER_SRC_DIR}/ELogLevel/ELogLevel.cpp)
+		${CLOGGER_SRC_DIR}/ELogLevel/ELogLevel.cpp
+		${CLOGGER_SRC_DIR}/CLoggerGlobal/GlobalLogger.cpp)
