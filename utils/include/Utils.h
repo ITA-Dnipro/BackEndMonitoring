@@ -50,5 +50,5 @@ namespace Utils
 	[[nodiscard]] bool IsDayPassed(std::string& day);
 	[[nodiscard]] bool IsHourPassed(std::string& time);
 	[[nodiscard]] char DetermineSectDividingSymbol(const std::string& path);
-
+	std::string TimeToString(time_t time);
 }

@@ -128,7 +128,8 @@ void CService::RunServer()
         CLOG_PROD("ERROR! Can't create sockets!");
         return;
     }
-    CDataProvider json_data(m_p_processes_data, m_p_drives_data);
+    CDataProvider json_data(m_p_processes_data, m_p_drives_data, 
+                            m_p_resources_data);
     CLOG_TRACE_VAR_CREATION(json_data);
 
     if (!m_p_acceptor_socket->Initialize(std::move(m_p_thread_pool),
@@ -221,11 +222,12 @@ bool CService::InitializeProcessesMonitoring(
 {
     m_p_processes_data = std::make_shared<CProcessesInfoJSONDatabase>(
         xml_settings.GetFileName( ));
+    m_p_resources_data = std::make_shared<CResourcesInfoJSONDatabase>();
 
     m_processes_monitor = std::make_unique<CProcessesInfoMonitoring>(
         std::chrono::seconds(xml_settings.GetPeriodTime()),
         Utils::DefineCountType(xml_settings.GetCountType()),
-        m_stop_event, m_p_processes_data);
+        m_stop_event, m_p_processes_data, m_p_resources_data);
     CLOG_DEBUG_START_FUNCTION( );
     CLOG_TRACE_VAR_CREATION(m_processes_monitor);
     CLOG_DEBUG_END_FUNCTION( );

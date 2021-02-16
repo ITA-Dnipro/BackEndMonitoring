@@ -7,7 +7,8 @@ class CDataProvider
 public:
 	CDataProvider() = delete;
 	explicit CDataProvider(std::shared_ptr<IInfoDatabase> p_processes_data,
-						   std::shared_ptr<IInfoDatabase> p_disks_data);
+						   std::shared_ptr<IInfoDatabase> p_disks_data,
+						   std::shared_ptr<IInfoDatabase> p_resources_data);
 	~CDataProvider() noexcept = default;
 
 	std::string GetProcessesInfo() const;
@@ -17,5 +18,6 @@ public:
 private:
 	std::shared_ptr<IInfoDatabase> m_p_processes_data;
 	std::shared_ptr<IInfoDatabase> m_p_disks_data;
+	std::shared_ptr<IInfoDatabase> m_p_resources_data;
 };
 

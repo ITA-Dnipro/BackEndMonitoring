@@ -3,6 +3,7 @@
 #include "Utils.h"
 #include "CDateTimePathConstructor.h"
 #include "Log.h"
+
 #include "CProcessesInfoJSONDatabase.h"
 
 CProcessesInfoJSONDatabase::CProcessesInfoJSONDatabase(

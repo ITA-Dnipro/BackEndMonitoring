@@ -1,3 +1,5 @@
+#pragma once
+
 #include "IInfoDatabase.h"
 
 class CResourcesInfoJSONDatabase : public IInfoDatabase
@@ -9,7 +11,8 @@ public:
 
 	~CResourcesInfoJSONDatabase() noexcept = default;
 
-	bool InsertData(double cpu_usage, double ram_usage, double pagefile_usage);
+	void InsertData(long double cpu_usage,
+		long double ram_usage, long double pagefile_usage);
 
 	bool GetAllInfo(std::string& data) override;
 	bool GetLastInfo(std::string& data) override;
@@ -17,9 +20,10 @@ public:
 private:
 	struct Entry
 	{
-		double cpu;
-		double ram;
-		double pagefile;
+		time_t timestamp;
+		long double cpu;
+		long double ram;
+		long double pagefile;
 	};
 
 	std::vector<Entry> m_data_container;

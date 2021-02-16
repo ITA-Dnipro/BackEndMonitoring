@@ -5,6 +5,7 @@
 #include "CServiceHost.h"
 #include "CProcessesInfoJSONDatabase.h"
 #include "CDrivesInfoJSONDatabase.h"
+#include "CResourcesInfoJSONDatabase.h"
 #include "CDataReader.h"
 #include "CLogger/include/Log.h"
 
@@ -111,6 +112,7 @@ private:
     std::unique_ptr<CServiceHost> m_p_acceptor_socket;
     std::shared_ptr<CProcessesInfoJSONDatabase> m_p_processes_data;
     std::shared_ptr<CDrivesInfoJSONDatabase> m_p_drives_data;
+    std::shared_ptr<CResourcesInfoJSONDatabase> m_p_resources_data;
     std::shared_ptr<CProcessesInfoMonitoring> m_processes_monitor;
     std::shared_ptr<CLogicalDiskInfoMonitoring> m_disks_monitor;
     std::unique_ptr<std::fstream> m_log_stream;

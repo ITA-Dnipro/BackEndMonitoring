@@ -301,3 +301,18 @@ char Utils::DetermineSectDividingSymbol(const std::string& path)
 {
     return path.find_last_of('/') == std::string::npos ? '\\' : '/';
 }
+
+std::string Utils::TimeToString(time_t time)
+{
+    std::string result;
+    tm* p_ltm = std::localtime(&time);
+
+    char buff[50]{};
+    std::strftime(buff, 50, "%d.%m.%Y %X", p_ltm);
+
+    // Clean redundant \0 symbols, that fills resized string
+    result = buff;
+    result.erase(std::remove(result.begin(),
+        result.end(), '\0'), result.end());
+    return result;
+}
