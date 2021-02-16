@@ -13,11 +13,11 @@ int main(int argc, char** argv)
 	CService::GetRelativePath() + "Log.txt",
 	std::ios_base::app);
 
-	CLOG_START_CREATION();
+	CLOG_CREATION_START();
 
-	CLOG_SET_LOG_NAME("ServiceLogger");
-	CLOG_SET_LOG_LEVEL(ELogLevel::DEBUG_LEVEL);
-	CLOG_SET_LOG_CONFIG(
+	CLOG_CREATION_SET_LOG_NAME("ServiceLogger");
+	CLOG_CREATION_SET_LOG_LEVEL(ELogLevel::DEBUG_LEVEL);
+	CLOG_CREATION_SET_LOG_CONFIG(
 		ELogConfig::LOG_NAME,
 		ELogConfig::LOG_LEVEL,
 		ELogConfig::CALL_TIME,
@@ -28,11 +28,11 @@ int main(int argc, char** argv)
 		ELogConfig::MESSAGE,
 		ELogConfig::PARAMS);
 
-	CLOG_ADD_SAFE_STREAM(stream);
+	CLOG_CREATION_ADD_SAFE_STREAM(stream);
 
 	CLOG_BUILD();
 
-  CLOG_END_CREATION();
+  CLOG_CREATION_END();
 
   auto parser = std::make_unique<CommandLineHandler>(argc, argv);
   bool success = parser->Parse( );
