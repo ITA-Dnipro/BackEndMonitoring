@@ -1,12 +1,12 @@
 #pragma once
-#include "../include/stdafx.h"
+#include "stdafx.h"
 
 #include <functional>
 
-#include "../ELogConfig/ELogConfig.h"
-#include "../ELogLevel/ELogLevel.h"
-#include "../ELogFlush/ELogFlush.h"
-#include "../CLogMessage/CLogMessage.h"
+#include "ELogConfig/ELogConfig.h"
+#include "ELogLevel/ELogLevel.h"
+#include "ELogFlush/ELogFlush.h"
+#include "CLogMessage/CLogMessage.h"
 
 /// <summary>
 ///		Class to output <c>CLogMessage</c>
@@ -265,6 +265,9 @@ private:
 	template<typename... Args>
 	void PrintToAllStreams(const CLogMessage<Args...>& log_message) const;
 
+	template<typename... Args>
+	std::string MakeMessage(const CLogMessage<Args...>& log_message) const;
+	
 	/// <summary>
 	///		Prints to one stream <c>CLogMessage</c> object
 	/// </summary>
@@ -281,8 +284,7 @@ private:
 	/// <returns>
 	///		Modified output stream
 	/// </returns>
-	template<typename... Args>
-	std::ostream& PrintLogMessage(const CLogMessage<Args...>& log_message,
+	std::ostream& PrintLogMessage(const std::string& message,
 		std::ostream& stream) const;
 
 	/// <summary>
@@ -333,9 +335,6 @@ private:
 	/// </param>
 	void PrintToAllStreams(const std::string& info) const;
 
-	std::ostream& PrintLogInfo(const std::string& info,
-		std::ostream& stream) const;
-
 	inline std::ostream& FlushFunction(std::ostream&) const;
 };
 
@@ -376,20 +375,21 @@ void CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message) const
 template<typename ... Args>
 void CLogger::PrintToAllStreams(const CLogMessage<Args...>& log_message) const
 {
+	const std::string message = MakeMessage(log_message);
 	for (const auto& [stream, mutex] : m_write_stream_list)
 	{
 		auto unique_lock = nullptr == mutex ?
 			std::unique_lock<std::mutex>() :
 			std::unique_lock<std::mutex>(*mutex);
 
-		PrintLogMessage(log_message, stream);
+		PrintLogMessage(message, stream);
 	}
 }
 
 template<typename... Args>
-std::ostream& CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message,
-	std::ostream& stream) const
+std::string CLogger::MakeMessage(const CLogMessage<Args...>& log_message) const
 {
+	std::stringstream stream;
 	for (const auto& config : m_log_config_list)
 	{
 		switch (config)
@@ -457,7 +457,7 @@ std::ostream& CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message,
 	}
 
 	// TODO remove last char " "
-	return stream << std::endl;
+	return stream.str();
 }
 
 template<typename... Args>

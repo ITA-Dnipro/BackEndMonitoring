@@ -5,6 +5,8 @@
 #include "ELogLevel/ELogLevel.h"
 #include "ELogFlush/ELogFlush.h"
 #include "CLogger/CLogger.h"
+#include "Utils/Utils.h"
+
 /// <summary>
 ///		Class, that sets basic configuration of <c>CLogger</c> and creates it
 /// </summary>
@@ -206,7 +208,7 @@ public:
 	///		const auto* testBuilder  = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 	///		const CLogger* testLogger = testBuilder->BuildLog();
 	/// </example>
-	[[nodiscard]] CLogger* BuildLog() const;
+	[[nodiscard]] CLogger* BuildLog();
 	/// <summary>
 	///		Allocates memory and creates <c>CLogger</c>
 	/// </summary>
@@ -218,7 +220,7 @@ public:
 	///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 	///		const std::unique_ptr<CLogger> testLogger = testBuilder->BuildUniqueLog();
 	/// </example>
-	[[nodiscard]] std::unique_ptr<CLogger> BuildUniqueLog() const;
+	[[nodiscard]] std::unique_ptr<CLogger> BuildUniqueLog();
 	/// <summary>
 	///		Allocates memory and creates <c>CLogger</c>
 	/// </summary>
@@ -230,7 +232,7 @@ public:
 	///		const auto* testBuilder = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 	///		const std::unique_ptr<CLogger> testLogger = testBuilder->BuildSharedLog();
 	/// </example>
-	[[nodiscard]] std::shared_ptr<CLogger> BuildSharedLog() const;
+	[[nodiscard]] std::shared_ptr<CLogger> BuildSharedLog();
 
 	CLogBuilder& operator=(const CLogBuilder&) = delete;
 	/// <summary>
@@ -246,9 +248,12 @@ public:
 	CLogBuilder& operator=(CLogBuilder&&) noexcept;
 
 private:
+	static ELogLevel m_buffer_log_level;
+	
 	ELogLevel m_log_level;
 	ELogFlush m_log_flush;
 	std::string m_log_name;
+	std::queue<CLogMessage<>> m_log_buffer;
 	std::list<ELogConfig> m_log_config_list;
 	
 	std::list<std::reference_wrapper<std::ostream>> m_write_stream_safe_list;
@@ -257,13 +262,20 @@ private:
 	template<typename... Args>
 	CLogBuilder& AddLogConfig(ELogConfig log_config, Args... args);
 	CLogBuilder& AddLogConfig(ELogConfig log_config);
+
+	void PrintBuffer(CLogger* logger);
 };
+
+inline ELogLevel CLogBuilder::m_buffer_log_level = ELogLevel::PROD_LEVEL;
 
 template<typename... Args>
 CLogBuilder& CLogBuilder::SetLogConfig(Args... args)
 {
 	m_log_config_list.clear();
 	AddLogConfig(args...);
+	m_log_buffer.push(CLogMessage<>(std::string("Configs was set"),
+		m_buffer_log_level, __LINE__, LogUtils::GetFileNameByPath(__FILE__),
+		__FUNCTION__, LogUtils::GetTime(), LogUtils::GetThisThreadIdString()));
 	
 	return *this;
 }
@@ -276,6 +288,11 @@ CLogBuilder& CLogBuilder::AddLogConfig(const ELogConfig log_config, Args... args
 	{
 		m_log_config_list.emplace_back(log_config);
 	}
+	m_log_buffer.push(CLogMessage<>(std::string("Config") +
+		" " + LogConfigToString(log_config) + " " + "was added",
+		m_buffer_log_level, __LINE__, LogUtils::GetFileNameByPath(__FILE__),
+		__FUNCTION__, LogUtils::GetTime(), LogUtils::GetThisThreadIdString()));
+
 	
 	return AddLogConfig(args...);
 }
