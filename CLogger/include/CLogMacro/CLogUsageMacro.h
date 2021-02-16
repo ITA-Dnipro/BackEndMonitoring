@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 #include "Utils/Utils.h"
-#include "GlobalLogger.h"
+#include "CLoggerGlobal/GlobalLogger.h"
 
 // Takes fifteenth argument from parameter pack
 #define TAKE_15(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, N, ...) \
@@ -58,18 +58,18 @@
 	std::make_pair(std::string(GET_TYPE(x)) + " " + GET_NAME(x), x) \
 
 // Prints all info-configs of logger
-#define CLOG_INFO() \
-	CLog::GetLogger()->PrintLogInfo() \
+#define CLOG_CONFIG() \
+	global_logger_wrapper->GetLogger()->PrintLogInfo() \
 
 // Creates and prints CLogMessage of some CLogLevel via CLogger
 #define CLOG_WRITE(messageString, logLevel) \
-    CLog::GetLogger()->PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
+   global_logger_wrapper->GetLogger()->PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
                             LogUtils::GetFileNameByPath(__FILE__), __FUNCTION__, \
                             LogUtils::GetTime(), LogUtils::GetThisThreadIdString())) \
 
 // Creates and prints CLogMessage with variable parameters of some CLogLevel via CLogger
 #define CLOG_WRITE_WITH_PARAMS(messageString, logLevel, ...) \
-    CLog::GetLogger()->PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
+   global_logger_wrapper->GetLogger()->PrintLogMessage(CLogMessage(messageString, logLevel, __LINE__, \
                             LogUtils::GetFileNameByPath(__FILE__), __FUNCTION__, \
                             LogUtils::GetTime(), LogUtils::GetThisThreadIdString(), \
 							std::make_tuple(FOR_EACH(MAKE_PAIR, __VA_ARGS__)))) \
@@ -105,6 +105,14 @@
 // Creates and prints WARNING!! CLogMessage via CLogger with variable parameters
 #define CLOG_WARNING_WITH_PARAMS(messageString, ...) \
 	CLOG_PROD_WITH_PARAMS(std::string("WARNING!!") + " " + (messageString), __VA_ARGS__) \
+
+// Creates and prints INFO: CLogMessage via CLogger
+#define CLOG_INFO(messageString) \
+	CLOG_PROD(std::string("INFO:") + " " + (messageString)) \
+
+// Creates and prints INFO: CLogMessage via CLogger with variable parameters
+#define CLOG_INFO_WITH_PARAMS(messageString, ...) \
+	CLOG_PROD_WITH_PARAMS(std::string("INFO:") + " " + (messageString), __VA_ARGS__) \
 
 // Creates and prints ERROR!!! CLogMessage via CLogger
 #define CLOG_ERROR(messageString) \

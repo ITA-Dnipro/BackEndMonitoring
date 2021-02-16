@@ -111,14 +111,14 @@ void CLogger::PrintToAllStreams(const std::string& info) const {
 			std::unique_lock<std::mutex>() :
 			std::unique_lock<std::mutex>(*mutex);
 		
-		PrintLogInfo(info, stream);
+		PrintLogMessage(info, stream);
 	}
 }
 
 CLogger& CLogger::operator=(CLogger&& move) noexcept = default;
 
-std::ostream& CLogger::PrintLogInfo(const std::string& info, // TODO: maybe static
+std::ostream& CLogger::PrintLogMessage(const std::string& message,
 	std::ostream& stream) const
 {
-	return stream << info << std::endl;
+	return stream << message << std::endl;
 }

@@ -43,11 +43,11 @@
 	#include <WinSock2.h>
 	#include <ws2tcpip.h>
 	#pragma comment(lib, "ws2_32.lib")
-	#include <Windows.h>
-	#include <psapi.h>
-	#include <WtsApi32.h>
-	#include <strsafe.h>
 	#include <atlstr.h>
+	#include <psapi.h>
+	#include <strsafe.h>
+	#include <Windows.h>
+	#include <WtsApi32.h>
 #elif defined(BACK_END_MONITORING_SYS_LINUX) || defined(BACK_END_MONITORING_SYS_MACOS)
 #include <ctime>
 	#include <sys/types.h>
@@ -64,26 +64,27 @@
 	#include <csignal>
 #endif
 
-#include <iostream>
-#include <future>
-#include <queue>
-#include <condition_variable>
-#include <functional>
-#include <fstream>
-#include <chrono>
-#include <ctime>
-#include <iomanip>
-#include <string>
-#include <filesystem>
-#include <cmath>
-#include <unordered_map>
-#include <list>
-#include <vector>
-#include <cassert>
-#include <memory>
 #include <algorithm>
+#include <cassert>
+#include <chrono>
+#include <cmath>
+#include <condition_variable>
+#include <ctime>
+#include <filesystem>
+#include <fstream>
+#include <functional>
+#include <future>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <memory>
 #include <optional>
-#include <typeinfo>
+#include <queue>
 #include <sstream>
+#include <string>
+#include <typeinfo>
+#include <unordered_map>
+#include <vector>
 
 #include "json.hpp"
