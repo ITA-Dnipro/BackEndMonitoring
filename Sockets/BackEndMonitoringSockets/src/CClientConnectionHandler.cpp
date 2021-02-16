@@ -63,36 +63,29 @@ bool CClientConnectionHandler::HandleResponseEvent(const CSocket& client_socket,
 	if (result)
 	{
 		// If we get the wrong request from the server
-		if (message.compare("-1") == c_equal)
+		if (message.compare("-1") == 0)
 		{
 			CLOG_ERROR_WITH_PARAMS("Response from the server", message);
 			return false;
 		}
-		else if (message.compare("Request lost") == c_equal) // If we lost request
+		else if (message.compare("Request lost") == 0) // If we lost request
 		{
 			CLOG_ERROR_WITH_PARAMS("Response from the server", message);
 			result = HandleLostRequestEvent(client_socket, message);
 		}
 	}
 
-	if(result)
+	if(!result)
 	{
-		return HandleDataReceivedEvent(client_socket);
+		result = HandleLostRequestEvent(client_socket, message);
 	}
 
-	return false;
+	return result;
 }
 
 bool CClientConnectionHandler::HandleExitEvent(const CSocket& client_socket)
 {
 	return SendRequestToServer(client_socket, "EXIT");
-}
-
-bool CClientConnectionHandler::HandleDataReceivedEvent(const CSocket& 
-	client_socket) const
-{
-	CLOG_DEBUG("Handle data received event");
-	return m_p_client_stream->Send(client_socket, "DATA RECEIVED");
 }
 
 bool CClientConnectionHandler::HandleLostRequestEvent(const CSocket& client_socket,
@@ -102,19 +95,22 @@ bool CClientConnectionHandler::HandleLostRequestEvent(const CSocket& client_sock
 	int count_trials = 0;
 	std::string request_str = ConvertRequestToString(m_current_request);
 
-	if(request_str.compare("ERROR") == c_equal)
+	if(request_str.compare("ERROR") == 0)
 	{
 		return false;
 	}
 	while (count_trials++ < max_trials)
 	{
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		CLOG_DEBUG_WITH_PARAMS("Request data again", client_socket.GetSocketFD(), request_str);
 		if (SendRequestToServer(client_socket, request_str)
 			&& m_p_client_stream->Receive(client_socket, message))
 		{
-			if (!message.empty() && message.compare("Request lost") != c_equal 
-				&& message.compare("-1") != c_equal)
+			CLOG_DEBUG_WITH_PARAMS("We receive response", message.size());
+			if (!message.empty() && message.compare("Request lost") != 0 
+				&& message.compare("-1") != 0)
 			{
-				return HandleDataReceivedEvent(client_socket);
+				return true;
 			}
 		}
 	}

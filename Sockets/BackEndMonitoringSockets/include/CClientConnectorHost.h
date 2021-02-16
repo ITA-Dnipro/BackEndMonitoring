@@ -21,8 +21,6 @@ public:
 	bool Exit() const;
 
 private:
-	const int c_equal = 0;
-	
 	[[nodiscard]] std::unique_ptr<CClientConnectionHandler> InitClientHandler();
 	std::unique_ptr<CConnector> InitConnector(const int port, 
 		const std::string& ip_address);

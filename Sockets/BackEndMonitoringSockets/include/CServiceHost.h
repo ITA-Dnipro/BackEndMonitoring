@@ -29,12 +29,11 @@ private:
 	void InitSocketWrapper();
 	bool HandleEvents();
 	bool AcceptRequest();
-	//bool AddClientToThread(const CSocket& client);
 	void AddClientToThread(const CSocket& client);
 	bool DeleteBrokenSocket(const int socket_descriptor);
 	void AcceptClients();
 	void DeleteClients();
-
+	
 	std::mutex m_mutex;
 	std::string m_ip_address;
 	std::vector<CSocket> m_clients;
@@ -45,6 +44,7 @@ private:
 	CEvent& m_event;
 	const int m_port;
 	int m_socket_timeout;
+	int m_num_working_threads;
 	bool m_is_socket_blocked;
 };
 

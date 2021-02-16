@@ -26,9 +26,9 @@ CService* CService::m_p_service = nullptr;
 
 bool CService::Run()
 {
-#if defined(_WIN64) || defined(_WIN32)
-
     m_p_service = this;
+	
+#if defined(_WIN64) || defined(_WIN32)
 
     CHAR* name = const_cast<CString&>(m_name).GetBuffer();
 
@@ -41,8 +41,6 @@ bool CService::Run()
     return ::StartServiceCtrlDispatcher(table_entry) == TRUE;
 
 #elif __linux__
-
-    m_p_service = this;
 
     RunServer( );
 

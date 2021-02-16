@@ -86,7 +86,7 @@ void CClient::Execute()
 						message + "\n\n");
 					message.clear();
 				}
-				std::this_thread::sleep_for(std::chrono::seconds(1));
+				std::this_thread::sleep_for(std::chrono::seconds(5));
 			}
 			break;
 		}
@@ -147,10 +147,9 @@ bool CClient::MakeRequest(ERequestType type, std::string& message)
 	return false;
 }
 
-bool CClient::InitHost(const int port, const std::string& ip_address)
+void CClient::InitHost(const int port, const std::string& ip_address)
 {
 	 m_connector = std::make_unique<CClientConnectorHost>(port, ip_address);
-	 return true;
 }
 
 std::string CClient::RequestProcessesData()

@@ -20,7 +20,7 @@ private:
 
 	bool Connect();
 	bool MakeRequest(ERequestType type, std::string& message);
-	bool InitHost(const int port, const std::string& ip_address);
+	void InitHost(const int port, const std::string& ip_address);
 	std::string RequestProcessesData();
 	std::string RequestDisksData();
 	std::string RequestAllData();
