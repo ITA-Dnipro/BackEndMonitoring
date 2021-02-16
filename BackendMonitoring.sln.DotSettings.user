@@ -1,0 +1,12 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=264a3c4a_002D5c62_002D4251_002D8939_002D9fa7dd9f41d1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TryToConvertToIntegerMax" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;GTest::8318824B-635C-42F9-8D72-2ED17B6101F4::.NETFramework,Version=v4.0::CXMLDataReaderTestFixture.TryToBoolTestEnable&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;GTest::8318824B-635C-42F9-8D72-2ED17B6101F4::.NETFramework,Version=v4.0::CXMLDataReaderTestFixture.TryToBoolTestFenableck&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=57379f07_002D4e2a_002D4864_002Dbad8_002D20209a7a0367/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TryToBoolTestDisable" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;GTest::8318824B-635C-42F9-8D72-2ED17B6101F4::.NETFramework,Version=v4.0::CXMLDataReaderTestFixture.TryToBoolTestDisable&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
