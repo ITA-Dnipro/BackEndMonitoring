@@ -18,6 +18,7 @@ bool CDateTimePathConstructor::UpdatePathToFile(std::string& path)
         }
         m_is_created_general_folder = true;
     }
+    // todo: symbol according to OS, Windows - \\ , Linux - /
     char symbol_for_sect = Utils::DetermineSectDividingSymbol(path);
 
     m_updated_path = path;
