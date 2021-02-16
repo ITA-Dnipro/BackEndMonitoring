@@ -101,6 +101,8 @@
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp">
       <Filter>Utils\Platform Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\utils\include\CRequestHandler.cpp" />
+    <ClCompile Include="..\..\utils\include\IRequestExc.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\utils\include\stdafx.h" />
@@ -187,6 +189,11 @@
     </ClInclude>
     <ClInclude Include="..\..\utils\include\PlatformUtils.h">
       <Filter>Utils\Platform Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CRequestHandler.h" />
+    <ClInclude Include="..\..\utils\include\IRequestExc.h" />
+    <ClInclude Include="..\..\utils\include\ERequestRangeSpecification.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

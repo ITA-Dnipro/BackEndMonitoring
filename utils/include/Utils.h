@@ -6,11 +6,6 @@ enum class EMemoryConvertType;
 
 namespace Utils
 {
-	/// <summary>
-	/// Return current date and time in system
-	/// </summary>
-	/// <returns>format: dd.mm.yyyy hh:mm:ss</returns>
-
 	[[nodiscard]] std::vector<std::string> SplitIntoWords(const std::string& str,
 		const char delimiter);
 
