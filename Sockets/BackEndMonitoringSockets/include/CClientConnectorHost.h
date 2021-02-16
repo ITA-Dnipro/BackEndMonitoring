@@ -9,22 +9,21 @@ class CConnector;
 class CClientConnectorHost
 {
 public:
-	CClientConnectorHost() = delete;
-	CClientConnectorHost(const int port, const std::string& ip_address);
+	CClientConnectorHost();
 	CClientConnectorHost(const CClientConnectorHost&) = delete;
 	CClientConnectorHost(CClientConnectorHost&&) noexcept = delete;
 	~CClientConnectorHost();
 
+	bool Initialize(const int port, const std::string& ip_address);
 	bool ConnectToServer() const;
-	//int GetClientSocket() const;
 	[[nodiscard]] std::string MakeRequest(EClientRequestType r_type) const;
 	bool Exit() const;
 
 private:
 	[[nodiscard]] std::unique_ptr<CClientConnectionHandler> InitClientHandler();
-	std::unique_ptr<CConnector> InitConnector(const int port, 
-		const std::string& ip_address);
+	std::unique_ptr<CConnector> InitConnector();
 
 	std::unique_ptr<CClientConnectionHandler> m_p_client_handler;
 	std::unique_ptr<CConnector> m_connector;
+	bool m_is_initialized;
 };

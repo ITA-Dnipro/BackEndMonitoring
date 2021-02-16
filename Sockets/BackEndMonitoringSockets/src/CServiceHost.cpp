@@ -11,7 +11,7 @@ CServiceHost::CServiceHost(int port, const std::string& ip_address,
     bool is_blocked, int socket_timeout, CEvent& event) :
 	m_port(port), m_ip_address(ip_address), m_event(event),
 	m_is_socket_blocked(is_blocked), m_socket_timeout(socket_timeout),
-	m_num_working_threads(0)
+	m_num_working_threads(0), m_is_host_initialized(false)
 { }
 
 CServiceHost::~CServiceHost()
@@ -22,8 +22,13 @@ CServiceHost::~CServiceHost()
 bool CServiceHost::Initialize(std::shared_ptr<CThreadPool> pool,
 	CDataReceiver& json_data, const int connections)
 {
+	bool result = false;
 	CLOG_DEBUG_START_FUNCTION();
-	m_p_pool = pool;
+	if(m_is_host_initialized)
+	{
+		return true;
+	}
+	m_p_pool = std::move(pool);
 	if (PlatformUtils::InitializeWinLibrary())
 	{
 		CLOG_DEBUG("Windows library start working on Windows (default true for linux)");
@@ -31,27 +36,33 @@ bool CServiceHost::Initialize(std::shared_ptr<CThreadPool> pool,
 	else
 	{
 		CLOG_DEBUG("Cannnot initialize windows library!");
-		return false;
+		return result;
 	}
 	InitAcceptor();
 	InitSocketWrapper();
 	InitServiceHandler(json_data);
 
-	if (!m_p_server_acceptor->Initialize(m_ip_address, m_port, connections))
+	if (m_p_server_acceptor->Initialize(m_ip_address, m_port, connections))
 	{
-		CLOG_ERROR("Fail CAcceptor initialization");
-		return false;
+		CLOG_DEBUG("CAcceptor was successfully initialized");
+		m_is_host_initialized = result = true;
+		return result;
 	}
-	CLOG_DEBUG("CAcceptor was successfully initialized");
+	CLOG_ERROR("Fail CAcceptor initialization");
 	CLOG_DEBUG_END_FUNCTION();
-
-	return true;
+	return result;
 }
 
 bool CServiceHost::Execute()
 {
 	bool result = false;
 	CLOG_DEBUG_START_FUNCTION();
+	if(!m_is_host_initialized)
+	{
+		CLOG_DEBUG_WITH_PARAMS("CServiceHost is not initialized", m_is_host_initialized);
+		return result;
+	}
+	
 	CLOG_PROD(std::string(10u, '*') + " START SERVER " + std::string(10u, '*'));
 
 	result = HandleEvents();
@@ -63,7 +74,7 @@ bool CServiceHost::Execute()
 void CServiceHost::ShutDown()
 {
 	CLOG_DEBUG_START_FUNCTION();
-	DeleteClients();
+	DeleteAllClients();
 	m_p_server_acceptor.reset();
 	CLOG_DEBUG_END_FUNCTION();
 }
@@ -103,7 +114,6 @@ bool CServiceHost::HandleEvents()
 	CLOG_DEBUG("Start handling clients");
 	while (!m_event.WaitFor(std::chrono::milliseconds(100)))
 	{
-		CLOG_DEBUG_WITH_PARAMS("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", m_num_working_threads, m_clients.size());
 		if (m_num_working_threads == 0 && !m_clients.empty() && AcceptRequest())
 		{
 			CLOG_DEBUG("Clients was handled");
@@ -122,7 +132,6 @@ bool CServiceHost::AcceptRequest()
 	timeval time_out;
 	time_out.tv_sec = 0;
 	int select_result = 0;
-	std::vector<int> should_delete;
 	
 	size_t num_clients = 0u;
 	{
@@ -153,7 +162,7 @@ bool CServiceHost::AcceptRequest()
 	if(select_result <= 0)
 	{
 		CLOG_DEBUG_WITH_PARAMS("Error select function", select_result);
-		return false;
+		//return false;
 	}
 
 	for (size_t i = 0; i < num_clients; ++i)
@@ -162,7 +171,7 @@ bool CServiceHost::AcceptRequest()
 		{
 			CLOG_DEBUG_WITH_PARAMS("FD_ISSET found broken socket",
 				m_clients[i].GetSocketFD());
-			should_delete.push_back(m_clients[i].GetSocketFD());
+			m_disconnected_clients.push_back(m_clients[i].GetSocketFD());
 			continue;
 		}
 		if (FD_ISSET(m_clients[i].GetSocketFD(), &read_fds))
@@ -173,13 +182,10 @@ bool CServiceHost::AcceptRequest()
 		}
 	}
 	
-	if(!should_delete.empty())
+	if(!m_disconnected_clients.empty())
 	{
-		for(size_t i = 0; i < should_delete.size(); ++i)
-		{
-			DeleteBrokenSocket(should_delete[i]);
-		}
-		should_delete.clear();
+		DeleteDisconnectedClients();
+		m_disconnected_clients.clear();
 	}
 	return true;
 }
@@ -196,8 +202,8 @@ void CServiceHost::AddClientToThread(const CSocket& client)
 			if (!m_p_service_handler->HandleEvent(client,
 				EEventType::REQUEST_DATA))
 			{
-				CLOG_DEBUG_WITH_PARAMS("Close socket", client.GetSocketFD());
-				PlatformUtils::CloseSocket(client.GetSocketFD());
+				CLOG_DEBUG_WITH_PARAMS("Add socket to list for deleting", client.GetSocketFD());
+				m_disconnected_clients.push_back(client.GetSocketFD());
 			}
 			--m_num_working_threads;
 		});
@@ -215,10 +221,7 @@ bool CServiceHost::DeleteBrokenSocket(const int socket_descriptor)
 	{
 		if(it->GetSocketFD() == socket_descriptor)
 		{
-			if(it->IsValidSocket())
-			{
-				PlatformUtils::CloseSocket(it->GetSocketFD());
-			}
+			PlatformUtils::CloseSocket(it->GetSocketFD());
 			CLOG_DEBUG_WITH_PARAMS("Erase client", it->GetSocketFD());
 			m_clients.erase(it);
 			CLOG_DEBUG_WITH_PARAMS("Now we have clients", m_clients.size());
@@ -237,7 +240,7 @@ void CServiceHost::AcceptClients()
 		{
 			while (!m_event.WaitFor(std::chrono::milliseconds(100)))
 			{
-				CSocket accepted_client(m_port, m_ip_address, c_invalid_socket);
+				CSocket accepted_client(c_invalid_socket);
 				if(m_p_server_acceptor->AcceptNewClient(accepted_client)
 				&& accepted_client.IsValidSocket())
 				{
@@ -253,7 +256,7 @@ void CServiceHost::AcceptClients()
 	CLOG_DEBUG_END_FUNCTION();
 }
 
-void CServiceHost::DeleteClients()
+void CServiceHost::DeleteAllClients()
 {
 	CLOG_DEBUG_START_FUNCTION();
 	while(!m_clients.empty())
@@ -261,5 +264,18 @@ void CServiceHost::DeleteClients()
 		DeleteBrokenSocket(m_clients.front().GetSocketFD());
 	}
 	CLOG_DEBUG_WITH_PARAMS("We have clients", m_clients.size());
+	CLOG_DEBUG_END_FUNCTION();
+}
+
+void CServiceHost::DeleteDisconnectedClients()
+{
+	CLOG_DEBUG_START_FUNCTION();
+
+	CLOG_DEBUG_WITH_PARAMS("We should delete disconnected clients", 
+		m_disconnected_clients.size());
+	for (size_t i = 0; i < m_disconnected_clients.size(); ++i)
+	{
+		DeleteBrokenSocket(m_disconnected_clients[i]);
+	}
 	CLOG_DEBUG_END_FUNCTION();
 }

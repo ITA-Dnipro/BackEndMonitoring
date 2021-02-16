@@ -42,7 +42,6 @@ bool CService::Run()
 
 #elif __linux__
 
-    m_p_service = this;
     RunServer();
     return true;
 
@@ -51,8 +50,6 @@ bool CService::Run()
 
 void CService::RunServer()
 {
-
-    //std::this_thread::sleep_for(std::chrono::seconds(20));
 
     std::string path_to_log_file(GetRelativePath() + "Log.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;

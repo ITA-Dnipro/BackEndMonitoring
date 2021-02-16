@@ -4,6 +4,8 @@
 class CServiceConnectionHandler;
 class CServiceHandler;
 class CEvent;
+class CSockAddress;
+
 // Class for accepting connection by the server
 class CAcceptor
 {
@@ -24,11 +26,14 @@ private:
 	bool StartListening(const int connections) const;
 	bool MakeSocketMulticonnected() const;
 	bool InitSocket(const int port, const std::string& ip_address);
+	std::unique_ptr<CSockAddress> InitSocketAddress(const std::string& ip_address, 
+		const int listener_port);
 	bool AcceptNonBlockingSockets(CSocket& client);
 	bool AcceptBlockingSockets(CSocket& client);
 
 	std::unique_ptr<CSocket> m_p_socket_acceptor;
 	CEvent& m_event;
+	std::unique_ptr<CSockAddress> m_socket_address;
 	int m_socket_timeout;
 	bool m_is_socket_blocked;
 	bool m_is_acceptor_initialized;

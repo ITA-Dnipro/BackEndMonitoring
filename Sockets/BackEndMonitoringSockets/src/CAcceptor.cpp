@@ -3,10 +3,12 @@
 #include "CAcceptor.h"
 #include "CLogger/include/Log.h"
 #include "CEvent.h"
+#include "CSockAddress.h"
 
 CAcceptor::CAcceptor(bool is_blocked, int socket_timeout, CEvent& event)
-	: m_is_socket_blocked(is_blocked), m_socket_timeout(socket_timeout),
-	m_event(event), m_is_acceptor_initialized(false), m_is_time_out(false)
+	: m_event(event), m_socket_timeout(socket_timeout), 
+	m_is_socket_blocked(is_blocked), m_is_acceptor_initialized(false),
+	m_is_time_out(false)
 { }
 
 CAcceptor::~CAcceptor() noexcept
@@ -19,8 +21,14 @@ bool CAcceptor::Initialize(const std::string& ip_address,
 {
 	CLOG_DEBUG_START_FUNCTION();
 
+	if(m_is_acceptor_initialized)
+	{
+		return true;
+	}
+	
 	InitSocket(listener_port, ip_address);
-
+	m_socket_address = InitSocketAddress(ip_address, listener_port);
+	
 	if (MakeSocketMulticonnected() && BindSocket() &&
 		StartListening(connections))
 	{
@@ -74,9 +82,9 @@ bool CAcceptor::BindSocket() const
 {
 	bool result = false;
 	CLOG_DEBUG_START_FUNCTION();
-	sockaddress current_address = m_p_socket_acceptor->GetSocketAddress();
+	
 	result = PlatformUtils::BindSocket(m_p_socket_acceptor->GetSocketFD(),
-		current_address);
+		m_socket_address->GetSocketAddress());
 	CLOG_DEBUG_WITH_PARAMS("Bind socket returned", result);
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
@@ -114,11 +122,16 @@ bool CAcceptor::InitSocket(const int port,
 {
 	bool result = false;
 	CLOG_DEBUG_START_FUNCTION();
-	m_p_socket_acceptor = std::make_unique<CSocket>(port, ip_address);
+	m_p_socket_acceptor = std::make_unique<CSocket>();
 	CLOG_TRACE_VAR_CREATION(m_p_socket_acceptor);
 	result = m_p_socket_acceptor->InitSocket();
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
+}
+
+std::unique_ptr<CSockAddress> CAcceptor::InitSocketAddress(const std::string& ip_address, const int listener_port)
+{
+	return std::move(std::make_unique<CSockAddress>(listener_port, ip_address));
 }
 
 bool CAcceptor::AcceptNonBlockingSockets(CSocket& client)
@@ -126,7 +139,6 @@ bool CAcceptor::AcceptNonBlockingSockets(CSocket& client)
 	bool result = false;
 	CLOG_TRACE_START_FUNCTION();
 	
-	sockaddress current_address = m_p_socket_acceptor->GetSocketAddress();
 	result = PlatformUtils::Accept(m_p_socket_acceptor->GetSocketFD(), client);
 	if (client.IsValidSocket())
 	{
@@ -147,8 +159,6 @@ bool CAcceptor::AcceptBlockingSockets(CSocket& client)
 	fd_set error_fds;
 	fd_set write_fds;
 	timeval time_out;
-
-	sockaddress current_address = m_p_socket_acceptor->GetSocketAddress();
 
 	while (!m_event.WaitFor(std::chrono::nanoseconds(1000)))
 	{

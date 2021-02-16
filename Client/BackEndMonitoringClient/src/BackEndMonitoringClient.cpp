@@ -6,7 +6,7 @@
 int main(const int argc, char* argv[])
 {
 	std::string path_to_log_file("Log.txt");
-	std::fstream log_stream = std::fstream(path_to_log_file, std::ios_base::app);
+	std::fstream log_stream(path_to_log_file, std::ios_base::app);
 
 	CLOG_CREATION_START();
 
@@ -33,6 +33,5 @@ int main(const int argc, char* argv[])
 	{
 		std::cout << "Wrong parameters for the network!" << std::endl;
 	}
-	CLOG_DESTROY();
 	return 0;
 }

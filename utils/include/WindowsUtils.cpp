@@ -302,7 +302,7 @@ namespace PlatformUtils
 
 	bool CloseSocket(int socket)
 	{
-		CLOG_DEBUG_WITH_PARAMS("----------------------------------------------------------------------------------------------------Close socket", socket);
+		CLOG_DEBUG_WITH_PARAMS("Close socket", socket);
 		if (socket != c_invalid_socket)
 		{
 			if (closesocket(socket) != c_error_socket)
