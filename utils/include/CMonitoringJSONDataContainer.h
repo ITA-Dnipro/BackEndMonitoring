@@ -22,5 +22,6 @@ private:
 	const std::filesystem::path& m_path_to_file;
 	const std::string m_date_format;
 	std::vector<CMonitoringJSONDataEntry> m_data_container;
+
 };
 

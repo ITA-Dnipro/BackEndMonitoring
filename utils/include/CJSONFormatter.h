@@ -4,7 +4,7 @@
 class CJSONFormatter
 {
 public:
-	CJSONFormatter() = default;
+	CJSONFormatter();
 	CJSONFormatter(const CJSONFormatter& orig) : 
 		m_formatted_data(orig.m_formatted_data)
 	{ };

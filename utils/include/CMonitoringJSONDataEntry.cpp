@@ -35,12 +35,12 @@ bool CMonitoringJSONDataEntry::GetInfo(std::string& info)
 
 	do
 	{
-		if (!CheckData( ))
+		/*if (!CheckData( ))
 		{
 			CLOG_ERROR("Error with data in database");
 			success = false;
 			break;
-		}
+		}*/
 
 		CReadFileWrapper file(m_path_to_file);
 		if (!file.Initialize( ))
@@ -73,15 +73,15 @@ bool CMonitoringJSONDataEntry::GetDate(time_t& date_and_time)
 {
 	bool success = true;
 	CLOG_TRACE_START_FUNCTION( );
-	if(!CheckData())
+	/*if(!CheckData())
 	{
 		CLOG_ERROR("Error with data in database");
 		success = false;
 	}
 	else
-	{
+	{*/
 		date_and_time = m_date_and_time;
-	}
+	//}
 	CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
 	return success;
 }

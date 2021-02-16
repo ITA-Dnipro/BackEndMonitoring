@@ -55,12 +55,12 @@ bool CDrivesInfoJSONDatabase::InsertCommitedData( )
 
 	auto json = m_json_formatter.GetJSONFormattedData( );
 	CLOG_TRACE_VAR_CREATION(json);
-	auto date_iter = json->find("date");
+	auto date_iter = json->back().find("date");
 	CLOG_TRACE_VAR_CREATION(date_iter);
 
 	do
 	{
-		if (date_iter == json->end( ))
+		if (date_iter == json->back( ).end( ))
 		{
 			CLOG_ERROR("Cant find date in json block");
 			success = false;

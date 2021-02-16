@@ -20,5 +20,6 @@ public:
 
 private:
     CJSONFormatterProcess m_json_formatter;
+    std::vector<>
 };
 

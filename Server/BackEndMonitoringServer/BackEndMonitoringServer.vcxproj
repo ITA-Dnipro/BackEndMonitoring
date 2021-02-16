@@ -199,6 +199,7 @@
     <ClInclude Include="include\CDrivesInfoJSONDatabase.h" />
     <ClInclude Include="include\CMonitoringInfoJSONDatabase.h" />
     <ClInclude Include="include\CProcessesInfoJSONDatabase.h" />
+    <ClInclude Include="include\CResourcesInfoJSONDatabase.h" />
     <ClInclude Include="include\IHardwareInfoMonitoring.h" />
     <ClInclude Include="include\CHardwareStatusSpecification.h" />
     <ClInclude Include="include\CJSONFormatterLogicalDisk.h" />
@@ -261,6 +262,7 @@
     <ClCompile Include="src\CProcessesInfoJSONDatabase.cpp" />
     <ClCompile Include="src\CProcessInfo.cpp" />
     <ClCompile Include="src\CProcessesInfoMonitoring.cpp" />
+    <ClCompile Include="src\CResourcesInfoJSONDatabase.cpp" />
     <ClCompile Include="src\CService.cpp" />
     <ClCompile Include="src\CServiceHandler.cpp" />
     <ClCompile Include="src\stdafx.cpp">

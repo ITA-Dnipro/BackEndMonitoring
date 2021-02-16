@@ -128,6 +128,9 @@
     <ClCompile Include="..\..\utils\include\CFindFileByDateTime.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\CResourcesInfoJSONDatabase.cpp">
+      <Filter>Monitoring subsystem\Database subsystem\JSON\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\utils\include\stdafx.h" />
@@ -245,6 +248,9 @@
     <ClInclude Include="..\..\utils\include\CFindFileByDateTime.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="include\CResourcesInfoJSONDatabase.h">
+      <Filter>Monitoring subsystem\Database subsystem\JSON\Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
@@ -298,11 +304,14 @@
     <Filter Include="Monitoring subsystem\Database subsystem\JSON">
       <UniqueIdentifier>{567ad35f-6285-4d28-8b7d-e640a9c84e19}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Monitoring subsystem\Database subsystem\JSON\Drives">
+      <UniqueIdentifier>{0689bb27-12c8-4fca-a5d0-54a8daaee70a}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Monitoring subsystem\Database subsystem\JSON\Processes">
       <UniqueIdentifier>{be5b56f4-4f4f-47a8-bbd6-12b51db9a1ed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Monitoring subsystem\Database subsystem\JSON\Drives">
-      <UniqueIdentifier>{0689bb27-12c8-4fca-a5d0-54a8daaee70a}</UniqueIdentifier>
+    <Filter Include="Monitoring subsystem\Database subsystem\JSON\Resources">
+      <UniqueIdentifier>{9e1fa702-5fd9-49c3-a02a-05b1f5e6e332}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

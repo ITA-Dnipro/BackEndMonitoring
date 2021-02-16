@@ -147,10 +147,8 @@ bool CJSONFormatSaver::TryWriteToFile(std::ofstream& JSON_file_to_save,
 		CLOG_WARNING("Error with file writing");
 		return false;
 	}
-	nlohmann::json temp_array;
-	temp_array.push_back(*formatted_data.GetJSONFormattedData());
 	JSON_file_to_save <<std::setw(m_number_of_spaces) << 
-		 temp_array << std::endl;
+		*formatted_data.GetJSONFormattedData( ) << std::endl;
 	CLOG_DEBUG_END_FUNCTION();
 	return true;
 }
