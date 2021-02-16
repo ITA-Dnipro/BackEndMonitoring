@@ -40,7 +40,7 @@ public:
 	///		auto* testBuilder1       = new CLogBuilder("TestName", ELogLevel::DEBUG_LEVEL);
 	///		const auto* testBuilder2 = new CLogBuilder(std::move(*testBuilder1));
 	/// </example>
-	CLogBuilder(CLogBuilder&& move) noexcept;
+	CLogBuilder(CLogBuilder&& move);
 
 	/// <summary>
 	///		Default dtor of <c>CLogBuilder</c>

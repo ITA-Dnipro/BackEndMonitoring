@@ -2,64 +2,63 @@
 
 #include "CSocketWrapper.h"
 #include "CLogger/include/Log.h"
+#include "CSocket.h"
 
-std::string CSocketWrapper::Receive(const int socket)
+bool CSocketWrapper::Receive(const CSocket& client_socket, std::string& message)
 {
-
-	int msg_size = GetSizeFromHeader(socket);
-	int current_message_size = 0;
+	message.clear();
 	int total_received_bytes = 0;
-	char* buff = nullptr;
-
-	if (msg_size == 0)
-	{
-		return "-1";
-	}
+	int received_bytes = 0;
+	char buff[c_max_buffer_size];
 	std::string received_line;
-	received_line.reserve(msg_size);
 
-	if (msg_size >= c_max_buffer_size)
+	int total_msg_size = ReceiveHeader(client_socket);
+	if (total_msg_size <= 0)
 	{
-		current_message_size = GetSizeFromHeader(socket);
+		message = "-1";
+		return false;
 	}
-	else
+	message.reserve(total_msg_size);
+	received_line.reserve(total_msg_size);
+
+	while(true)
 	{
-		current_message_size = msg_size;
-	}
+		received_bytes = recv(client_socket.GetSocketFD(), buff, c_max_buffer_size, 0);
 
-	buff = new char[c_max_buffer_size];
-
-	while (current_message_size > 0)
-	{
-		int received_bytes = recv(socket, buff, current_message_size, 0);
-		total_received_bytes += received_bytes;
-		received_line.append(buff, current_message_size);
-
-		if (msg_size == total_received_bytes)
+		if (received_bytes <= 0)
 		{
-			return received_line;
+			message = "-1";
+			return false;
+		}
+		received_line.append(buff, received_bytes);
+		total_received_bytes += received_bytes;
+		if (total_msg_size == total_received_bytes)
+		{
+			CLOG_DEBUG_WITH_PARAMS("We received bytes", total_received_bytes, 
+				"socket", client_socket.GetSocketFD());
+			message.append(received_line, 0U, received_line.size());
+			CLOG_DEBUG_WITH_PARAMS("Size of the string", message.size());
+			return true;
 		}
 
-		current_message_size = GetSizeFromHeader(socket);
 	}
-	delete[] buff;
-
-	return "Part of the data is lost";
 }
 
-bool CSocketWrapper::Send(const int socket, const std::string& line)
+bool CSocketWrapper::Send(const CSocket& client_socket, const std::string& line)
 {
 	size_t line_length = line.length();
 	size_t size_for_substring = line_length;
-	std::string temp_line;
 	std::string buff;
 	size_t start_pos{ 0 };
 
-	if (line_length >= c_max_buffer_size)
+	std::string msg_size = std::to_string(line.size());
+	msg_size += "^";
+	if (send(client_socket.GetSocketFD(), msg_size.c_str(), static_cast<int>(msg_size.length()), 0) ==
+		c_connection_error)
 	{
-		buff = CreateHeader(static_cast<int>(line_length));
+		return false;
 	}
-
+	
 	while (line_length > 0)
 	{
 
@@ -72,66 +71,59 @@ bool CSocketWrapper::Send(const int socket, const std::string& line)
 			size_for_substring = line_length;
 		}
 
-		temp_line = line.substr(start_pos, size_for_substring);
+		buff = line.substr(start_pos, size_for_substring);
 
-		buff += CreateHeader(static_cast<int>(temp_line.length()));
-		buff += temp_line;
-		std::this_thread::sleep_for(std::chrono::nanoseconds(10000)); // TODO
-		if (send(socket, buff.c_str(), static_cast<int>(buff.length()), 0) == c_connection_error)
+		if (send(client_socket.GetSocketFD(), buff.c_str(), static_cast<int>(buff.length()), 0) ==
+			c_connection_error)
 		{
 			return false;
 		}
 		line_length -= size_for_substring;
 		start_pos += size_for_substring;
 		buff.clear();
-		temp_line.clear();
 	}
+	CLOG_DEBUG_WITH_PARAMS("Send data to the socket ", client_socket.GetSocketFD());
 	return true;
 }
 
-bool CSocketWrapper::CanReceiveData(const int socket_fd) const
+bool CSocketWrapper::CanReceiveData(const CSocket& client_socket) const
 {
 	char buff;
 
-	if (recv(socket_fd, &buff, 1, MSG_PEEK) > 0)
+	if (recv(client_socket.GetSocketFD(), &buff, 1, MSG_PEEK) > 0)
 	{
 		return true;
 	}
 	return false;
 }
 
-std::string CSocketWrapper::CreateHeader(const int size)
+bool CSocketWrapper::IsErrorOccurred(const CSocket& client_socket) const
 {
-	std::string header = "@";
-	header += std::to_string(size);
-	header += "$";
-	return header;
+	char buff;
+
+	if (recv(client_socket.GetSocketFD(), &buff, 1, MSG_PEEK) == c_connection_error)
+	{
+		return true;
+	}
+	return false;
 }
 
-int CSocketWrapper::GetSizeFromHeader(const int socket) const
+int CSocketWrapper::ReceiveHeader(const CSocket& client_socket) const
 {
-	std::string header_data;
-	char* buff = new char[1];
-
-	while (true)
+	char buff[1];
+	std::string size;
+	while(true)
 	{
-		if (recv(socket, buff, 1, 0) == c_connection_error)
+		int received_bytes = recv(client_socket.GetSocketFD(), buff, 1, 0);
+		if (buff[0] == '^')
 		{
-			return 0;
+			return ConvertDataToInt(size);
 		}
-		if (buff[0] == '@')
-		{
-			continue;
-		}
-		else if (buff[0] == '$')
-		{
-			break;
-		}
-		header_data += buff[0];
+		size.append(buff, received_bytes);
+		
 	}
-	delete[] buff;
+	return ConvertDataToInt(size);
 
-	return ConvertDataToInt(header_data);
 }
 
 bool CSocketWrapper::IsAllDataReceived(int msg_size,

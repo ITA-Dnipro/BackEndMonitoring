@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#include "Sockets/BackEndMonitoringSockets/include/CSocket.h"
+
 #if defined(_WIN64) || defined(_WIN32)
 
 #include "Utils.h"
@@ -9,24 +11,30 @@
 #pragma warning(disable : 6385)
 
 
-CBaseSocket::CBaseSocket( )
-{
-	m_socket = InitSocket( );
-}
+CBaseSocket::CBaseSocket( ) : m_socket(c_invalid_socket)
+{ }
 
-CBaseSocket::~CBaseSocket( )
-{
-	PlatformUtils::CloseSocket(static_cast<int>(m_socket));
-}
+CBaseSocket::CBaseSocket(int socket_fd) : m_socket(socket_fd)
+{ }
 
 int CBaseSocket::GetSocketFD() const
 {
 	return static_cast<int>(m_socket);
 }
 
-SOCKET CBaseSocket::InitSocket( )
+void CBaseSocket::SetSocket(int socket_fd)
 {
-	return socket(AF_INET, SOCK_STREAM, NULL);
+	m_socket = socket_fd;
+}
+
+bool CBaseSocket::InitSocket( )
+{
+	m_socket = socket(AF_INET, SOCK_STREAM, NULL);
+	if(m_socket != c_error_socket)
+	{
+		return true;
+	}
+	return false;
 }
 
 
@@ -35,7 +43,7 @@ namespace PlatformUtils
 	bool GetExistingProcessIds(std::vector<unsigned>& container_of_PIDs)
 	{
 		bool success = false;
-		CLOG_DEBUG_START_FUNCTION();
+		CLOG_TRACE_START_FUNCTION();
 		CLOG_TRACE_VAR_CREATION(success);
 
 		unsigned short m_max_process_count = 1024;
@@ -59,7 +67,7 @@ namespace PlatformUtils
 		else
 		{ CLOG_TRACE("Can't enumerate PID's.");}
 
-		CLOG_DEBUG_END_FUNCTION_WITH_RETURN(success);
+		CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
 		return success;
 	}
 
@@ -146,7 +154,7 @@ namespace PlatformUtils
 		unsigned long long& pagefile_usage)
 	{
 		bool success = false;
-		CLOG_DEBUG_START_FUNCTION();
+		CLOG_TRACE_START_FUNCTION();
 		CLOG_TRACE_VAR_CREATION(success);
 
 		HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
@@ -168,13 +176,13 @@ namespace PlatformUtils
 		else
 		{ CLOG_TRACE_WITH_PARAMS("Can't open HANDLE for process ", PID);}
 
-		CLOG_DEBUG_END_FUNCTION_WITH_RETURN(success);
+		CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
 		return success;
 	}
 
 	bool TryGetLogicalDisksNames(std::vector<std::string>& all_disks_names)
 	{
-		CLOG_DEBUG_START_FUNCTION();
+		CLOG_TRACE_START_FUNCTION();
 		const unsigned short c_size_of_buffer_for_api = 1024U;
 		CLOG_TRACE_VAR_CREATION(c_size_of_buffer_for_api);
 		//We just skip some chars
@@ -213,7 +221,7 @@ namespace PlatformUtils
 			return true;
 		}
 		// exception
-		CLOG_DEBUG_END_FUNCTION();
+		CLOG_TRACE_END_FUNCTION();
 		return false;
 	}
 
@@ -232,12 +240,10 @@ namespace PlatformUtils
 
 	bool FinalizeWinLibrary( )
 	{
-		CLOG_DEBUG_START_FUNCTION();
 		if (WSACleanup( ) == c_success)
 		{
 			return true;
 		}
-		CLOG_DEBUG_END_FUNCTION();
 		return false;
 	}
 
@@ -264,9 +270,15 @@ namespace PlatformUtils
 		return false;
 	}
 
-	int Accept(int socket, sockaddress& current_address)
+	bool Accept(const int socket_fd, CSocket& client)
 	{
-		return static_cast<int>(accept(socket, NULL, NULL));
+		int accepted_socket = static_cast<int>(accept(socket_fd, NULL, NULL));
+		if(accepted_socket < 0)
+		{
+			return false;
+		}
+		client.SetSocket(accepted_socket);
+		return true;
 	}
 
 	bool Connect(int socket, sockaddress& current_address)
@@ -290,7 +302,7 @@ namespace PlatformUtils
 
 	bool CloseSocket(int socket)
 	{
-		CLOG_DEBUG_START_FUNCTION();
+		CLOG_DEBUG_WITH_PARAMS("Close socket", socket);
 		if (socket != c_invalid_socket)
 		{
 			if (closesocket(socket) != c_error_socket)
@@ -298,18 +310,9 @@ namespace PlatformUtils
 				return true;
 			}
 		}
-		CLOG_DEBUG_END_FUNCTION();
 		return false;
 	}
 
-	int GetConnectionError(int socket_fd)
-	{
-		//int error = 0;
-		//socklen_t size = sizeof(error);
-		//return getsockopt(socket_fd, SOL_SOCKET, SO_ERROR, (char*)&error,
-		//	&size);
-		return WSAGetLastError();
-	}
 }
 
 #endif

@@ -5,27 +5,32 @@
 #include "CReadFileWrapper.h"
 #include "Utils.h"
 #include "CLogger/include/Log.h"
-
+#include "CSocket.h"
 #include "PlatformUtils.h"
 
-CBaseSocket::CBaseSocket()
-{
-	m_socket = InitSocket();
-}
+CBaseSocket::CBaseSocket() : m_socket(c_invalid_socket)
+{ }
 
-CBaseSocket::~CBaseSocket()
-{ 
-	PlatformUtils::CloseSocket(m_socket);
-}
+CBaseSocket::CBaseSocket(int socket_fd) : m_socket(socket_fd)
+{ }
 
 int CBaseSocket::GetSocketFD() const
 {
 	return m_socket;
 }
 
-int CBaseSocket::InitSocket()
+void CBaseSocket::SetSocket(int socket_fd)
 {
-	return ::socket(AF_INET, SOCK_STREAM, 0);
+	m_socket = socket_fd;
+}
+bool CBaseSocket::InitSocket()
+{
+	m_socket = socket(AF_INET, SOCK_STREAM, NULL);
+	if (m_socket != c_error_socket)
+	{
+		return true;
+	}
+	return false;
 }
 
 
@@ -60,11 +65,15 @@ namespace PlatformUtils
 		return false;
 	}
 
-	int Accept(int socket, sockaddress& current_address)
+	bool Accept(int socket_fd, CSocket& client)
 	{
-		int addrlen = sizeof(current_address);
-		return static_cast<int>(accept(socket, 
-			(struct sockaddr*)&current_address, (socklen_t*)&addrlen));
+		int accepted_socket = accept(socket_fd, NULL, NULL);
+		if (accepted_socket < 0)
+		{
+			return false;
+		}
+		client.SetSocket(accepted_socket);
+		return true;
 	}
 
 	bool Connect(int socket, sockaddress& current_address)
@@ -85,6 +94,7 @@ namespace PlatformUtils
 
 	bool CloseSocket(int socket)
 	{
+		shutdown(socket, 2);
 		if (socket != c_invalid_socket)
 		{
 			if (close(socket) != c_error_socket)
@@ -93,14 +103,6 @@ namespace PlatformUtils
 			}
 		}
 		return false;
-	}
-
-	int GetConnectionError(int socket_fd)
-	{
-		int error = 0;
-		socklen_t size = sizeof(error);
-		getsockopt(socket_fd, SOL_SOCKET, SO_ERROR, (char*)&error, &size);
-		return error;
 	}
 
 	bool TryGetAllNamesAllDisksInSystem(std::vector<std::string>& names)
