@@ -96,15 +96,15 @@ bool CServiceConnectionHandler::HandleResponseEvent(const CSocket& client_socket
 	{
 	case EClientRequestType::ALL_DATA:
 		CLOG_TRACE("Send all info to the client");
-		message = m_json_data.GetAllInfo();
+		message = m_json_data.GetAllFullInfo();
 		break;
 	case EClientRequestType::PROCESSES_DATA:
 		CLOG_TRACE("Send process info to the client");
-		message = m_json_data.GetProcessesInfo();
+		message = m_json_data.GetProcessesFullInfo();
 		break;
 	case EClientRequestType::DISKS_DATA:
 		CLOG_TRACE("Send disk info to the client");
-		message = m_json_data.GetDisksInfo();
+		message = m_json_data.GetDisksFullInfo();
 		break;
 	default:
 		CLOG_TRACE_WITH_PARAMS("Wrong parameter EClientRequestType, ",

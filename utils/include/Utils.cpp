@@ -43,23 +43,10 @@ bool Utils::TryGetCurrentDateAndTimeFormatted(std::string&
                                               date_time_var_to_save,
                                               const std::string& format)
 {
-    const auto time = std::make_unique<tm>();
     auto current_time = std::chrono::system_clock::to_time_t
     (std::chrono::system_clock::now());
 
-#ifdef _MSC_VER
-    localtime_s(time.get(), &current_time);
-#else
-    localtime_r(&current_time, time.get());
-#endif
-    char buff[50]{};
-    std::strftime(buff, 50, format.c_str(), time.get());
-    // Clean redundant \0 symbols, that fills resized string
-    date_time_var_to_save = buff;
-    date_time_var_to_save.erase(std::remove(date_time_var_to_save.begin(),
-        date_time_var_to_save.end(), '\0'), date_time_var_to_save.end());
-
-    return !date_time_var_to_save.empty();
+    return TimeToString(current_time, date_time_var_to_save, format);
 }
 
 bool Utils::IsHourPassed(std::string& hour)
@@ -262,8 +249,8 @@ bool Utils::StringToDate(const std::string& date_str,
     if(ss_date.fail())
     { return false;}
 
-    time_t date = mktime(&temp_date);
-    if(date == -1)
+    result = mktime(&temp_date);
+    if(result < 0)
     { return false;}
 
     return true;
@@ -302,17 +289,22 @@ char Utils::DetermineSectDividingSymbol(const std::string& path)
     return path.find_last_of('/') == std::string::npos ? '\\' : '/';
 }
 
-std::string Utils::TimeToString(time_t time)
+bool Utils::TimeToString(time_t time, std::string& to_str, 
+                                const std::string& format)
 {
-    std::string result;
-    tm* p_ltm = std::localtime(&time);
+    const auto time_tm = std::make_unique<tm>();
+    #ifdef _MSC_VER
+        localtime_s(time_tm.get(), &time);
+    #else
+        localtime_r(&current_time, time.get());
+    #endif
 
     char buff[50]{};
-    std::strftime(buff, 50, "%d.%m.%Y %X", p_ltm);
-
+    std::strftime(buff, 50, format.c_str(), time_tm.get());
     // Clean redundant \0 symbols, that fills resized string
-    result = buff;
-    result.erase(std::remove(result.begin(),
-        result.end(), '\0'), result.end());
-    return result;
+    to_str = buff;
+    to_str.erase(std::remove(to_str.begin(),
+        to_str.end(), '\0'), to_str.end());
+
+    return !to_str.empty();
 }

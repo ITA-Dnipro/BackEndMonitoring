@@ -5,7 +5,9 @@
 class CResourcesInfoJSONDatabase : public IInfoDatabase
 { 
 public:
-	CResourcesInfoJSONDatabase( ) = default;
+	CResourcesInfoJSONDatabase( );
+	CResourcesInfoJSONDatabase(const std::string& date_format);
+
 	CResourcesInfoJSONDatabase(const CResourcesInfoJSONDatabase&) = default;
 	CResourcesInfoJSONDatabase(CResourcesInfoJSONDatabase&&) noexcept = default;
 
@@ -27,4 +29,5 @@ private:
 	};
 
 	std::vector<Entry> m_data_container;
+	const std::string m_date_format;
 };
