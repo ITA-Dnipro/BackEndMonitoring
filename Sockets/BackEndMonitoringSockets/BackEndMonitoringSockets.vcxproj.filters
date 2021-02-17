@@ -67,6 +67,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\CDataProvider.h">
+	<Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CSockAddress.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -102,6 +105,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CDataProvider.cpp">
+	<Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSockAddress.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

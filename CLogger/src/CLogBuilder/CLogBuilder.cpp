@@ -6,11 +6,16 @@ CLogBuilder::CLogBuilder(const std::string& log_name, const ELogLevel log_level)
 	: CLogBuilder(log_name, log_level, ELogFlush::FLUSH)
 {}
 
-CLogBuilder::CLogBuilder(const std::string& log_name, const ELogLevel log_level, const ELogFlush log_flush)
-	: m_log_level(log_level), m_log_flush(log_flush), m_log_name(log_name)
+CLogBuilder::CLogBuilder(const std::string& log_name, const ELogLevel log_level,
+	const ELogFlush log_flush)
+	: m_log_level(log_level), m_log_flush(log_flush),
+	  m_log_name(log_name),
+	  m_log_buffer({ CLogMessage<>(typeid(*this).name() + std::string(" ") + "was created",
+	  m_buffer_log_level, __LINE__, LogUtils::GetFileNameByPath(__FILE__),
+		__FUNCTION__, LogUtils::GetTime(), LogUtils::GetThisThreadIdString()) })
 {}
 
-CLogBuilder::CLogBuilder(CLogBuilder&& move) noexcept = default;
+CLogBuilder::CLogBuilder(CLogBuilder&& move) = default;
 
 CLogBuilder::~CLogBuilder() noexcept = default;
 
@@ -30,6 +35,11 @@ CLogBuilder& CLogBuilder::SetLogLevel(const ELogLevel log_level)
 	{
 		m_log_level = log_level;
 	}
+	m_log_buffer.push
+		(CLogMessage<>(std::string("Log level") +
+			" " + LogLevelToString(log_level) + " " + "was set",
+			m_buffer_log_level, __LINE__, LogUtils::GetFileNameByPath(__FILE__),
+			__FUNCTION__, LogUtils::GetTime(), LogUtils::GetThisThreadIdString()));
 
 	return *this;
 }
@@ -40,6 +50,10 @@ CLogBuilder& CLogBuilder::SetLogName(const std::string& log_name)
 	{
 		m_log_name = log_name;
 	}
+	m_log_buffer.push
+	(CLogMessage<>(std::string("Log name") + " " + "was set",
+		m_buffer_log_level, __LINE__, LogUtils::GetFileNameByPath(__FILE__),
+		__FUNCTION__, LogUtils::GetTime(), LogUtils::GetThisThreadIdString()));
 
 	return *this;
 }
@@ -55,18 +69,34 @@ CLogBuilder& CLogBuilder::SetLogFlush(const ELogFlush log_flush)
 	{
 		m_log_flush = log_flush;
 	}
+	m_log_buffer.push
+		(CLogMessage<>(std::string("Log flush") +
+		" " + LogFlushToString(log_flush) + " " + "was set",
+		m_buffer_log_level, __LINE__, LogUtils::GetFileNameByPath(__FILE__),
+		__FUNCTION__, LogUtils::GetTime(), LogUtils::GetThisThreadIdString()));
+	
 	return *this;
 }
 
 CLogBuilder& CLogBuilder::AddThreadSafeStream(std::ostream& stream)
 {
 	m_write_stream_safe_list.emplace_front(stream);
+	m_log_buffer.push
+	(CLogMessage<>(std::string("Thread safe stream was added"),
+		m_buffer_log_level, __LINE__, LogUtils::GetFileNameByPath(__FILE__),
+		__FUNCTION__, LogUtils::GetTime(), LogUtils::GetThisThreadIdString()));
+	
 	return *this;
 }
 
 CLogBuilder& CLogBuilder::AddThreadUnsafeStream(std::ostream& stream)
 {
 	m_write_stream_unsafe_list.emplace_front(stream);
+	m_log_buffer.push
+		(CLogMessage<>(std::string("Thread unsafe stream was added"),
+			m_buffer_log_level, __LINE__, LogUtils::GetFileNameByPath(__FILE__),
+			__FUNCTION__, LogUtils::GetTime(), LogUtils::GetThisThreadIdString()));
+	
 	return *this;
 }
 
@@ -96,11 +126,16 @@ CLogBuilder& CLogBuilder::AddLogConfig(const ELogConfig log_config)
 	{
 		m_log_config_list.emplace_back(log_config);
 	}
+	m_log_buffer.push
+		(CLogMessage<>(std::string("Log config") +
+		" " + LogConfigToString(log_config) + " " + "was added",
+		m_buffer_log_level, __LINE__, LogUtils::GetFileNameByPath(__FILE__),
+		__FUNCTION__, LogUtils::GetTime(), LogUtils::GetThisThreadIdString()));
 
 	return *this;
 }
 
-CLogger* CLogBuilder::BuildLog() const
+CLogger* CLogBuilder::BuildLog()
 {
 	auto* log = new CLogger(m_log_name, m_log_level);
 
@@ -118,18 +153,33 @@ CLogger* CLogBuilder::BuildLog() const
 	{
 		log->AddThreadUnsafeStream(stream);
 	}
+	m_log_buffer.push
+	(CLogMessage<>(std::string("Logger was built"),
+		m_buffer_log_level, __LINE__, LogUtils::GetFileNameByPath(__FILE__),
+		__FUNCTION__, LogUtils::GetTime(), LogUtils::GetThisThreadIdString()));
 
+	PrintBuffer(log);
+	
 	return log;
 }
 
-std::unique_ptr<CLogger> CLogBuilder::BuildUniqueLog() const
+std::unique_ptr<CLogger> CLogBuilder::BuildUniqueLog()
 {
 	return std::unique_ptr<CLogger>(BuildLog());
 }
 
-std::shared_ptr<CLogger> CLogBuilder::BuildSharedLog() const
+std::shared_ptr<CLogger> CLogBuilder::BuildSharedLog()
 {
 	return std::shared_ptr<CLogger>(BuildLog());
+}
+
+void CLogBuilder::PrintBuffer(CLogger* logger)
+{
+	while (!m_log_buffer.empty())
+	{
+		logger->PrintLogMessage(m_log_buffer.front());
+		m_log_buffer.pop();
+	}
 }
 
 CLogBuilder& CLogBuilder::operator=(CLogBuilder&& move) noexcept = default;

@@ -22,8 +22,7 @@ private:
 	static const int c_max_buffer_size = 500u;
 	const int c_connection_error = -1;
 
-	[[nodiscard]] std::string CreateHeader(const int size) const;
-	[[nodiscard]] int GetSizeFromHeader(const CSocket& client_socket) const;
+	[[nodiscard]] int ReceiveHeader(const CSocket& client_socket) const;
 	bool IsAllDataReceived(int msg_size, int received_msg_size) const;
 	[[nodiscard]] int ConvertDataToInt(const std::string& data) const;
 };

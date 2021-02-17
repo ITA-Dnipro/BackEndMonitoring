@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "CSocket.h"
+#include "Sockets/BackEndMonitoringSockets/include/CSocket.h"
 
 #if defined(_WIN64) || defined(_WIN32)
 
@@ -20,6 +20,11 @@ CBaseSocket::CBaseSocket(int socket_fd) : m_socket(socket_fd)
 int CBaseSocket::GetSocketFD() const
 {
 	return static_cast<int>(m_socket);
+}
+
+void CBaseSocket::SetSocket(int socket_fd)
+{
+	m_socket = socket_fd;
 }
 
 bool CBaseSocket::InitSocket( )
@@ -265,10 +270,15 @@ namespace PlatformUtils
 		return false;
 	}
 
-	CSocket Accept(int socket, sockaddress& current_address)
+	bool Accept(const int socket_fd, CSocket& client)
 	{
-		CSocket client_socket(static_cast<int>(accept(socket, NULL, NULL)));
-		return client_socket;
+		int accepted_socket = static_cast<int>(accept(socket_fd, NULL, NULL));
+		if(accepted_socket < 0)
+		{
+			return false;
+		}
+		client.SetSocket(accepted_socket);
+		return true;
 	}
 
 	bool Connect(int socket, sockaddress& current_address)
@@ -292,6 +302,7 @@ namespace PlatformUtils
 
 	bool CloseSocket(int socket)
 	{
+		CLOG_DEBUG_WITH_PARAMS("Close socket", socket);
 		if (socket != c_invalid_socket)
 		{
 			if (closesocket(socket) != c_error_socket)

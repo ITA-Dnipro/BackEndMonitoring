@@ -4,7 +4,7 @@
 /// <summary>
 ///		Enumeration that indicates info that logger must print
 /// </summary>
-enum class CLOGGER_API ELogConfig : unsigned short
+enum class ELogConfig : unsigned short
 {
 	NONE, LOG_LEVEL, LOG_NAME, LINE_NUMBER, FILE_NAME,
 	FUNCTION_NAME, THREAD_ID, CALL_TIME, MESSAGE,

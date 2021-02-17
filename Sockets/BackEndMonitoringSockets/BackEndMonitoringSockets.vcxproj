@@ -27,6 +27,7 @@
     <ClInclude Include="include\CConnector.h" />
     <ClInclude Include="include\CClientConnectorHost.h" />
     <ClInclude Include="include\CServiceConnectionHandler.h" />
+    <ClInclude Include="include\CSockAddress.h" />
     <ClInclude Include="include\EEventType.h" />
     <ClInclude Include="include\CSocket.h" />
     <ClInclude Include="include\CSocketWrapper.h" />
@@ -42,6 +43,7 @@
     <ClCompile Include="src\CConnector.cpp" />
     <ClCompile Include="src\CClientConnectorHost.cpp" />
     <ClCompile Include="src\CServiceConnectionHandler.cpp" />
+    <ClCompile Include="src\CSockAddress.cpp" />
     <ClCompile Include="src\CSocket.cpp" />
     <ClCompile Include="src\CSocketWrapper.cpp" />
     <ClCompile Include="src\CDataProvider.cpp" />

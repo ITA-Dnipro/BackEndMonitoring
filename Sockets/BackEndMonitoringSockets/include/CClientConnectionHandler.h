@@ -17,12 +17,9 @@ public:
 		std::string& message);
 
 private:
-	const int c_equal = 0;
-	
 	bool HandleRequestEvent(const CSocket& client_socket, EEventType type) const;
 	bool HandleResponseEvent(const CSocket& client_socket, std::string& message);
 	bool HandleExitEvent(const CSocket& client_socket);
-	bool HandleDataReceivedEvent(const CSocket& client_socket) const;
 	bool HandleLostRequestEvent(const CSocket& client_socket, 
 		std::string& message);
 	bool SendRequestToServer(const CSocket& client_socket, 

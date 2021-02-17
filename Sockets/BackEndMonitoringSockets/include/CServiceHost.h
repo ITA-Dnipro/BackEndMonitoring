@@ -21,6 +21,7 @@ public:
 	bool Initialize(std::shared_ptr<CThreadPool> pool, CDataProvider& json_data, 
 		const int connections);
 	bool Execute();
+	void ShutDown();
 
 private:
 	void InitAcceptor();
@@ -28,11 +29,16 @@ private:
 	void InitSocketWrapper();
 	bool HandleEvents();
 	bool AcceptRequest();
-	bool AddClientToThread(const CSocket& client_socket);
+	void AddClientToThread(const CSocket& client);
 	bool DeleteBrokenSocket(const int socket_descriptor);
-
+	void AcceptClients();
+	void DeleteAllClients();
+	void DeleteDisconnectedClients();
+	
+	std::mutex m_mutex;
 	std::string m_ip_address;
 	std::vector<CSocket> m_clients;
+	std::vector<int> m_disconnected_clients;
 	std::shared_ptr<CThreadPool> m_p_pool;
 	std::unique_ptr<CAcceptor> m_p_server_acceptor;
 	std::unique_ptr<CServiceConnectionHandler> m_p_service_handler;
@@ -40,7 +46,8 @@ private:
 	CEvent& m_event;
 	const int m_port;
 	int m_socket_timeout;
+	int m_num_working_threads;
 	bool m_is_socket_blocked;
-
+	bool m_is_host_initialized;
 };
 
