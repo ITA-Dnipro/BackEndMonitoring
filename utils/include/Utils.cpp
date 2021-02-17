@@ -296,7 +296,7 @@ bool Utils::TimeToString(time_t time, std::string& to_str,
     #ifdef _MSC_VER
         localtime_s(time_tm.get(), &time);
     #else
-        localtime_r(&current_time, time.get());
+        localtime_r(&time, time_tm.get());
     #endif
 
     char buff[50]{};
