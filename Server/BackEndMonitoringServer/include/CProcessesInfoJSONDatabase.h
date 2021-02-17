@@ -5,8 +5,8 @@ class CProcessesInfoJSONDatabase :
     public CMonitoringInfoJSONDatabase
 {
 public:
-    CProcessesInfoJSONDatabase(std::filesystem::path path_to_file);
-    CProcessesInfoJSONDatabase(std::filesystem::path path_to_file,
+    CProcessesInfoJSONDatabase(const std::filesystem::path& path_to_file);
+    CProcessesInfoJSONDatabase(const std::filesystem::path& path_to_file,
                                const std::string& date_format);
 
     CProcessesInfoJSONDatabase(const CProcessesInfoJSONDatabase&) = delete;

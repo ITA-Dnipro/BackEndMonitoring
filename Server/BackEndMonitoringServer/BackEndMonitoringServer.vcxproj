@@ -177,7 +177,6 @@
     <ClInclude Include="..\..\utils\include\CComunicationSettings.h" />
     <ClInclude Include="..\..\utils\include\CDataReader.h" />
     <ClInclude Include="..\..\utils\include\CDateTimePathConstructor.h" />
-    <ClInclude Include="..\..\utils\include\CFindFileByDateTime.h" />
     <ClInclude Include="..\..\utils\include\CHDDInfoSettings.h" />
     <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h" />
     <ClInclude Include="..\..\utils\include\CLoggingSettings.h" />
@@ -189,7 +188,6 @@
     <ClInclude Include="..\..\utils\include\CThreadPoolSettings.h" />
     <ClInclude Include="..\..\utils\include\CTimeSettings.h" />
     <ClInclude Include="..\..\utils\include\CXMLDataReader.h" />
-    <ClInclude Include="..\..\utils\include\IFindFileByValue.h" />
     <ClInclude Include="..\..\utils\include\IPathConstructor.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="..\..\utils\include\stdafx.h" />
@@ -227,7 +225,6 @@
     <ClCompile Include="..\..\utils\include\CDataReader.cpp" />
     <ClCompile Include="..\..\utils\include\CDateTimePathConstructor.cpp" />
     <ClCompile Include="..\..\utils\include\CEvent.cpp" />
-    <ClCompile Include="..\..\utils\include\CFindFileByDateTime.cpp" />
     <ClCompile Include="..\..\utils\include\CHDDInfoSettings.cpp" />
     <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp" />
     <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp" />
@@ -236,7 +233,6 @@
     <ClCompile Include="..\..\utils\include\CNumericTypesParser.cpp" />
     <ClCompile Include="..\..\utils\include\CReadFileWrapper.cpp" />
     <ClCompile Include="..\..\utils\include\CSettings.cpp" />
-    <ClCompile Include="..\..\utils\include\IFindFileByValue.cpp" />
     <ClCompile Include="..\..\utils\include\IPathConstructor.cpp" />
     <ClCompile Include="..\..\utils\include\StrToNumWrapper.cpp" />
     <ClCompile Include="..\..\utils\include\CLoggingSettings.cpp" />

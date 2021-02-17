@@ -122,12 +122,6 @@
     <ClCompile Include="..\..\utils\include\CDateTimePathConstructor.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\IFindFileByValue.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CFindFileByDateTime.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="src\CResourcesInfoJSONDatabase.cpp">
       <Filter>Monitoring subsystem\Database subsystem\JSON\Resources</Filter>
     </ClCompile>
@@ -240,12 +234,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\utils\include\CDateTimePathConstructor.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\IFindFileByValue.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CFindFileByDateTime.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="include\CResourcesInfoJSONDatabase.h">

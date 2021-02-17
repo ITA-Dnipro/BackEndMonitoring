@@ -9,8 +9,8 @@ class CDrivesInfoJSONDatabase :
     public CMonitoringInfoJSONDatabase
 { 
 public:
-    CDrivesInfoJSONDatabase(std::filesystem::path path_to_file);
-    CDrivesInfoJSONDatabase(std::filesystem::path path_to_file,
+    CDrivesInfoJSONDatabase(const std::filesystem::path& path_to_file);
+    CDrivesInfoJSONDatabase(const std::filesystem::path& path_to_file,
                             const std::string& date_format);
 
     CDrivesInfoJSONDatabase(const CDrivesInfoJSONDatabase&) = delete;

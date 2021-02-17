@@ -7,15 +7,15 @@
 #include "CProcessesInfoJSONDatabase.h"
 
 CProcessesInfoJSONDatabase::CProcessesInfoJSONDatabase(
-	std::filesystem::path path_to_file)
+	const std::filesystem::path& path_to_file)
 	: CMonitoringInfoJSONDatabase(path_to_file)
 {
-	CLOG_DEBUG_START_FUNCTION( );
-	CLOG_DEBUG_END_FUNCTION( );
+	CLOG_DEBUG_START_FUNCTION();
+	CLOG_DEBUG_END_FUNCTION();
 }
 
 CProcessesInfoJSONDatabase::CProcessesInfoJSONDatabase(
-	std::filesystem::path path_to_file, const std::string& date_format)
+	const std::filesystem::path& path_to_file, const std::string& date_format)
 	: CMonitoringInfoJSONDatabase(path_to_file, date_format)
 {
 	CLOG_DEBUG_START_FUNCTION( );

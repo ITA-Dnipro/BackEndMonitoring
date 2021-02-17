@@ -9,7 +9,7 @@
 #include "CDrivesInfoJSONDatabase.h"
 
 CDrivesInfoJSONDatabase::CDrivesInfoJSONDatabase(
-	std::filesystem::path path_to_file)
+	const std::filesystem::path& path_to_file)
 	: CMonitoringInfoJSONDatabase(path_to_file)
 {
 	CLOG_DEBUG_START_FUNCTION( );
@@ -17,7 +17,7 @@ CDrivesInfoJSONDatabase::CDrivesInfoJSONDatabase(
 }
 
 CDrivesInfoJSONDatabase::CDrivesInfoJSONDatabase(
-	std::filesystem::path path_to_file,
+	const std::filesystem::path& path_to_file,
 	const std::string& date_format)
 	: CMonitoringInfoJSONDatabase(path_to_file, date_format)
 {
