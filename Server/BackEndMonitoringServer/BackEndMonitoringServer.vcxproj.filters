@@ -103,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="..\..\utils\include\CRequestHandler.cpp" />
     <ClCompile Include="..\..\utils\include\IRequestExc.cpp" />
+    <ClCompile Include="CRequestExcAllData.cpp" />
+    <ClCompile Include="CRequestExcDiskData.cpp" />
+    <ClCompile Include="CRequestExcProcessData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\utils\include\stdafx.h" />
@@ -195,6 +198,9 @@
     <ClInclude Include="..\..\utils\include\ERequestRangeSpecification.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="CRequestExcAllData.h" />
+    <ClInclude Include="CRequestExcDiskData.h" />
+    <ClInclude Include="CRequestExcProcessData.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />

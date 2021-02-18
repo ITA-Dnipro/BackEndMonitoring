@@ -4,16 +4,20 @@
 
 #include "IRequestExc.h"
 
-IRequestExc::IRequestExc(const std::string& request) : m_request(request)
+IRequestExc::IRequestExc(const std::string& request) : m_request(request),
+	m_range_specification(ERequestRangeSpecification::NONE)
 { }
 
+//set as nothrow and check is correct 
 IRequestExc::IRequestExc(IRequestExc&& orig) : 
-	m_request(std::move(orig.m_request))
+	m_request(orig.m_request), 
+	m_range_of_data(std::move(orig.m_range_of_data)),
+	m_range_specification(orig.m_range_specification)
 { }
 
-bool IRequestExc::DetermineDateRange()
+bool IRequestExc::DetermineDateRange(const nlohmann::json& request)
 {
-	switch (IsSpecial())
+	switch (IsSpecial(request))
 	{
 	case ERequestRangeSpecification::LAST_DATA:
 		m_range_specification = ERequestRangeSpecification::LAST_DATA;
@@ -23,6 +27,10 @@ bool IRequestExc::DetermineDateRange()
 		return true;
 	case ERequestRangeSpecification::RANGE_OF_DATA:
 		m_range_specification = ERequestRangeSpecification::RANGE_OF_DATA;
+		for (const auto& [key, value] : request["dur"].items())
+		{
+			m_range_of_data.emplace_back(value);
+		}
 		return true;
 
 	default:
@@ -30,10 +38,7 @@ bool IRequestExc::DetermineDateRange()
 	}
 }
 
-ERequestRangeSpecification IRequestExc::IsSpecial()
+ERequestRangeSpecification IRequestExc::IsSpecial(const nlohmann::json& request)
 {
-	//added to nlohman????
-	//std::string specification = 
-		//m_request.substr(m_request.find('\"' + "special" + '\"'));
-	return ERequestRangeSpecification();
+	return ERequestRangeSpecification(request["spec"]);
 }

@@ -11,14 +11,15 @@ public:
 	IRequestExc(IRequestExc&&);
 	virtual bool Execute(std::string& answer) = 0;
 
-private:
+protected:
 	//change
-	[[nodiscard]] bool DetermineDateRange();
-	[[nodiscard]] ERequestRangeSpecification IsSpecial();
+	[[nodiscard]] bool DetermineDateRange(const nlohmann::json& request);
+	[[nodiscard]] ERequestRangeSpecification IsSpecial(
+		const nlohmann::json& request);
 
-private:
+protected:
 	const std::string& m_request;
-	std::string m_range_of_data;
+	std::vector<std::string> m_range_of_data;
 	ERequestRangeSpecification m_range_specification;
 };
 

@@ -190,6 +190,9 @@
     <ClInclude Include="..\..\utils\include\IRequestExc.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="..\..\utils\include\stdafx.h" />
+    <ClInclude Include="CRequestExcAllData.h" />
+    <ClInclude Include="CRequestExcDiskData.h" />
+    <ClInclude Include="CRequestExcProcessData.h" />
     <ClInclude Include="include\CCommandLineHandler.h" />
     <ClInclude Include="include\CContainerOfLogicalDisk.h" />
     <ClInclude Include="include\CContainerOfProcesses.h" />
@@ -236,6 +239,9 @@
     <ClCompile Include="..\..\utils\include\CXMLDataReader.cpp" />
     <ClCompile Include="..\..\utils\include\Utils.cpp" />
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
+    <ClCompile Include="CRequestExcAllData.cpp" />
+    <ClCompile Include="CRequestExcDiskData.cpp" />
+    <ClCompile Include="CRequestExcProcessData.cpp" />
     <ClCompile Include="src\BackEndMonitoringServer.cpp" />
     <ClCompile Include="src\CCommandLineHandler.cpp" />
     <ClCompile Include="src\CContainerOfLogicalDisk.cpp" />

@@ -6,9 +6,16 @@
 #include "CServiceHandler.h"
 #include "Utils.h"
 #include "CLogger/include/Log.h"
+#include "ERequestType.h"
 
 int main(int argc, char** argv)
 {
+	const std::string answer = "{ \"id\": 2, \"special\": 1 }";
+	nlohmann::json request = nlohmann::json::parse(answer);
+
+	//ERequestType b = ERequestType(request["id"]);
+	//std::cout << typeid(request["id"]).name();
+
   std::fstream stream(
 	CService::GetRelativePath() + "Log.txt",
 	std::ios_base::app);
