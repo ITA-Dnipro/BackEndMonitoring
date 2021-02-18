@@ -125,6 +125,15 @@
     <ClCompile Include="src\CResourcesInfoJSONDatabase.cpp">
       <Filter>Monitoring subsystem\Database subsystem\JSON\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\utils\include\CRequestHandler.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\IRequestExc.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CRequestExcAllData.cpp" />
+    <ClCompile Include="src\CRequestExcDiskData.cpp" />
+    <ClCompile Include="src\CRequestExcProcessData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\utils\include\stdafx.h" />
@@ -238,6 +247,21 @@
     </ClInclude>
     <ClInclude Include="include\CResourcesInfoJSONDatabase.h">
       <Filter>Monitoring subsystem\Database subsystem\JSON\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CRequestExcAllData.h" />
+    <ClInclude Include="include\CRequestExcDiskData.h" />
+    <ClInclude Include="include\CRequestExcProcessData.h" />
+    <ClInclude Include="..\..\utils\include\CRequestHandler.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\IRequestExc.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\ERequestRangeSpecification.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\GlobalVariable.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

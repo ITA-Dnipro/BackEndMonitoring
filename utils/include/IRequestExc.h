@@ -1,25 +1,29 @@
 #pragma once
 
 enum class ERequestRangeSpecification;
+class CDataProvider;
 
 class IRequestExc
 {
 public:
 	IRequestExc() = delete;
-	IRequestExc(const std::string& request);
+	explicit IRequestExc(const std::string& request,
+		std::shared_ptr<CDataProvider> data_base);
 	IRequestExc(const IRequestExc&) = delete;
 	IRequestExc(IRequestExc&&) = default;
 	virtual bool Execute(std::string& answer) = 0;
 
 protected:
 	//change
-	[[nodiscard]] bool DetermineDateRange(const nlohmann::json& request);
+	[[nodiscard]] bool TryDetermineDateRange(const nlohmann::json& request);
 	[[nodiscard]] ERequestRangeSpecification IsSpecial(
 		const nlohmann::json& request);
 
 protected:
-	const std::string& m_request;
+	std::shared_ptr<CDataProvider> m_p_data_base;
+	// do I really need a vector here???
 	std::vector<std::string> m_range_of_data;
+	const std::string& m_request;
 	ERequestRangeSpecification m_range_specification;
 };
 

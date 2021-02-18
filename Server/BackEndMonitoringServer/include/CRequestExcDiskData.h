@@ -5,7 +5,8 @@ class CRequestExcDiskData :
 {
 public:
     CRequestExcDiskData() = delete;
-    CRequestExcDiskData(const std::string& request);
+    explicit CRequestExcDiskData(const std::string& request,
+        std::shared_ptr<CDataProvider> data_base);
     CRequestExcDiskData(CRequestExcDiskData&& orig) = default;
 
     virtual bool Execute(std::string& answer) override;

@@ -1,37 +1,30 @@
 #include "stdafx.h"
 
 #include "ERequestRangeSpecification.h"
+#include "CDataProvider.h"
+#include "GlobalVariable.h"
 
 #include "IRequestExc.h"
 
-IRequestExc::IRequestExc(const std::string& request) : m_request(request),
-	m_range_specification(ERequestRangeSpecification::NONE)
+IRequestExc::IRequestExc(const std::string& request, 
+	std::shared_ptr<CDataProvider> data_base) : 
+	m_request(request),
+	m_p_data_base(data_base),
+	m_range_specification(ERequestRangeSpecification::LAST_DATA)
 { }
 
-bool IRequestExc::DetermineDateRange(const nlohmann::json& request)
+bool IRequestExc::TryDetermineDateRange(const nlohmann::json& request)
 {
-	switch (IsSpecial(request))
+	for (const auto& [key, value] : 
+		request[GlobalVariable::c_request_key_duration].items())
 	{
-	case ERequestRangeSpecification::LAST_DATA:
-		m_range_specification = ERequestRangeSpecification::LAST_DATA;
-		return true;
-	case ERequestRangeSpecification::ALL_DATA:
-		m_range_specification = ERequestRangeSpecification::ALL_DATA;
-		return true;
-	case ERequestRangeSpecification::RANGE_OF_DATA:
-		m_range_specification = ERequestRangeSpecification::RANGE_OF_DATA;
-		for (const auto& [key, value] : request["dur"].items())
-		{
-			m_range_of_data.emplace_back(value);
-		}
-		return true;
-
-	default:
-		return false;
+		m_range_of_data.emplace_back(value);
 	}
+	return !m_range_of_data.empty();
 }
 
 ERequestRangeSpecification IRequestExc::IsSpecial(const nlohmann::json& request)
 {
-	return ERequestRangeSpecification(request["spec"]);
+	return ERequestRangeSpecification(request[
+		GlobalVariable::c_request_key_spec]);
 }

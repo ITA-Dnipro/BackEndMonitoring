@@ -5,7 +5,8 @@ class CRequestExcProcessData :
 {
 public:
     CRequestExcProcessData() = delete;
-    CRequestExcProcessData(const std::string& request);
+    explicit CRequestExcProcessData(const std::string& request,
+        std::shared_ptr<CDataProvider> data_base);
     CRequestExcProcessData(CRequestExcProcessData&& orig) = default;
 
     virtual bool Execute(std::string& answer) override;

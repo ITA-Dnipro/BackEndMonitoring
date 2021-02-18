@@ -10,7 +10,7 @@
 
 int main(int argc, char** argv)
 {
-	const std::string answer = "{ \"id\": 2, \"special\": 1 }";
+	const std::string answer = "{ \"id\": 2, \"request_type\": 1, \"special\": 1, \"duration\": 0}";
 	nlohmann::json request = nlohmann::json::parse(answer);
 
 	//ERequestType b = ERequestType(request["id"]);

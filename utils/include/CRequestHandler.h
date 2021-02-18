@@ -4,10 +4,12 @@ class CRequestHandler
 {
 public:
 	CRequestHandler() = delete;
-	CRequestHandler(const std::string& request) : m_request(request)
-	{ };
+	explicit CRequestHandler(const std::string& request,
+		std::shared_ptr<IInfoDatabase> p_processes_data,
+		std::shared_ptr<IInfoDatabase> p_disks_data,
+		std::shared_ptr<IInfoDatabase> p_resources_data);
 	CRequestHandler(const CRequestHandler&) = delete;
-	CRequestHandler(CRequestHandler&&) = delete;
+	CRequestHandler(CRequestHandler&&) = default;
 
 	[[nodiscard]] bool HandleRequest(std::string& answer);
 
@@ -22,7 +24,7 @@ private:
 		std::shared_ptr<IRequestExc> request_executer);
 
 private:
+	CDataProvider m_data_base;
 	const std::string& m_request;
-	//add some ref to get path (in other word, add ref to DB (Vitalie)
 };
 

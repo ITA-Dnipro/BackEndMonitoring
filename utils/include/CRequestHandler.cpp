@@ -5,9 +5,18 @@
 #include "CRequestExcAllData.h"
 #include "CRequestExcDiskData.h"
 #include "CRequestExcProcessData.h"
+#include "CDataProvider.h"
 #include "GlobalVariable.h"
 
 #include "CRequestHandler.h"
+
+CRequestHandler::CRequestHandler(const std::string& request, 
+    std::shared_ptr<IInfoDatabase> p_processes_data,
+    std::shared_ptr<IInfoDatabase> p_disks_data,
+    std::shared_ptr<IInfoDatabase> p_resources_data) :
+        m_request(request), m_data_base(p_processes_data, 
+            p_disks_data, p_resources_data)
+{ }
 
 bool CRequestHandler::HandleRequest(std::string& answer)
 {
@@ -22,13 +31,16 @@ bool CRequestHandler::HandleRequest(std::string& answer)
     switch (AnalyzeRequestType(request))
     {
     case ERequestType::ALL_DATA:
-        ExecuteRequest(answer, std::make_shared<CRequestExcAllData>(m_request));
+        ExecuteRequest(answer, std::make_shared<CRequestExcAllData>(
+            m_request, std::make_shared<CDataProvider>(m_data_base)));
         break;
     case ERequestType::DISKS_DATA:
-        ExecuteRequest(answer, std::make_shared<CRequestExcDiskData>(m_request));
+        ExecuteRequest(answer, std::make_shared<CRequestExcDiskData>(
+            m_request, std::make_shared<CDataProvider>(m_data_base)));
         break;
     case ERequestType::PROCESSES_DATA:
-        ExecuteRequest(answer, std::make_shared<CRequestExcProcessData>(m_request));
+        ExecuteRequest(answer, std::make_shared<CRequestExcProcessData>(
+            m_request, std::make_shared<CDataProvider>(m_data_base)));
         break;
     //case ERequestType::INCORRECT_REQUEST:
     //    //write to log
