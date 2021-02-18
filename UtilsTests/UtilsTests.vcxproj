@@ -186,8 +186,11 @@
     <ClCompile Include="..\utils\include\StrToNumWrapper.cpp" />
     <ClCompile Include="..\utils\include\Utils.cpp" />
     <ClCompile Include="..\utils\include\WindowsUtils.cpp" />
+    <ClCompile Include="src\CNumericTypesParserTest.cpp" />
+    <ClCompile Include="src\CStringCleanerTest.cpp" />
+    <ClCompile Include="src\CXMLDataReaderTest.cpp" />
     <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\Tests.cpp" />
+    <ClCompile Include="src\CStrToNumWrapperTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdParty\include\pugixml.hpp" />
