@@ -25,7 +25,7 @@ bool CRequestHandler::HandleRequest(std::string& answer)
     switch (AnalyzeRequestType(request))
     {
     case ERequestType::ALL_DATA:
-        //ExecuteRequest(answer, std::make_shared<IRequestExc>(m_request));
+        //ExecuteRequest(answer, std::make_shared<CRequestExcAllData>(m_request));
         break;
     case ERequestType::DISKS_DATA:
         //ExecuteRequest(answer, std::make_shared<IRequestExc>(m_request));
@@ -33,9 +33,9 @@ bool CRequestHandler::HandleRequest(std::string& answer)
     case ERequestType::PROCESSES_DATA:
         //ExecuteRequest(answer, std::make_shared<IRequestExc>(m_request));
         break;
-    case ERequestType::INCORRECT_REQUEST:
-        //write to log
-        return false;
+    //case ERequestType::INCORRECT_REQUEST:
+    //    //write to log
+    //    return false;
     default:
         //function worked incorrect. Write to log
         return false;

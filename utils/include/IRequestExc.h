@@ -8,7 +8,7 @@ public:
 	IRequestExc() = delete;
 	IRequestExc(const std::string& request);
 	IRequestExc(const IRequestExc&) = delete;
-	IRequestExc(IRequestExc&&);
+	IRequestExc(IRequestExc&&) = default;
 	virtual bool Execute(std::string& answer) = 0;
 
 protected:

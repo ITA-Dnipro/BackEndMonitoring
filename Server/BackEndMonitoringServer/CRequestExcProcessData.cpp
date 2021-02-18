@@ -5,10 +5,6 @@ CRequestExcProcessData::CRequestExcProcessData(const std::string& request) :
     IRequestExc(request)
 { }
 
-CRequestExcProcessData::CRequestExcProcessData(CRequestExcProcessData&& orig) :
-    IRequestExc(std::move(orig))
-{ }
-
 bool CRequestExcProcessData::Execute(std::string& answer)
 {
 	//do I need another validation????

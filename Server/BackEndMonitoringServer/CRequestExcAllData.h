@@ -5,7 +5,7 @@ class CRequestExcAllData : public IRequestExc
 public:
 	CRequestExcAllData() = delete;
 	CRequestExcAllData(const std::string& request);
-	CRequestExcAllData(CRequestExcAllData&& orig);
+	CRequestExcAllData(CRequestExcAllData&& orig) = default;
 
 	virtual bool Execute(std::string& answer) override;
 

@@ -5,13 +5,10 @@ CRequestExcDiskData::CRequestExcDiskData(const std::string& request) :
 	IRequestExc(request)
 { }
 
-CRequestExcDiskData::CRequestExcDiskData(CRequestExcDiskData&& orig) :
-	IRequestExc(std::move(orig))
-{ }
-
 bool CRequestExcDiskData::Execute(std::string & answer)
 {
 	//do I need another validation????
+	//validation  + boolean is valid
 	nlohmann::json request = nlohmann::json::parse(m_request);
 	
 	if (!DetermineDateRange(request))

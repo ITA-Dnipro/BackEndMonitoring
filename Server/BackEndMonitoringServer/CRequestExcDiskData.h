@@ -6,7 +6,7 @@ class CRequestExcDiskData :
 public:
     CRequestExcDiskData() = delete;
     CRequestExcDiskData(const std::string& request);
-    CRequestExcDiskData(CRequestExcDiskData&& orig);
+    CRequestExcDiskData(CRequestExcDiskData&& orig) = default;
 
     virtual bool Execute(std::string& answer) override;
 };

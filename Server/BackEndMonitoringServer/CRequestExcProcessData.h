@@ -6,7 +6,7 @@ class CRequestExcProcessData :
 public:
     CRequestExcProcessData() = delete;
     CRequestExcProcessData(const std::string& request);
-    CRequestExcProcessData(CRequestExcProcessData&& orig);
+    CRequestExcProcessData(CRequestExcProcessData&& orig) = default;
 
     virtual bool Execute(std::string& answer) override;
 
