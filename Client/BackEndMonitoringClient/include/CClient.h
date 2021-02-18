@@ -1,13 +1,14 @@
 #pragma once
 #include "CClientView.h"
 
-#include "Sockets/BackEndMonitoringSockets/include/CConnectorWrapper.h"
+#include "Sockets/BackEndMonitoringSockets/include/CClientConnectorHost.h"
 enum class ERequestType;
 
 class CClient
 {
 public:
 	explicit CClient();
+	~CClient()noexcept = default;
 
 	void Execute();
 	bool Init(const int arg_num, char** argvuments);
@@ -19,7 +20,7 @@ private:
 
 	bool Connect();
 	bool MakeRequest(ERequestType type, std::string& message);
-	std::unique_ptr<CConnectorWrapper> InitConnector();
+	bool InitHost(const int port, const std::string& ip_address);
 	std::string RequestProcessesData();
 	std::string RequestDisksData();
 	std::string RequestAllData();
@@ -27,7 +28,7 @@ private:
 
 	std::string m_ip_address;
 	std::string m_file_name;
-	std::unique_ptr<CConnectorWrapper> m_connector;
+	std::unique_ptr<CClientConnectorHost> m_connector;
 	std::unique_ptr<CClientView> m_consolePrinter;
 	std::unique_ptr<CClientView> m_filePrinter;
 	std::fstream m_log_file;

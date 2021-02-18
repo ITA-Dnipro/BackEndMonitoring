@@ -1,6 +1,5 @@
 #include "stdafx.h"
 
-#include "CLogger/include/Log.h"
 #include "CEvent.h"
 #include "CThreadPool.h"
 #include "EMemoryConvertType.h"
@@ -23,14 +22,13 @@
 #include "CTimeSettings.h"
 
 #include "CService.h"
-
 CService* CService::m_p_service = nullptr;
 
 bool CService::Run()
 {
-#if defined(_WIN64) || defined(_WIN32)
-
     m_p_service = this;
+	
+#if defined(_WIN64) || defined(_WIN32)
 
     CHAR* name = const_cast<CString&>(m_name).GetBuffer();
 
@@ -44,7 +42,6 @@ bool CService::Run()
 
 #elif __linux__
 
-    m_p_service = this;
     RunServer();
     return true;
 
@@ -53,8 +50,6 @@ bool CService::Run()
 
 void CService::RunServer()
 {
-
-    //std::this_thread::sleep_for(std::chrono::seconds(20));
 
     std::string path_to_log_file(GetRelativePath() + "Log.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
@@ -230,7 +225,7 @@ bool CService::InitializeProcessesMonitoring(
 bool CService::InitializeSockets(const CServerSettings& server_sett)
 {
     CLOG_DEBUG_START_FUNCTION( );
-    m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(
+    m_p_acceptor_socket = std::make_unique<CServiceHost>(
         server_sett.GetListenerPort(), server_sett.GetServerIpAddress(),
         server_sett.GetBlocking(), server_sett.GetSocketTimeout(), m_stop_event);
     CLOG_TRACE_VAR_CREATION(m_p_acceptor_socket);
@@ -377,8 +372,8 @@ void CService::OnStop()
     CLOG_DEBUG_START_FUNCTION( );
     m_stop_event.Set( );
     CLOG_DEBUG("Stop event setted");
-    m_p_acceptor_socket->StopSocket( );
-    CLOG_DEBUG("Acceptor socket stopped!");
+    m_p_acceptor_socket->ShutDown();
+    CLOG_DEBUG("Close acception");
     m_main_thread.join( );
     CLOG_TRACE("Main thread joined stopped!");
     m_p_acceptor_socket.reset( );
@@ -415,11 +410,17 @@ void CService::HandleSignal(int signal)
 {
     if (signal == SIGTERM)
     {
-        m_p_service->m_stop_event.Set();
-        CLOG_DEBUG("Stop event setted");
-        m_p_service->m_p_acceptor_socket->StopSocket();
-        CLOG_DEBUG("Acceptor socket stopped!");
-        return;
+	m_p_service->m_stop_event.Set();
+	CLOG_DEBUG("Stop event setted");
+	m_p_service->m_p_acceptor_socket->ShutDown();
+	CLOG_DEBUG("Close acception");
+	m_p_service->m_p_acceptor_socket.reset( );
+	CLOG_TRACE("Acceptor socket deleted!");
+	m_p_service->m_p_thread_pool.reset( );
+	CLOG_TRACE("Thread pool deleted!");
+	CLOG_TRACE("Main logger deleted");
+	CLOG_DESTROY( );
+	return;
     }
 }
 

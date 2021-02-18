@@ -1,8 +1,9 @@
 #pragma once
 #include "EEventType.h"
-#include "CSocketWrapper.h"
 #include "CDataReceiver.h"
 
+class CSocketWrapper;
+class CSocket;
 enum class EClientRequestType;
 
 // This class handles event form the server
@@ -15,17 +16,17 @@ public:
 	CServiceConnectionHandler(CServiceConnectionHandler&&) noexcept = delete;
 	~CServiceConnectionHandler() noexcept = default;
 
-	bool HandleEvent(const int socket_fd, EEventType type);
+	bool HandleEvent(const CSocket& client, EEventType event_type);
 
 private:
-	const int c_client_disconnected = 10054;
-
-	bool HandleRequestEvent(const int socket_fd);
-	bool HandleResponseEvent(const int socket_fd, EClientRequestType type);
-	bool HandleResponseExitEvent(const int socket_fd);
+	bool HandleRequestEvent(const CSocket& client_socket);
+	bool HandleResponseEvent(const CSocket& client_socket, EClientRequestType type);
+	bool HandleWrongRequestEvent(const CSocket& client_socket);
+	bool IsEqualStrings(const std::string& first_str, 
+		const std::string& second_str) const;
 	void InitPeerStream();
+	EClientRequestType ParseMessageType(const std::string& message) const;
 
 	CDataReceiver m_json_data;
 	std::unique_ptr<CSocketWrapper> m_p_peer_stream;
-	bool m_can_receive_data;
 };

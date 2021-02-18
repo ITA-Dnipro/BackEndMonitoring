@@ -11,7 +11,7 @@ CJSONFormatterLogicalDisk::CJSONFormatterLogicalDisk() : CJSONFormatter()
 bool CJSONFormatterLogicalDisk::TryAddLogicalDiskData(
     const CLogicalDiskInfo& data_to_json, unsigned short disk_number)
 {
-    CLOG_DEBUG_START_FUNCTION();
+    CLOG_TRACE_START_FUNCTION();
     nlohmann::json json_format_data;
     CLOG_TRACE_VAR_CREATION(json_format_data);
     constexpr size_t num_of_letter = 10ULL;
@@ -40,6 +40,6 @@ bool CJSONFormatterLogicalDisk::TryAddLogicalDiskData(
     {
         return false;
     }
-    CLOG_DEBUG_END_FUNCTION();
+    CLOG_TRACE_END_FUNCTION();
     return true;
 }

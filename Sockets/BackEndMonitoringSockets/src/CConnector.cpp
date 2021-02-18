@@ -1,31 +1,70 @@
 #include "stdafx.h"
 
 #include "CConnector.h"
+#include "CSockAddress.h"
+#include "Log.h"
 
-CConnector::CConnector(const int port, const std::string& ip_address)
+CConnector::CConnector()
+	: m_is_initialized(false)
+{ }
+
+CConnector::~CConnector() noexcept
 {
-	m_p_socket_connector = InitSocketConnector(port, ip_address);
+	PlatformUtils::CloseSocket(m_socket_connector.GetSocketFD());
 }
 
-bool CConnector::Connect()
+bool CConnector::Initialize(const int port, const std::string& address)
 {
-	sockaddress current_address = m_p_socket_connector->GetSocketAddress();
-
-	if (PlatformUtils::Connect(m_p_socket_connector->GetSocketFD(), 
-		current_address))
-    {
+	CLOG_DEBUG_START_FUNCTION();
+	if(m_is_initialized)
+	{
+		CLOG_DEBUG("CConnector has already been initialized");
 		return true;
+	}
+
+	if(m_socket_connector.InitSocket())
+	{
+		m_socket_address = InitSocketAddress(address, port);
+		m_is_initialized = true;
+		CLOG_DEBUG("CConnector was successfully initialized");
+	}
+	CLOG_DEBUG_END_FUNCTION();
+	return m_is_initialized;
+}
+
+bool CConnector::Connect() const
+{
+	bool result = false;
+	CLOG_DEBUG_START_FUNCTION();
+
+	if(!m_is_initialized && !m_socket_connector.IsValidSocket())
+	{
+		CLOG_ERROR("CConnector is not initilized");
+		return result;
+	}
+	
+	if (PlatformUtils::Connect(m_socket_connector.GetSocketFD(), 
+		m_socket_address->GetSocketAddress()))
+    {
+		CLOG_DEBUG_WITH_PARAMS("Client was successfully connected to the server", 
+			m_socket_connector.GetSocketFD());
+		result = true;
     }
-	return false;
+	CLOG_DEBUG_END_FUNCTION();
+	return result;
 }
 
-int CConnector::GetSocketFD() const
+CSocket& CConnector::GetSocket()
 {
-	return m_p_socket_connector->GetSocketFD();
+	CLOG_TRACE_START_FUNCTION();
+	CLOG_TRACE_END_FUNCTION();
+	return m_socket_connector;
 }
 
-std::unique_ptr<CSocket> CConnector::InitSocketConnector
-	(const int port, const std::string& ip_address)
+std::unique_ptr<CSockAddress> CConnector::InitSocketAddress(const std::string& ip_address, const int port)
 {
-	return std::move(std::make_unique<CSocket>(port, ip_address));
+	CLOG_TRACE_START_FUNCTION();
+	CLOG_TRACE_END_FUNCTION();
+	return std::move(std::make_unique<CSockAddress>(port, ip_address));
 }
+
