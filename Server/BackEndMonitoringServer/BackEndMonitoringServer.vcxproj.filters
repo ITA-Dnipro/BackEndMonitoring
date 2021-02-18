@@ -188,6 +188,7 @@
     <ClInclude Include="..\..\utils\include\PlatformUtils.h">
       <Filter>Utils\Platform Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\utils\include\GlobalVariable.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
