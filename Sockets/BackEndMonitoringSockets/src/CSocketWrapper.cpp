@@ -51,8 +51,9 @@ bool CSocketWrapper::Send(const CSocket& client_socket, const std::string& line)
 	std::string buff;
 	size_t start_pos{ 0 };
 
-	std::string msg_size = std::to_string(line.size());
-	msg_size += "^";
+	std::string msg_size = c_header_key_begin;
+	msg_size += std::to_string(line.size());
+	msg_size += c_header_key_end;
 	if (send(client_socket.GetSocketFD(), msg_size.c_str(), static_cast<int>(msg_size.length()), 0) ==
 		c_connection_error)
 	{
@@ -110,24 +111,69 @@ bool CSocketWrapper::IsErrorOccurred(const CSocket& client_socket) const
 
 int CSocketWrapper::ReceiveHeader(const CSocket& client_socket) const
 {
-	char buff[1];
-	std::string size;
+	const int buff_size = 1;
+	char buff[buff_size];
+	std::string received_size;
+
+	if(!ReceiveHeaderKey(client_socket, c_header_key_begin))
+	{
+		return 0;
+	}
+	
 	while(true)
 	{
-		int received_bytes = recv(client_socket.GetSocketFD(), buff, 1, 0);
-		if (buff[0] == '^')
+		int received_bytes = recv(client_socket.GetSocketFD(), buff, 
+			buff_size, MSG_PEEK);
+
+		if (std::isdigit(buff[0]))
 		{
-			return ConvertDataToInt(size);
+			int received_bytes = recv(client_socket.GetSocketFD(), buff,
+				buff_size, 0);
+			received_size.append(buff, buff_size);
 		}
-		size.append(buff, received_bytes);
-		
+		else
+		{
+			break;
+		}
 	}
-	return ConvertDataToInt(size);
+	
+	if (ReceiveHeaderKey(client_socket, c_header_key_end))
+	{
+		return ConvertDataToInt(received_size);
+	}
+	return 0;
 
 }
 
+bool CSocketWrapper::ReceiveHeaderKey(const CSocket& client_socket,
+	const std::string& key) const
+{
+	const int buff_size = 1;
+	char buff[buff_size];
+	std::string received_key;
+	while (true)
+	{
+		if(received_key.size() == key.size())
+		{
+			if(received_key.compare(key) == 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
+		int received_bytes = recv(client_socket.GetSocketFD(), buff, 
+			buff_size, 0);
+
+		received_key.append(buff, buff_size);
+	}
+}
+
 bool CSocketWrapper::IsAllDataReceived(int msg_size,
-	int received_msg_size) const
+                                       int received_msg_size) const
 {
 	return msg_size == received_msg_size;
 }

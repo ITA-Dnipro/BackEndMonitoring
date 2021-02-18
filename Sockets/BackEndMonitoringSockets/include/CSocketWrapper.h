@@ -19,10 +19,14 @@ public:
 	bool IsErrorOccurred(const CSocket& socket) const;
 
 private:
+	const std::string c_header_key_begin = "^%$^";
+	const std::string c_header_key_end = "^&#^";
 	static const int c_max_buffer_size = 500u;
 	const int c_connection_error = -1;
 
 	[[nodiscard]] int ReceiveHeader(const CSocket& client_socket) const;
+	bool ReceiveHeaderKey(const CSocket& client_socket,
+		const std::string& key) const;
 	bool IsAllDataReceived(int msg_size, int received_msg_size) const;
 	[[nodiscard]] int ConvertDataToInt(const std::string& data) const;
 };

@@ -21,7 +21,10 @@ int CBaseSocket::GetSocketFD() const
 
 void CBaseSocket::SetSocket(int socket_fd)
 {
-	m_socket = socket_fd;
+	if (socket_fd > 0 && socket_fd <= c_max_valid_socket)
+	{
+		m_socket = socket_fd;
+	}
 }
 bool CBaseSocket::InitSocket()
 {
