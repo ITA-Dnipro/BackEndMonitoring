@@ -42,6 +42,9 @@ add_executable(Server
 		${UTILS_SRC_DIR}/CThreadPool.cpp
 		${UTILS_SRC_DIR}/CJSONFormatter.cpp
 		${UTILS_SRC_DIR}/CJSONFormatSaver.cpp
+		${UTILS_SRC_DIR}/CMonitoringJSONDataEntry.cpp
+		${UTILS_SRC_DIR}/CMonitoringJSONDataContainer.cpp
+		${UTILS_SRC_DIR}/CDateTimePathConstructor.cpp
 		${SERVER_SRC_DIR}/CCommandLineHandler.cpp
 		${SERVER_SRC_DIR}/CContainerOfLogicalDisk.cpp
 		${SERVER_SRC_DIR}/CContainerOfProcesses.cpp
@@ -54,7 +57,11 @@ add_executable(Server
 		${SERVER_SRC_DIR}/CServiceHandler.cpp
 		${SERVER_SRC_DIR}/CProcessInfo.cpp
 		${SERVER_SRC_DIR}/BackEndMonitoringServer.cpp
-		${SERVER_SRC_DIR}/CProcessesInfoMonitoring.cpp)
+		${SERVER_SRC_DIR}/CProcessesInfoMonitoring.cpp
+		${SERVER_SRC_DIR}/CMonitoringInfoJSONDatabase.cpp
+		${SERVER_SRC_DIR}/CProcessesInfoJSONDatabase.cpp
+		${SERVER_SRC_DIR}/CDrivesInfoJSONDatabase.cpp
+		${SERVER_SRC_DIR}/CResourcesInfoJSONDatabase.cpp)
 
 # Link these libraries to this build
 target_link_libraries(Server CLogger)

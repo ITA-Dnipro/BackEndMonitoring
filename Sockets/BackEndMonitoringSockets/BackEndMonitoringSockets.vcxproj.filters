@@ -51,9 +51,6 @@
     <ClInclude Include="..\..\CLogger\include\Log.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="include\CDataReceiver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\EClientRequestType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -68,6 +65,9 @@
     </ClInclude>
     <ClInclude Include="include\CAcceptor.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CDataProvider.h">
+	<Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\CSockAddress.h">
       <Filter>Header Files</Filter>
@@ -98,14 +98,14 @@
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="src\CDataReceiver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\CServiceHost.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CClientConnectorHost.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CDataProvider.cpp">
+	<Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CSockAddress.cpp">
       <Filter>Source Files</Filter>

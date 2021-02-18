@@ -101,16 +101,29 @@
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp">
       <Filter>Utils\Platform Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\CRequestHandler.cpp" />
-    <ClCompile Include="..\..\utils\include\IRequestExc.cpp" />
-    <ClCompile Include="src\CRequestExcAllData.cpp">
-      <Filter>Request susbsystem</Filter>
+    <ClCompile Include="src\CMonitoringInfoJSONDatabase.cpp">
+      <Filter>Monitoring subsystem\Database subsystem\JSON</Filter>
     </ClCompile>
-    <ClCompile Include="src\CRequestExcDiskData.cpp">
-      <Filter>Request susbsystem</Filter>
+    <ClCompile Include="src\CProcessesInfoJSONDatabase.cpp">
+      <Filter>Monitoring subsystem\Database subsystem\JSON\Processes</Filter>
     </ClCompile>
-    <ClCompile Include="src\CRequestExcProcessData.cpp">
-      <Filter>Request susbsystem</Filter>
+    <ClCompile Include="src\CDrivesInfoJSONDatabase.cpp">
+      <Filter>Monitoring subsystem\Database subsystem\JSON\Drives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CMonitoringJSONDataEntry.cpp">
+      <Filter>Monitoring subsystem\Database subsystem\JSON</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CMonitoringJSONDataContainer.cpp">
+      <Filter>Monitoring subsystem\Database subsystem\JSON</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\IPathConstructor.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CDateTimePathConstructor.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CResourcesInfoJSONDatabase.cpp">
+      <Filter>Monitoring subsystem\Database subsystem\JSON\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -199,22 +212,32 @@
     <ClInclude Include="..\..\utils\include\PlatformUtils.h">
       <Filter>Utils\Platform Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\CRequestHandler.h" />
-    <ClInclude Include="..\..\utils\include\IRequestExc.h" />
-    <ClInclude Include="..\..\utils\include\ERequestRangeSpecification.h">
+    <ClInclude Include="include\IInfoDatabase.h">
+      <Filter>Monitoring subsystem\Database subsystem</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CMonitoringInfoJSONDatabase.h">
+      <Filter>Monitoring subsystem\Database subsystem\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CProcessesInfoJSONDatabase.h">
+      <Filter>Monitoring subsystem\Database subsystem\JSON\Processes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CDrivesInfoJSONDatabase.h">
+      <Filter>Monitoring subsystem\Database subsystem\JSON\Drives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CMonitoringJSONDataEntry.h">
+      <Filter>Monitoring subsystem\Database subsystem\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CMonitoringJSONDataContainer.h">
+      <Filter>Monitoring subsystem\Database subsystem\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\IPathConstructor.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="include\CRequestExcAllData.h">
-      <Filter>Request susbsystem</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CRequestExcDiskData.h">
-      <Filter>Request susbsystem</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CRequestExcProcessData.h">
-      <Filter>Request susbsystem</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\GlobalVariable.h">
+    <ClInclude Include="..\..\utils\include\CDateTimePathConstructor.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CResourcesInfoJSONDatabase.h">
+      <Filter>Monitoring subsystem\Database subsystem\JSON\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -263,8 +286,20 @@
     <Filter Include="Utils\Platform Utils">
       <UniqueIdentifier>{c9d751ff-0fd2-4885-90ee-300616fe0b97}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Request susbsystem">
-      <UniqueIdentifier>{ca637b5a-3943-49bd-a547-302df4bfad9e}</UniqueIdentifier>
+    <Filter Include="Monitoring subsystem\Database subsystem">
+      <UniqueIdentifier>{2ae87742-f30a-4a9a-b979-3c9597abae67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Monitoring subsystem\Database subsystem\JSON">
+      <UniqueIdentifier>{567ad35f-6285-4d28-8b7d-e640a9c84e19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Monitoring subsystem\Database subsystem\JSON\Drives">
+      <UniqueIdentifier>{0689bb27-12c8-4fca-a5d0-54a8daaee70a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Monitoring subsystem\Database subsystem\JSON\Processes">
+      <UniqueIdentifier>{be5b56f4-4f4f-47a8-bbd6-12b51db9a1ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Monitoring subsystem\Database subsystem\JSON\Resources">
+      <UniqueIdentifier>{9e1fa702-5fd9-49c3-a02a-05b1f5e6e332}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

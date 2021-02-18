@@ -1,6 +1,6 @@
 #pragma once
 #include "EEventType.h"
-#include "CDataReceiver.h"
+#include "CDataProvider.h"
 
 class CSocketWrapper;
 class CSocket;
@@ -11,7 +11,7 @@ class CServiceConnectionHandler
 {
 public:
 	CServiceConnectionHandler() = delete;
-	CServiceConnectionHandler(CDataReceiver json_data);
+	CServiceConnectionHandler(CDataProvider json_data);
 	CServiceConnectionHandler(const CServiceConnectionHandler&) = delete;
 	CServiceConnectionHandler(CServiceConnectionHandler&&) noexcept = delete;
 	~CServiceConnectionHandler() noexcept = default;
@@ -27,6 +27,6 @@ private:
 	void InitPeerStream();
 	EClientRequestType ParseMessageType(const std::string& message) const;
 
-	CDataReceiver m_json_data;
+	CDataProvider m_json_data;
 	std::unique_ptr<CSocketWrapper> m_p_peer_stream;
 };

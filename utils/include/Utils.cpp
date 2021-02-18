@@ -40,27 +40,28 @@ std::vector<std::string> Utils::SplitIntoWords(const std::string& str,
 }
 
 bool Utils::TryGetCurrentDateAndTimeFormatted(std::string&
-                                              date_time_var_to_save)
+                                              date_time_var_to_save,
+                                              const std::string& format)
 {
-    const auto time = std::make_unique<tm>();
     auto current_time = std::chrono::system_clock::to_time_t
     (std::chrono::system_clock::now());
 
-#ifdef _MSC_VER
-    localtime_s(time.get(), &current_time);
-#else
-    localtime_r(&current_time, time.get());
-#endif
+    return TimeToString(current_time, date_time_var_to_save, format);
+}
 
-    date_time_var_to_save;
-    date_time_var_to_save.resize(50u);
-    std::strftime(date_time_var_to_save.data(),
-        date_time_var_to_save.capacity(), "%d.%m.%Y %X", time.get());
-    // Clean redundant \0 symbols, that fills resized string
-    date_time_var_to_save.erase(std::remove(date_time_var_to_save.begin(),
-        date_time_var_to_save.end(), '\0'), date_time_var_to_save.end());
+bool Utils::IsHourPassed(std::string& hour)
+{
+    std::string curr_time;
+    if(Utils::TryGetCurrentDateAndTimeFormatted(curr_time, "%H"))
+    {
+        if (curr_time != hour)
+        {
+            hour = curr_time;
+            return true;
+        }
+    }
 
-    return !date_time_var_to_save.empty();
+    return false;
 }
 
 bool Utils::TrySetMonthAsNumber(std::string& p_month)
@@ -113,7 +114,7 @@ bool Utils::TryGetFormattedDiskName(std::string& name_of_disk)
     return true;
 }
 
-bool Utils::TryCreateFileIfNotExist(const std::string& path_to_file)
+bool Utils::TryCreateFileIfNotExist(const std::filesystem::path& path_to_file)
 {
     CLOG_DEBUG_START_FUNCTION();
     if (!std::filesystem::exists(path_to_file))
@@ -237,4 +238,73 @@ EMemoryConvertType Utils::DefineCountType(int count_type_from_xml)
         //write to logger
         return EMemoryConvertType::BYTES;
     }
+}
+
+bool Utils::StringToDate(const std::string& date_str,
+                         const std::string& date_format, time_t& result)
+{
+    tm temp_date;
+    std::istringstream ss_date(date_str);
+    ss_date >> std::get_time(&temp_date, date_format.c_str());
+    if(ss_date.fail())
+    { return false;}
+
+    result = mktime(&temp_date);
+    if(result < 0)
+    { return false;}
+
+    return true;
+}
+
+bool Utils::TryCreateDirectory(const std::string& path,
+    std::filesystem::perms permission,
+    std::filesystem::perm_options perms_action)
+{
+    if (std::filesystem::create_directory(path))
+    {
+        //for windows will be a little different
+        std::filesystem::permissions(path, permission, perms_action);
+        return true;
+    }
+
+    return std::filesystem::is_directory(path);
+}
+
+bool Utils::IsDayPassed(std::string& day)
+{
+    std::string curr_day;
+    if (Utils::TryGetCurrentDateAndTimeFormatted(curr_day, "%d"))
+    {
+        if (curr_day != day)
+        {
+            return TryGetCurrentDateAndTimeFormatted(day, "%d.%m.%Y");
+        }
+    }
+
+    return false;
+}
+
+char Utils::DetermineSectDividingSymbol(const std::string& path)
+{
+    return path.find_last_of('/') == std::string::npos ? '\\' : '/';
+}
+
+bool Utils::TimeToString(time_t time, std::string& to_str, 
+                                const std::string& format)
+{
+    const auto time_tm = std::make_unique<tm>();
+    #ifdef _MSC_VER
+        localtime_s(time_tm.get(), &time);
+    #else
+        localtime_r(&time, time_tm.get());
+    #endif
+
+    char buff[50]{};
+    std::strftime(buff, 50, format.c_str(), time_tm.get());
+    // Clean redundant \0 symbols, that fills resized string
+    to_str = buff;
+    to_str.erase(std::remove(to_str.begin(),
+        to_str.end(), '\0'), to_str.end());
+
+    return !to_str.empty();
 }

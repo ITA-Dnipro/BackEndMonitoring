@@ -8,7 +8,7 @@ class CContainerOfProcesses
 public:
 	CContainerOfProcesses() = delete;
 	explicit CContainerOfProcesses(std::chrono::duration<int>,
-		const std::string&, EMemoryConvertType);
+								   EMemoryConvertType);
 	CContainerOfProcesses(const CContainerOfProcesses&) = delete;
 	CContainerOfProcesses(CContainerOfProcesses&&) noexcept = delete;
 	~CContainerOfProcesses() noexcept = default;
