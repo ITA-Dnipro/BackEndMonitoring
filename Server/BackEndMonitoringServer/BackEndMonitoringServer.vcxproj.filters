@@ -134,6 +134,11 @@
     <ClCompile Include="src\CRequestExcAllData.cpp" />
     <ClCompile Include="src\CRequestExcDiskData.cpp" />
     <ClCompile Include="src\CRequestExcProcessData.cpp" />
+    <ClCompile Include="..\..\utils\include\СInteractionFrame.cpp" />
+    <ClCompile Include="src\CRequestFrame.cpp" />
+    <ClCompile Include="..\..\3rdParty\include\guid.cpp">
+      <Filter>3rd-party libs\guid</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\utils\include\stdafx.h" />
@@ -263,6 +268,11 @@
     <ClInclude Include="..\..\utils\include\GlobalVariable.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\utils\include\СInteractionFrame.h" />
+    <ClInclude Include="include\CRequestFrame.h" />
+    <ClInclude Include="..\..\3rdParty\include\crossguid\guid.hpp">
+      <Filter>3rd-party libs\guid</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
@@ -324,6 +334,9 @@
     </Filter>
     <Filter Include="Monitoring subsystem\Database subsystem\JSON\Resources">
       <UniqueIdentifier>{9e1fa702-5fd9-49c3-a02a-05b1f5e6e332}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd-party libs\guid">
+      <UniqueIdentifier>{28b0f795-4d77-4150-8da0-b4ef92ee01c2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

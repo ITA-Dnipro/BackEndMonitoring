@@ -10,7 +10,11 @@
 
 #include "CRequestHandler.h"
 
-CRequestHandler::CRequestHandler(const std::string& request, 
+CRequestHandler::CRequestHandler(const std::string& request) : 
+    m_request(request)
+{ }
+
+CRequestHandler::CRequestHandler(const std::string& request,
     std::shared_ptr<IInfoDatabase> p_processes_data,
     std::shared_ptr<IInfoDatabase> p_disks_data,
     std::shared_ptr<IInfoDatabase> p_resources_data) :

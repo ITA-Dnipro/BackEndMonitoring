@@ -24,6 +24,5 @@ protected:
 	// do I really need a vector here???
 	std::vector<std::string> m_range_of_data;
 	const std::string& m_request;
-	ERequestRangeSpecification m_range_specification;
 };
 

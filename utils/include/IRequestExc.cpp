@@ -9,8 +9,7 @@
 IRequestExc::IRequestExc(const std::string& request, 
 	std::shared_ptr<CDataProvider> data_base) : 
 	m_request(request),
-	m_p_data_base(data_base),
-	m_range_specification(ERequestRangeSpecification::LAST_DATA)
+	m_p_data_base(data_base)
 { }
 
 bool IRequestExc::TryDetermineDateRange(const nlohmann::json& request)

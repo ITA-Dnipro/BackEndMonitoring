@@ -7,14 +7,28 @@
 #include "Utils.h"
 #include "CLogger/include/Log.h"
 #include "ERequestType.h"
+#include "ERequestRangeSpecification.h"
+#include "CRequestHandler.h"
+#include "CRequestFrame.h"
+
 
 int main(int argc, char** argv)
 {
-	const std::string answer = "{ \"id\": 2, \"request_type\": 1, \"special\": 1, \"duration\": 0}";
-	nlohmann::json request = nlohmann::json::parse(answer);
+	std::string answer = "{ \"id\": 2, \"request_type\": 1, \"special\": 0, \"duration\": \"\" : 12.02.2020 12:32:12, \"\" : 12.03.2020 12:32:12 }";
+	//nlohmann::json request = nlohmann::json::parse(answer);
+	
+	CRequestFrame g;
+	
+	g.TryFormateRequest(answer, ERequestType::DISKS_DATA, 
+		ERequestRangeSpecification::ALL_DATA, "12.02.2020 12:32:12", "12.03.2020 12:32:12");
 
 	//ERequestType b = ERequestType(request["id"]);
 	//std::cout << typeid(request["id"]).name();
+
+	CRequestHandler b(answer);
+	std::string kill;
+
+	b.HandleRequest(kill);
 
   std::fstream stream(
 	CService::GetRelativePath() + "Log.txt",

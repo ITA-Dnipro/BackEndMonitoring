@@ -36,7 +36,7 @@ bool CRequestExcDiskData::Execute(std::string& answer)
 		if (!Utils::StringToDate(m_range_of_data[0],
 			GlobalVariable::c_request_format_default, start) ||
 			!Utils::StringToDate(m_range_of_data[1],
-				GlobalVariable::c_request_format_default, start))
+				GlobalVariable::c_request_format_default, end))
 		{
 			// log
 			return false;
@@ -46,7 +46,7 @@ bool CRequestExcDiskData::Execute(std::string& answer)
 		return true;
 	}
 	default:
-		// log
+		// logW
 		return false;
 	}
 

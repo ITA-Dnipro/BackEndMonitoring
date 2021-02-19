@@ -1,9 +1,13 @@
 #pragma once
 
+#include "CDataProvider.h"
+#include "IRequestExc.h"
+
 class CRequestHandler
 {
 public:
 	CRequestHandler() = delete;
+	explicit CRequestHandler(const std::string& request);
 	explicit CRequestHandler(const std::string& request,
 		std::shared_ptr<IInfoDatabase> p_processes_data,
 		std::shared_ptr<IInfoDatabase> p_disks_data,
