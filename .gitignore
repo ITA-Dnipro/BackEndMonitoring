@@ -45,6 +45,7 @@
 
 # Build folders
 Client/BackEndMonitoringClient/Build/**
+Client/BackEndMonitoringClientCLI/Build/**
 Client/BackEndMonitoringClientTests/Build/**
 Server/BackEndMonitoringServer/Build/**
 Server/BackEndMonitoringServerTests/Build/**
