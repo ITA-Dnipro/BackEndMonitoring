@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CMainWindow</class>
+ <widget class="QMainWindow" name="CMainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::DefaultContextMenu</enum>
+  </property>
+  <property name="windowTitle">
+   <string>CMainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background : rgb(247, 247, 247);</string>
+  </property>
+  <widget class="QWidget" name="central_widget">
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tab_widget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>50</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QTabBar::tab:selected {background-color: #FA9944; color: #000000}
+QTabBar::tab:hover {color: #000000; background-color: #FFFFFF;}</string>
+      </property>
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
+      </property>
+      <property name="tabPosition">
+       <enum>QTabWidget::North</enum>
+      </property>
+      <property name="tabShape">
+       <enum>QTabWidget::Rounded</enum>
+      </property>
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>16</width>
+        <height>16</height>
+       </size>
+      </property>
+      <property name="tabsClosable">
+       <bool>false</bool>
+      </property>
+      <widget class="QWidget" name="processes_tab">
+       <attribute name="title">
+        <string>Processes monitoring</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QToolBox" name="processes_tool_box">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolBox::tab {
+   color: black;
+  font-weight: 700;
+  text-decoration: none;
+  outline: none;
+  border: 2px solid;
+}
+
+QToolBox::tab:hover {
+      background: rgb(225,225,225); 
+}
+
+QToolBox::tab:selected {
+     background: silver;
+}</string>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <widget class="QWidget" name="proc_table_page">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>558</width>
+             <height>373</height>
+            </rect>
+           </property>
+           <attribute name="label">
+            <string>All processes</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_3">
+            <item row="0" column="0">
+             <widget class="QTabWidget" name="proc_tab_widget">
+              <property name="styleSheet">
+               <string notr="true">QTabBar::tab:selected {background-color: rgb(55, 255, 225); color: #000000}
+</string>
+              </property>
+              <property name="currentIndex">
+               <number>-1</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="proc_graph_page">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>558</width>
+             <height>373</height>
+            </rect>
+           </property>
+           <attribute name="label">
+            <string>Graphs</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_7">
+            <item row="0" column="0">
+             <widget class="QCustomPlot" name="proc_graph" native="true"/>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="drives_tab">
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <attribute name="title">
+        <string>Logical drives monitoring</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="1" column="1">
+         <widget class="QToolBox" name="drives_tool_box">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolBox::tab {
+   color: black;
+  font-weight: 700;
+  text-decoration: none;
+  outline: none;
+  border: 2px solid;
+}
+
+QToolBox::tab:hover {
+      background: rgb(225,225,225); 
+}
+
+QToolBox::tab:selected {
+     background: silver;
+}</string>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <property name="tabSpacing">
+           <number>6</number>
+          </property>
+          <widget class="QWidget" name="drives_table_page">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>558</width>
+             <height>373</height>
+            </rect>
+           </property>
+           <attribute name="icon">
+            <iconset>
+             <normaloff>Resources/up_arrow.png</normaloff>Resources/up_arrow.png</iconset>
+           </attribute>
+           <attribute name="label">
+            <string>Drives info</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_5">
+            <item row="0" column="0">
+             <widget class="QTabWidget" name="drives_tab_widget">
+              <property name="styleSheet">
+               <string notr="true">QTabBar::tab:selected {background-color: rgb(55, 255, 225); color: #000000}
+QTabBar::tab:hover {color: #000000; background-color: #FFFFFF;}</string>
+              </property>
+              <property name="currentIndex">
+               <number>-1</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="drives_graph_page">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>558</width>
+             <height>373</height>
+            </rect>
+           </property>
+           <attribute name="label">
+            <string>Graphs</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_6">
+            <item row="0" column="0">
+             <widget class="QCustomPlot" name="drives_graph" native="true"/>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="request_button">
+      <property name="font">
+       <font>
+        <pointsize>17</pointsize>
+        <weight>87</weight>
+        <bold>true</bold>
+        <underline>false</underline>
+        <strikeout>false</strikeout>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+  color: black;
+  font-weight: 700;
+  text-decoration: none;
+  padding: .5em 2em;
+  outline: none;
+  border: 2px solid;
+} 
+QPushButton:hover { background: rgb(225,225,225); }
+QPushButton:pressed { background: silver; }</string>
+      </property>
+      <property name="text">
+       <string>Make request</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>600</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionReconnect">
+   <property name="text">
+    <string>Reconnect</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
