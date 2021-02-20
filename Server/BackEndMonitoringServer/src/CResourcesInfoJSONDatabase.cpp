@@ -7,17 +7,11 @@
 
 CResourcesInfoJSONDatabase::CResourcesInfoJSONDatabase()
 	: m_date_format("%d.%m.%Y %X")
-{ 
-	CLOG_DEBUG_START_FUNCTION();
-	CLOG_DEBUG_END_FUNCTION();
-}
+{ }
 
 CResourcesInfoJSONDatabase::CResourcesInfoJSONDatabase(
 	const std::string& date_format) : m_date_format(date_format)
-{
-	CLOG_DEBUG_START_FUNCTION_WITH_PARAMS(date_format);
-	CLOG_DEBUG_END_FUNCTION();
-}
+{ }
 
 void CResourcesInfoJSONDatabase::InsertData(long double cpu_usage,
 	long double ram_usage, long double pagefile_usage)
@@ -54,7 +48,7 @@ bool CResourcesInfoJSONDatabase::GetAllInfo(std::string& data)
 	}
 	if (!temp_json.is_null()) {
 		data.assign(temp_json.dump());
-		CLOG_DEBUG("Data returned succesfully");
+		CLOG_DEBUG("All info data returned succesfully");
 		return true;
 	}
 	CLOG_DEBUG_END_FUNCTION_WITH_RETURN(false);
@@ -86,8 +80,11 @@ bool CResourcesInfoJSONDatabase::GetLastInfo(std::string& data)
 				  {"ram", m_data_container.back().ram},
 				  {"pagefile", m_data_container.back().pagefile} };
 	if (!temp_json.empty()) {
-		data.assign(temp_json.dump());
-		CLOG_DEBUG("Data returned succesfully");
+		data.clear( );
+		data.push_back('[');
+		data.append(temp_json.dump());
+		data.push_back(']');
+		CLOG_DEBUG("Last data returned succesfully");
 		return true;
 	}
 	CLOG_DEBUG_END_FUNCTION_WITH_RETURN(false);
@@ -143,11 +140,12 @@ bool CResourcesInfoJSONDatabase::GetSelectedInfo(time_t from, time_t to, std::st
 
 	if(temp_json.empty())
 	{ 
-		CLOG_WARNING("No data in asked range");
+		CLOG_WARNING("No data in selected range");
 		return false;
 	}
 
 	data.assign(temp_json.dump());
+	CLOG_DEBUG("Selected data returned succesfully");
 	CLOG_DEBUG_END_FUNCTION_WITH_RETURN(true);
 	return true;
 }
