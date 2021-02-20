@@ -70,7 +70,7 @@ bool CProcessesInfoJSONDatabase::InsertCommitedData()
 		std::string new_path = m_path_to_file.string( );
 		if (!m_p_path_constructor->UpdatePathToFile(new_path))
 		{
-			CLOG_ERROR("Failed to update path to file");
+			CLOG_ERROR_WITH_PARAMS("Failed to update path", new_path);
 			break;
 		}
 
