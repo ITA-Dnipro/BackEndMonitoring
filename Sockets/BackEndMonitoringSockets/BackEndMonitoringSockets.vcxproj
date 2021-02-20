@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\CLogger\include\Log.h" />
+    <ClInclude Include="..\..\utils\include\GlobalVariable.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="include\CAcceptor.h" />
     <ClInclude Include="include\CServiceHost.h" />
@@ -193,7 +194,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\..\utils\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\utils\include;..\..\utils\include\PlatformUtils;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <PrecompiledHeaderOutputFile>$(IntDir)stdafx.pch</PrecompiledHeaderOutputFile>

@@ -95,7 +95,7 @@ void CClient::Execute()
 						message + "\n\n");
 					message.clear();
 				}
-				std::this_thread::sleep_for(std::chrono::seconds(5));
+				std::this_thread::sleep_for(std::chrono::seconds(1));
 			}
 			break;
 		}

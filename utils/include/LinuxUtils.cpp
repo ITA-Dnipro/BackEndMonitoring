@@ -1,6 +1,7 @@
 #ifdef __linux__
 #include "stdafx.h"
 
+#include "Utils/include/GlobalVariable.h"
 #include "CNumericTypesParser.h"
 #include "CReadFileWrapper.h"
 #include "Utils.h"
@@ -8,7 +9,7 @@
 #include "CSocket.h"
 #include "PlatformUtils.h"
 
-CBaseSocket::CBaseSocket() : m_socket(c_invalid_socket)
+CBaseSocket::CBaseSocket() : m_socket(GlobalVariable::c_invalid_socket)
 { }
 
 CBaseSocket::CBaseSocket(int socket_fd) : m_socket(socket_fd)
@@ -21,7 +22,7 @@ int CBaseSocket::GetSocketFD() const
 
 void CBaseSocket::SetSocket(int socket_fd)
 {
-	if (socket_fd > 0 && socket_fd <= c_max_valid_socket)
+	if (socket_fd > 0 && socket_fd <= GlobalVariable::c_max_valid_socket)
 	{
 		m_socket = socket_fd;
 	}
@@ -29,7 +30,7 @@ void CBaseSocket::SetSocket(int socket_fd)
 bool CBaseSocket::InitSocket()
 {
 	m_socket = socket(AF_INET, SOCK_STREAM, NULL);
-	if (m_socket != c_error_socket)
+	if (m_socket != GlobalVariable::c_error_socket)
 	{
 		return true;
 	}
@@ -52,7 +53,7 @@ namespace PlatformUtils
 	bool BindSocket(int socket, sockaddress& current_address)
 	{
 		if (::bind(socket, (struct sockaddr*)&current_address,
-			sizeof(current_address)) == c_success)
+			sizeof(current_address)) == GlobalVariable::c_success)
 		{
 			return true;
 		}
@@ -61,7 +62,7 @@ namespace PlatformUtils
 
 	bool Listen(int socket, const int connections)
 	{
-		if (::listen(socket, connections) == c_success)
+		if (::listen(socket, connections) == GlobalVariable::c_success)
 		{
 			return true;
 		}
@@ -82,13 +83,14 @@ namespace PlatformUtils
 	bool Connect(int socket, sockaddress& current_address)
 	{
 		return connect(socket, (struct sockaddr*)&current_address, 
-			sizeof(current_address)) == c_success;
+			sizeof(current_address)) == GlobalVariable::c_success;
 	}
 
 	bool SetUnblockingSocket(int socket)
 	{
 		int dontblock = 1;
-		if (ioctl(socket, FIONBIO, (char*)&dontblock) == c_success)
+		if (ioctl(socket, FIONBIO, (char*)&dontblock) == 
+			GlobalVariable::c_success)
 		{
 			return true;
 		}
@@ -100,7 +102,7 @@ namespace PlatformUtils
 		shutdown(socket, 2);
 		if (socket != c_invalid_socket)
 		{
-			if (close(socket) != c_error_socket)
+			if (close(socket) != GlobalVariable::c_error_socket)
 			{
 				return true;
 			}

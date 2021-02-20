@@ -3,19 +3,20 @@
 #include "CSocketWrapper.h"
 #include "CLogger/include/Log.h"
 #include "CSocket.h"
+#include "GlobalVariable.h"
 
 bool CSocketWrapper::Receive(const CSocket& client_socket, std::string& message)
 {
 	message.clear();
 	int total_received_bytes = 0;
 	int received_bytes = 0;
-	char buff[c_max_buffer_size];
+	char buff[GlobalVariable::c_max_buffer_size];
 	std::string received_line;
 
 	int total_msg_size = ReceiveHeader(client_socket);
 	if (total_msg_size <= 0)
 	{
-		message = "-1";
+		message = GlobalVariable::c_connection_problem;
 		return false;
 	}
 	message.reserve(total_msg_size);
@@ -23,11 +24,14 @@ bool CSocketWrapper::Receive(const CSocket& client_socket, std::string& message)
 
 	while(true)
 	{
-		received_bytes = recv(client_socket.GetSocketFD(), buff, c_max_buffer_size, 0);
+		received_bytes = recv(client_socket.GetSocketFD(), buff, 
+			GlobalVariable::c_max_buffer_size, 0);
 
 		if (received_bytes <= 0)
 		{
-			message = "-1";
+			message = GlobalVariable::c_connection_problem;
+			CLOG_ERROR_WITH_PARAMS("Cannot receive data from the socket", 
+				client_socket.GetSocketFD());
 			return false;
 		}
 		received_line.append(buff, received_bytes);
@@ -51,11 +55,7 @@ bool CSocketWrapper::Send(const CSocket& client_socket, const std::string& line)
 	std::string buff;
 	size_t start_pos{ 0 };
 
-	std::string msg_size = c_header_key_begin;
-	msg_size += std::to_string(line.size());
-	msg_size += c_header_key_end;
-	if (send(client_socket.GetSocketFD(), msg_size.c_str(), static_cast<int>(msg_size.length()), 0) ==
-		c_connection_error)
+	if(!SendHeaderSize(client_socket, line_length))
 	{
 		return false;
 	}
@@ -63,9 +63,9 @@ bool CSocketWrapper::Send(const CSocket& client_socket, const std::string& line)
 	while (line_length > 0)
 	{
 
-		if (line_length >= c_max_buffer_size)
+		if (line_length >= GlobalVariable::c_max_buffer_size)
 		{
-			size_for_substring = c_max_buffer_size;
+			size_for_substring = GlobalVariable::c_max_buffer_size;
 		}
 		else
 		{
@@ -74,9 +74,12 @@ bool CSocketWrapper::Send(const CSocket& client_socket, const std::string& line)
 
 		buff = line.substr(start_pos, size_for_substring);
 
-		if (send(client_socket.GetSocketFD(), buff.c_str(), static_cast<int>(buff.length()), 0) ==
-			c_connection_error)
+		if (send(client_socket.GetSocketFD(), buff.c_str(), 
+			static_cast<int>(buff.length()), 0) ==
+			GlobalVariable::c_connection_error)
 		{
+			CLOG_ERROR_WITH_PARAMS("Cannot send data to the socket ", 
+				client_socket.GetSocketFD());
 			return false;
 		}
 		line_length -= size_for_substring;
@@ -84,6 +87,23 @@ bool CSocketWrapper::Send(const CSocket& client_socket, const std::string& line)
 		buff.clear();
 	}
 	CLOG_DEBUG_WITH_PARAMS("Send data to the socket ", client_socket.GetSocketFD());
+	return true;
+}
+
+bool CSocketWrapper::SendHeaderSize(const CSocket& client_socket, size_t header_size)
+{
+	std::string msg_size = GlobalVariable::c_header_key_begin;
+	msg_size += std::to_string(header_size);
+	msg_size += GlobalVariable::c_header_key_end;
+	
+	if (send(client_socket.GetSocketFD(), msg_size.c_str(),
+		static_cast<int>(msg_size.length()), 0) ==
+		GlobalVariable::c_connection_error)
+	{
+		CLOG_ERROR_WITH_PARAMS("Cannot send header of the message to the socket ",
+			client_socket.GetSocketFD());
+		return false;
+	}
 	return true;
 }
 
@@ -102,7 +122,8 @@ bool CSocketWrapper::IsErrorOccurred(const CSocket& client_socket) const
 {
 	char buff;
 
-	if (recv(client_socket.GetSocketFD(), &buff, 1, MSG_PEEK) == c_connection_error)
+	if (recv(client_socket.GetSocketFD(), &buff, 1, MSG_PEEK) == 
+		GlobalVariable::c_connection_error)
 	{
 		return true;
 	}
@@ -115,7 +136,7 @@ int CSocketWrapper::ReceiveHeader(const CSocket& client_socket) const
 	char buff[buff_size];
 	std::string received_size;
 
-	if(!ReceiveHeaderKey(client_socket, c_header_key_begin))
+	if(!ReceiveHeaderKey(client_socket, GlobalVariable::c_header_key_begin))
 	{
 		return 0;
 	}
@@ -137,7 +158,7 @@ int CSocketWrapper::ReceiveHeader(const CSocket& client_socket) const
 		}
 	}
 	
-	if (ReceiveHeaderKey(client_socket, c_header_key_end))
+	if (ReceiveHeaderKey(client_socket, GlobalVariable::c_header_key_end))
 	{
 		return ConvertDataToInt(received_size);
 	}
@@ -159,10 +180,7 @@ bool CSocketWrapper::ReceiveHeaderKey(const CSocket& client_socket,
 			{
 				return true;
 			}
-			else
-			{
-				return false;
-			}
+			return false;
 		}
 		
 		int received_bytes = recv(client_socket.GetSocketFD(), buff, 

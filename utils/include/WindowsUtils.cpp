@@ -3,7 +3,7 @@
 #include "Sockets/BackEndMonitoringSockets/include/CSocket.h"
 
 #if defined(_WIN64) || defined(_WIN32)
-
+#include "Utils/include/GlobalVariable.h"
 #include "Utils.h"
 #include "CLogger/include/Log.h"
 #include "PlatformUtils.h"
@@ -11,7 +11,7 @@
 #pragma warning(disable : 6385)
 
 
-CBaseSocket::CBaseSocket( ) : m_socket(c_invalid_socket)
+CBaseSocket::CBaseSocket( ) : m_socket(GlobalVariable::c_invalid_socket)
 { }
 
 CBaseSocket::CBaseSocket(int socket_fd) : m_socket(socket_fd)
@@ -24,7 +24,7 @@ int CBaseSocket::GetSocketFD() const
 
 void CBaseSocket::SetSocket(int socket_fd)
 {
-	if(socket_fd > 0 && socket_fd <= c_max_valid_socket)
+	if(socket_fd > 0 && socket_fd <= GlobalVariable::c_max_valid_socket)
 	{
 		m_socket = socket_fd;
 	}
@@ -33,7 +33,7 @@ void CBaseSocket::SetSocket(int socket_fd)
 bool CBaseSocket::InitSocket( )
 {
 	m_socket = socket(AF_INET, SOCK_STREAM, NULL);
-	if(m_socket != c_error_socket)
+	if(m_socket != GlobalVariable::c_error_socket)
 	{
 		return true;
 	}
@@ -233,7 +233,7 @@ namespace PlatformUtils
 		CLOG_DEBUG_START_FUNCTION();
 		WSADATA info;
 		CLOG_TRACE_VAR_CREATION(info);
-		if (WSAStartup(MAKEWORD(2, 1), &info) == c_success)
+		if (WSAStartup(MAKEWORD(2, 1), &info) == GlobalVariable::c_success)
 		{
 			return true;
 		}
@@ -243,7 +243,7 @@ namespace PlatformUtils
 
 	bool FinalizeWinLibrary( )
 	{
-		if (WSACleanup( ) == c_success)
+		if (WSACleanup( ) == GlobalVariable::c_success)
 		{
 			return true;
 		}
@@ -254,7 +254,7 @@ namespace PlatformUtils
 	{
 		CLOG_DEBUG_START_FUNCTION();
 		if (::bind(socket, (SOCKADDR*) &current_address,
-			sizeof(current_address)) == c_success)
+			sizeof(current_address)) == GlobalVariable::c_success)
 		{
 			return true;
 		}
@@ -265,7 +265,7 @@ namespace PlatformUtils
 	bool Listen(int socket, const int connections)
 	{
 		CLOG_DEBUG_START_FUNCTION();
-		if (listen(socket, connections) == c_success)
+		if (listen(socket, connections) == GlobalVariable::c_success)
 		{
 			return true;
 		}
@@ -287,7 +287,7 @@ namespace PlatformUtils
 	bool Connect(int socket, sockaddress& current_address)
 	{
 		return connect(socket, (sockaddr*) &current_address,
-					   sizeof(current_address)) == c_success;
+					   sizeof(current_address)) == GlobalVariable::c_success;
 	}
 
 	bool SetUnblockingSocket(int socket)
@@ -295,7 +295,7 @@ namespace PlatformUtils
 		CLOG_DEBUG_START_FUNCTION();
 		u_long iMode = 1UL;
 		CLOG_TRACE_VAR_CREATION(iMode);
-		if (ioctlsocket(socket, FIONBIO, &iMode) == c_success)
+		if (ioctlsocket(socket, FIONBIO, &iMode) == GlobalVariable::c_success)
 		{
 			return true;
 		}
@@ -306,9 +306,9 @@ namespace PlatformUtils
 	bool CloseSocket(int socket)
 	{
 		CLOG_DEBUG_WITH_PARAMS("Close socket", socket);
-		if (socket != c_invalid_socket)
+		if (socket != GlobalVariable::c_invalid_socket)
 		{
-			if (closesocket(socket) != c_error_socket)
+			if (closesocket(socket) != GlobalVariable::c_error_socket)
 			{
 				return true;
 			}

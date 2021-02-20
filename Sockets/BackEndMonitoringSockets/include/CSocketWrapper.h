@@ -15,15 +15,11 @@ public:
 
 	bool Receive(const CSocket& client_socket, std::string& message);
 	bool Send(const CSocket& client_socket, const std::string& line);
+	bool SendHeaderSize(const CSocket& client_socket, size_t header_size);
 	bool CanReceiveData(const CSocket& socket) const;
 	bool IsErrorOccurred(const CSocket& socket) const;
 
 private:
-	const std::string c_header_key_begin = "^%$^";
-	const std::string c_header_key_end = "^&#^";
-	static const int c_max_buffer_size = 500u;
-	const int c_connection_error = -1;
-
 	[[nodiscard]] int ReceiveHeader(const CSocket& client_socket) const;
 	bool ReceiveHeaderKey(const CSocket& client_socket,
 		const std::string& key) const;

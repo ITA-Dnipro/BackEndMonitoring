@@ -1,5 +1,5 @@
 #pragma once
-#include "CThreadSafeVariable.h"
+#include "utils/include/CThreadSafeVariable.h"
 
 class CJSONFormatterProcess;
 class CJSONFormatterLogicalDisk;

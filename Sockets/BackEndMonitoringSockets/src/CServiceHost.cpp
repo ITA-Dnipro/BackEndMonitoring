@@ -6,12 +6,13 @@
 #include "CAcceptor.h"
 #include "CSocketWrapper.h"
 #include "Log.h"
+#include "GlobalVariable.h"
 
 CServiceHost::CServiceHost(int port, const std::string& ip_address,
     bool is_blocked, int socket_timeout, CEvent& event) :
 	m_port(port), m_ip_address(ip_address), m_event(event),
 	m_is_socket_blocked(is_blocked), m_socket_timeout(socket_timeout),
-	m_num_working_threads(0), m_is_host_initialized(false)
+	m_is_host_initialized(false)
 { }
 
 CServiceHost::~CServiceHost()
@@ -112,82 +113,79 @@ bool CServiceHost::HandleEvents()
 	CLOG_DEBUG("Start accepting clients");
 	AcceptClients();
 	CLOG_DEBUG("Start handling clients");
-	while (!m_event.WaitFor(std::chrono::milliseconds(100)))
+	while (!m_event.WaitFor(std::chrono::milliseconds(1)))
 	{
-		if (m_num_working_threads == 0 && !m_clients.empty() && AcceptRequest())
+		if (!m_clients_statuses.empty())
 		{
-			CLOG_DEBUG("Clients was handled");
+			AcceptRequest();
 		}
 	}
 	CLOG_DEBUG_END_FUNCTION();
 	return true;
 }
 
-bool CServiceHost::AcceptRequest()
+void CServiceHost::AcceptRequest()
 {
+	
 	int max_sd = 0;
 	fd_set read_fds;
 	fd_set write_fds;
 	fd_set error_fds;
 	timeval time_out;
 	time_out.tv_sec = 0;
-	int select_result = 0;
-	
-	size_t num_clients = 0u;
-	{
-		std::lock_guard<std::mutex> lock(m_mutex);
-		num_clients = m_clients.size();
-	}
 	
 	FD_ZERO(&read_fds);
 	FD_ZERO(&write_fds);
 	FD_ZERO(&error_fds);
 	
-	int current_socket = 0;
-	for (size_t i = 0; i < num_clients; ++i)
 	{
-		current_socket = m_clients[i].GetSocketFD();
-		FD_SET(current_socket, &read_fds);
-		FD_SET(current_socket, &write_fds);
-		FD_SET(current_socket, &error_fds);
-		if (current_socket > max_sd)
+		std::lock_guard<std::mutex> lock(m_mutex);
+		
+		for (auto client : m_clients_statuses)
 		{
-			max_sd = current_socket;
+			if (client.second)
+			{
+				continue;
+			}
+			FD_SET(client.first.GetSocketFD(), &read_fds);
+			FD_SET(client.first.GetSocketFD(), &write_fds);
+			FD_SET(client.first.GetSocketFD(), &error_fds);
+			if (client.first.GetSocketFD() > max_sd)
+			{
+				max_sd = client.first.GetSocketFD();
+			}
 		}
-	}
-	
-	select_result = select(max_sd + 1, &read_fds, &write_fds, 
-		&error_fds, &time_out);
+		int select_result = select(max_sd + 1, &read_fds, &write_fds, 
+			&error_fds, &time_out);
 
-	if(select_result <= 0)
-	{
-		CLOG_DEBUG_WITH_PARAMS("Error select function", select_result);
-		//return false;
-	}
+		if(select_result <= 0)
+		{
+			CLOG_DEBUG_WITH_PARAMS("Error select function", select_result);
+		}
 
-	for (size_t i = 0; i < num_clients; ++i)
-	{
-		if (FD_ISSET(m_clients[i].GetSocketFD(), &error_fds))
+		for (auto it = m_clients_statuses.begin(); 
+			it != m_clients_statuses.end(); ++it)
 		{
-			CLOG_DEBUG_WITH_PARAMS("FD_ISSET found broken socket",
-				m_clients[i].GetSocketFD());
-			m_disconnected_clients.push_back(m_clients[i].GetSocketFD());
-			continue;
-		}
-		if (FD_ISSET(m_clients[i].GetSocketFD(), &read_fds))
-		{
-			CLOG_DEBUG_WITH_PARAMS("FD_ISSET accepted new request from the socket",
-				m_clients[i].GetSocketFD());
-			AddClientToThread(m_clients[i]);
+			if (it->second)
+			{
+				continue;
+			}
+			if (FD_ISSET(it->first.GetSocketFD(), &error_fds))
+			{
+				CLOG_DEBUG_WITH_PARAMS("FD_ISSET found broken socket",
+					it->first.GetSocketFD());
+				DeleteBrokenSocket(it->first.GetSocketFD());
+				return;
+			}
+			if (FD_ISSET(it->first.GetSocketFD(), &read_fds))
+			{
+				CLOG_DEBUG_WITH_PARAMS("FD_ISSET accepted new request from the socket",
+					it->first.GetSocketFD(), it->second);
+				it->second = true;
+				AddClientToThread(it->first);
+			}
 		}
 	}
-	
-	if(!m_disconnected_clients.empty())
-	{
-		DeleteDisconnectedClients();
-		m_disconnected_clients.clear();
-	}
-	return true;
 }
 
 void CServiceHost::AddClientToThread(const CSocket& client)
@@ -196,35 +194,47 @@ void CServiceHost::AddClientToThread(const CSocket& client)
 	CLOG_DEBUG_WITH_PARAMS("Add client to the thread", client.GetSocketFD());
 	m_p_pool->Enqueue([this, &client]()
 		{
-			++m_num_working_threads;
 			CLOG_DEBUG_WITH_PARAMS("New client was added to the thread with socket ",
 				client.GetSocketFD());
-			if (!m_p_service_handler->HandleEvent(client,
+			if (m_p_service_handler->HandleEvent(client,
 				EEventType::REQUEST_DATA))
 			{
-				CLOG_DEBUG_WITH_PARAMS("Add socket to list for deleting", client.GetSocketFD());
-				m_disconnected_clients.push_back(client.GetSocketFD());
+				std::lock_guard<std::mutex> lock(m_mutex);
+				for (auto it = m_clients_statuses.begin(); 
+					it != m_clients_statuses.end(); ++it)
+
+				{
+					if (it->first.GetSocketFD() == client.GetSocketFD())
+					{
+						it->second = false;
+						CLOG_DEBUG_WITH_PARAMS("Stop working with the client", 
+							client.GetSocketFD());
+					}
+				}
 			}
-			--m_num_working_threads;
-		});
-	CLOG_DEBUG_WITH_PARAMS("We have threads", m_num_working_threads);
+			else
+			{
+				std::lock_guard<std::mutex> lock(m_mutex);
+				DeleteBrokenSocket(client.GetSocketFD());
+			}
+			});
 	CLOG_DEBUG_END_FUNCTION();
 }
 
 bool CServiceHost::DeleteBrokenSocket(const int socket_descriptor)
 {
 	CLOG_DEBUG_START_FUNCTION();
-	std::lock_guard<std::mutex> lock(m_mutex);
-	
 	CLOG_DEBUG_WITH_PARAMS("We should delete client", socket_descriptor);
-	for(auto it = m_clients.begin(); it != m_clients.end(); ++it)
+	for(auto it = m_clients_statuses.begin(); 
+		it != m_clients_statuses.end(); ++it)
 	{
-		if(it->GetSocketFD() == socket_descriptor)
+		if(it->first.GetSocketFD() == socket_descriptor)
 		{
-			PlatformUtils::CloseSocket(it->GetSocketFD());
-			CLOG_DEBUG_WITH_PARAMS("Erase client", it->GetSocketFD());
-			m_clients.erase(it);
-			CLOG_DEBUG_WITH_PARAMS("Now we have clients", m_clients.size());
+			PlatformUtils::CloseSocket(it->first.GetSocketFD());
+			CLOG_DEBUG_WITH_PARAMS("Erase client", it->first.GetSocketFD());
+			m_clients_statuses.erase(it);
+			CLOG_DEBUG_WITH_PARAMS("Now we have clients", 
+				m_clients_statuses.size());
 			return true;
 		}
 	}
@@ -238,18 +248,20 @@ void CServiceHost::AcceptClients()
 	
 	m_p_pool->Enqueue([this]()
 		{
-			while (!m_event.WaitFor(std::chrono::milliseconds(100)))
+			while (!m_event.WaitFor(std::chrono::milliseconds(1)))
 			{
-				CSocket accepted_client(c_invalid_socket);
+				CSocket accepted_client(GlobalVariable::c_invalid_socket);
 				if(m_p_server_acceptor->AcceptNewClient(accepted_client)
 				&& accepted_client.IsValidSocket())
 				{
 					std::lock_guard<std::mutex> lock(m_mutex);
+
 					CLOG_DEBUG_WITH_PARAMS("Was accepted new client with descriptor",
 						accepted_client.GetSocketFD());
-					m_clients.push_back(accepted_client);
+					m_clients_statuses.push_back(std::pair(accepted_client, 
+						false));
 					CLOG_DEBUG_WITH_PARAMS("We have clients after adding", 
-						m_clients.size());
+						m_clients_statuses.size());
 				}
 			}
 		});
@@ -259,23 +271,10 @@ void CServiceHost::AcceptClients()
 void CServiceHost::DeleteAllClients()
 {
 	CLOG_DEBUG_START_FUNCTION();
-	while(!m_clients.empty())
+	while(!m_clients_statuses.empty())
 	{
-		DeleteBrokenSocket(m_clients.front().GetSocketFD());
+		DeleteBrokenSocket(m_clients_statuses.front().first.GetSocketFD());
 	}
-	CLOG_DEBUG_WITH_PARAMS("We have clients", m_clients.size());
-	CLOG_DEBUG_END_FUNCTION();
-}
-
-void CServiceHost::DeleteDisconnectedClients()
-{
-	CLOG_DEBUG_START_FUNCTION();
-
-	CLOG_DEBUG_WITH_PARAMS("We should delete disconnected clients", 
-		m_disconnected_clients.size());
-	for (size_t i = 0; i < m_disconnected_clients.size(); ++i)
-	{
-		DeleteBrokenSocket(m_disconnected_clients[i]);
-	}
+	CLOG_DEBUG_WITH_PARAMS("We have clients", m_clients_statuses.size());
 	CLOG_DEBUG_END_FUNCTION();
 }
