@@ -54,5 +54,5 @@ Sockets/BackEndMonitoringSockets/Build/**
 cmake-build-debug/**
 cmake-build-release/**
 
-# Dont ingore files in "packages" dir
-!packages/**
+# Don't ignore files in "packages" dir // I said IGNORED
+packages/**
