@@ -49,6 +49,7 @@ Client/BackEndMonitoringClientTests/Build/**
 Server/BackEndMonitoringServer/Build/**
 Server/BackEndMonitoringServerTests/Build/**
 CLogger/Build/**
+UtilsTests/Build/**
 Sockets/BackEndMonitoringSockets/Build/**
 .idea/**
 cmake-build-debug/**
