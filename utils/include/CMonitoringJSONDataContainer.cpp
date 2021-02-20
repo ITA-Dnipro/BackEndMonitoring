@@ -28,7 +28,7 @@ bool CMonitoringJSONDataContainer::InsertData(std::streampos block_start,
 	}
 	else
 	{ 
-		CLOG_WARNING("Can't add data to container");
+		CLOG_WARNING("Failed to add data to container");
 	}
 	CLOG_DEBUG_END_FUNCTION_WITH_RETURN(success);
 	return success;
@@ -57,7 +57,7 @@ bool CMonitoringJSONDataContainer::GetAllInfo(std::string& data)
 		} 
 		else
 		{
-			CLOG_WARNING("Can't get data about entry");
+			CLOG_WARNING("Failed to get data about entry");
 			return false;
 		}
 	}
@@ -68,10 +68,18 @@ bool CMonitoringJSONDataContainer::GetAllInfo(std::string& data)
 
 bool CMonitoringJSONDataContainer::GetLastInfo(std::string& data)
 {
+	bool success = false;
 	CLOG_DEBUG_START_FUNCTION();
 	if (!m_data_container.empty()) 
 	{
-		bool success = m_data_container.back( ).GetInfo(data);
+		std::string temp;
+		if(success = m_data_container.back( ).GetInfo(temp))
+		{ 
+			data.clear( );
+			data.push_back('[');
+			data.append(temp);
+			data.push_back(']');
+		}
 		CLOG_DEBUG_VAR_CREATION(success);
 		return success;
 	}
@@ -110,7 +118,7 @@ bool CMonitoringJSONDataContainer::GetSelectedInfo(time_t from, time_t to,
 				time_t date = 0;
 				if (!entry.GetDate(date))
 				{
-					CLOG_WARNING("Can't get date from entry");
+					CLOG_WARNING("Failed to get date from entry");
 					return false;
 				}
 				return (date >= from) && (date <= to);
@@ -125,7 +133,7 @@ bool CMonitoringJSONDataContainer::GetSelectedInfo(time_t from, time_t to,
 
 	if(entries.empty())
 	{
-		CLOG_WARNING("Can't find requested data");
+		CLOG_WARNING("No data in selected range");
 		return false;
 	}
 
@@ -144,7 +152,7 @@ bool CMonitoringJSONDataContainer::GetSelectedInfo(time_t from, time_t to,
 		}
 		else
 		{
-			CLOG_WARNING("Can't get data about entry");
+			CLOG_WARNING("Failed to get data about entry");
 			return false;
 		}
 	}
