@@ -14,10 +14,7 @@ CMonitoringJSONDataEntry::CMonitoringJSONDataEntry(
 	  m_block_end(block_end), m_date_and_time(date_time),
 	  m_date_format(date_format)
 	  
-{
-	CLOG_TRACE_START_FUNCTION( );
-	CLOG_TRACE_END_FUNCTION( );
-}
+{ }
 
 bool CMonitoringJSONDataEntry::Initialize()
 {
@@ -38,21 +35,21 @@ bool CMonitoringJSONDataEntry::GetInfo(std::string& info)
 		CReadFileWrapper file(m_path_to_file);
 		if (!file.Initialize( ))
 		{
-			CLOG_ERROR("Can't initialize fstream");
+			CLOG_ERROR("Failed to initialize fstream");
 			success = false;
 			break;
 		}
 
 		if (!file.MoveCursorTo(m_block_start))
 		{
-			CLOG_ERROR("Can't move cursor in file");
+			CLOG_ERROR("Failed to move cursor in file");
 			success = false;
 			break;
 		}
 
 		if (!file.Read(info, m_block_end - m_block_start))
 		{
-			CLOG_ERROR("Can't read info from fstream");
+			CLOG_ERROR("Failed to read info from fstream");
 			success = false;
 			break;
 		}
@@ -80,7 +77,7 @@ bool CMonitoringJSONDataEntry::CheckData()
 		std::string date_str;
 		if (!FindDateField(m_block_start, date_str))
 		{
-			CLOG_ERROR("Can't find dete field of data entry");
+			CLOG_ERROR("Failed to find dete field");
 			success = false;
 			break;
 		}
@@ -88,7 +85,7 @@ bool CMonitoringJSONDataEntry::CheckData()
 		time_t date;
 		if (!FormatDateFromLine(date_str, date))
 		{
-			CLOG_ERROR("Can't convert string to date");
+			CLOG_ERROR("Failed to convert date");
 			success = false;
 			break;
 		}
@@ -102,7 +99,7 @@ bool CMonitoringJSONDataEntry::CheckData()
 		std::streampos end_of_block;
 		if (!FindEndOfJSONBlock(m_block_start, end_of_block))
 		{
-			CLOG_ERROR("Can't find end of JSON block");
+			CLOG_ERROR("Failed to find end of JSON block");
 			success = false;
 			break;
 		}
@@ -120,7 +117,7 @@ bool CMonitoringJSONDataEntry::CheckData()
 bool CMonitoringJSONDataEntry::FindEndOfJSONBlock(std::streampos start_pos,
 	std::streampos& value)
 {
-	bool success = true;
+	bool success = false;
 	CLOG_TRACE_START_FUNCTION( );
 
 	do
@@ -128,23 +125,20 @@ bool CMonitoringJSONDataEntry::FindEndOfJSONBlock(std::streampos start_pos,
 		CReadFileWrapper file(m_path_to_file);
 		if (!file.Initialize( ))
 		{
-			CLOG_ERROR("Can't initialize fstream");
-			success = false;
+			CLOG_ERROR("Failed to initialize fstream");
 			break;
 		}
 
 		if (!file.MoveCursorTo(start_pos))
 		{
-			CLOG_ERROR("Can't move curson in fstream");
-			success = false;
+			CLOG_ERROR("Failed to move curson in fstream");
 			break;
 		}
 
 		char sym{};
 		if (!file.ReadSym(sym) || sym != '{')
 		{
-			CLOG_ERROR("Error with reading start of JSON block");
-			success = false;
+			CLOG_ERROR("Falied to read start of JSON block");
 			break;
 		}
 
@@ -155,11 +149,10 @@ bool CMonitoringJSONDataEntry::FindEndOfJSONBlock(std::streampos start_pos,
 			{
 				++opened_blocks;
 			}
-			else
-				if (sym == '}')
-				{
-					--opened_blocks;
-				}
+			else if (sym == '}')
+			{
+				--opened_blocks;
+			}
 		}
 
 		if (opened_blocks == 0)
@@ -167,12 +160,12 @@ bool CMonitoringJSONDataEntry::FindEndOfJSONBlock(std::streampos start_pos,
 			std::streampos end_pos = 0;
 			if (!file.GetPosition(end_pos))
 			{
-				CLOG_ERROR("Can't get position of fstream");
-				success = false;
+				CLOG_ERROR("Failed to get position of fstream");
 				break;
 			}
 			end_pos -= 1;
 			value = end_pos;
+			success = true;
 		}
 	} while (false);
 	CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
@@ -182,7 +175,7 @@ bool CMonitoringJSONDataEntry::FindEndOfJSONBlock(std::streampos start_pos,
 bool CMonitoringJSONDataEntry::FindDateField(std::streampos start_pos,
 	std::string& value)
 {
-	bool success = true;
+	bool success = false;
 	CLOG_TRACE_START_FUNCTION( );
 
 	do
@@ -190,15 +183,13 @@ bool CMonitoringJSONDataEntry::FindDateField(std::streampos start_pos,
 		CReadFileWrapper file(m_path_to_file);
 		if (!file.Initialize( ))
 		{
-			CLOG_ERROR("Can't initialize fstream");
-			success = false;
+			CLOG_ERROR("Failed to initialize fstream");
 			break;
 		}
 
 		if (!file.MoveCursorTo(start_pos))
 		{
-			CLOG_ERROR("Can't move cursor in fstream");
-			success = false;
+			CLOG_ERROR("Failed to move cursor in fstream");
 			break;
 		}
 
@@ -211,8 +202,7 @@ bool CMonitoringJSONDataEntry::FindDateField(std::streampos start_pos,
 				std::streampos date_pos = 0;
 				if (!file.GetPosition(date_pos))
 				{
-					CLOG_ERROR("Can't get position of fstream");
-					success = false;
+					CLOG_ERROR("Failed to get position of fstream");
 					break;
 				}
 
@@ -220,21 +210,20 @@ bool CMonitoringJSONDataEntry::FindDateField(std::streampos start_pos,
 
 				if (!file.MoveCursorTo(date_pos))
 				{
-					CLOG_ERROR("Can't move cursor in fstream");
-					success = false;
+					CLOG_ERROR("Failed to move cursor in fstream");
 					break;
 				}
 
 				if (!file.ReadLine(str))
 				{
-					CLOG_ERROR("Can't read line from fstream");
-					success = false;
+					CLOG_ERROR("Failed to read line from fstream");
 					break;
 				}
 
 				value = str;
 			}
 		}
+		success = true;
 	} while (false);
 	CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
 	return success;
@@ -243,7 +232,7 @@ bool CMonitoringJSONDataEntry::FindDateField(std::streampos start_pos,
 bool CMonitoringJSONDataEntry::FormatDateFromLine(const std::string& str, 
 											  time_t& value)
 {
-	bool success = true;
+	bool success = false;
 	CLOG_TRACE_START_FUNCTION( );
 
 	do
@@ -252,8 +241,7 @@ bool CMonitoringJSONDataEntry::FormatDateFromLine(const std::string& str,
 		CLOG_TRACE_VAR_CREATION(date_begin);
 		if (date_begin == str.npos)
 		{
-			CLOG_ERROR("Can't find digit symbol in line");
-			success = false;
+			CLOG_ERROR("Failed to find first digit symbol in line");
 			break;
 		}
 
@@ -262,8 +250,7 @@ bool CMonitoringJSONDataEntry::FormatDateFromLine(const std::string& str,
 
 		if (date_end == str.npos)
 		{
-			CLOG_ERROR("Can't find digit symbol in line");
-			success = false;
+			CLOG_ERROR("Failed to find last digit symbol in line");
 			break;
 		}
 
@@ -272,9 +259,9 @@ bool CMonitoringJSONDataEntry::FormatDateFromLine(const std::string& str,
 
 		if (!Utils::StringToDate(date_str, m_date_format, value))
 		{
-			CLOG_ERROR("Can't convert string to time_t");
-			success = false;
+			CLOG_ERROR("Failed to convert string to time_t");
 		}
+		success = true;
 	} while (false);
 	CLOG_TRACE_END_FUNCTION_WITH_RETURN(success);
 	return success;

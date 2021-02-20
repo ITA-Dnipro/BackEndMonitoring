@@ -273,7 +273,7 @@ bool Utils::TryCreateDirectory(const std::string& path,
 bool Utils::IsDayPassed(std::string& day)
 {
     std::string curr_day;
-    if (Utils::TryGetCurrentDateAndTimeFormatted(curr_day, "%d"))
+    if (TryGetCurrentDateAndTimeFormatted(curr_day, "%d"))
     {
         if (curr_day != day)
         {
