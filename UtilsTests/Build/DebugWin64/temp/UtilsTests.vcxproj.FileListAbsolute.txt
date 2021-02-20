@@ -1,3 +1,0 @@
-C:\Users\Alexandr Safiyulin\Desktop\BackEndMonitoring\UtilsTests\Build\DebugWin64\out\gtest.pdb
-C:\Users\Alexandr Safiyulin\Desktop\BackEndMonitoring\UtilsTests\Build\DebugWin64\out\gtest_main.pdb
-C:\Users\Alexandr Safiyulin\Desktop\BackEndMonitoring\UtilsTests\Build\DebugWin64\temp\UtilsTests.vcxproj.CopyComplete
