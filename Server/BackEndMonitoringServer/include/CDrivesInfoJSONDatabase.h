@@ -18,8 +18,7 @@ public:
 
     ~CDrivesInfoJSONDatabase( ) = default;
 
-    bool CommitDataAdd(const CLogicalDiskInfo& data_to_json,
-                       unsigned short disk_number);
+    bool CommitDataAdd(const CLogicalDiskInfo& data_to_json);
     bool ClearCommitedData( );
     bool InsertCommitedData( );
 

@@ -25,12 +25,11 @@ CDrivesInfoJSONDatabase::CDrivesInfoJSONDatabase(
 	CLOG_DEBUG_END_FUNCTION( );
 }
 
-bool CDrivesInfoJSONDatabase::CommitDataAdd(const CLogicalDiskInfo & data_to_json,
-											unsigned short disk_number)
+bool CDrivesInfoJSONDatabase::CommitDataAdd(const CLogicalDiskInfo & data_to_json)
 {
 	bool success = true;
 	CLOG_DEBUG_START_FUNCTION( );
-	success = m_json_formatter.TryAddLogicalDiskData(data_to_json, disk_number);
+	success = m_json_formatter.TryAddLogicalDiskData(data_to_json);
 	CLOG_DEBUG_END_FUNCTION_WITH_RETURN(success);
 	return success;
 }

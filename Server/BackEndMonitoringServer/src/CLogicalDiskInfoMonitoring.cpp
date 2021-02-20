@@ -73,8 +73,6 @@ bool CLogicalDiskInfoMonitoring::StartMonitoringInfo()
 		const std::vector<CLogicalDiskInfo*>* p_logical_disks =
 			m_p_container->GetAllLogicalDisk( );
 
-		unsigned short disk_number = 0;
-		CLOG_TRACE_VAR_CREATION(disk_number);
 		for (const auto& disk : *p_logical_disks)
 		{
 			if (!disk->TryUpdateCurrentStatus( ))
@@ -83,12 +81,11 @@ bool CLogicalDiskInfoMonitoring::StartMonitoringInfo()
 				CLOG_ERROR( "Unable to update logical disks info!" );
 				continue;
 			}
-			if (!m_p_database->CommitDataAdd(*disk, disk_number))
+			if (!m_p_database->CommitDataAdd(*disk))
 			{
 				//exception handler
 				continue;
 			}
-			disk_number++;
 		}
 
 		if (!m_p_database->InsertCommitedData( ))
