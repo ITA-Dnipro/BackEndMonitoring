@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Main.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\CDataReader.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\CHDDInfoSettings.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\CJSONFormatSaver.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\CJSONFormatter.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\CLoggingSettings.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\CNumericTypesParser.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\CProcessesInfoSettings.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\CReadFileWrapper.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\CServerSettings.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\CSettings.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\CStringCleaner.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\CThreadPool.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\CThreadPoolSettings.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\CTimeSettings.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\CXMLDataReader.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\LinuxUtils.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\StrToNumWrapper.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\WindowsUtils.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\Utils.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\include\pugixml.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils\include\CEvent.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CXMLDataReaderTest.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CStringCleanerTest.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CNumericTypesParserTest.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CStrToNumWrapperTest.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc">
+      <Filter>Source files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\utils\include\CDataReader.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\CHDDInfoSettings.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\CJSONFormatSaver.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\CJSONFormatter.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\CLoggingSettings.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\CNumericTypesParser.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\CProcessesInfoSettings.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\CReadFileWrapper.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\CServerSettings.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\CSettings.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\CStringCleaner.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\CThreadPool.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\CThreadPoolSettings.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\CThreadSafeVariable.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\CTimeSettings.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\CXMLDataReader.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\PlatformUtils.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\STaskInQueue.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\StrToNumWrapper.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\Utils.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\include\pugixml.hpp">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils\include\CEvent.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>

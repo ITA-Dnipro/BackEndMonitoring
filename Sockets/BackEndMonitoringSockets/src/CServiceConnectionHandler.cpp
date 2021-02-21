@@ -6,7 +6,7 @@
 #include "CSocketWrapper.h"
 #include "CSocket.h"
 
-CServiceConnectionHandler::CServiceConnectionHandler(CDataReceiver json_data) :
+CServiceConnectionHandler::CServiceConnectionHandler(CDataProvider json_data) :
 	m_json_data(json_data)
 {
 	InitPeerStream();
@@ -97,16 +97,16 @@ bool CServiceConnectionHandler::HandleResponseEvent(const CSocket& client_socket
 	switch (type)
 	{
 	case EClientRequestType::ALL_DATA:
-		CLOG_DEBUG("Send all info to the client");
-		message = m_json_data.GetAllInfo();
+		CLOG_TRACE("Send all info to the client");
+		message = m_json_data.GetAllLastInfo();
 		break;
 	case EClientRequestType::PROCESSES_DATA:
-		CLOG_DEBUG("Send process info to the client");
-		message = m_json_data.GetProcessesInfo();
+		CLOG_TRACE("Send process info to the client");
+		message = m_json_data.GetProcessesLastInfo();
 		break;
 	case EClientRequestType::DISKS_DATA:
-		CLOG_DEBUG("Send disk info to the client");
-		message = m_json_data.GetDisksInfo();
+		CLOG_TRACE("Send disk info to the client");
+		message = m_json_data.GetDisksLastInfo();
 		break;
 	default:
 		CLOG_ERROR_WITH_PARAMS("Wrong parameter EClientRequestType, ",
