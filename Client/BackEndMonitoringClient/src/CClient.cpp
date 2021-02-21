@@ -95,28 +95,18 @@ void CClient::Execute()
 						message + "\n\n");
 					message.clear();
 				}
-				std::this_thread::sleep_for(std::chrono::seconds(5));
+				std::this_thread::sleep_for(std::chrono::seconds(1));
 			}
 			break;
 		}
 		case ERequestType::ALL_DATA:
 		{
 			result = MakeRequest(request, message);
-			nlohmann::json all_json = nlohmann::json::parse(message);
-
-			nlohmann::json processes_json = nlohmann::json::parse(all_json["processes info"].get<std::string>());
-			nlohmann::json disks_json = nlohmann::json::parse(all_json["disks info"].get<std::string>());
-
-			all_json["processes info"] = processes_json.dump();
-			all_json["disks info"] = disks_json.dump();
-
-			message = all_json.dump();
+			message = message;
 			break;
 		}
 		default:
 			result = MakeRequest(request, message);
-			nlohmann::json parsed_json = nlohmann::json::parse(message);
-			message = parsed_json.dump();
 			break;
 		}
 		if (!message.empty())
