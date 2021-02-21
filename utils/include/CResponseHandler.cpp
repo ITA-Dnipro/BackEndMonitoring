@@ -9,27 +9,29 @@ CResponseHandler::CResponseHandler() : CInteractionHandler()
 { }
 
 bool CResponseHandler::HandleResponse(const std::string& guid, 
-    const std::string &response, nlohmann::json & json_storage)
+    const std::string &response, std::string& var_storage)
 {
     if (!TryValidate(guid, response))
     {
         return false;
     }
 	
-	json_storage = nlohmann::json::parse(response);
-    switch (DetermineErrorInResponse(json_storage))
+	m_json_temp = nlohmann::json::parse(response);
+    switch (DetermineErrorInResponse(m_json_temp))
 	{
 	case EResponseError::NONE:
-		json_storage = json_storage[GlobalVariable::c_response_data];
+        m_json_temp = m_json_temp[GlobalVariable::c_response_data];
 		break;
 	case EResponseError::INCORRECT_REQUEST:
 		// log
-		json_storage.clear();
+        m_json_temp.clear();
 		return false;
 	default:
 		// log
 		return false;
 	}
+
+    var_storage = m_json_temp.dump();
 
 	return true;
 }

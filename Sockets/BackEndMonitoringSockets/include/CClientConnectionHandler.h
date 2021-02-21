@@ -4,6 +4,7 @@
 #include "ERequestType.h"
 #include "ERequestRangeSpecification.h"
 #include "CRequestFrame.h"
+#include "CResponseHandler.h"
 
 class CSocket;
 
@@ -32,7 +33,9 @@ private:
 		const std::string& message) const;
 	[[nodiscard]] std::unique_ptr<CSocketWrapper> InitClientStream();
 
+	CResponseHandler m_response_handler;
 	CRequestFrame m_request_formatter;
-	std::unique_ptr<CSocketWrapper> m_p_client_stream;
+	nlohmann::json json_format;
 	std::string m_current_request;
+	std::unique_ptr<CSocketWrapper> m_p_client_stream;
 };

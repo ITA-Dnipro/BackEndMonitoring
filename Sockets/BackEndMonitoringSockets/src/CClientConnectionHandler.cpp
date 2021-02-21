@@ -71,6 +71,11 @@ bool CClientConnectionHandler::HandleResponseEvent(const CSocket& client_socket,
 			CLOG_ERROR_WITH_PARAMS("Response from the server", message);
 			result = HandleLostRequestEvent(client_socket, message);
 		}
+
+		json_format = nlohmann::json::parse(message);
+		std::string guid = 
+			json_format[GlobalVariable::c_request_key_id].get<std::string>();
+		result = m_response_handler.HandleResponse(guid, message, message);
 	}
 
 	if(!result)

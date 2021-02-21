@@ -72,6 +72,9 @@
     <ClInclude Include="include\CDataProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\utils\include\CResponseHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CAcceptor.cpp">
@@ -111,6 +114,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CDataProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CResponseHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

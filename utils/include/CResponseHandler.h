@@ -12,12 +12,15 @@ public:
 	CResponseHandler(CResponseHandler&&) = delete;
 
 	[[nodiscard]] bool HandleResponse(const std::string& guid, 
-		const std::string& response, nlohmann::json& json_storage);
+		const std::string& response, std::string& var_storage);
 
 private:
 	[[nodiscard]] bool TryValidate(const std::string& guid, 
 		const std::string& response);
 	[[nodiscard]] EResponseError DetermineErrorInResponse(
 		const nlohmann::json& response);
+
+private:
+	nlohmann::json m_json_temp;
 };
 

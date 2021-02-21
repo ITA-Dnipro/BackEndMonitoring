@@ -32,6 +32,7 @@ bool CServiceConnectionHandler::HandleRequestEvent(const CSocket& client_socket)
 {
 	bool should_not_close_client = false;
 	CLOG_DEBUG_START_FUNCTION();
+	CLOG_DEBUG("222222222222222222222222222222222222222222222222222222222222");
 	std::string message;
 	std::string response_message;
 	if (m_p_peer_stream->CanReceiveData(client_socket) &&

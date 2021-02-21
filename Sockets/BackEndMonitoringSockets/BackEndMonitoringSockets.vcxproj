@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\CLogger\include\Log.h" />
+    <ClInclude Include="..\..\utils\include\CResponseHandler.h" />
     <ClInclude Include="..\..\utils\include\GlobalVariable.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="include\CAcceptor.h" />
@@ -36,6 +37,7 @@
     <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\utils\include\CResponseHandler.cpp" />
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
     <ClCompile Include="src\CAcceptor.cpp" />
     <ClCompile Include="src\CDataProvider.cpp" />
