@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IHardwareInfoMonitoring.h"
+#include "CDrivesInfoJSONDatabase.h"
 
 class CContainerOfLogicalDisk;
 class CHardwareStatusSpecification;
@@ -10,7 +11,7 @@ class CLogicalDiskInfoMonitoring :
     public IHardwareInfoMonitoring
 {
 public:
-    CLogicalDiskInfoMonitoring() = delete;
+    CLogicalDiskInfoMonitoring( ) = delete;
     /// <summary>
     /// Saving specification of LogicalDisk information
     /// </summary>
@@ -18,28 +19,28 @@ public:
     explicit CLogicalDiskInfoMonitoring(
         CEvent& stop_event,
         CHardwareStatusSpecification* specification,
-        CThreadSafeVariable<CJSONFormatterLogicalDisk>& json_formatter);
+        std::shared_ptr<CDrivesInfoJSONDatabase> p_database);
 
     explicit CLogicalDiskInfoMonitoring(
         CHardwareStatusSpecification* specification,
         CContainerOfLogicalDisk* container_in_lifecircle,
         CEvent& stop_event,
-        CThreadSafeVariable<CJSONFormatterLogicalDisk>& json_formatter);
+        std::shared_ptr<CDrivesInfoJSONDatabase> p_database);
 
     CLogicalDiskInfoMonitoring(CLogicalDiskInfoMonitoring&)
         = delete;
-    CLogicalDiskInfoMonitoring(CLogicalDiskInfoMonitoring&&) 
+    CLogicalDiskInfoMonitoring(CLogicalDiskInfoMonitoring&&)
         noexcept = delete;
 
-    ~CLogicalDiskInfoMonitoring();
+    ~CLogicalDiskInfoMonitoring( );
     /// <summary>
     /// infinite loop. Stoped only if stop-event
     /// </summary>
-    virtual bool StartMonitoringInfo() override;
+    virtual bool StartMonitoringInfo( ) override;
 
 private:
+    std::shared_ptr<CDrivesInfoJSONDatabase> m_p_database;
     CHardwareStatusSpecification* m_p_specification;
     CContainerOfLogicalDisk* m_p_container;
-    CThreadSafeVariable<CJSONFormatterLogicalDisk>& m_json_formatter;
 };
 

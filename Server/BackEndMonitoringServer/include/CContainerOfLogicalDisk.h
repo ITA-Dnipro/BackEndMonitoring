@@ -3,7 +3,6 @@
 #include "CHardwareStatusSpecification.h"
 
 class CLogicalDiskInfo;
-class CJSONFormatterLogicalDisk;
 
 class CContainerOfLogicalDisk
 {
@@ -11,7 +10,7 @@ public:
 	CContainerOfLogicalDisk() = delete;
 	explicit CContainerOfLogicalDisk(
 		std::chrono::duration<int> period_of_checking_status,
-		const std::string& path_to_file, EMemoryConvertType count_type);
+		EMemoryConvertType count_type);
 	explicit CContainerOfLogicalDisk(const CHardwareStatusSpecification& orig);
 	explicit CContainerOfLogicalDisk(const CContainerOfLogicalDisk& orig);
 
@@ -22,9 +21,6 @@ public:
 	[[nodiscard]] bool InitializeContainerOfLogicalDisk();
 
 	[[nodiscard]] bool IsInitialized() const;
-
-	[[nodiscard]] bool TryUpdateInfoLogicalDiskToJSON(
-		CJSONFormatterLogicalDisk& json_formatter);
 
 	[[nodiscard]] const std::vector<CLogicalDiskInfo*>* GetAllLogicalDisk() 
 		const;

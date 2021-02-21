@@ -4,17 +4,12 @@
 class CSocket : public CBaseSocket
 {
 public:
-	CSocket() = delete;
-	explicit CSocket(const int port, const std::string& ip_address);
-	CSocket(const CSocket&) = delete;
-	CSocket(CSocket&&) noexcept = delete;
-	~CSocket() noexcept = default;
+	explicit CSocket();
+	explicit CSocket(int socket_fd);
+	CSocket(const CSocket& obj) = default;
+	CSocket(CSocket&& obj) noexcept = default;
+	CSocket& operator = (const CSocket& obj) = default;
 
-	bool CloseSocket();
-	[[nodiscard]]  sockaddress GetSocketAddress() const;
-
-protected:
-	void SetSocketAddress(const int port, const std::string& ip_address);
 	bool IsValidSocket() const;
-	
+
 };

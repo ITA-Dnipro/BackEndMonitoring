@@ -1,17 +1,19 @@
 #include "stdafx.h"
 
 #include "ERequestType.h"
-#include "ERequestType.h"
 #include "CClient.h"
 #include "Utils.h"
+#include "CLogger/include/Log.h"
 
-CClient::CClient() : m_port(0), is_connected(false)
-{
-	m_file_name = "ServerData_Client_.txt";
-}
+CClient::CClient() : m_port(0),
+	m_file_name("ServerData_Client_.txt"), is_connected(false)
+{ }
 
 bool CClient::Init(const int arg_num, char** arguments)
 {
+	bool result = false;
+	CLOG_DEBUG_START_FUNCTION();
+
 	if (arg_num != c_num_arguments)
 	{
 		return false;
@@ -20,21 +22,27 @@ bool CClient::Init(const int arg_num, char** arguments)
 	m_port = std::stol(arguments[c_port_num]);
 	m_ip_address = arguments[c_ip_address_num];
 
-	m_connector = InitConnector();
-	std::filesystem::path path_to_file(m_file_name);
-	std::filesystem::path extension = path_to_file.extension();
-	std::filesystem::path name = path_to_file.stem();
-	path_to_file.replace_filename(name.string() +
-		std::to_string(m_connector->GetClientSocket()) + extension.string());
-	m_response_data = std::fstream(path_to_file, std::ios_base::out);
-	m_consolePrinter = std::make_unique<CClientView>(std::cout, std::cin);
-	m_filePrinter = std::make_unique<CClientView>(m_response_data, std::cin);
+	result = InitHost(m_port, m_ip_address);
+	if (result)
+	{
+		std::filesystem::path path_to_file(m_file_name);
+		std::filesystem::path extension = path_to_file.extension();
+		std::filesystem::path name = path_to_file.stem();
+		path_to_file.replace_filename(name.string() + extension.string());
+		m_response_data = std::fstream(path_to_file, std::ios_base::out);
+		m_consolePrinter = std::make_unique<CClientView>(std::cout, std::cin);
+		m_filePrinter = std::make_unique<CClientView>(m_response_data, std::cin);
+		CLOG_DEBUG("CClientViews were created");
+	}
+	CLOG_DEBUG_END_FUNCTION();
 
-	return true;
+	return result;
 }
 
 void CClient::Execute()
 {
+	CLOG_DEBUG_START_FUNCTION();
+
 	bool result = true;
 	ERequestType request;
 	std::string message;
@@ -60,10 +68,10 @@ void CClient::Execute()
 			m_consolePrinter->PrintError();
 			break;
 		case ERequestType::ALL_DATA_CYCLE:
-			for (unsigned i = 1u; i <= 10; ++i)
+			for (unsigned i = 1u; i <= 10u; ++i)
 			{
 				result = MakeRequest(ERequestType::ALL_DATA, message);
-				if (message.size() > 0)
+				if (!message.empty())
 				{
 					PrintMessage("\n" + std::to_string(i) + "\n\n" + message + "\n\n");
 					message.clear();
@@ -81,7 +89,7 @@ void CClient::Execute()
 			while (result)
 			{
 				result = MakeRequest(ERequestType::ALL_DATA, message);
-				if (message.size() > 0)
+				if (!message.empty())
 				{
 					PrintMessage("\n" + std::to_string(counter++) + "\n\n" +
 						message + "\n\n");
@@ -91,11 +99,27 @@ void CClient::Execute()
 			}
 			break;
 		}
-		default:
+		case ERequestType::ALL_DATA:
+		{
 			result = MakeRequest(request, message);
+			nlohmann::json all_json = nlohmann::json::parse(message);
+
+			nlohmann::json processes_json = nlohmann::json::parse(all_json["processes info"].get<std::string>());
+			nlohmann::json disks_json = nlohmann::json::parse(all_json["disks info"].get<std::string>());
+
+			all_json["processes info"] = processes_json.dump();
+			all_json["disks info"] = disks_json.dump();
+
+			message = all_json.dump();
 			break;
 		}
-		if (message.size() > 0)
+		default:
+			result = MakeRequest(request, message);
+			nlohmann::json parsed_json = nlohmann::json::parse(message);
+			message = parsed_json.dump();
+			break;
+		}
+		if (!message.empty())
 		{
 			PrintMessage("\n" + message + "\n\n");
 			message.clear();
@@ -104,16 +128,23 @@ void CClient::Execute()
 	} while (result && request != ERequestType::EXIT);
 
 	PrintMessage("Goodbye\n");
+	CLOG_DEBUG_END_FUNCTION();
+
 }
 
 bool CClient::Connect()
 {
+	CLOG_DEBUG_START_FUNCTION();
 	is_connected = m_connector->ConnectToServer();
+	CLOG_DEBUG_WITH_PARAMS("We try connect to the server, result", is_connected);
+	CLOG_DEBUG_END_FUNCTION();
 	return is_connected;
 }
 
 bool CClient::MakeRequest(ERequestType type, std::string& message)
 {
+	CLOG_DEBUG_START_FUNCTION();
+
 	if (is_connected)
 	{
 		switch (type)
@@ -145,31 +176,47 @@ bool CClient::MakeRequest(ERequestType type, std::string& message)
 		}
 		return true;
 	}
+	CLOG_DEBUG_END_FUNCTION();
+
 	return false;
 }
 
-std::unique_ptr<CConnectorWrapper> CClient::InitConnector()
+bool CClient::InitHost(const int port, const std::string& ip_address)
 {
-	return std::move(std::make_unique<CConnectorWrapper>(m_port, m_ip_address));
+	bool result = false;
+	CLOG_DEBUG_START_FUNCTION();
+	m_connector = std::make_unique<CClientConnectorHost>();
+	result = m_connector->Initialize(port, ip_address);
+	CLOG_DEBUG_WITH_PARAMS("Result of the InitHost function", result);
+	CLOG_DEBUG_END_FUNCTION();
+	return result;
 }
 
 std::string CClient::RequestProcessesData()
 {
+	CLOG_DEBUG_START_FUNCTION();
+	CLOG_DEBUG_END_FUNCTION();
 	return m_connector->MakeRequest(EClientRequestType::PROCESSES_DATA);
 }
 
 std::string CClient::RequestDisksData()
 {
+	CLOG_DEBUG_START_FUNCTION();
+	CLOG_DEBUG_END_FUNCTION();
 	return m_connector->MakeRequest(EClientRequestType::DISKS_DATA);
 }
 
 std::string CClient::RequestAllData()
 {
+	CLOG_DEBUG_START_FUNCTION();
+	CLOG_DEBUG_END_FUNCTION();
 	return m_connector->MakeRequest(EClientRequestType::ALL_DATA);
 }
 
 void CClient::PrintMessage(const std::string& message) const
 {
+	CLOG_DEBUG_START_FUNCTION();
 	m_consolePrinter->PrintMessage(message);
 	m_filePrinter->PrintMessage(message);
+	CLOG_DEBUG_END_FUNCTION();
 }

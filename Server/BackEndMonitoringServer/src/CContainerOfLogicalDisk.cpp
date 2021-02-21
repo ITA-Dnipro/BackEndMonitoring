@@ -4,17 +4,13 @@
 #include "PlatformUtils.h"
 #include "CLogicalDiskInfo.h"
 #include "CContainerOfLogicalDisk.h"
-#include "CJSONFormatterLogicalDisk.h"
 #include "CLogger/include/Log.h"
 
 
 CContainerOfLogicalDisk::CContainerOfLogicalDisk(
 	std::chrono::duration<int> period_of_checking_status,
-	const std::string& path_to_file,
 	EMemoryConvertType count_type) :
-	m_specification(period_of_checking_status,
-		path_to_file,
-		count_type),
+	m_specification(period_of_checking_status, count_type),
 	m_is_initialized(false)
 {};
 
@@ -97,31 +93,6 @@ bool CContainerOfLogicalDisk::InitializeContainerOfLogicalDisk()
 bool CContainerOfLogicalDisk::IsInitialized() const
 {
 	return m_is_initialized;
-}
-
-bool CContainerOfLogicalDisk::TryUpdateInfoLogicalDiskToJSON(
-	CJSONFormatterLogicalDisk& json_formatter)
-{
-	CLOG_DEBUG_START_FUNCTION();
-	unsigned short disk_number = 0;
-	CLOG_TRACE_VAR_CREATION(disk_number);
-	for (const auto& disk : m_p_container_all_logical_disks)
-	{
-		if (!disk->TryUpdateCurrentStatus())
-		{
-			// exception
-			std::cout << "Enable to update!" << std::endl;
-			return false;
-		}
-		if (!json_formatter.TryAddLogicalDiskData(*disk, disk_number))
-		{
-			//exception handler
-			continue;
-		}
-		disk_number++;
-	}
-	CLOG_DEBUG_END_FUNCTION();
-	return true;
 }
 
 const std::vector<CLogicalDiskInfo*>* CContainerOfLogicalDisk::GetAllLogicalDisk() const

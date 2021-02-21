@@ -1,6 +1,5 @@
 #include "stdafx.h"
 
-#include "CLogger/include/Log.h"
 #include "CEvent.h"
 #include "CThreadPool.h"
 #include "EMemoryConvertType.h"
@@ -12,7 +11,7 @@
 #include "CContainerOfLogicalDisk.h"
 #include "CProcessesInfoMonitoring.h"
 #include "CLogicalDiskInfoMonitoring.h"
-#include "Sockets/BackEndMonitoringSockets/include/CDataReceiver.h"
+#include "Sockets/BackEndMonitoringSockets/include/CDataProvider.h"
 #include "Utils.h"
 #include "CXMLDataReader.h"
 #include "CLoggingSettings.h"
@@ -23,14 +22,13 @@
 #include "CTimeSettings.h"
 
 #include "CService.h"
-
 CService* CService::m_p_service = nullptr;
 
 bool CService::Run()
 {
-#if defined(_WIN64) || defined(_WIN32)
-
     m_p_service = this;
+	
+#if defined(_WIN64) || defined(_WIN32)
 
     CHAR* name = const_cast<CString&>(m_name).GetBuffer();
 
@@ -44,7 +42,6 @@ bool CService::Run()
 
 #elif __linux__
 
-    m_p_service = this;
     RunServer();
     return true;
 
@@ -53,8 +50,6 @@ bool CService::Run()
 
 void CService::RunServer()
 {
-
-    //std::this_thread::sleep_for(std::chrono::seconds(20));
 
     std::string path_to_log_file(GetRelativePath() + "Log.txt");
     ELogLevel log_level = ELogLevel::DEBUG_LEVEL;
@@ -130,7 +125,8 @@ void CService::RunServer()
         CLOG_PROD("ERROR! Can't create sockets!");
         return;
     }
-    CDataReceiver json_data(m_processes_json, m_disks_json);
+    CDataProvider json_data(m_p_processes_data, m_p_drives_data, 
+                            m_p_resources_data);
     CLOG_TRACE_VAR_CREATION(json_data);
 
     if (!m_p_acceptor_socket->Initialize(std::move(m_p_thread_pool),
@@ -141,7 +137,7 @@ void CService::RunServer()
     }
 
     m_p_acceptor_socket->Execute( );
-    CLOG_DEBUG_END_FUNCTION();
+    CLOG_DEBUG_END_FUNCTION( );
 }
 
 bool CService::InitializeLogger(
@@ -153,7 +149,7 @@ bool CService::InitializeLogger(
         path_to_log_file,
         std::ios_base::app);
 
-    if (m_log_stream->is_open())
+    if (m_log_stream->is_open( ))
     {
         CLOG_CREATION_START( );
 
@@ -200,13 +196,17 @@ bool CService::InitializeLogicalDiscMonitoring(
     CLOG_DEBUG_START_FUNCTION( );
     CHardwareStatusSpecification* specification = new
         CHardwareStatusSpecification(
-        std::chrono::seconds(xml_settings.GetPeriodTime()), xml_settings.GetFileName(),
-        Utils::DefineCountType(xml_settings.GetCountType()));
+        std::chrono::seconds(xml_settings.GetPeriodTime( )),
+        Utils::DefineCountType(xml_settings.GetCountType( )));
+
+    m_p_drives_data = std::make_shared<CDrivesInfoJSONDatabase>(
+        xml_settings.GetFileName( ));
+
     CLOG_TRACE_VAR_CREATION(specification);
     m_disks_monitor = std::make_unique<CLogicalDiskInfoMonitoring>(
         m_stop_event,
         specification,
-        m_disks_json);
+        m_p_drives_data);
 
     CLOG_TRACE_VAR_CREATION(m_disks_monitor);
     CLOG_DEBUG_END_FUNCTION( );
@@ -217,10 +217,14 @@ bool CService::InitializeLogicalDiscMonitoring(
 bool CService::InitializeProcessesMonitoring(
     const CProcessesInfoSettings& xml_settings)
 {
+    m_p_processes_data = std::make_shared<CProcessesInfoJSONDatabase>(
+        xml_settings.GetFileName( ));
+    m_p_resources_data = std::make_shared<CResourcesInfoJSONDatabase>();
+
     m_processes_monitor = std::make_unique<CProcessesInfoMonitoring>(
-        std::chrono::seconds(xml_settings.GetPeriodTime()), xml_settings.GetFileName(),
+        std::chrono::seconds(xml_settings.GetPeriodTime()),
         Utils::DefineCountType(xml_settings.GetCountType()),
-        m_stop_event, m_processes_json);
+        m_stop_event, m_p_processes_data, m_p_resources_data);
     CLOG_DEBUG_START_FUNCTION( );
     CLOG_TRACE_VAR_CREATION(m_processes_monitor);
     CLOG_DEBUG_END_FUNCTION( );
@@ -230,7 +234,7 @@ bool CService::InitializeProcessesMonitoring(
 bool CService::InitializeSockets(const CServerSettings& server_sett)
 {
     CLOG_DEBUG_START_FUNCTION( );
-    m_p_acceptor_socket = std::make_unique<CAcceptorWrapper>(
+    m_p_acceptor_socket = std::make_unique<CServiceHost>(
         server_sett.GetListenerPort(), server_sett.GetServerIpAddress(),
         server_sett.GetBlocking(), server_sett.GetSocketTimeout(), m_stop_event);
     CLOG_TRACE_VAR_CREATION(m_p_acceptor_socket);
@@ -377,8 +381,8 @@ void CService::OnStop()
     CLOG_DEBUG_START_FUNCTION( );
     m_stop_event.Set( );
     CLOG_DEBUG("Stop event setted");
-    m_p_acceptor_socket->StopSocket( );
-    CLOG_DEBUG("Acceptor socket stopped!");
+    m_p_acceptor_socket->ShutDown();
+    CLOG_DEBUG("Close acception");
     m_main_thread.join( );
     CLOG_TRACE("Main thread joined stopped!");
     m_p_acceptor_socket.reset( );
@@ -415,11 +419,17 @@ void CService::HandleSignal(int signal)
 {
     if (signal == SIGTERM)
     {
-        m_p_service->m_stop_event.Set();
-        CLOG_DEBUG("Stop event setted");
-        m_p_service->m_p_acceptor_socket->StopSocket();
-        CLOG_DEBUG("Acceptor socket stopped!");
-        return;
+	m_p_service->m_stop_event.Set();
+	CLOG_DEBUG("Stop event setted");
+	m_p_service->m_p_acceptor_socket->ShutDown();
+	CLOG_DEBUG("Close acception");
+	m_p_service->m_p_acceptor_socket.reset( );
+	CLOG_TRACE("Acceptor socket deleted!");
+	m_p_service->m_p_thread_pool.reset( );
+	CLOG_TRACE("Thread pool deleted!");
+	CLOG_TRACE("Main logger deleted");
+	CLOG_DESTROY( );
+	return;
     }
 }
 

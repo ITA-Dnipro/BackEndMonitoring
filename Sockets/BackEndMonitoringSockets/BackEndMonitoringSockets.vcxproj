@@ -22,29 +22,31 @@
     <ClInclude Include="..\..\CLogger\include\Log.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="include\CAcceptor.h" />
-    <ClInclude Include="include\CAcceptorWrapper.h" />
+    <ClInclude Include="include\CServiceHost.h" />
     <ClInclude Include="include\CClientConnectionHandler.h" />
     <ClInclude Include="include\CConnector.h" />
-    <ClInclude Include="include\CConnectorWrapper.h" />
+    <ClInclude Include="include\CClientConnectorHost.h" />
     <ClInclude Include="include\CServiceConnectionHandler.h" />
+    <ClInclude Include="include\CSockAddress.h" />
     <ClInclude Include="include\EEventType.h" />
     <ClInclude Include="include\CSocket.h" />
     <ClInclude Include="include\CSocketWrapper.h" />
-    <ClInclude Include="include\CDataReceiver.h" />
+    <ClInclude Include="include\CDataProvider.h" />
     <ClInclude Include="include\EClientRequestType.h" />
     <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
     <ClCompile Include="src\CAcceptor.cpp" />
-    <ClCompile Include="src\CAcceptorWrapper.cpp" />
+    <ClCompile Include="src\CServiceHost.cpp" />
     <ClCompile Include="src\CClientConnectionHandler.cpp" />
     <ClCompile Include="src\CConnector.cpp" />
-    <ClCompile Include="src\CConnectorWrapper.cpp" />
+    <ClCompile Include="src\CClientConnectorHost.cpp" />
     <ClCompile Include="src\CServiceConnectionHandler.cpp" />
+    <ClCompile Include="src\CSockAddress.cpp" />
     <ClCompile Include="src\CSocket.cpp" />
     <ClCompile Include="src\CSocketWrapper.cpp" />
-    <ClCompile Include="src\CDataReceiver.cpp" />
+    <ClCompile Include="src\CDataProvider.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

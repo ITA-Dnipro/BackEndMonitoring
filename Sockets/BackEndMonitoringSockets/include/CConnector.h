@@ -1,21 +1,26 @@
 #pragma once
 #include "CSocket.h"
 
+class CSockAddress;
+
 // This class allows user to connect to the server
 class CConnector
 {
 public:
-	CConnector() = delete;
-	explicit CConnector(const int port, const std::string& address);
+	explicit CConnector();
 	CConnector(const CConnector&) = delete;
 	CConnector(CConnector&&) noexcept = delete;
-	~CConnector() noexcept = default;
+	~CConnector() noexcept;
 
-	bool Connect();
-	[[nodiscard]] int GetSocketFD() const;
+	bool Initialize(const int port, const std::string& address);
+	bool Connect() const;
+	[[nodiscard]] CSocket& GetSocket();
+
 private:
-	[[nodiscard]] std::unique_ptr<CSocket> InitSocketConnector(const int port,
-		const std::string& ip_address);
+	std::unique_ptr<CSockAddress> InitSocketAddress(const std::string& ip_address,
+		const int port);
 
-	std::unique_ptr<CSocket> m_p_socket_connector;
+	std::unique_ptr<CSockAddress> m_socket_address;
+	CSocket m_socket_connector;
+	bool m_is_initialized;
 };
