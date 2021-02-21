@@ -4,6 +4,7 @@
 #include "CLogger/include/Log.h"
 #include "CEvent.h"
 #include "CSockAddress.h"
+#include "GlobalVariable.h"
 
 CAcceptor::CAcceptor(bool is_blocked, int socket_timeout, CEvent& event)
 	: m_event(event), m_socket_timeout(socket_timeout), 
@@ -106,7 +107,8 @@ bool CAcceptor::MakeSocketMulticonnected() const
 	CLOG_DEBUG_START_FUNCTION();
 	int on = 1;
 	if (setsockopt(m_p_socket_acceptor->GetSocketFD(), SOL_SOCKET, 
-		SO_REUSEADDR,	(char*)&on, sizeof(on)) != c_error_socket)
+		SO_REUSEADDR,	(char*)&on, sizeof(on)) != 
+		GlobalVariable::c_error_socket)
 	{
 		CLOG_DEBUG_WITH_PARAMS("Setsockopt was successful, the socket",
 			m_p_socket_acceptor->GetSocketFD(), "was made multiconnected");
@@ -160,7 +162,7 @@ bool CAcceptor::AcceptBlockingSockets(CSocket& client)
 	fd_set write_fds;
 	timeval time_out;
 
-	while (!m_event.WaitFor(std::chrono::nanoseconds(1000)))
+	while (!m_event.WaitFor(std::chrono::milliseconds(1)))
 	{
 		FD_ZERO(&read_fds);
 		FD_ZERO(&write_fds);
