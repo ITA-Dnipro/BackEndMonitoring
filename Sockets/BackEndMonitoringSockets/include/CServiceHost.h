@@ -4,7 +4,7 @@ class CSocketWrapper;
 class CAcceptor;
 class CServiceConnectionHandler;
 class CThreadPool;
-class CDataReceiver;
+class CDataProvider;
 class CSocket;
 
 // This class works with server 
@@ -18,14 +18,14 @@ public:
 	CServiceHost(CServiceHost&&) noexcept = delete;
 	~CServiceHost();
 
-	bool Initialize(std::shared_ptr<CThreadPool> pool, CDataReceiver& json_data, 
+	bool Initialize(std::shared_ptr<CThreadPool> pool, CDataProvider& json_data, 
 		const int connections);
 	bool Execute();
 	void ShutDown();
 
 private:
 	void InitAcceptor();
-	void InitServiceHandler(CDataReceiver& json_data);
+	void InitServiceHandler(CDataProvider& json_data);
 	void InitSocketWrapper();
 	bool HandleEvents();
 	void AcceptRequest();

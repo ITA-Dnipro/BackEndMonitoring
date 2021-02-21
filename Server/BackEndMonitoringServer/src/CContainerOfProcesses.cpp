@@ -6,10 +6,9 @@
 
 #include "CContainerOfProcesses.h"
 
-CContainerOfProcesses::CContainerOfProcesses(std::chrono::duration<int>
-		pause_duration, const std::string& path_to_file, 
-		EMemoryConvertType count_type) :
-	m_specification(pause_duration, path_to_file, count_type),
+CContainerOfProcesses::CContainerOfProcesses(
+	std::chrono::duration<int> pause_duration,	EMemoryConvertType count_type) :
+	m_specification(pause_duration, count_type),
 	m_is_initialized(false)
 { }
 

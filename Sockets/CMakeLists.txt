@@ -23,7 +23,7 @@ add_library(Sockets
 		${SOCKETS_SRC_DIR}/CClientConnectorHost.cpp
 		${SOCKETS_SRC_DIR}/CServiceConnectionHandler.cpp
 		${SOCKETS_SRC_DIR}/CSocketWrapper.cpp
-		${SOCKETS_SRC_DIR}/CDataReceiver.cpp
+		${SOCKETS_SRC_DIR}/CDataProvider.cpp
 		${UTILS_SRC_DIR}/CThreadPool.cpp
 		${UTILS_SRC_DIR}/CEvent.cpp
 		${UTILS_SRC_DIR}/Utils.cpp)

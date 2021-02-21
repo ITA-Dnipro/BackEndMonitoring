@@ -7,7 +7,7 @@
 #include "CSocket.h"
 #include "GlobalVariable.h"
 
-CServiceConnectionHandler::CServiceConnectionHandler(CDataReceiver json_data) :
+CServiceConnectionHandler::CServiceConnectionHandler(CDataProvider json_data) :
 	m_json_data(json_data)
 {
 	InitPeerStream();
@@ -73,12 +73,12 @@ bool CServiceConnectionHandler::HandleRequestEvent(const CSocket& client_socket)
 			break;
 		}
 
-		CLOG_DEBUG_WITH_PARAMS("After sending result of work with client", 
+		CLOG_DEBUG_WITH_PARAMS("After sending result of work with client",
 			should_not_close_client);
 	}
 	else if (m_p_peer_stream->IsErrorOccurred(client_socket))
 	{
-		CLOG_ERROR_WITH_PARAMS("Lost connection with the client", 
+		CLOG_ERROR_WITH_PARAMS("Lost connection with the client",
 			client_socket.GetSocketFD());
 		should_not_close_client = false;
 	}
@@ -95,16 +95,16 @@ bool CServiceConnectionHandler::HandleResponseEvent(const CSocket& client_socket
 	switch (type)
 	{
 	case EClientRequestType::ALL_DATA:
-		CLOG_DEBUG("Send all info to the client");
-		message += m_json_data.GetAllInfo();
+		CLOG_TRACE("Send all info to the client");
+		message += m_json_data.GetAllLastInfo();
 		break;
 	case EClientRequestType::PROCESSES_DATA:
-		CLOG_DEBUG("Send process info to the client");
-		message += m_json_data.GetProcessesInfo();
+		CLOG_TRACE("Send process info to the client");
+		message += m_json_data.GetProcessesLastInfo();
 		break;
 	case EClientRequestType::DISKS_DATA:
-		CLOG_DEBUG("Send disk info to the client");
-		message += m_json_data.GetDisksInfo();
+		CLOG_TRACE("Send disk info to the client");
+		message += m_json_data.GetDisksLastInfo();
 		break;
 	default:
 		CLOG_ERROR_WITH_PARAMS("Wrong parameter EClientRequestType, ",
@@ -112,26 +112,26 @@ bool CServiceConnectionHandler::HandleResponseEvent(const CSocket& client_socket
 		return false;
 	}
 	result = m_p_peer_stream->Send(client_socket, message);
-	CLOG_DEBUG_WITH_PARAMS("Send function returned result ", result, 
+	CLOG_DEBUG_WITH_PARAMS("Send function returned result ", result,
 		client_socket.GetSocketFD());
 	CLOG_DEBUG_WITH_PARAMS("We sent bytes", message.size());
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
 }
 
-bool CServiceConnectionHandler::HandleWrongRequestEvent(const CSocket& 
+bool CServiceConnectionHandler::HandleWrongRequestEvent(const CSocket&
 	client_socket)
 {
 	bool result = false;
 	CLOG_DEBUG_START_FUNCTION();
-	result = m_p_peer_stream->Send(client_socket, 
+	result = m_p_peer_stream->Send(client_socket,
 		GlobalVariable::c_lost_request);
 	CLOG_DEBUG_END_FUNCTION();
 
 	return result;
 }
 
-bool CServiceConnectionHandler::IsEqualStrings(const std::string& first_str, 
+bool CServiceConnectionHandler::IsEqualStrings(const std::string& first_str,
 	const std::string& second_str) const
 {
 	CLOG_DEBUG_START_FUNCTION();
@@ -139,7 +139,7 @@ bool CServiceConnectionHandler::IsEqualStrings(const std::string& first_str,
 	{
 		if (first_str[i] != second_str[i])
 		{
-			CLOG_TRACE_WITH_PARAMS("This strings aren't equal", first_str, 
+			CLOG_TRACE_WITH_PARAMS("This strings aren't equal", first_str,
 				second_str);
 			return false;
 		}
@@ -156,7 +156,7 @@ void CServiceConnectionHandler::InitPeerStream()
 	CLOG_DEBUG_END_FUNCTION();
 }
 
-EClientRequestType CServiceConnectionHandler::ParseMessageType(const 
+EClientRequestType CServiceConnectionHandler::ParseMessageType(const
 	std::string& message) const
 {
 	EClientRequestType request_type = EClientRequestType::LOST_DATA;

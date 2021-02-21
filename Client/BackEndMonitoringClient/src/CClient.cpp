@@ -99,8 +99,24 @@ void CClient::Execute()
 			}
 			break;
 		}
+		case ERequestType::ALL_DATA:
+		{
+			result = MakeRequest(request, message);
+			nlohmann::json all_json = nlohmann::json::parse(message);
+
+			nlohmann::json processes_json = nlohmann::json::parse(all_json["processes info"].get<std::string>());
+			nlohmann::json disks_json = nlohmann::json::parse(all_json["disks info"].get<std::string>());
+
+			all_json["processes info"] = processes_json.dump();
+			all_json["disks info"] = disks_json.dump();
+
+			message = all_json.dump();
+			break;
+		}
 		default:
 			result = MakeRequest(request, message);
+			nlohmann::json parsed_json = nlohmann::json::parse(message);
+			message = parsed_json.dump();
 			break;
 		}
 		if (!message.empty())
