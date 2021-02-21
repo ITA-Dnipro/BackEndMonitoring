@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.17)
 project(BackEndMonitoring)
 
 link_directories(${CMAKE_BINARY_DIR}/CLogger)
-link_directories(.)
+link_directories(..)
 link_directories(${CMAKE_BINARY_DIR}/Sockets)
 
 include_directories(${CMAKE_SOURCE_DIR}

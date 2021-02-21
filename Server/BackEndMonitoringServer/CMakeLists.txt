@@ -8,7 +8,7 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
 endif(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
 
 link_directories(${CMAKE_BINARY_DIR}/CLogger)
-link_directories(.)
+link_directories(..)
 link_directories(${CMAKE_BINARY_DIR}/Sockets)
 
 include_directories(${CMAKE_SOURCE_DIR}
