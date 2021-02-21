@@ -54,6 +54,7 @@ Sockets/BackEndMonitoringSockets/Build/**
 .idea/**
 cmake-build-debug/**
 cmake-build-release/**
+cmake-build-debug-visual-studio/**
 
 # Don't ignore files in "packages" dir // I said IGNORED
 packages/**
