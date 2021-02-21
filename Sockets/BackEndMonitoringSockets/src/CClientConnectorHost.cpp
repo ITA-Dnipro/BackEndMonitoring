@@ -3,6 +3,7 @@
 #include "CLogger/include/Log.h"
 #include "CClientConnectorHost.h"
 #include "CConnector.h"
+#include "GlobalVariable.h"
 
 CClientConnectorHost::CClientConnectorHost() : m_is_initialized(false)
 { 
@@ -88,8 +89,7 @@ bool CClientConnectorHost::Exit() const
 	std::string message;
 	m_p_client_handler->HandleEvent(m_connector->GetSocket(),
 		EEventType::CLOSE_EVENT, message);
-	if (message.compare("Disconnect") == 0 || 
-		message.compare("-1") == 0)
+	if (message.compare(GlobalVariable::c_connection_problem) == 0)
 	{
 		CLOG_DEBUG_WITH_PARAMS("Disconnect from the server, we receive response", 
 			message);

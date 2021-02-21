@@ -11,19 +11,13 @@
 CDrivesInfoJSONDatabase::CDrivesInfoJSONDatabase(
 	const std::filesystem::path& path_to_file)
 	: CMonitoringInfoJSONDatabase(path_to_file)
-{
-	CLOG_DEBUG_START_FUNCTION( );
-	CLOG_DEBUG_END_FUNCTION( );
-}
+{ }
 
 CDrivesInfoJSONDatabase::CDrivesInfoJSONDatabase(
 	const std::filesystem::path& path_to_file,
 	const std::string& date_format)
 	: CMonitoringInfoJSONDatabase(path_to_file, date_format)
-{
-	CLOG_DEBUG_START_FUNCTION( );
-	CLOG_DEBUG_END_FUNCTION( );
-}
+{ }
 
 bool CDrivesInfoJSONDatabase::CommitDataAdd(const CLogicalDiskInfo & data_to_json,
 											unsigned short disk_number)
@@ -46,12 +40,10 @@ bool CDrivesInfoJSONDatabase::ClearCommitedData( )
 
 bool CDrivesInfoJSONDatabase::InsertCommitedData( )
 {
-	bool success = true;
+	bool success = false;
 	CLOG_DEBUG_START_FUNCTION( );
 	std::streampos begin;
-	CLOG_TRACE_VAR_CREATION(begin);
 	std::streampos end;
-	CLOG_TRACE_VAR_CREATION(end);
 
 	auto json = m_json_formatter.GetJSONFormattedData( );
 	CLOG_TRACE_VAR_CREATION(json);
@@ -60,24 +52,21 @@ bool CDrivesInfoJSONDatabase::InsertCommitedData( )
 
 	do
 	{
-		if (date_iter == json->back( ).end( ))
+		if (json->back( ).end( ) == date_iter)
 		{
-			CLOG_ERROR("Cant find date in json block");
-			success = false;
+			CLOG_ERROR("Failed to find date in json block");
 			break;
 		}
 		if (!date_iter.value( ).is_string( ))
 		{
-			CLOG_ERROR("Cant find date in json block");
-			success = false;
+			CLOG_ERROR("Invalid date in json block");
 			break;
 		}
 		std::string date_str = *date_iter;
 		time_t date;
 		if (!Utils::StringToDate(date_str, m_date_format, date))
 		{
-			CLOG_ERROR("Cant convert string to time_t");
-			success = false;
+			CLOG_ERROR("Failed to convert date");
 			break;
 		}
 
@@ -85,24 +74,23 @@ bool CDrivesInfoJSONDatabase::InsertCommitedData( )
 		std::string new_path = m_path_to_file.string( );
 		if (!m_p_path_constructor->UpdatePathToFile(new_path))
 		{
-			CLOG_ERROR("Cant update path to file");
-			success = false;
+			CLOG_ERROR_WITH_PARAMS("Failed to update path", new_path);
 			break;
 		}
 
 		m_path_to_file = new_path;
 		if (!m_saver.TrySaveToFile(m_json_formatter, begin, end))
 		{
-			CLOG_ERROR("Cant save to file");
-			success = false;
+			CLOG_ERROR("Failed to save into file");
 			break;
 		}
 		if (!m_reader.InsertData(begin, end, date))
 		{
-			CLOG_ERROR("Cant insert data into database");
-			success = false;
+			CLOG_ERROR("Failed to insert data into database");
 			break;
 		}
+
+		success = true;
 	} while (false);
 
 	CLOG_DEBUG_END_FUNCTION_WITH_RETURN(success);
