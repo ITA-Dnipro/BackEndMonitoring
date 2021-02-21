@@ -10,8 +10,7 @@ if(NOT NUGET_EXE)
     message(FATAL_ERROR "Please install this executable, and run CMake again.")
 endif()
 
-exec_program(${NUGET_EXE}
-        ARGS install "gmock" -Version 1.10.0 -ExcludeVersion -OutputDirectory ${CMAKE_SOURCE_DIR}/packages)
+exec_program("${NUGET_EXE} install gmock -Version 1.10.0 -OutputDirectory \"${CMAKE_SOURCE_DIR}/packages\"")
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     # Using the modern MSVC preprocessor.
@@ -26,13 +25,8 @@ set(THIRD_PARTY_DIR ${CMAKE_SOURCE_DIR}/3rdParty/include)
 
 # Project uses platform-dependent utilities
 # So we have to divide these modules
-if (UNIX)
-    set(PLATFORM_SPECIFIC_UTILS ${UTILS_SRC_DIR}/LinuxUtils.cpp)
-    set(GMOCK_FOLDER gmock)
-else()
-    set(PLATFORM_SPECIFIC_UTILS ${UTILS_SRC_DIR}/WindowsUtils.cpp)
-    set(GMOCK_FOLDER gmock.1.10.0)
-endif()
+
+set(GMOCK_FOLDER gmock.1.10.0)
 
 # Add support for multithreading using the POSIX threads library
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
