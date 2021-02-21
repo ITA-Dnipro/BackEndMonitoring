@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -176,21 +176,29 @@
     <ClInclude Include="..\..\3rdParty\include\pugixml.hpp" />
     <ClInclude Include="..\..\utils\include\CComunicationSettings.h" />
     <ClInclude Include="..\..\utils\include\CDataReader.h" />
+    <ClInclude Include="..\..\utils\include\CDateTimePathConstructor.h" />
     <ClInclude Include="..\..\utils\include\CHDDInfoSettings.h" />
     <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h" />
     <ClInclude Include="..\..\utils\include\CLoggingSettings.h" />
+    <ClInclude Include="..\..\utils\include\CMonitoringJSONDataContainer.h" />
+    <ClInclude Include="..\..\utils\include\CMonitoringJSONDataEntry.h" />
     <ClInclude Include="..\..\utils\include\CProcessesInfoSettings.h" />
     <ClInclude Include="..\..\utils\include\CServerSettings.h" />
     <ClInclude Include="..\..\utils\include\CSettings.h" />
     <ClInclude Include="..\..\utils\include\CThreadPoolSettings.h" />
     <ClInclude Include="..\..\utils\include\CTimeSettings.h" />
     <ClInclude Include="..\..\utils\include\CXMLDataReader.h" />
+    <ClInclude Include="..\..\utils\include\IPathConstructor.h" />
     <ClInclude Include="..\..\utils\include\GlobalVariable.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="..\..\utils\include\stdafx.h" />
     <ClInclude Include="include\CCommandLineHandler.h" />
     <ClInclude Include="include\CContainerOfLogicalDisk.h" />
     <ClInclude Include="include\CContainerOfProcesses.h" />
+    <ClInclude Include="include\CDrivesInfoJSONDatabase.h" />
+    <ClInclude Include="include\CMonitoringInfoJSONDatabase.h" />
+    <ClInclude Include="include\CProcessesInfoJSONDatabase.h" />
+    <ClInclude Include="include\CResourcesInfoJSONDatabase.h" />
     <ClInclude Include="include\IHardwareInfoMonitoring.h" />
     <ClInclude Include="include\CHardwareStatusSpecification.h" />
     <ClInclude Include="include\CJSONFormatterLogicalDisk.h" />
@@ -202,6 +210,7 @@
     <ClInclude Include="include\CService.h" />
     <ClInclude Include="include\CServiceHandler.h" />
     <ClInclude Include="include\EMemoryConvertType.h" />
+    <ClInclude Include="include\IInfoDatabase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
@@ -215,13 +224,17 @@
     </ClCompile>
     <ClCompile Include="..\..\utils\include\CComunicationSettings.cpp" />
     <ClCompile Include="..\..\utils\include\CDataReader.cpp" />
+    <ClCompile Include="..\..\utils\include\CDateTimePathConstructor.cpp" />
     <ClCompile Include="..\..\utils\include\CEvent.cpp" />
     <ClCompile Include="..\..\utils\include\CHDDInfoSettings.cpp" />
     <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp" />
     <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp" />
+    <ClCompile Include="..\..\utils\include\CMonitoringJSONDataContainer.cpp" />
+    <ClCompile Include="..\..\utils\include\CMonitoringJSONDataEntry.cpp" />
     <ClCompile Include="..\..\utils\include\CNumericTypesParser.cpp" />
     <ClCompile Include="..\..\utils\include\CReadFileWrapper.cpp" />
     <ClCompile Include="..\..\utils\include\CSettings.cpp" />
+    <ClCompile Include="..\..\utils\include\IPathConstructor.cpp" />
     <ClCompile Include="..\..\utils\include\StrToNumWrapper.cpp" />
     <ClCompile Include="..\..\utils\include\CLoggingSettings.cpp" />
     <ClCompile Include="..\..\utils\include\CProcessesInfoSettings.cpp" />
@@ -236,13 +249,17 @@
     <ClCompile Include="src\CCommandLineHandler.cpp" />
     <ClCompile Include="src\CContainerOfLogicalDisk.cpp" />
     <ClCompile Include="src\CContainerOfProcesses.cpp" />
+    <ClCompile Include="src\CDrivesInfoJSONDatabase.cpp" />
     <ClCompile Include="src\CHardwareStatusSpecification.cpp" />
     <ClCompile Include="src\CJSONFormatterLogicalDisk.cpp" />
     <ClCompile Include="src\CJSONFormatterProcess.cpp" />
     <ClCompile Include="src\CLogicalDiskInfo.cpp" />
     <ClCompile Include="src\CLogicalDiskInfoMonitoring.cpp" />
+    <ClCompile Include="src\CMonitoringInfoJSONDatabase.cpp" />
+    <ClCompile Include="src\CProcessesInfoJSONDatabase.cpp" />
     <ClCompile Include="src\CProcessInfo.cpp" />
     <ClCompile Include="src\CProcessesInfoMonitoring.cpp" />
+    <ClCompile Include="src\CResourcesInfoJSONDatabase.cpp" />
     <ClCompile Include="src\CService.cpp" />
     <ClCompile Include="src\CServiceHandler.cpp" />
     <ClCompile Include="src\stdafx.cpp">
