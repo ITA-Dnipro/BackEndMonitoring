@@ -20,6 +20,7 @@
 #include "CProcessesInfoSettings.h"
 #include "CServerSettings.h"
 #include "CTimeSettings.h"
+#include "CRequestHandler.h"
 
 #include "CService.h"
 CService* CService::m_p_service = nullptr;
@@ -125,12 +126,12 @@ void CService::RunServer()
         CLOG_PROD("ERROR! Can't create sockets!");
         return;
     }
-    CDataProvider json_data(m_p_processes_data, m_p_drives_data, 
+    CRequestHandler request_handler(m_p_processes_data, m_p_drives_data,
                             m_p_resources_data);
-    CLOG_TRACE_VAR_CREATION(json_data);
+    CLOG_TRACE_VAR_CREATION(request_handler);
 
     if (!m_p_acceptor_socket->Initialize(std::move(m_p_thread_pool),
-        json_data, SOMAXCONN))
+        request_handler, SOMAXCONN))
     {
         CLOG_PROD("ERROR! Can't initialize sockets!");
         return;

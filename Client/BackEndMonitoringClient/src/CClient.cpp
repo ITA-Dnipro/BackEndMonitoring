@@ -4,6 +4,8 @@
 #include "CClient.h"
 #include "Utils.h"
 #include "CLogger/include/Log.h"
+#include "ERequestRangeSpecification.h"
+
 
 CClient::CClient() : m_port(0),
 	m_file_name("ServerData_Client_.txt"), is_connected(false)
@@ -70,7 +72,7 @@ void CClient::Execute()
 		case ERequestType::ALL_DATA_CYCLE:
 			for (unsigned i = 1u; i <= 10u; ++i)
 			{
-				result = MakeRequest(ERequestType::ALL_DATA, message);
+				result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
 				if (!message.empty())
 				{
 					PrintMessage("\n" + std::to_string(i) + "\n\n" + message + "\n\n");
@@ -88,7 +90,7 @@ void CClient::Execute()
 			int counter = 1;
 			while (result)
 			{
-				result = MakeRequest(ERequestType::ALL_DATA, message);
+				result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
 				if (!message.empty())
 				{
 					PrintMessage("\n" + std::to_string(counter++) + "\n\n" +
@@ -101,12 +103,21 @@ void CClient::Execute()
 		}
 		case ERequestType::ALL_DATA:
 		{
-			result = MakeRequest(request, message);
-			message = message;
+			result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
+			PrintMessage("\n\n" + message + "\n\n");
 			break;
 		}
+		case ERequestType::DISKS_DATA:
+			result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
+			PrintMessage("\n\n" + message + "\n\n");
+			break;
+		case ERequestType::PROCESSES_DATA:
+			result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
+			PrintMessage("\n\n" + message + "\n\n");
+			break;
 		default:
-			result = MakeRequest(request, message);
+			result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
+			PrintMessage("\n\n" + message + "\n\n");
 			break;
 		}
 		if (!message.empty())
@@ -131,35 +142,16 @@ bool CClient::Connect()
 	return is_connected;
 }
 
-bool CClient::MakeRequest(ERequestType type, std::string& message)
+bool CClient::MakeRequest(std::string& message, ERequestType req_typ,
+	ERequestRangeSpecification spec_typ,
+	const std::string& date_of_start, const std::string& date_of_end)
 {
 	CLOG_DEBUG_START_FUNCTION();
 
 	if (is_connected)
 	{
-		switch (type)
-		{
-		case (ERequestType::PROCESSES_DATA):
-		{
-			message = RequestProcessesData();
-			break;
-		}
-		case (ERequestType::DISKS_DATA):
-		{
-			message = RequestDisksData();
-			break;
-		}
-		case (ERequestType::ALL_DATA):
-		{
-			message = RequestAllData();
-			break;
-		}
-		case (ERequestType::EXIT):
-		{
-			while (!m_connector->Exit())
-				return false;
-		}
-		}
+		m_connector->MakeRequest(message, req_typ, spec_typ, date_of_start,
+			date_of_end);
 		if (message == "Error receiving data")
 		{
 			return false;
@@ -181,27 +173,27 @@ bool CClient::InitHost(const int port, const std::string& ip_address)
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
 }
-
-std::string CClient::RequestProcessesData()
-{
-	CLOG_DEBUG_START_FUNCTION();
-	CLOG_DEBUG_END_FUNCTION();
-	return m_connector->MakeRequest(EClientRequestType::PROCESSES_DATA);
-}
-
-std::string CClient::RequestDisksData()
-{
-	CLOG_DEBUG_START_FUNCTION();
-	CLOG_DEBUG_END_FUNCTION();
-	return m_connector->MakeRequest(EClientRequestType::DISKS_DATA);
-}
-
-std::string CClient::RequestAllData()
-{
-	CLOG_DEBUG_START_FUNCTION();
-	CLOG_DEBUG_END_FUNCTION();
-	return m_connector->MakeRequest(EClientRequestType::ALL_DATA);
-}
+//
+//std::string CClient::RequestProcessesData()
+//{
+//	CLOG_DEBUG_START_FUNCTION();
+//	CLOG_DEBUG_END_FUNCTION();
+//	return m_connector->MakeRequest(EClientRequestType::PROCESSES_DATA);
+//}
+//
+//std::string CClient::RequestDisksData()
+//{
+//	CLOG_DEBUG_START_FUNCTION();
+//	CLOG_DEBUG_END_FUNCTION();
+//	return m_connector->MakeRequest(EClientRequestType::DISKS_DATA);
+//}
+//
+//std::string CClient::RequestAllData()
+//{
+//	CLOG_DEBUG_START_FUNCTION();
+//	CLOG_DEBUG_END_FUNCTION();
+//	return m_connector->MakeRequest(EClientRequestType::ALL_DATA);
+//}
 
 void CClient::PrintMessage(const std::string& message) const
 {

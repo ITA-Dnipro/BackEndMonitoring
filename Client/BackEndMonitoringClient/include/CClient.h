@@ -19,11 +19,16 @@ private:
 	const int c_port_num = 1;
 
 	bool Connect();
-	bool MakeRequest(ERequestType type, std::string& message);
+	bool MakeRequest(std::string& message, ERequestType req_typ,
+		ERequestRangeSpecification spec_typ,
+		const std::string& date_of_start = "", 
+		const std::string& date_of_end = "");
 	bool InitHost(const int port, const std::string& ip_address);
+	/*
 	std::string RequestProcessesData();
 	std::string RequestDisksData();
 	std::string RequestAllData();
+	*/
 	void PrintMessage(const std::string& message) const;
 
 	std::string m_ip_address;

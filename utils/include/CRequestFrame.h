@@ -2,8 +2,7 @@
 
 #include "CInteractionFrame.h"
 
-class CRequestFrame :
-    public CInteractionFrame
+class CRequestFrame : public CInteractionFrame
 {
 public:
     CRequestFrame() = default;

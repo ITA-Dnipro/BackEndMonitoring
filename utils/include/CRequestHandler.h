@@ -3,6 +3,7 @@
 #include "CDataProvider.h"
 #include "IRequestExc.h"
 #include "CInteractionHandler.h"
+#include "ERequestType.h"
 
 class CRequestHandler : public  CInteractionHandler
 {
@@ -12,7 +13,7 @@ public:
 		std::shared_ptr<IInfoDatabase> p_processes_data,
 		std::shared_ptr<IInfoDatabase> p_disks_data,
 		std::shared_ptr<IInfoDatabase> p_resources_data);
-	CRequestHandler(const CRequestHandler&) = delete;
+	CRequestHandler(const CRequestHandler&);
 	CRequestHandler(CRequestHandler&&) = default;
 
 	[[nodiscard]] bool HandleRequest(const std::string& m_request, 

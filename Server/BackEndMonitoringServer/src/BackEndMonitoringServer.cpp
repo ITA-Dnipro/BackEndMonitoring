@@ -19,7 +19,7 @@ int main(int argc, char** argv)
 	nlohmann::json request = nlohmann::json::parse(answer);
 	request["data"] = nlohmann::json::parse(answer);
 	auto i = request.count("data");
-
+	CRequestFrame o;
 	answer = request.dump();
 
 	CResponseHandler g;

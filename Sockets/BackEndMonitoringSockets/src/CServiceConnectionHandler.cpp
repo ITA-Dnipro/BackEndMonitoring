@@ -7,8 +7,8 @@
 #include "CSocket.h"
 #include "GlobalVariable.h"
 
-CServiceConnectionHandler::CServiceConnectionHandler(CDataProvider json_data) :
-	m_json_data(json_data)
+CServiceConnectionHandler::CServiceConnectionHandler(
+	CRequestHandler request_handler) : m_request_handler(request_handler)
 {
 	InitPeerStream();
 }
@@ -37,10 +37,15 @@ bool CServiceConnectionHandler::HandleRequestEvent(const CSocket& client_socket)
 {
 	bool should_not_close_client = false;
 	std::string message;
-
+	std::string response_message;
 	if (m_p_peer_stream->CanReceiveData(client_socket) &&
 		m_p_peer_stream->Receive(client_socket, message))
 	{
+		// wirte to log
+		m_request_handler.HandleRequest(message, response_message);
+		should_not_close_client = HandleResponseEvent(client_socket,
+				response_message);
+		/*
 		switch(ParseMessageType(message))
 		{
 		case EClientRequestType::ALL_DATA:
@@ -71,7 +76,7 @@ bool CServiceConnectionHandler::HandleRequestEvent(const CSocket& client_socket)
 				EEventType::LOST_REQUEST);
 			should_not_close_client = true;
 			break;
-		}
+		}*/
 
 		CLOG_DEBUG_WITH_PARAMS("After sending result of work with client",
 			should_not_close_client);
@@ -87,34 +92,37 @@ bool CServiceConnectionHandler::HandleRequestEvent(const CSocket& client_socket)
 }
 
 bool CServiceConnectionHandler::HandleResponseEvent(const CSocket& client_socket,
-	EClientRequestType type)
+	const std::string& response_message)
 {
 	bool result = false;
 	CLOG_DEBUG_START_FUNCTION();
-	std::string message = std::to_string(client_socket.GetSocketFD()) + "\n";
-	switch (type)
+	//std::string message = std::to_string(client_socket.GetSocketFD()) + "\n";
+
+	/*switch (type)
 	{
 	case EClientRequestType::ALL_DATA:
 		CLOG_TRACE("Send all info to the client");
-		message += m_json_data.GetAllLastInfo();
+		message += m_request_handler.GetAllLastInfo();
 		break;
 	case EClientRequestType::PROCESSES_DATA:
 		CLOG_TRACE("Send process info to the client");
-		message += m_json_data.GetProcessesLastInfo();
+		message += m_request_handler.GetProcessesLastInfo();
 		break;
 	case EClientRequestType::DISKS_DATA:
 		CLOG_TRACE("Send disk info to the client");
-		message += m_json_data.GetDisksLastInfo();
+		message += m_request_handler.GetDisksLastInfo();
 		break;
 	default:
 		CLOG_ERROR_WITH_PARAMS("Wrong parameter EClientRequestType, ",
 			" cannot send response to the client");
 		return false;
 	}
-	result = m_p_peer_stream->Send(client_socket, message);
+	*/
+
+	result = m_p_peer_stream->Send(client_socket, response_message);
 	CLOG_DEBUG_WITH_PARAMS("Send function returned result ", result,
 		client_socket.GetSocketFD());
-	CLOG_DEBUG_WITH_PARAMS("We sent bytes", message.size());
+	CLOG_DEBUG_WITH_PARAMS("We sent bytes", response_message.size());
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
 }

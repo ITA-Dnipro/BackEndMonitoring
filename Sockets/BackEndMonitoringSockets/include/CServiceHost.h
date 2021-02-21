@@ -1,10 +1,11 @@
 #pragma once
+
 class CEvent;
 class CSocketWrapper;
 class CAcceptor;
 class CServiceConnectionHandler;
 class CThreadPool;
-class CDataProvider;
+class CRequestHandler;
 class CSocket;
 
 // This class works with server 
@@ -18,14 +19,14 @@ public:
 	CServiceHost(CServiceHost&&) noexcept = delete;
 	~CServiceHost();
 
-	bool Initialize(std::shared_ptr<CThreadPool> pool, CDataProvider& json_data, 
-		const int connections);
+	bool Initialize(std::shared_ptr<CThreadPool> pool, 
+		CRequestHandler& request_handler, const int connections);
 	bool Execute();
 	void ShutDown();
 
 private:
 	void InitAcceptor();
-	void InitServiceHandler(CDataProvider& json_data);
+	void InitServiceHandler(CRequestHandler& json_data);
 	void InitSocketWrapper();
 	bool HandleEvents();
 	void AcceptRequest();

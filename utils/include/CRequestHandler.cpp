@@ -18,16 +18,24 @@ CRequestHandler::CRequestHandler(
          m_data_base(p_processes_data, p_disks_data, p_resources_data)
 { }
 
+CRequestHandler::CRequestHandler(const CRequestHandler& orig) : 
+    m_data_base(orig.m_data_base)
+{
+}
+
 bool CRequestHandler::HandleRequest(const std::string& request_str, 
     std::string& answer)
 {
-    if (!TryValidateRequest(request_str))
-    {
-        //log
-        return false;
-    }
     nlohmann::json request = nlohmann::json::parse(request_str);
     CResponseFrame response(request[GlobalVariable::c_request_key_id]);
+
+    if (!TryValidateRequest(request_str))
+    {
+        response.TryFormateResponse(answer, "",
+            EResponseError::INCORRECT_REQUEST); 
+        //log and return true
+        return false;
+    }
 
     switch (AnalyzeRequestType(request_str))
     {
@@ -35,7 +43,8 @@ bool CRequestHandler::HandleRequest(const std::string& request_str,
         if (!ExecuteRequest(answer, std::make_shared<CRequestExcAllData>(
             request_str, std::make_shared<CDataProvider>(m_data_base))))
         {
-            // log
+            response.TryFormateResponse(answer, "",
+                EResponseError::INCORRECT_REQUEST); 
             return false;
         }
         break;
@@ -43,7 +52,8 @@ bool CRequestHandler::HandleRequest(const std::string& request_str,
         if(!ExecuteRequest(answer, std::make_shared<CRequestExcDiskData>(
             request_str, std::make_shared<CDataProvider>(m_data_base))))
         {
-            // log
+            response.TryFormateResponse(answer, "",
+                EResponseError::INCORRECT_REQUEST); 
             return false;
         }
         break;
@@ -51,7 +61,8 @@ bool CRequestHandler::HandleRequest(const std::string& request_str,
         if(!ExecuteRequest(answer, std::make_shared<CRequestExcProcessData>(
             request_str, std::make_shared<CDataProvider>(m_data_base))))
         {
-            // log
+            response.TryFormateResponse(answer, "",
+                EResponseError::INCORRECT_REQUEST); 
             return false;
         }
         break;
@@ -69,34 +80,29 @@ bool CRequestHandler::HandleRequest(const std::string& request_str,
 
 bool CRequestHandler::TryValidateRequest(const std::string& request_str)
 {
-    bool answer;
-    nlohmann::json request = nlohmann::json::parse(request_str);
+    std::vector<bool> answer;
+        nlohmann::json request = nlohmann::json::parse(request_str);
     for (const auto& [key, value] : request.items())
     {
-        if (GlobalVariable::c_request_key_id != key)
+        if (GlobalVariable::c_request_key_id == key)
         {
-            answer = false;
-            break;
+            answer.emplace_back(true);
+            continue;
         }
-        if (GlobalVariable::c_request_key_req_typ != key)
+        if (GlobalVariable::c_request_key_req_typ == key)
         {
-            answer = false;
-            break;
+            answer.emplace_back(true);
+            continue;
         }
-        if (GlobalVariable::c_request_key_duration != key)
+        if (GlobalVariable::c_request_key_spec == key)
         {
-            answer = false;
-            break;
-        }
-        if (GlobalVariable::c_request_key_spec != key)
-        {
-            answer = false;
-            break;
+            answer.emplace_back(true);
+            continue;
         }
     }
 
     //false if not valid
-    return answer;
+    return 3 == answer.size();
 }
 
 ERequestType CRequestHandler::AnalyzeRequestType(const nlohmann::json& request) 

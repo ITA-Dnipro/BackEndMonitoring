@@ -2,9 +2,6 @@
 
 #include "CInteractionFrame.h"
 
-CInteractionFrame::CInteractionFrame()
-{ }
-
 CInteractionFrame::CInteractionFrame(const std::string & guid) : m_guid(guid)
 { }
 

@@ -43,6 +43,16 @@
     <ClCompile Include="src\CService.cpp" />
     <ClCompile Include="src\CServiceHandler.cpp" />
     <ClCompile Include="src\stdafx.cpp" />
+    <ClCompile Include="src\CRequestExcAllData.cpp" />
+    <ClCompile Include="src\CRequestExcDiskData.cpp" />
+    <ClCompile Include="src\CRequestExcProcessData.cpp" />
+    <ClCompile Include="..\..\utils\include\CInteractionFrame.cpp" />
+    <ClCompile Include="..\..\utils\include\CInteractionHandler.cpp" />
+    <ClCompile Include="..\..\utils\include\CRequestHandler.cpp" />
+    <ClCompile Include="..\..\utils\include\CResponseFrame.cpp" />
+    <ClCompile Include="..\..\utils\include\CResponseHandler.cpp" />
+    <ClCompile Include="..\..\utils\include\IRequestExc.cpp" />
+    <ClCompile Include="..\..\utils\include\CRequestFrame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\3rdParty\include\pugiconfig.hpp" />
@@ -84,6 +94,18 @@
     <ClInclude Include="include\CServiceHandler.h" />
     <ClInclude Include="include\EMemoryConvertType.h" />
     <ClInclude Include="include\IInfoDatabase.h" />
+    <ClInclude Include="include\CRequestExcAllData.h" />
+    <ClInclude Include="include\CRequestExcDiskData.h" />
+    <ClInclude Include="include\CRequestExcProcessData.h" />
+    <ClInclude Include="..\..\utils\include\CInteractionFrame.h" />
+    <ClInclude Include="..\..\utils\include\CInteractionHandler.h" />
+    <ClInclude Include="..\..\utils\include\CRequestHandler.h" />
+    <ClInclude Include="..\..\utils\include\CResponseFrame.h" />
+    <ClInclude Include="..\..\utils\include\CResponseHandler.h" />
+    <ClInclude Include="..\..\utils\include\ERequestRangeSpecification.h" />
+    <ClInclude Include="..\..\utils\include\EResponseError.h" />
+    <ClInclude Include="..\..\utils\include\IRequestExc.h" />
+    <ClInclude Include="..\..\utils\include\CRequestFrame.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />

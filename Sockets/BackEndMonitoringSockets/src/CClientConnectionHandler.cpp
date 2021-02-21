@@ -6,38 +6,43 @@
 #include "GlobalVariable.h"
 
 CClientConnectionHandler::CClientConnectionHandler()
-	: m_current_request(EEventType::REQUEST_ALL_DATA)
 {
 	m_p_client_stream = InitClientStream();
 }
 
 bool CClientConnectionHandler::HandleEvent(const CSocket& client_socket,
-	EEventType type, std::string& message)
+	std::string& message, ERequestType req_typ, 
+	ERequestRangeSpecification spec_typ,
+	const std::string& date_of_start, const std::string& date_of_end)
 {
+	m_request_formatter.TryFormateRequest(message, req_typ, spec_typ, 
+		date_of_start, date_of_end);
 	bool result = true;
 	CLOG_DEBUG_START_FUNCTION();
-	m_current_request = type;
-	switch (type) {
-	case EEventType::REQUEST_ALL_DATA:
-		CLOG_DEBUG("Request all data");
-		result = HandleRequestEvent(client_socket, EEventType::REQUEST_ALL_DATA);
-		break;
-	case EEventType::REQUEST_DISK_DATA:
-		CLOG_DEBUG("Request disk data");
-		result = HandleRequestEvent(client_socket, EEventType::REQUEST_DISK_DATA);
-		break;
-	case EEventType::REQUEST_PROCESS_DATA:
-		CLOG_DEBUG("Request process data");
-		result = HandleRequestEvent(client_socket, EEventType::REQUEST_PROCESS_DATA);
-		break;
-	case EEventType::CLOSE_EVENT:
-		CLOG_DEBUG("Request exit");
-		HandleExitEvent(client_socket); // If we can exit result equal false
-		return false;
-	default:
-		result = false;
-		break;
-	}
+	m_current_request = message;
+	result = HandleRequestEvent(client_socket, message);
+	//switch (type) {
+	//case EEventType::REQUEST_ALL_DATA:
+	//	CLOG_DEBUG("Request all data");
+	//	result = HandleRequestEvent(client_socket, EEventType::REQUEST_ALL_DATA);
+	//	break;
+	//case EEventType::REQUEST_DISK_DATA:
+	//	CLOG_DEBUG("Request disk data");
+	//	result = HandleRequestEvent(client_socket, EEventType::REQUEST_DISK_DATA);
+	//	break;
+	//case EEventType::REQUEST_PROCESS_DATA:
+	//	CLOG_DEBUG("Request process data");
+	//	result = HandleRequestEvent(client_socket, EEventType::REQUEST_PROCESS_DATA);
+	//	break;
+	//case EEventType::CLOSE_EVENT:
+	//	CLOG_DEBUG("Request exit");
+	//	HandleExitEvent(client_socket); // If we can exit result equal false
+	//	return false;
+	//default:
+	//	result = false;
+	//	break;
+	//}
+
 	CLOG_DEBUG_WITH_PARAMS("Result after HandleRequestEvent is equal", result);
 	if (result)
 	{
@@ -51,13 +56,11 @@ bool CClientConnectionHandler::HandleEvent(const CSocket& client_socket,
 }
 
 bool CClientConnectionHandler::HandleRequestEvent(const CSocket& client_socket,
-	EEventType type) const
+	const std::string& request) const
 {
 	CLOG_DEBUG_START_FUNCTION();
 
-	std::string request_str = ConvertRequestToString(type);
-	CLOG_DEBUG_WITH_PARAMS("Convert event type to the string", request_str);
-	if (SendRequestToServer(client_socket, request_str))
+	if (SendRequestToServer(client_socket, request))
 	{
 		return true;
 	}
@@ -115,9 +118,8 @@ bool CClientConnectionHandler::HandleLostRequestEvent(const CSocket& client_sock
 
 	const int max_trials = 5;
 	int count_trials = 0;
-	std::string request_str = ConvertRequestToString(m_current_request);
-
-	if(request_str.compare(GlobalVariable::c_request_error) == 0)
+	
+	if(m_current_request.compare(GlobalVariable::c_request_error) == 0)
 	{
 		CLOG_ERROR("We receive error from the server");
 		return false;
@@ -126,8 +128,8 @@ bool CClientConnectionHandler::HandleLostRequestEvent(const CSocket& client_sock
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		CLOG_DEBUG_WITH_PARAMS("Request data again", client_socket.GetSocketFD(), 
-			request_str);
-		if (SendRequestToServer(client_socket, request_str)
+			m_current_request);
+		if (SendRequestToServer(client_socket, m_current_request)
 			&& m_p_client_stream->Receive(client_socket, message))
 		{
 			CLOG_DEBUG_WITH_PARAMS("We receive response", message.size());
