@@ -31,9 +31,9 @@ bool CClient::Init(const int arg_num, char** arguments)
 		std::filesystem::path extension = path_to_file.extension();
 		std::filesystem::path name = path_to_file.stem();
 		path_to_file.replace_filename(name.string() + extension.string());
-		m_response_data = std::fstream(path_to_file, std::ios_base::out);
+		m_client_stream = std::fstream(path_to_file, std::ios_base::out);
 		m_consolePrinter = std::make_unique<CClientView>(std::cout, std::cin);
-		m_filePrinter = std::make_unique<CClientView>(m_response_data, std::cin);
+		m_filePrinter = std::make_unique<CClientView>(m_client_stream, std::cin);
 		CLOG_DEBUG("CClientViews were created");
 	}
 	CLOG_DEBUG_END_FUNCTION();
@@ -72,6 +72,7 @@ void CClient::Execute()
 		case ERequestType::ALL_DATA_CYCLE:
 			for (unsigned i = 1u; i <= 10u; ++i)
 			{
+				request = ERequestType::ALL_DATA;
 				result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
 				if (!message.empty())
 				{
@@ -88,6 +89,7 @@ void CClient::Execute()
 		case ERequestType::ALL_DATA_NON_STOP:
 		{
 			int counter = 1;
+			request = ERequestType::ALL_DATA;
 			while (result)
 			{
 				result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
@@ -104,20 +106,16 @@ void CClient::Execute()
 		case ERequestType::ALL_DATA:
 		{
 			result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
-			PrintMessage("\n\n" + message + "\n\n");
 			break;
 		}
 		case ERequestType::DISKS_DATA:
 			result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
-			PrintMessage("\n\n" + message + "\n\n");
 			break;
 		case ERequestType::PROCESSES_DATA:
 			result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
-			PrintMessage("\n\n" + message + "\n\n");
 			break;
 		default:
 			result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
-			PrintMessage("\n\n" + message + "\n\n");
 			break;
 		}
 		if (!message.empty())
@@ -156,6 +154,7 @@ bool CClient::MakeRequest(std::string& message, ERequestType req_typ,
 		{
 			return false;
 		}
+
 		return true;
 	}
 	CLOG_DEBUG_END_FUNCTION();
@@ -173,27 +172,6 @@ bool CClient::InitHost(const int port, const std::string& ip_address)
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
 }
-//
-//std::string CClient::RequestProcessesData()
-//{
-//	CLOG_DEBUG_START_FUNCTION();
-//	CLOG_DEBUG_END_FUNCTION();
-//	return m_connector->MakeRequest(EClientRequestType::PROCESSES_DATA);
-//}
-//
-//std::string CClient::RequestDisksData()
-//{
-//	CLOG_DEBUG_START_FUNCTION();
-//	CLOG_DEBUG_END_FUNCTION();
-//	return m_connector->MakeRequest(EClientRequestType::DISKS_DATA);
-//}
-//
-//std::string CClient::RequestAllData()
-//{
-//	CLOG_DEBUG_START_FUNCTION();
-//	CLOG_DEBUG_END_FUNCTION();
-//	return m_connector->MakeRequest(EClientRequestType::ALL_DATA);
-//}
 
 void CClient::PrintMessage(const std::string& message) const
 {

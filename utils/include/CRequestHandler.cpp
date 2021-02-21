@@ -8,7 +8,7 @@
 #include "GlobalVariable.h"
 #include "CResponseFrame.h"
 #include "EResponseError.h"
-
+#include "Log.h"
 #include "CRequestHandler.h"
 
 CRequestHandler::CRequestHandler(
@@ -28,16 +28,17 @@ bool CRequestHandler::HandleRequest(const std::string& request_str,
 {
     nlohmann::json request = nlohmann::json::parse(request_str);
     CResponseFrame response(request[GlobalVariable::c_request_key_id]);
+    CLOG_DEBUG_START_FUNCTION();
 
     if (!TryValidateRequest(request_str))
     {
         response.TryFormateResponse(answer, "",
             EResponseError::INCORRECT_REQUEST); 
         //log and return true
+		CLOG_ERROR("Invalid request from the client!!!");
         return false;
     }
-
-    switch (AnalyzeRequestType(request_str))
+    switch (AnalyzeRequestType(request))
     {
     case ERequestType::ALL_DATA:
         if (!ExecuteRequest(answer, std::make_shared<CRequestExcAllData>(
@@ -47,6 +48,8 @@ bool CRequestHandler::HandleRequest(const std::string& request_str,
                 EResponseError::INCORRECT_REQUEST); 
             return false;
         }
+        CLOG_DEBUG("All data request from the client");
+
         break;
     case ERequestType::DISKS_DATA:
         if(!ExecuteRequest(answer, std::make_shared<CRequestExcDiskData>(
@@ -56,6 +59,8 @@ bool CRequestHandler::HandleRequest(const std::string& request_str,
                 EResponseError::INCORRECT_REQUEST); 
             return false;
         }
+        CLOG_DEBUG("Disks data request from the client");
+
         break;
     case ERequestType::PROCESSES_DATA:
         if(!ExecuteRequest(answer, std::make_shared<CRequestExcProcessData>(
@@ -65,15 +70,18 @@ bool CRequestHandler::HandleRequest(const std::string& request_str,
                 EResponseError::INCORRECT_REQUEST); 
             return false;
         }
+        CLOG_DEBUG("Processes data request from the client");
+
         break;
     default:
     {
         response.TryFormateResponse(answer, "", 
             EResponseError::INCORRECT_REQUEST);
+        CLOG_ERROR("Default case, incorrect error");
         return false;
     }
     }
-
+    CLOG_DEBUG_END_FUNCTION();
     // could be a problem
     return response.TryFormateResponse(answer, answer, EResponseError::NONE);
 }
@@ -108,7 +116,9 @@ bool CRequestHandler::TryValidateRequest(const std::string& request_str)
 ERequestType CRequestHandler::AnalyzeRequestType(const nlohmann::json& request) 
 const
 {
-    return ERequestType(request[GlobalVariable::c_request_key_req_typ]);
+    int req_code = request[GlobalVariable::c_request_key_req_typ].get<int>();
+	
+    return ERequestType(req_code);
 }
 
 bool CRequestHandler::ExecuteRequest(std::string& answer, 

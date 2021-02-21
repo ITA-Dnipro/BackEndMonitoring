@@ -30,7 +30,6 @@ private:
 		std::string& message);
 	bool SendRequestToServer(const CSocket& client_socket, 
 		const std::string& message) const;
-	std::string ConvertRequestToString(EEventType type) const;
 	[[nodiscard]] std::unique_ptr<CSocketWrapper> InitClientStream();
 
 	CRequestFrame m_request_formatter;

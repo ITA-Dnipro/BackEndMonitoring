@@ -1,5 +1,4 @@
 #pragma once
-#include "EClientRequestType.h"
 #include "CClientConnectionHandler.h"
 
 class CConnector;

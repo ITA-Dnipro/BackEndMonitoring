@@ -11,7 +11,7 @@ public:
 	~CClient()noexcept = default;
 
 	void Execute();
-	bool Init(const int arg_num, char** argvuments);
+	bool Init(const int arg_num, char** arguments);
 
 private:
 	const int c_num_arguments = 3;
@@ -24,11 +24,6 @@ private:
 		const std::string& date_of_start = "", 
 		const std::string& date_of_end = "");
 	bool InitHost(const int port, const std::string& ip_address);
-	/*
-	std::string RequestProcessesData();
-	std::string RequestDisksData();
-	std::string RequestAllData();
-	*/
 	void PrintMessage(const std::string& message) const;
 
 	std::string m_ip_address;
@@ -37,7 +32,7 @@ private:
 	std::unique_ptr<CClientView> m_consolePrinter;
 	std::unique_ptr<CClientView> m_filePrinter;
 	std::fstream m_log_file;
-	std::fstream m_response_data;
+	std::fstream m_client_stream;
 	int m_port;
 	bool is_connected;
 };

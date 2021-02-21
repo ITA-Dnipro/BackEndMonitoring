@@ -44,7 +44,7 @@ std::string CClientConnectorHost::MakeRequest(std::string& message,
 		CLOG_ERROR("Client host is not initialized");
 		return "Client host is not initialized";
 	}
-	std::string message;
+	message.clear();
 
 	if (m_p_client_handler->HandleEvent(m_connector->GetSocket(),
 		message, req_typ, spec_typ, date_of_start, date_of_end))
@@ -70,22 +70,6 @@ bool CClientConnectorHost::ConnectToServer() const
 	CLOG_DEBUG_WITH_PARAMS("Result of connection to the server", result);
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
-}
-
-bool CClientConnectorHost::Exit() const
-{
-	CLOG_DEBUG_START_FUNCTION();
-	std::string message;
-	//m_p_client_handler->HandleEvent(m_connector->GetSocket(),
-	//	EEventType::CLOSE_EVENT, message);
-	if (message.compare(GlobalVariable::c_connection_problem) == 0)
-	{
-		CLOG_DEBUG_WITH_PARAMS("Disconnect from the server, we receive response", 
-			message);
-		return true;
-	}
-	CLOG_DEBUG_END_FUNCTION();
-	return false;
 }
 
 std::unique_ptr<CConnector> CClientConnectorHost::InitConnector()

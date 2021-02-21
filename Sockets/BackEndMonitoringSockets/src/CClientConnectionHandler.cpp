@@ -17,31 +17,12 @@ bool CClientConnectionHandler::HandleEvent(const CSocket& client_socket,
 {
 	m_request_formatter.TryFormateRequest(message, req_typ, spec_typ, 
 		date_of_start, date_of_end);
+
+	// TODO make response handler here
 	bool result = true;
 	CLOG_DEBUG_START_FUNCTION();
 	m_current_request = message;
 	result = HandleRequestEvent(client_socket, message);
-	//switch (type) {
-	//case EEventType::REQUEST_ALL_DATA:
-	//	CLOG_DEBUG("Request all data");
-	//	result = HandleRequestEvent(client_socket, EEventType::REQUEST_ALL_DATA);
-	//	break;
-	//case EEventType::REQUEST_DISK_DATA:
-	//	CLOG_DEBUG("Request disk data");
-	//	result = HandleRequestEvent(client_socket, EEventType::REQUEST_DISK_DATA);
-	//	break;
-	//case EEventType::REQUEST_PROCESS_DATA:
-	//	CLOG_DEBUG("Request process data");
-	//	result = HandleRequestEvent(client_socket, EEventType::REQUEST_PROCESS_DATA);
-	//	break;
-	//case EEventType::CLOSE_EVENT:
-	//	CLOG_DEBUG("Request exit");
-	//	HandleExitEvent(client_socket); // If we can exit result equal false
-	//	return false;
-	//default:
-	//	result = false;
-	//	break;
-	//}
 
 	CLOG_DEBUG_WITH_PARAMS("Result after HandleRequestEvent is equal", result);
 	if (result)
@@ -79,6 +60,7 @@ bool CClientConnectionHandler::HandleResponseEvent(const CSocket& client_socket,
 	CLOG_DEBUG_WITH_PARAMS("We send request to the server, result", result);
 	if (result)
 	{
+		// TODO wrong response + error from the server
 		if (message.compare(GlobalVariable::c_connection_problem) == 0)
 		{
 			CLOG_ERROR_WITH_PARAMS("Response from the server", message);
@@ -129,6 +111,7 @@ bool CClientConnectionHandler::HandleLostRequestEvent(const CSocket& client_sock
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		CLOG_DEBUG_WITH_PARAMS("Request data again", client_socket.GetSocketFD(), 
 			m_current_request);
+		// TODO wrong response from the server
 		if (SendRequestToServer(client_socket, m_current_request)
 			&& m_p_client_stream->Receive(client_socket, message))
 		{
@@ -155,29 +138,6 @@ bool CClientConnectionHandler::SendRequestToServer(const CSocket& client_socket,
 	CLOG_DEBUG_WITH_PARAMS("Result of sending request to the server", result);
 	CLOG_TRACE_END_FUNCTION();
 	return result;
-}
-
-std::string CClientConnectionHandler::ConvertRequestToString(EEventType type) const
-{
-	std::string request_str;
-	CLOG_TRACE_START_FUNCTION();
-
-	switch (type) {
-	case EEventType::REQUEST_ALL_DATA:
-		request_str = "ALL_DATA";
-		break;
-	case EEventType::REQUEST_DISK_DATA:
-		request_str = "DISK_DATA";
-		break;
-	case EEventType::REQUEST_PROCESS_DATA:
-		request_str = "PROCESS_DATA";
-		break;
-	default:
-		request_str = GlobalVariable::c_request_error;
-	}
-	CLOG_DEBUG_WITH_PARAMS("We have request", request_str);
-	CLOG_TRACE_END_FUNCTION();
-	return request_str;
 }
 
 std::unique_ptr<CSocketWrapper> CClientConnectionHandler::InitClientStream()
