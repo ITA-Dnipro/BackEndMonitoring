@@ -1,13 +1,14 @@
 #ifdef __linux__
 #include "stdafx.h"
 
-#include "Utils/include/GlobalVariable.h"
+//#include "Utils/include/GlobalVariable.h"
 #include "CNumericTypesParser.h"
 #include "CReadFileWrapper.h"
 #include "Utils.h"
 #include "CLogger/include/Log.h"
 #include "CSocket.h"
 #include "PlatformUtils.h"
+#include "GlobalVariable.h"
 
 CBaseSocket::CBaseSocket() : m_socket(GlobalVariable::c_invalid_socket)
 { }
@@ -100,7 +101,7 @@ namespace PlatformUtils
 	bool CloseSocket(int socket)
 	{
 		shutdown(socket, 2);
-		if (socket != c_invalid_socket)
+		if (socket != GlobalVariable::c_error_socket)
 		{
 			if (close(socket) != GlobalVariable::c_error_socket)
 			{
