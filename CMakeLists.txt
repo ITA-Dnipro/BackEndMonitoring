@@ -34,6 +34,14 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
 endif(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
 
+if (UNIX)
+    set(PLATFORM_SPECIFIC_UTILS ${UTILS_SRC_DIR}/LinuxUtils.cpp)
+    set(GMOCK_FOLDER gmock)
+else()
+    set(PLATFORM_SPECIFIC_UTILS ${UTILS_SRC_DIR}/WindowsUtils.cpp)
+    set(GMOCK_FOLDER gmock.1.10.0)
+endif()
+
 set(TEST_LIB_SRC_DIR ${CMAKE_SOURCE_DIR}/packages/${GMOCK_FOLDER}/lib/native/src)
 set(TEST_LIB_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/packages/${GMOCK_FOLDER}/lib/native/include)
 
