@@ -99,7 +99,7 @@ bool ServiceHandler::Install() const
             break;
         }
 
-        Start();
+        success = Start();
     } while (false);
 
     success ? Utils::DisplayMessage("Service installed")
@@ -153,7 +153,7 @@ bool ServiceHandler::Uninstall() const
             break;
         }
 
-        Stop();
+        success = Stop();
 
         if (::DeleteService(service->GetHandle()) == 0)
         {
