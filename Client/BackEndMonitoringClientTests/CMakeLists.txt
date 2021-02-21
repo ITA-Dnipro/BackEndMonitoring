@@ -8,10 +8,15 @@ include_directories(${CMAKE_SOURCE_DIR}
         ${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/include
         ${CMAKE_SOURCE_DIR}/3rdParty/include
         ${CMAKE_SOURCE_DIR}/utils/include
-        ${CMAKE_SOURCE_DIR}/packages/gmock.1.10.0/lib/native/include)
+        ${GTEST_INCLUDE_DIR}
+        ${GMOCK_INCLUDE_DIR}
+        ${TEST_LIB_INCLUDE_DIR}
+        ${GTEST_SRC_DIR}
+        ${GMOCK_SRC_DIR})
 
 set(CLIENT_TESTS_SRC_DIR ${CMAKE_SOURCE_DIR}/Client/BackEndMonitoringClientTests/src)
 
 add_executable(ClientTests
-        ${TEST_SRC}
+        ${GTEST_SRC_DIR}/gtest-all.cc
+        ${GMOCK_SRC_DIR}/gmock-all.cc
         ${CLIENT_TESTS_SRC_DIR}/Main.cpp)

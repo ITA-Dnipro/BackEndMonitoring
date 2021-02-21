@@ -1,11 +1,6 @@
 cmake_minimum_required(VERSION 3.17)
 project(BackEndMonitoring)
 
-# Add support for multithreading using the POSIX threads library
-if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
-endif(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
 
 link_directories(${CMAKE_BINARY_DIR}/CLogger)
 link_directories(..)
