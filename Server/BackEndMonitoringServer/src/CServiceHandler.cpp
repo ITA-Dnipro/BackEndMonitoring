@@ -5,6 +5,7 @@
 #include "CLogger/include/Log.h"
 
 #if defined(_WIN64) || defined(_WIN32)
+
 class ServiceHandle
 {
 public:
@@ -34,7 +35,7 @@ private:
     SC_HANDLE m_handle = nullptr;
 };
 
-ServiceHandler::ServiceHandler(std::unique_ptr<CService> service)
+ServiceHandler::ServiceHandler(std::unique_ptr<CWindowsService> service)
   : m_p_service(std::move(service))
 { }
 
@@ -48,7 +49,7 @@ bool ServiceHandler::Install() const
     do
     {
         CString escaped_path;
-        if (!CService::GetModulePath(escaped_path))
+        if (!Utils::GetModulePath(escaped_path))
         {
             Utils::DisplayError("Failed to get module file name");
             success = false;
@@ -56,7 +57,7 @@ bool ServiceHandler::Install() const
             break;
         }
 
-        CService::EscapePath(escaped_path);
+        Utils::EscapePath(escaped_path);
 
         const auto service_control_manager = std::make_unique<ServiceHandle>(
             ::OpenSCManager(
@@ -88,7 +89,9 @@ bool ServiceHandler::Install() const
                 nullptr,
                 nullptr,
                 nullptr));
+
         CLOG_TRACE_VAR_CREATION(service);
+
         if (service->GetHandle() == nullptr)
         {
             Utils::DisplayError("Failed to create service");
@@ -97,13 +100,15 @@ bool ServiceHandler::Install() const
             break;
         }
 
-        Start();
+        success = Start();
     } while (false);
 
     success ? Utils::DisplayMessage("Service installed")
             : Utils::DisplayMessage("Failed to install the service");
+
     CLOG_TRACE_VAR_CREATION(success);
     CLOG_DEBUG_END_FUNCTION();
+
     return success;
 }
 
@@ -113,15 +118,19 @@ bool ServiceHandler::Uninstall() const
 
     bool success = false;
     CLOG_DEBUG_START_FUNCTION();
+
     success = true;
     CLOG_TRACE_VAR_CREATION(success);
+
     do
     {
         auto service_control_manager = std::make_unique<ServiceHandle>(
             ::OpenSCManager(
                 nullptr, nullptr,
                 SC_MANAGER_CONNECT));
+
         CLOG_TRACE_VAR_CREATION(service_control_manager);
+
         if (service_control_manager->GetHandle() == nullptr)
         {
             Utils::DisplayError("Failed to open service control manager");
@@ -145,7 +154,7 @@ bool ServiceHandler::Uninstall() const
             break;
         }
 
-        Stop();
+        success = Stop();
 
         if (::DeleteService(service->GetHandle()) == 0)
         {
@@ -158,8 +167,10 @@ bool ServiceHandler::Uninstall() const
 
     success ? Utils::DisplayMessage("Service uninstalled")
             : Utils::DisplayMessage("Failed to uninstall the service");
+
     CLOG_TRACE_VAR_CREATION(success);
     CLOG_DEBUG_END_FUNCTION();
+
     return success;
 }
 
@@ -168,14 +179,17 @@ bool ServiceHandler::Start() const
     Utils::DisplayMessage("Starting the service");
     bool success = false;
     CLOG_DEBUG_START_FUNCTION();
+
     success = true;
     CLOG_TRACE_VAR_CREATION(success);
+
     do
     {
         auto service_control_manager = std::make_unique<ServiceHandle>(
             ::OpenSCManager(
                 nullptr, nullptr,
                 SC_MANAGER_CONNECT));
+
         CLOG_TRACE_VAR_CREATION(service_control_manager);
 
         if (service_control_manager->GetHandle() == nullptr)
@@ -212,8 +226,10 @@ bool ServiceHandler::Start() const
 
     success ? Utils::DisplayMessage("Service started")
             : Utils::DisplayMessage("Failed to start the service");
+
     CLOG_TRACE_VAR_CREATION(success);
     CLOG_DEBUG_END_FUNCTION();
+
     return success;
 }
 
@@ -223,14 +239,17 @@ bool ServiceHandler::Stop() const
 
     bool success = false;
     CLOG_DEBUG_START_FUNCTION();
+
     success = true;
     CLOG_TRACE_VAR_CREATION(success);
+
     do
     {
         auto service_control_manager = std::make_unique<ServiceHandle>(
             ::OpenSCManager(
                 nullptr, nullptr,
                 SC_MANAGER_CONNECT));
+
         CLOG_TRACE_VAR_CREATION(service_control_manager);
 
         if (service_control_manager->GetHandle() == nullptr)
@@ -284,8 +303,10 @@ bool ServiceHandler::Stop() const
 
     success ? Utils::DisplayMessage("Service stopped")
             : Utils::DisplayMessage("Failed to stop the service");
+
     CLOG_TRACE_VAR_CREATION(success);
     CLOG_DEBUG_END_FUNCTION();
+
     return success;
 }
 
@@ -293,4 +314,5 @@ bool ServiceHandler::Run() const
 {
     return m_p_service->Run();
 }
+
 #endif

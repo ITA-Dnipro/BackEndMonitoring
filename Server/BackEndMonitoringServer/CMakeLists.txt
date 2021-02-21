@@ -49,6 +49,8 @@ add_executable(Server
 		${SERVER_SRC_DIR}/CLogicalDiskInfo.cpp
 		${SERVER_SRC_DIR}/CLogicalDiskInfoMonitoring.cpp
 		${SERVER_SRC_DIR}/CService.cpp
+		${SERVER_SRC_DIR}/CLinuxService.cpp
+		${SERVER_SRC_DIR}/CWindowsService.cpp
 		${SERVER_SRC_DIR}/CServiceHandler.cpp
 		${SERVER_SRC_DIR}/CProcessInfo.cpp
 		${SERVER_SRC_DIR}/BackEndMonitoringServer.cpp
