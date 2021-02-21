@@ -1,5 +1,7 @@
 #pragma once
 
+#include "IRequestExc.h"
+
 class CRequestExcAllData : public IRequestExc
 {
 public:

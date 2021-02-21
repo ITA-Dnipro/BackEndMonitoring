@@ -1,7 +1,6 @@
 #pragma once
-#include "IRequestExc.h"
-class CRequestExcProcessData :
-    public IRequestExc
+
+class CRequestExcProcessData : public IRequestExc
 {
 public:
     CRequestExcProcessData() = delete;

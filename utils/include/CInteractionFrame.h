@@ -1,7 +1,5 @@
 #pragma once
 
-#include "CJSONFormatter.h"
-
 class CInteractionFrame
 {
 public:

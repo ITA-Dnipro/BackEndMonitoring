@@ -34,7 +34,8 @@ bool CResponseHandler::HandleResponse(const std::string& guid,
 	return true;
 }
 
-bool CResponseHandler::TryValidate(const std::string& guid, const std::string& response_str)
+bool CResponseHandler::TryValidate(const std::string& guid, 
+    const std::string& response_str)
 {
     std::vector<bool> answer;
     nlohmann::json response = nlohmann::json::parse(response_str);

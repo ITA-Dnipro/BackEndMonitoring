@@ -1,6 +1,8 @@
 #pragma once
+
 #include "CInteractionHandler.h"
-#include "EResponseError.h"
+
+enum class EResponseError;
 
 class CResponseHandler : public CInteractionHandler
 {
@@ -9,11 +11,12 @@ public:
 	CResponseHandler(const CResponseHandler&) = delete;
 	CResponseHandler(CResponseHandler&&) = delete;
 
-	[[nodiscard]] bool HandleResponse(const std::string& guid, const std::string& response,
-		nlohmann::json& json_storage);
+	[[nodiscard]] bool HandleResponse(const std::string& guid, 
+		const std::string& response, nlohmann::json& json_storage);
 
 private:
-	[[nodiscard]] bool TryValidate(const std::string& guid, const std::string& response);
+	[[nodiscard]] bool TryValidate(const std::string& guid, 
+		const std::string& response);
 	[[nodiscard]] EResponseError DetermineErrorInResponse(
 		const nlohmann::json& response);
 };

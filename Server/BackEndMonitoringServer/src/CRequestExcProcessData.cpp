@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include "IRequestExc.h"
 #include "ERequestRangeSpecification.h"
 #include "Utils.h"
 #include "CDataProvider.h"

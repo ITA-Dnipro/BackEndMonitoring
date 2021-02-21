@@ -1,7 +1,6 @@
 #pragma once
-#include "IRequestExc.h"
-class CRequestExcDiskData :
-    public IRequestExc
+
+class CRequestExcDiskData : public IRequestExc
 {
 public:
     CRequestExcDiskData() = delete;
