@@ -186,6 +186,9 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\utils\include\CInteractionFrame.cpp" />
+    <ClCompile Include="..\..\utils\include\CRequestFrame.cpp" />
+    <ClCompile Include="..\..\utils\include\CStringCleaner.cpp" />
     <ClCompile Include="..\..\utils\include\Utils.cpp" />
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
     <ClCompile Include="src\CClientController.cpp" />
@@ -201,6 +204,7 @@
     <ClInclude Include="..\..\utils\include\stdafx.h" />
     <ClInclude Include="include\CClientController.h" />
     <ClInclude Include="include\ERequestType.h" />
+    <ClInclude Include="include\CClientView.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />

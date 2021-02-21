@@ -6,6 +6,11 @@
 #include "CServiceHandler.h"
 #include "Utils.h"
 #include "CLogger/include/Log.h"
+#include "ERequestType.h"
+#include "ERequestRangeSpecification.h"
+#include "CRequestHandler.h"
+#include "CRequestFrame.h"
+#include "CResponseHandler.h"
 
 int main(int argc, char** argv)
 {

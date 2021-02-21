@@ -1,13 +1,13 @@
 #include "stdafx.h"
 
-#include "CLogger/include/Log.h"
-#include "EClientRequestType.h"
+#include "Log.h"
 #include "CServiceConnectionHandler.h"
 #include "CSocketWrapper.h"
 #include "CSocket.h"
+#include "GlobalVariable.h"
 
-CServiceConnectionHandler::CServiceConnectionHandler(CDataProvider json_data) :
-	m_json_data(json_data)
+CServiceConnectionHandler::CServiceConnectionHandler(
+	CRequestHandler request_handler) : m_request_handler(request_handler)
 {
 	InitPeerStream();
 }
@@ -20,130 +20,52 @@ bool CServiceConnectionHandler::HandleEvent(const CSocket& client, EEventType ev
 		CLOG_DEBUG_WITH_PARAMS("Request data from the client", client.GetSocketFD());
 		result = HandleRequestEvent(client);
 		break;
-	case EEventType::LOST_REQUEST:
-		CLOG_DEBUG("We lost request, start function HandleWrongRequestEvent");
-		result = HandleWrongRequestEvent(client);
-		break;
 	default:
 		CLOG_DEBUG("Default case in HandleEvent, return false");
 		return false;
 	}
-	CLOG_DEBUG_WITH_PARAMS("We have result", result);
+	CLOG_TRACE_WITH_PARAMS("We have result work with client", result, client.GetSocketFD());
 	return result;
 }
 
 bool CServiceConnectionHandler::HandleRequestEvent(const CSocket& client_socket)
 {
 	bool should_not_close_client = false;
+	CLOG_DEBUG_START_FUNCTION();
 	std::string message;
-
+	std::string response_message;
 	if (m_p_peer_stream->CanReceiveData(client_socket) &&
 		m_p_peer_stream->Receive(client_socket, message))
 	{
-		switch(ParseMessageType(message))
-		{
-		case EClientRequestType::ALL_DATA:
-			CLOG_DEBUG_WITH_PARAMS("All data request from the socket ",
-				client_socket.GetSocketFD());
-			should_not_close_client = HandleResponseEvent(client_socket,
-				EClientRequestType::ALL_DATA);
-			should_not_close_client = true;
-			break;
-		case EClientRequestType::DISKS_DATA:
-			CLOG_DEBUG_WITH_PARAMS("Disks data request from the socket ",
-				client_socket.GetSocketFD());
-			should_not_close_client = HandleResponseEvent(client_socket,
-				EClientRequestType::DISKS_DATA);
-			should_not_close_client = true;
-			break;
-		case EClientRequestType::PROCESSES_DATA:
-			CLOG_DEBUG_WITH_PARAMS("Processes data request from the socket ",
-				client_socket.GetSocketFD());
-			should_not_close_client = HandleResponseEvent(client_socket,
-				EClientRequestType::PROCESSES_DATA);
-			should_not_close_client = true;
-			break;
-		case EClientRequestType::EXIT:
-			CLOG_DEBUG("Exit request from the client");
-			should_not_close_client = false;
-			break;
-		case EClientRequestType::LOST_DATA:
-			CLOG_ERROR_WITH_PARAMS("Part of the data is lost, we receive", message);
-			should_not_close_client = HandleEvent(client_socket,
-				EEventType::LOST_REQUEST);
-			should_not_close_client = true;
-			break;
-		}
+		CLOG_DEBUG_WITH_PARAMS("We receive request", message.c_str(), message.size());
+		m_request_handler.HandleRequest(message, response_message);
+		
+		should_not_close_client = HandleResponseEvent(client_socket,
+				response_message);
 
-		CLOG_DEBUG_WITH_PARAMS("", should_not_close_client);
+		CLOG_DEBUG_WITH_PARAMS("After sending result of work with client",
+			should_not_close_client);
 	}
 	else if (m_p_peer_stream->IsErrorOccurred(client_socket))
 	{
-		CLOG_ERROR_WITH_PARAMS("Lost connection with the client", 
+		CLOG_ERROR_WITH_PARAMS("Lost connection with the client",
 			client_socket.GetSocketFD());
 		should_not_close_client = false;
 	}
-	CLOG_DEBUG_WITH_PARAMS("", should_not_close_client);
-
+	CLOG_DEBUG_END_FUNCTION();
 	return should_not_close_client;
 }
 
 bool CServiceConnectionHandler::HandleResponseEvent(const CSocket& client_socket,
-	EClientRequestType type)
+	const std::string& response_message)
 {
 	bool result = false;
 	CLOG_DEBUG_START_FUNCTION();
-	std::string message;
-	switch (type)
-	{
-	case EClientRequestType::ALL_DATA:
-		CLOG_TRACE("Send all info to the client");
-		message = m_json_data.GetAllLastInfo();
-		break;
-	case EClientRequestType::PROCESSES_DATA:
-		CLOG_TRACE("Send process info to the client");
-		message = m_json_data.GetProcessesLastInfo();
-		break;
-	case EClientRequestType::DISKS_DATA:
-		CLOG_TRACE("Send disk info to the client");
-		message = m_json_data.GetDisksLastInfo();
-		break;
-	default:
-		CLOG_ERROR_WITH_PARAMS("Wrong parameter EClientRequestType, ",
-			" cannot send response to the client");
-		return false;
-	}
-	result = m_p_peer_stream->Send(client_socket, message);
-	CLOG_DEBUG_WITH_PARAMS("Send function returned result ", result, client_socket.GetSocketFD());
-	CLOG_DEBUG_WITH_PARAMS("We sent bytes", message.size());
+	result = m_p_peer_stream->Send(client_socket, response_message);
+	CLOG_DEBUG_WITH_PARAMS("Send function returned result ", result,
+		client_socket.GetSocketFD(), "We sent bytes", response_message.size());
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
-}
-
-bool CServiceConnectionHandler::HandleWrongRequestEvent(const CSocket& client_socket)
-{
-	bool result = false;
-	CLOG_DEBUG_START_FUNCTION();
-	result = m_p_peer_stream->Send(client_socket, "Request lost");
-	CLOG_DEBUG_END_FUNCTION();
-
-	return result;
-}
-
-bool CServiceConnectionHandler::IsEqualStrings(const std::string& first_str, 
-	const std::string& second_str) const
-{
-	CLOG_DEBUG_START_FUNCTION();
-	for (size_t i = 0; i < second_str.size(); i++)
-	{
-		if (first_str[i] != second_str[i])
-		{
-			CLOG_TRACE_WITH_PARAMS("This strings aren't equal", first_str, second_str);
-			return false;
-		}
-	}
-	CLOG_DEBUG_END_FUNCTION();
-	return true;
 }
 
 void CServiceConnectionHandler::InitPeerStream()
@@ -152,24 +74,4 @@ void CServiceConnectionHandler::InitPeerStream()
 	m_p_peer_stream = std::make_unique<CSocketWrapper>();
 	CLOG_TRACE_VAR_CREATION(m_p_peer_stream);
 	CLOG_DEBUG_END_FUNCTION();
-}
-
-EClientRequestType CServiceConnectionHandler::ParseMessageType(const 
-	std::string& message) const
-{
-	EClientRequestType request_type = EClientRequestType::LOST_DATA;
-	CLOG_DEBUG_START_FUNCTION();
-
-	CLOG_DEBUG_WITH_PARAMS("We received request", message);
-	for(int i = 0; i < g_c_requests_num; i++)
-	{
-		if(IsEqualStrings(g_c_requests_types[i], message))
-		{
-			CLOG_DEBUG("Correct request was found");
-			request_type = static_cast<EClientRequestType>(i);
-		}
-	}
-	CLOG_DEBUG_END_FUNCTION();
-
-	return request_type;
 }

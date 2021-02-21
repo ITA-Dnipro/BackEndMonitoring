@@ -50,10 +50,13 @@ Client/BackEndMonitoringClientTests/Build/**
 Server/BackEndMonitoringServer/Build/**
 Server/BackEndMonitoringServerTests/Build/**
 CLogger/Build/**
+UtilsTests/Build/**
 Sockets/BackEndMonitoringSockets/Build/**
 .idea/**
 cmake-build-debug/**
 cmake-build-release/**
+cmake-build-debug-visual-studio/**
+cmake-build-release-visual-studio/**
 
-# Dont ingore files in "packages" dir
-!packages/**
+# Don't ignore files in "packages" dir // I said IGNORED
+packages/**

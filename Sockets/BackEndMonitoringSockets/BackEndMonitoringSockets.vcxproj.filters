@@ -42,17 +42,11 @@
     <ClInclude Include="include\CServiceConnectionHandler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\PlatformUtils.h">
-      <Filter>Header Files\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="include\CSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\CLogger\include\Log.h">
       <Filter>Header Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="include\EClientRequestType.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\EEventType.h">
       <Filter>Header Files\Handlers</Filter>
@@ -66,10 +60,19 @@
     <ClInclude Include="include\CAcceptor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\CDataProvider.h">
-	<Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\CSockAddress.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\GlobalVariable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\PlatformUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CDataProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CResponseHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -104,10 +107,16 @@
     <ClCompile Include="src\CClientConnectorHost.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CDataProvider.cpp">
-	<Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\CSockAddress.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\WindowsUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CDataProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CResponseHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

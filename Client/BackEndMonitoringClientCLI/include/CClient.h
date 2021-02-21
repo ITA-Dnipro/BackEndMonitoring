@@ -10,7 +10,7 @@ public:
 	~CClient()noexcept = default;
 
 	void Execute();
-	bool Init(const int arg_num, char** argvuments);
+	bool Init(const int arg_num, char** arguments);
 
 private:
 	void PrintMessage(const std::string& message) const;
@@ -19,11 +19,14 @@ private:
 	const int c_ip_address_num = 2;
 	const int c_port_num = 1;
 
+	std::string m_ip_address;
 	std::string m_file_name;
 	std::unique_ptr<CClientController> m_controller;
 	std::unique_ptr<CClientView> m_consolePrinter;
 	std::unique_ptr<CClientView> m_filePrinter;
 	std::fstream m_log_file;
-	std::fstream m_response_data;
+	std::fstream m_client_stream;
+	int m_port;
+	bool is_connected;
 };
 

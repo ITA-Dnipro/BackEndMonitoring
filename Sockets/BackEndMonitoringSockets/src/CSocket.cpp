@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
 #include "CSocket.h"
-
+#include "GlobalVariable.h"
 CSocket::CSocket()
-	: CBaseSocket(c_invalid_socket)
+	: CBaseSocket(GlobalVariable::c_invalid_socket)
 { }
 
 CSocket::CSocket(int socket_fd)
@@ -12,7 +12,8 @@ CSocket::CSocket(int socket_fd)
 
 bool CSocket::IsValidSocket() const
 {
-	if (m_socket == c_invalid_socket || m_socket == c_error_socket)
+	if (m_socket == GlobalVariable::c_invalid_socket 
+		|| m_socket == GlobalVariable::c_error_socket)
 	{
 		return false;
 	}
