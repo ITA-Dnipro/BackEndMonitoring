@@ -33,7 +33,7 @@
     <ClCompile Include="..\..\utils\include\Utils.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\PlatformUtils\WindowsUtils.cpp">
+    <ClCompile Include="..\..\utils\include\WindowsUtils.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

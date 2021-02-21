@@ -1,309 +1,91 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="..\..\3rdParty\include\pugixml.cpp" />
+    <ClCompile Include="..\..\utils\include\CComunicationSettings.cpp" />
+    <ClCompile Include="..\..\utils\include\CDataReader.cpp" />
+    <ClCompile Include="..\..\utils\include\CDateTimePathConstructor.cpp" />
+    <ClCompile Include="..\..\utils\include\CEvent.cpp" />
+    <ClCompile Include="..\..\utils\include\CHDDInfoSettings.cpp" />
+    <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp" />
+    <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp" />
+    <ClCompile Include="..\..\utils\include\CMonitoringJSONDataContainer.cpp" />
+    <ClCompile Include="..\..\utils\include\CMonitoringJSONDataEntry.cpp" />
+    <ClCompile Include="..\..\utils\include\CNumericTypesParser.cpp" />
+    <ClCompile Include="..\..\utils\include\CReadFileWrapper.cpp" />
+    <ClCompile Include="..\..\utils\include\CSettings.cpp" />
+    <ClCompile Include="..\..\utils\include\IPathConstructor.cpp" />
+    <ClCompile Include="..\..\utils\include\StrToNumWrapper.cpp" />
+    <ClCompile Include="..\..\utils\include\CLoggingSettings.cpp" />
+    <ClCompile Include="..\..\utils\include\CProcessesInfoSettings.cpp" />
+    <ClCompile Include="..\..\utils\include\CServerSettings.cpp" />
+    <ClCompile Include="..\..\utils\include\CThreadPool.cpp" />
+    <ClCompile Include="..\..\utils\include\CThreadPoolSettings.cpp" />
+    <ClCompile Include="..\..\utils\include\CTimeSettings.cpp" />
+    <ClCompile Include="..\..\utils\include\CXMLDataReader.cpp" />
+    <ClCompile Include="..\..\utils\include\Utils.cpp" />
+    <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
     <ClCompile Include="src\BackEndMonitoringServer.cpp" />
-    <ClCompile Include="..\..\3rdParty\include\pugixml.cpp">
-      <Filter>3rd-party libs\pugixml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CDataReader.cpp">
-      <Filter>Configuration subsystem\CDataReader</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CXMLDataReader.cpp">
-      <Filter>Configuration subsystem\CXMLDataReader</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CThreadPoolSettings.cpp">
-      <Filter>Configuration subsystem\Settings classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CServerSettings.cpp">
-      <Filter>Configuration subsystem\Settings classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CProcessesInfoSettings.cpp">
-      <Filter>Configuration subsystem\Settings classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CLoggingSettings.cpp">
-      <Filter>Configuration subsystem\Settings classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CComunicationSettings.cpp">
-      <Filter>Configuration subsystem\Settings classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CHDDInfoSettings.cpp">
-      <Filter>Configuration subsystem\Settings classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CSettings.cpp">
-      <Filter>Configuration subsystem\Settings classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CTimeSettings.cpp">
-      <Filter>Configuration subsystem\Settings classes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CContainerOfLogicalDisk.cpp">
-      <Filter>Monitoring subsystem\Drives monitoring</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CJSONFormatterLogicalDisk.cpp">
-      <Filter>Monitoring subsystem\Drives monitoring</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CLogicalDiskInfo.cpp">
-      <Filter>Monitoring subsystem\Drives monitoring</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CLogicalDiskInfoMonitoring.cpp">
-      <Filter>Monitoring subsystem\Drives monitoring</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CContainerOfProcesses.cpp">
-      <Filter>Monitoring subsystem\Processes monitoring</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CJSONFormatterProcess.cpp">
-      <Filter>Monitoring subsystem\Processes monitoring</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CProcessesInfoMonitoring.cpp">
-      <Filter>Monitoring subsystem\Processes monitoring</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CProcessInfo.cpp">
-      <Filter>Monitoring subsystem\Processes monitoring</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CHardwareStatusSpecification.cpp">
-      <Filter>Monitoring subsystem</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CJSONFormatSaver.cpp">
-      <Filter>Utils\JSON Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CJSONFormatter.cpp">
-      <Filter>Utils\JSON Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CService.cpp">
-      <Filter>Service subsystem</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CServiceHandler.cpp">
-      <Filter>Service subsystem</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CCommandLineHandler.cpp">
-      <Filter>Service subsystem</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\Utils.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\StrToNumWrapper.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CReadFileWrapper.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CNumericTypesParser.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CEvent.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CThreadPool.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\stdafx.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\WindowsUtils.cpp">
-      <Filter>Utils\Platform Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CMonitoringInfoJSONDatabase.cpp">
-      <Filter>Monitoring subsystem\Database subsystem\JSON</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CProcessesInfoJSONDatabase.cpp">
-      <Filter>Monitoring subsystem\Database subsystem\JSON\Processes</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CDrivesInfoJSONDatabase.cpp">
-      <Filter>Monitoring subsystem\Database subsystem\JSON\Drives</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CMonitoringJSONDataEntry.cpp">
-      <Filter>Monitoring subsystem\Database subsystem\JSON</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CMonitoringJSONDataContainer.cpp">
-      <Filter>Monitoring subsystem\Database subsystem\JSON</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\IPathConstructor.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\utils\include\CDateTimePathConstructor.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CResourcesInfoJSONDatabase.cpp">
-      <Filter>Monitoring subsystem\Database subsystem\JSON\Resources</Filter>
-    </ClCompile>
+    <ClCompile Include="src\CCommandLineHandler.cpp" />
+    <ClCompile Include="src\CContainerOfLogicalDisk.cpp" />
+    <ClCompile Include="src\CContainerOfProcesses.cpp" />
+    <ClCompile Include="src\CDrivesInfoJSONDatabase.cpp" />
+    <ClCompile Include="src\CHardwareStatusSpecification.cpp" />
+    <ClCompile Include="src\CJSONFormatterLogicalDisk.cpp" />
+    <ClCompile Include="src\CJSONFormatterProcess.cpp" />
+    <ClCompile Include="src\CLogicalDiskInfo.cpp" />
+    <ClCompile Include="src\CLogicalDiskInfoMonitoring.cpp" />
+    <ClCompile Include="src\CMonitoringInfoJSONDatabase.cpp" />
+    <ClCompile Include="src\CProcessesInfoJSONDatabase.cpp" />
+    <ClCompile Include="src\CProcessInfo.cpp" />
+    <ClCompile Include="src\CProcessesInfoMonitoring.cpp" />
+    <ClCompile Include="src\CResourcesInfoJSONDatabase.cpp" />
+    <ClCompile Include="src\CService.cpp" />
+    <ClCompile Include="src\CServiceHandler.cpp" />
+    <ClCompile Include="src\stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\3rdParty\include\pugiconfig.hpp" />
+    <ClInclude Include="..\..\3rdParty\include\pugixml.hpp" />
+    <ClInclude Include="..\..\utils\include\CComunicationSettings.h" />
+    <ClInclude Include="..\..\utils\include\CDataReader.h" />
+    <ClInclude Include="..\..\utils\include\CDateTimePathConstructor.h" />
+    <ClInclude Include="..\..\utils\include\CHDDInfoSettings.h" />
+    <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h" />
+    <ClInclude Include="..\..\utils\include\CLoggingSettings.h" />
+    <ClInclude Include="..\..\utils\include\CMonitoringJSONDataContainer.h" />
+    <ClInclude Include="..\..\utils\include\CMonitoringJSONDataEntry.h" />
+    <ClInclude Include="..\..\utils\include\CProcessesInfoSettings.h" />
+    <ClInclude Include="..\..\utils\include\CServerSettings.h" />
+    <ClInclude Include="..\..\utils\include\CSettings.h" />
+    <ClInclude Include="..\..\utils\include\CThreadPoolSettings.h" />
+    <ClInclude Include="..\..\utils\include\CTimeSettings.h" />
+    <ClInclude Include="..\..\utils\include\CXMLDataReader.h" />
+    <ClInclude Include="..\..\utils\include\IPathConstructor.h" />
+    <ClInclude Include="..\..\utils\include\GlobalVariable.h" />
+    <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="..\..\utils\include\stdafx.h" />
-    <ClInclude Include="..\..\3rdParty\include\pugixml.hpp">
-      <Filter>3rd-party libs\pugixml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\3rdParty\include\pugiconfig.hpp">
-      <Filter>3rd-party libs\pugixml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CDataReader.h">
-      <Filter>Configuration subsystem\CDataReader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CXMLDataReader.h">
-      <Filter>Configuration subsystem\CXMLDataReader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CThreadPoolSettings.h">
-      <Filter>Configuration subsystem\Settings classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CServerSettings.h">
-      <Filter>Configuration subsystem\Settings classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CProcessesInfoSettings.h">
-      <Filter>Configuration subsystem\Settings classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CLoggingSettings.h">
-      <Filter>Configuration subsystem\Settings classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CComunicationSettings.h">
-      <Filter>Configuration subsystem\Settings classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CHDDInfoSettings.h">
-      <Filter>Configuration subsystem\Settings classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CSettings.h">
-      <Filter>Configuration subsystem\Settings classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CTimeSettings.h">
-      <Filter>Configuration subsystem\Settings classes</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CContainerOfLogicalDisk.h">
-      <Filter>Monitoring subsystem\Drives monitoring</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CJSONFormatterLogicalDisk.h">
-      <Filter>Monitoring subsystem\Drives monitoring</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CLogicalDiskInfo.h">
-      <Filter>Monitoring subsystem\Drives monitoring</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CLogicalDiskInfoMonitoring.h">
-      <Filter>Monitoring subsystem\Drives monitoring</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CContainerOfProcesses.h">
-      <Filter>Monitoring subsystem\Processes monitoring</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CJSONFormatterProcess.h">
-      <Filter>Monitoring subsystem\Processes monitoring</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CProcessesInfoMonitoring.h">
-      <Filter>Monitoring subsystem\Processes monitoring</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CProcessInfo.h">
-      <Filter>Monitoring subsystem\Processes monitoring</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CHardwareStatusSpecification.h">
-      <Filter>Monitoring subsystem</Filter>
-    </ClInclude>
-    <ClInclude Include="include\EMemoryConvertType.h">
-      <Filter>Monitoring subsystem</Filter>
-    </ClInclude>
-    <ClInclude Include="include\IHardwareInfoMonitoring.h">
-      <Filter>Monitoring subsystem</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CJSONFormatSaver.h">
-      <Filter>Utils\JSON Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CService.h">
-      <Filter>Service subsystem</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CServiceHandler.h">
-      <Filter>Service subsystem</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CCommandLineHandler.h">
-      <Filter>Service subsystem</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\GlobalVariable.h" />
-    <ClInclude Include="..\..\utils\include\PlatformUtils.h">
-      <Filter>Utils\Platform Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="include\IInfoDatabase.h">
-      <Filter>Monitoring subsystem\Database subsystem</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CMonitoringInfoJSONDatabase.h">
-      <Filter>Monitoring subsystem\Database subsystem\JSON</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CProcessesInfoJSONDatabase.h">
-      <Filter>Monitoring subsystem\Database subsystem\JSON\Processes</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CDrivesInfoJSONDatabase.h">
-      <Filter>Monitoring subsystem\Database subsystem\JSON\Drives</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CMonitoringJSONDataEntry.h">
-      <Filter>Monitoring subsystem\Database subsystem\JSON</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CMonitoringJSONDataContainer.h">
-      <Filter>Monitoring subsystem\Database subsystem\JSON</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\IPathConstructor.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CDateTimePathConstructor.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CResourcesInfoJSONDatabase.h">
-      <Filter>Monitoring subsystem\Database subsystem\JSON\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\GlobalVariable.h" />
-      <Filter>Utils</Filter>
-    </ClInclude>
+    <ClInclude Include="include\CCommandLineHandler.h" />
+    <ClInclude Include="include\CContainerOfLogicalDisk.h" />
+    <ClInclude Include="include\CContainerOfProcesses.h" />
+    <ClInclude Include="include\CDrivesInfoJSONDatabase.h" />
+    <ClInclude Include="include\CMonitoringInfoJSONDatabase.h" />
+    <ClInclude Include="include\CProcessesInfoJSONDatabase.h" />
+    <ClInclude Include="include\CResourcesInfoJSONDatabase.h" />
+    <ClInclude Include="include\IHardwareInfoMonitoring.h" />
+    <ClInclude Include="include\CHardwareStatusSpecification.h" />
+    <ClInclude Include="include\CJSONFormatterLogicalDisk.h" />
+    <ClInclude Include="include\CJSONFormatterProcess.h" />
+    <ClInclude Include="include\CLogicalDiskInfo.h" />
+    <ClInclude Include="include\CLogicalDiskInfoMonitoring.h" />
+    <ClInclude Include="include\CProcessInfo.h" />
+    <ClInclude Include="include\CProcessesInfoMonitoring.h" />
+    <ClInclude Include="include\CService.h" />
+    <ClInclude Include="include\CServiceHandler.h" />
+    <ClInclude Include="include\EMemoryConvertType.h" />
+    <ClInclude Include="include\IInfoDatabase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{a48b05ae-5d77-4a31-8e5a-af21424cfd16}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3rd-party libs">
-      <UniqueIdentifier>{b48854d1-2db7-4c4e-afe3-f3841793eb8a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3rd-party libs\pugixml">
-      <UniqueIdentifier>{e98f9309-2b00-48ef-8eee-81a62db48cab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\JSON Utils">
-      <UniqueIdentifier>{e62dff1b-0ba3-41e1-bc44-74593767d29b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source files">
-      <UniqueIdentifier>{8a2bf160-c970-477f-8296-70309d2f149f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Configuration subsystem">
-      <UniqueIdentifier>{fb173d11-425f-4caa-a50d-1abd9c1d4309}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Configuration subsystem\CDataReader">
-      <UniqueIdentifier>{86c2fac2-80ca-4cfb-a6ea-cd02ac9b4f09}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Configuration subsystem\CXMLDataReader">
-      <UniqueIdentifier>{8e4e218f-d306-4a1a-ab71-f3d23d7dee92}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Configuration subsystem\Settings classes">
-      <UniqueIdentifier>{45d0c2a0-d8d2-4720-af7f-c3f959857203}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Monitoring subsystem">
-      <UniqueIdentifier>{13474b47-d13d-46f1-9a10-12f32fc73553}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Monitoring subsystem\Processes monitoring">
-      <UniqueIdentifier>{ced00523-533e-425f-b786-069435159564}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Monitoring subsystem\Drives monitoring">
-      <UniqueIdentifier>{3e83d934-34c1-4839-940c-33008270e742}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Service subsystem">
-      <UniqueIdentifier>{15d96172-62e8-43aa-b7d7-9cc1da8ee359}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\Platform Utils">
-      <UniqueIdentifier>{c9d751ff-0fd2-4885-90ee-300616fe0b97}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Monitoring subsystem\Database subsystem">
-      <UniqueIdentifier>{2ae87742-f30a-4a9a-b979-3c9597abae67}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Monitoring subsystem\Database subsystem\JSON">
-      <UniqueIdentifier>{567ad35f-6285-4d28-8b7d-e640a9c84e19}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Monitoring subsystem\Database subsystem\JSON\Drives">
-      <UniqueIdentifier>{0689bb27-12c8-4fca-a5d0-54a8daaee70a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Monitoring subsystem\Database subsystem\JSON\Processes">
-      <UniqueIdentifier>{be5b56f4-4f4f-47a8-bbd6-12b51db9a1ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Monitoring subsystem\Database subsystem\JSON\Resources">
-      <UniqueIdentifier>{9e1fa702-5fd9-49c3-a02a-05b1f5e6e332}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>
