@@ -7,84 +7,97 @@
 #include "CRequestExcProcessData.h"
 #include "CDataProvider.h"
 #include "GlobalVariable.h"
+#include "CResponseFrame.h"
+#include "EResponseError.h"
 
 #include "CRequestHandler.h"
 
-CRequestHandler::CRequestHandler(const std::string& request) : 
-    m_request(request)
-{ }
-
-CRequestHandler::CRequestHandler(const std::string& request,
+CRequestHandler::CRequestHandler(
     std::shared_ptr<IInfoDatabase> p_processes_data,
     std::shared_ptr<IInfoDatabase> p_disks_data,
-    std::shared_ptr<IInfoDatabase> p_resources_data) :
-        m_request(request), m_data_base(p_processes_data, 
-            p_disks_data, p_resources_data)
+    std::shared_ptr<IInfoDatabase> p_resources_data) : CInteractionHandler(),
+         m_data_base(p_processes_data, p_disks_data, p_resources_data)
 { }
 
-bool CRequestHandler::HandleRequest(std::string& answer)
+bool CRequestHandler::HandleRequest(const std::string& request_str, 
+    std::string& answer)
 {
-    if (!TryValidateRequest())
+    if (!TryValidateRequest(request_str))
     {
         //log
         return false;
     }
+    nlohmann::json request = nlohmann::json::parse(request_str);
+    CResponseFrame response(request[GlobalVariable::c_request_key_id]);
 
-    nlohmann::json request = nlohmann::json::parse(m_request);
-
-    switch (AnalyzeRequestType(request))
+    switch (AnalyzeRequestType(request_str))
     {
     case ERequestType::ALL_DATA:
-        ExecuteRequest(answer, std::make_shared<CRequestExcAllData>(
-            m_request, std::make_shared<CDataProvider>(m_data_base)));
+        if (!ExecuteRequest(answer, std::make_shared<CRequestExcAllData>(
+            request_str, std::make_shared<CDataProvider>(m_data_base))))
+        {
+            // log
+            return false;
+        }
         break;
     case ERequestType::DISKS_DATA:
-        ExecuteRequest(answer, std::make_shared<CRequestExcDiskData>(
-            m_request, std::make_shared<CDataProvider>(m_data_base)));
+        if(!ExecuteRequest(answer, std::make_shared<CRequestExcDiskData>(
+            request_str, std::make_shared<CDataProvider>(m_data_base))))
+        {
+            // log
+            return false;
+        }
         break;
     case ERequestType::PROCESSES_DATA:
-        ExecuteRequest(answer, std::make_shared<CRequestExcProcessData>(
-            m_request, std::make_shared<CDataProvider>(m_data_base)));
+        if(!ExecuteRequest(answer, std::make_shared<CRequestExcProcessData>(
+            request_str, std::make_shared<CDataProvider>(m_data_base))))
+        {
+            // log
+            return false;
+        }
         break;
-    //case ERequestType::INCORRECT_REQUEST:
-    //    //write to log
-    //    return false;
     default:
-        //function worked incorrect. Write to log
+    {
+        response.TryFormateResponse(answer, "", 
+            EResponseError::INCORRECT_REQUEST);
         return false;
     }
+    }
 
-    //generate response
-
-    return true;
+    // could be a problem
+    return response.TryFormateResponse(answer, answer, EResponseError::NONE);
 }
 
-bool CRequestHandler::TryValidateRequest()
+bool CRequestHandler::TryValidateRequest(const std::string& request_str)
 {
-    std::vector<bool> answers;
-    nlohmann::json request = nlohmann::json::parse(m_request);
+    bool answer;
+    nlohmann::json request = nlohmann::json::parse(request_str);
     for (const auto& [key, value] : request.items())
     {
-        if (GlobalVariable::c_request_key_id == key)
+        if (GlobalVariable::c_request_key_id != key)
         {
-            answers.emplace_back(true);
+            answer = false;
+            break;
         }
-        if (GlobalVariable::c_request_key_req_typ == key)
+        if (GlobalVariable::c_request_key_req_typ != key)
         {
-            answers.emplace_back(true);
+            answer = false;
+            break;
         }
-        if (GlobalVariable::c_request_key_duration == key)
+        if (GlobalVariable::c_request_key_duration != key)
         {
-            answers.emplace_back(true);
+            answer = false;
+            break;
         }
-        if (GlobalVariable::c_request_key_spec == key)
+        if (GlobalVariable::c_request_key_spec != key)
         {
-            answers.emplace_back(true);
+            answer = false;
+            break;
         }
     }
 
     //false if not valid
-    return 4 == answers.size();
+    return answer;
 }
 
 ERequestType CRequestHandler::AnalyzeRequestType(const nlohmann::json& request) 

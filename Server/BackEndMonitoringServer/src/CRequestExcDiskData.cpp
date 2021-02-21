@@ -4,6 +4,8 @@
 #include "CDataProvider.h"
 #include "Utils.h"
 #include "GlobalVariable.h"
+#include "CResponseFrame.h"
+#include "EResponseError.h"
 
 #include "CRequestExcDiskData.h"
 
@@ -14,9 +16,9 @@ CRequestExcDiskData::CRequestExcDiskData(const std::string& request,
 
 bool CRequestExcDiskData::Execute(std::string& answer)
 {
-	//do I need another validation????
 	//validation  + boolean is valid
 	nlohmann::json request = nlohmann::json::parse(m_request);
+	CResponseFrame response(request[GlobalVariable::c_request_key_id]);
 
 	switch (IsSpecial(request))
 	{
@@ -30,6 +32,8 @@ bool CRequestExcDiskData::Execute(std::string& answer)
 	{
 		if (!TryDetermineDateRange(request))
 		{
+			response.TryFormateResponse(answer, "",
+				EResponseError::INCORRECT_REQUEST);
 			return false;
 		}
 		time_t start{}, end{};
@@ -38,7 +42,8 @@ bool CRequestExcDiskData::Execute(std::string& answer)
 			!Utils::StringToDate(m_range_of_data[1],
 				GlobalVariable::c_request_format_default, end))
 		{
-			// log
+			response.TryFormateResponse(answer, "",
+				EResponseError::INCORRECT_REQUEST);
 			return false;
 		}
 		answer = m_p_data_base->GetDisksSelectedInfo(start, end);
@@ -46,9 +51,12 @@ bool CRequestExcDiskData::Execute(std::string& answer)
 		return true;
 	}
 	default:
-		// logW
+		response.TryFormateResponse(answer, "",
+			EResponseError::INCORRECT_REQUEST);
 		return false;
 	}
 
+	response.TryFormateResponse(answer, "",
+		EResponseError::INCORRECT_REQUEST);
 	return false;
 }

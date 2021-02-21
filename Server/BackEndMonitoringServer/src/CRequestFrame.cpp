@@ -14,7 +14,7 @@ bool CRequestFrame::TryFormateRequest(std::string& var_to_save,
 {
 	//m_guid = xg::newGuid().str();
 	//var 1
-	/m_guid = std::to_string(rand());
+	m_guid = std::to_string(rand());
 	m_formatted_request[GlobalVariable::c_request_key_id] = m_guid;
 	m_formatted_request[GlobalVariable::c_request_key_req_typ] = req_typ;
 	if (spec_typ == ERequestRangeSpecification::RANGE_OF_DATA && 

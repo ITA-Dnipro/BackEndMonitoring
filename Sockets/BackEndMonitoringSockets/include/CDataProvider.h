@@ -5,7 +5,7 @@
 class CDataProvider
 {
 public:
-	CDataProvider() = default;
+	CDataProvider() = delete;
 	explicit CDataProvider(std::shared_ptr<IInfoDatabase> p_processes_data,
 						   std::shared_ptr<IInfoDatabase> p_disks_data,
 						   std::shared_ptr<IInfoDatabase> p_resources_data);

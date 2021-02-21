@@ -4,6 +4,8 @@
 #include "Utils.h"
 #include "CDataProvider.h"
 #include "GlobalVariable.h"
+#include "CResponseFrame.h"
+#include "EResponseError.h"
 
 #include "CRequestExcProcessData.h"
 
@@ -16,6 +18,7 @@ bool CRequestExcProcessData::Execute(std::string& answer)
 {
 	//do I need another validation????
 	nlohmann::json request = nlohmann::json::parse(m_request);
+	CResponseFrame response(request[GlobalVariable::c_request_key_id]);
 
 	switch (IsSpecial(request))
 	{
@@ -29,6 +32,8 @@ bool CRequestExcProcessData::Execute(std::string& answer)
 	{
 		if (!TryDetermineDateRange(request))
 		{
+			response.TryFormateResponse(answer, "",
+				EResponseError::INCORRECT_REQUEST);
 			return false;
 		}
 		time_t start{}, end{};
@@ -37,7 +42,8 @@ bool CRequestExcProcessData::Execute(std::string& answer)
 			!Utils::StringToDate(m_range_of_data[1],
 				GlobalVariable::c_request_format_default, end))
 		{
-			// log
+			response.TryFormateResponse(answer, "",
+				EResponseError::INCORRECT_REQUEST);
 			return false;
 		}
 		answer = m_p_data_base->GetProcessesSelectedInfo(start, end);
@@ -45,8 +51,12 @@ bool CRequestExcProcessData::Execute(std::string& answer)
 		return true;
 	}
 	default:
+		response.TryFormateResponse(answer, "",
+			EResponseError::INCORRECT_REQUEST);
 		return false;
 	}
 
+	response.TryFormateResponse(answer, "",
+		EResponseError::INCORRECT_REQUEST);
 	return false;
 }

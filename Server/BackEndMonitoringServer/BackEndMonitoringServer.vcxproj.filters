@@ -134,11 +134,16 @@
     <ClCompile Include="src\CRequestExcAllData.cpp" />
     <ClCompile Include="src\CRequestExcDiskData.cpp" />
     <ClCompile Include="src\CRequestExcProcessData.cpp" />
-    <ClCompile Include="..\..\utils\include\СInteractionFrame.cpp" />
     <ClCompile Include="src\CRequestFrame.cpp" />
     <ClCompile Include="..\..\3rdParty\include\guid.cpp">
       <Filter>3rd-party libs\guid</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\utils\include\CResponseFrame.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CInteractionFrame.cpp" />
+    <ClCompile Include="..\..\utils\include\CInteractionHandler.cpp" />
+    <ClCompile Include="..\..\utils\include\CResponseHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\utils\include\stdafx.h" />
@@ -268,11 +273,17 @@
     <ClInclude Include="..\..\utils\include\GlobalVariable.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\utils\include\СInteractionFrame.h" />
     <ClInclude Include="include\CRequestFrame.h" />
     <ClInclude Include="..\..\3rdParty\include\crossguid\guid.hpp">
       <Filter>3rd-party libs\guid</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\utils\include\CResponseFrame.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CInteractionFrame.h" />
+    <ClInclude Include="..\..\utils\include\EResponseError.h" />
+    <ClInclude Include="..\..\utils\include\CInteractionHandler.h" />
+    <ClInclude Include="..\..\utils\include\CResponseHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />

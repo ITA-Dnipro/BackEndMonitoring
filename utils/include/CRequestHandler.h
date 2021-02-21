@@ -2,24 +2,25 @@
 
 #include "CDataProvider.h"
 #include "IRequestExc.h"
+#include "CInteractionHandler.h"
 
-class CRequestHandler
+class CRequestHandler : public  CInteractionHandler
 {
 public:
 	CRequestHandler() = delete;
-	explicit CRequestHandler(const std::string& request);
-	explicit CRequestHandler(const std::string& request,
+	explicit CRequestHandler(
 		std::shared_ptr<IInfoDatabase> p_processes_data,
 		std::shared_ptr<IInfoDatabase> p_disks_data,
 		std::shared_ptr<IInfoDatabase> p_resources_data);
 	CRequestHandler(const CRequestHandler&) = delete;
 	CRequestHandler(CRequestHandler&&) = default;
 
-	[[nodiscard]] bool HandleRequest(std::string& answer);
+	[[nodiscard]] bool HandleRequest(const std::string& m_request, 
+		std::string& answer);
 
 private:
 	//Request validator is calling here
-	[[nodiscard]] bool TryValidateRequest();
+	[[nodiscard]] bool TryValidateRequest(const std::string& m_request);
 	//detemine request type
 	[[nodiscard]] ERequestType AnalyzeRequestType(
 		const nlohmann::json& request) const;
@@ -29,6 +30,5 @@ private:
 
 private:
 	CDataProvider m_data_base;
-	const std::string& m_request;
 };
 

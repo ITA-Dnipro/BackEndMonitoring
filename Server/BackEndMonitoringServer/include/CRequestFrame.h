@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ÑInteractionFrame.h"
+#include "CInteractionFrame.h"
 
 class CRequestFrame :
-    public ÑInteractionFrame
+    public CInteractionFrame
 {
 public:
     CRequestFrame() = default;

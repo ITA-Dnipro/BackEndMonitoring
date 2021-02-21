@@ -5,7 +5,8 @@
 #include "CDataProvider.h"
 #include "Utils.h"
 #include "GlobalVariable.h"
-
+#include "CResponseFrame.h"
+#include "EResponseError.h"
 #include "CRequestExcAllData.h"
 
 CRequestExcAllData::CRequestExcAllData(const std::string& request, 
@@ -17,6 +18,7 @@ bool CRequestExcAllData::Execute(std::string & answer)
 {
 	//add small protection
 	nlohmann::json request = nlohmann::json::parse(m_request);
+	CResponseFrame response(request[GlobalVariable::c_request_key_id]);
 
 	switch (IsSpecial(request))
 	{
@@ -30,6 +32,8 @@ bool CRequestExcAllData::Execute(std::string & answer)
 	{
 		if (!TryDetermineDateRange(request))
 		{
+			response.TryFormateResponse(answer, "",
+				EResponseError::INCORRECT_REQUEST);
 			return false;
 		}
 		time_t start{}, end{};
@@ -39,6 +43,8 @@ bool CRequestExcAllData::Execute(std::string & answer)
 				GlobalVariable::c_request_format_default, end))
 		{
 			// log
+			response.TryFormateResponse(answer, "",
+				EResponseError::INCORRECT_REQUEST);
 			return false;
 		}
 		answer = m_p_data_base->GetAllSelectedInfo(start, end);
@@ -46,8 +52,14 @@ bool CRequestExcAllData::Execute(std::string & answer)
 		return true;
 	}
 	default:
+	{
+		response.TryFormateResponse(answer, "",
+			EResponseError::INCORRECT_REQUEST);
 		return false;
 	}
+	}
 
+	response.TryFormateResponse(answer, "",
+		EResponseError::INCORRECT_REQUEST);
 	return false;
 }
