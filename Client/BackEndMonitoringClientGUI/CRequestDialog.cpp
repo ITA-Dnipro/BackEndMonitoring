@@ -1,10 +1,14 @@
-#include "CRequestDialog.h"
+#include "stdafx.h"
+
 #include "ui_CRequestDialog.h"
+
+#include "CRequestDialog.h"
 
 CRequestDialog::CRequestDialog(QWidget *parent) :
     QDialog(parent),
-    m_data_type(ERequestDataType::PROCESSES_DATA),
-    m_select_type(ERequestSelectType::LAST_INFO),
+    m_request_type(ERequestType::PROCESSES_DATA),
+    m_selected_range(ERequestRangeSpecification::LAST_DATA),
+    m_has_request(false),
     ui(new Ui::CRequestDialog)
 {
     ui->setupUi(this);
@@ -18,14 +22,30 @@ CRequestDialog::~CRequestDialog()
     delete ui;
 }
 
-ERequestDataType CRequestDialog::GetRequestType()
+ERequestType CRequestDialog::GetRequestType()
 {
-    return m_data_type;
+    return m_request_type;
 }
 
-ERequestSelectType CRequestDialog::GetSelectType()
+ERequestRangeSpecification CRequestDialog::GetSelectedRangeType()
 {
-    return m_select_type;
+    return m_selected_range;
+}
+
+bool CRequestDialog::HasRequest()
+{
+    return m_has_request;
+}
+
+
+std::string CRequestDialog::GetDateFrom()
+{
+    return m_from_date_time.toString("dd.MM.yyyy hh:mm:ss").toStdString();
+}
+
+std::string CRequestDialog::GetDateTo()
+{
+    return m_to_date_time.toString("dd.MM.yyyy hh:mm:ss").toStdString();
 }
 
 void CRequestDialog::on_request_combo_box_currentIndexChanged(int index)
@@ -34,21 +54,21 @@ void CRequestDialog::on_request_combo_box_currentIndexChanged(int index)
     {
         case(0):
         {
-            m_select_type = ERequestSelectType::LAST_INFO;
+            m_selected_range = ERequestRangeSpecification::LAST_DATA;
             ui->date_from->setEnabled(false);
             ui->date_to->setEnabled(false);
             break;
         }
         case(1):
         {
-            m_select_type = ERequestSelectType::ALL_INFO;
+            m_selected_range = ERequestRangeSpecification::ALL_DATA;
             ui->date_from->setEnabled(false);
             ui->date_to->setEnabled(false);
             break;
         }
         case(2):
         {
-            m_select_type = ERequestSelectType::SELECTED_INFO;
+            m_selected_range = ERequestRangeSpecification::RANGE_OF_DATA;
             ui->date_from->setEnabled(true);
             ui->date_to->setEnabled(true);
             break;
@@ -58,6 +78,12 @@ void CRequestDialog::on_request_combo_box_currentIndexChanged(int index)
 
 void CRequestDialog::on_request_button_clicked()
 {
+    m_has_request = true;
+    if(m_selected_range == ERequestRangeSpecification::RANGE_OF_DATA)
+    {
+        m_from_date_time = ui->date_from->dateTime();
+        m_to_date_time = ui->date_to->dateTime();
+    }
     close();
 }
 
@@ -72,17 +98,17 @@ void CRequestDialog::on_comboBox_currentIndexChanged(int index)
     {
         case(0):
         {
-            m_data_type = ERequestDataType::PROCESSES_DATA;
+            m_request_type = ERequestType::PROCESSES_DATA;
             break;
         }
         case(1):
         {
-            m_data_type = ERequestDataType::DRIVES_DATA;
+            m_request_type = ERequestType::DISKS_DATA;
             break;
         }
         case(2):
         {
-            m_data_type = ERequestDataType::All_DATA;
+            m_request_type = ERequestType::ALL_DATA;
             break;
         }
     }

@@ -2,7 +2,7 @@
 #define CDRIVESTABLE_H
 
 #include <QTableWidget>
-#include "3rdParty/include/json.hpp"
+#include "nlohmann/json.hpp"
 
 class CDrivesTable : public QTableWidget
 {

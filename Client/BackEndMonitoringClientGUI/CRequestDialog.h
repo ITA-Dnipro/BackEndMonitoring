@@ -2,9 +2,10 @@
 #define CREQUESTDIALOG_H
 
 #include <QDialog>
+#include <QDateTime>
 
-#include "ERequestDataType.h"
-#include "ERequestSelectType.h"
+#include "ERequestType.h"
+#include "ERequestRangeSpecification.h"
 
 namespace Ui {
 class CRequestDialog;
@@ -18,8 +19,12 @@ public:
     explicit CRequestDialog(QWidget *parent = nullptr);
     ~CRequestDialog();
 
-    ERequestDataType GetRequestType();
-    ERequestSelectType GetSelectType();
+    ERequestType GetRequestType();
+    ERequestRangeSpecification GetSelectedRangeType();
+    std::string GetDateFrom();
+    std::string GetDateTo();
+    bool HasRequest();
+
 private slots:
     void on_request_combo_box_currentIndexChanged(int index);
 
@@ -30,8 +35,11 @@ private slots:
     void on_comboBox_currentIndexChanged(int index);
 
 private:
-    ERequestDataType m_data_type;
-    ERequestSelectType m_select_type;
+    ERequestType m_request_type;
+    ERequestRangeSpecification m_selected_range;
+    QDateTime m_from_date_time;
+    QDateTime m_to_date_time;
+    bool m_has_request;
     Ui::CRequestDialog *ui;
 };
 

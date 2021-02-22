@@ -1,8 +1,9 @@
-#include "CMainWindow.h"
-#include "CConnectionDialog.h"
-#include "QDebug"
+#include "stdafx.h"
 
 #include <QApplication>
+#include <QDebug>
+
+#include "CMainWindow.h"
 
 int main(int argc, char *argv[])
 {

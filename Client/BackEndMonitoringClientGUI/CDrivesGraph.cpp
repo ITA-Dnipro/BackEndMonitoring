@@ -1,6 +1,8 @@
+#include "stdafx.h"
+
 #include <QColor>
 
-#include "Utils/include/Utils.h"
+#include "Utils.h"
 
 #include "CDrivesGraph.h"
 
@@ -32,7 +34,6 @@ bool CDrivesGraph::AddEntry(const nlohmann::json& entry)
 
     for(auto drive : entry["info"])
     {
-        qDebug("Entered graph cycle");
         QString drive_name = QString::fromStdString(
                     drive["name"].get<std::string>());
         float val = drive["free"].get<float>();
@@ -66,16 +67,29 @@ bool CDrivesGraph::Update()
     m_graph->xAxis->setRange(m_min_date, m_max_date);
     m_graph->yAxis->setRange(0, m_max_val + (m_max_val * 0.1));
 
-    unsigned i = 0;
     for(auto& graph : m_data)
     {
-        QColor color(20+200/4.0*i,70*(1.6-i/4.0), 150, 150);
-        m_graph->addGraph();
-        m_graph->graph(i)->setData(graph.second);
-        m_graph->graph(i)->setName(graph.first);
-        m_graph->graph(i)->setPen(QPen(color.lighter(200)));
-        m_graph->graph(i)->setBrush(QBrush(color));
-        ++i;
+
+        int found_index = -1;
+        for(int i=0; i<m_graph->graphCount(); ++i)
+        {
+            if (m_graph->graph(i)->name() == graph.first)
+              {
+                found_index = i;
+                break;
+              }
+        }
+        if(found_index == -1)
+        {
+          m_graph->addGraph();
+          found_index = m_graph->graphCount() - 1;
+          m_graph->graph(found_index)->setData(graph.second);
+          m_graph->graph(found_index)->setName(graph.first);
+
+          QColor color(20+200/4.0*found_index,70*(1.6-found_index/4.0), 150, 150);
+          m_graph->graph(found_index)->setPen(QPen(color.lighter(200)));
+          m_graph->graph(found_index)->setBrush(QBrush(color));
+        }
     }
 
     m_graph->replot();

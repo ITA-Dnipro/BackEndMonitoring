@@ -4,7 +4,7 @@
 #include <QTabWidget>
 #include <QString>
 
-#include "3rdParty/include/json.hpp"
+#include "nlohmann/json.hpp"
 #include "CDrivesTable.h"
 
 class CDrivesTab : public QWidget

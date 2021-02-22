@@ -4,7 +4,7 @@
 #include <QTabWidget>
 #include <QString>
 
-#include "3rdParty/include/json.hpp"
+#include "nlohmann/json.hpp"
 #include "CProcessesTable.h"
 
 class CProcessesTab : public QWidget

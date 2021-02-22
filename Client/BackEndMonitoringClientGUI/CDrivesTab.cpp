@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 #include <QGridLayout>
 
 #include "CDrivesTab.h"

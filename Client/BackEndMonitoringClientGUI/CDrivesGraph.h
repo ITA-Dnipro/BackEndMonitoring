@@ -7,7 +7,7 @@
 #include <QString>
 
 #include "qcustomplot.h"
-#include "3rdParty/include/json.hpp"
+#include "nlohmann/json.hpp"
 
 class CDrivesGraph
 {

@@ -16,12 +16,12 @@ INCLUDEPATH += $$PWD/../../Client/BackEndMonitoringClient/include
 INCLUDEPATH += $$PWD/../../CLogger/include
 INCLUDEPATH += $$PWD/../../BackEndMonitoringSockets/include
 INCLUDEPATH += $$PWD/../../Server/BackEndMonitoringServer/include
+INCLUDEPATH += $$PWD/../../utils/include
 INCLUDEPATH += $$PWD/../../3rdParty/include
-INCLUDEPATH += $$PWD/../../utils/include)
+INCLUDEPATH += $$PWD/../../packages/nlohmann.json.3.9.1/build/native/include
 
 HEADERS += \
     ../../utils/include/stdafx.h \
-    ../BackEndMonitoringClient/include/CClient.h \
     CConnectionDialog.h \
     CDrivesGraph.h \
     CDrivesTab.h \
@@ -31,12 +31,12 @@ HEADERS += \
     CProcessesTab.h \
     CProcessesTable.h \
     CRequestDialog.h \
-    ERequestDataType.h \
-    ERequestSelectType.h \
     qcustomplot.h
 
 SOURCES += \
+    stadafx.cpp \
     $$PWD/../../utils/include/Utils.cpp \
+    ../BackEndMonitoringClient/src/CClientController.cpp \
     CConnectionDialog.cpp \
     CDrivesGraph.cpp \
     CDrivesTab.cpp \

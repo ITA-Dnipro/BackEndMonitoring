@@ -1,15 +1,17 @@
-#include "CMainWindow.h"
-#include "CConnectionDialog.h"
-#include "CRequestDialog.h"
+#include "stdafx.h"
+
+#include <QDebug>
+
 #include "ui_CMainWindow.h"
-#include "ERequestType.h"
-#include "ERequestSelectType.h"
+#include "CRequestDialog.h"
+#include "CConnectionDialog.h"
 #include "CProcessesTab.h"
 #include "CDrivesTab.h"
-#include "3rdParty/include/json.hpp"
-#include "Utils/include/Utils.h"
-#include <QDebug>
 #include "CDrivesGraph.h"
+#include "Utils.h"
+#include "CClientController.h"
+
+#include "CMainWindow.h"
 
 CMainWindow::CMainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -45,32 +47,110 @@ void CMainWindow::on_request_button_clicked()
 {
     CRequestDialog *dialog = new CRequestDialog(this);
     dialog->exec();
-    switch (dialog->GetRequestType()) {
-        case(ERequestDataType::PROCESSES_DATA) :
-        {
-            UpdateProcessesData();
-            break;
-        }
-        case(ERequestDataType::DRIVES_DATA) :
-        {
-            UpdateDrivesData();
-            break;
-        }
-        case(ERequestDataType::All_DATA) :
-        {
-            UpdateProcessesData();
-            UpdateDrivesData();
-            break;
+
+    if(dialog->HasRequest())
+    {
+        switch (dialog->GetSelectedRangeType()) {
+            case(ERequestRangeSpecification::LAST_DATA):
+            {
+                HandleAddRequest(dialog->GetRequestType(),
+                                 dialog->GetSelectedRangeType());
+                break;
+            }
+            case(ERequestRangeSpecification::RANGE_OF_DATA):
+            {
+                HandleUpdateRequest(dialog->GetRequestType(),
+                                 dialog->GetSelectedRangeType(),
+                                 dialog->GetDateFrom(),
+                                 dialog->GetDateTo());
+                break;
+            }
+            default:
+            {
+                HandleUpdateRequest(dialog->GetRequestType(),
+                                    dialog->GetSelectedRangeType());
+                break;
+            }
         }
     }
     delete dialog;
 }
 
-void CMainWindow::UpdateProcessesData()
+void CMainWindow::HandleAddRequest(ERequestType request_type,
+                                   ERequestRangeSpecification range)
+{
+    switch (request_type) {
+        case(ERequestType::PROCESSES_DATA) :
+        {
+            AddProcessesData(request_type,
+                             range);
+            break;
+        }
+        case(ERequestType::DISKS_DATA) :
+        {
+            AddDrivesData(request_type,
+                          range);
+            break;
+        }
+        case(ERequestType::ALL_DATA) :
+        {
+            AddProcessesData(ERequestType::PROCESSES_DATA,
+                             range);
+            AddDrivesData(ERequestType::DISKS_DATA,
+                          range);
+            break;
+        }
+        default :
+        {
+            QMessageBox messageBox;
+            messageBox.critical(0,"Error","Something went wrong!");
+            messageBox.setFixedSize(500,200);
+        }
+    }
+}
+
+void CMainWindow::HandleUpdateRequest(ERequestType request_type,
+                                      ERequestRangeSpecification range,
+                                      const std::string& from,
+                                      const std::string& to)
+{
+    switch (request_type) {
+        case(ERequestType::PROCESSES_DATA) :
+        {
+            UpdateProcessesData(request_type,
+                                range, from, to);
+            break;
+        }
+        case(ERequestType::DISKS_DATA) :
+        {
+            UpdateDrivesData(request_type,
+                             range, from, to);
+            break;
+        }
+        case(ERequestType::ALL_DATA) :
+        {
+            UpdateProcessesData(ERequestType::PROCESSES_DATA,
+                                range, from, to);
+            UpdateDrivesData(ERequestType::DISKS_DATA,
+                             range, from, to);
+            break;
+        }
+        default :
+        {
+            QMessageBox messageBox;
+            messageBox.critical(0,"Error","Something went wrong!");
+            messageBox.setFixedSize(500,200);
+        }
+    }
+}
+
+void CMainWindow::UpdateProcessesData(ERequestType request_type,
+                                      ERequestRangeSpecification range,
+                                      const std::string& from,
+                                      const std::string& to)
 {
     std::string last_proc_data;
-    if(m_controller->MakeRequest(ERequestType::PROCESSES_DATA,
-                                 last_proc_data))
+    if(m_controller->MakeRequest(last_proc_data, request_type, range, from, to))
     {
         nlohmann::json parsed_proc_data = nlohmann::json::parse(last_proc_data);
         nlohmann::json parsed_processes_data
@@ -80,6 +160,35 @@ void CMainWindow::UpdateProcessesData()
 
         UpdateProcessesTable(parsed_processes_data);
         UpdateProcessesGraph(parsed_resources_data);
+    }
+    else
+    {
+        QMessageBox messageBox;
+        messageBox.critical(0,"Error","Something went wrong!");
+        messageBox.setFixedSize(500,200);
+    }
+}
+
+void CMainWindow::AddProcessesData(ERequestType request_type,
+                                   ERequestRangeSpecification range)
+{
+    std::string last_proc_data;
+    if(m_controller->MakeRequest(last_proc_data, request_type, range))
+    {
+        nlohmann::json parsed_proc_data = nlohmann::json::parse(last_proc_data);
+        nlohmann::json parsed_processes_data
+                = nlohmann::json::parse(parsed_proc_data["processes"].get<std::string>());
+        nlohmann::json parsed_resources_data
+                = nlohmann::json::parse(parsed_proc_data["resources"].get<std::string>());
+
+        UpdateProcessesTable(parsed_processes_data);
+        AddToProcessesGraph(parsed_resources_data);
+    }
+    else
+    {
+        QMessageBox messageBox;
+        messageBox.critical(0,"Error","Something went wrong!");
+        messageBox.setFixedSize(500,200);
     }
 }
 
@@ -93,18 +202,12 @@ void CMainWindow::UpdateProcessesTable(const nlohmann::json& data)
 
     for(auto entry : data)
     {
-        qDebug("Entered cycle");
         CProcessesTab* proc_tab = new CProcessesTab(ui->proc_tab_widget);
-        qDebug("Proc tab created");
         if(proc_tab->Initialize(entry))
         {
-            qDebug("ProcTab initialized");
             QString date;
             if(proc_tab->GetTabName(date))
             {
-                qDebug("Date readed");
-                qDebug(date.toStdString().c_str());
-
                 ui->proc_tab_widget->addTab(proc_tab, date);
             }
         }
@@ -116,18 +219,47 @@ void CMainWindow::UpdateProcessesGraph(const nlohmann::json& data)
 
 }
 
+void CMainWindow::AddToProcessesGraph(const nlohmann::json& data)
+{
 
-void CMainWindow::UpdateDrivesData()
+}
+
+
+void CMainWindow::UpdateDrivesData(ERequestType request_type,
+                                   ERequestRangeSpecification range,
+                                   const std::string& from,
+                                   const std::string& to)
 {
     std::string last_drives_data;
-    if(m_controller->MakeRequest(ERequestType::DISKS_DATA,
-                                 last_drives_data))
+    if(m_controller->MakeRequest(last_drives_data, request_type, range, from, to))
     {
         nlohmann::json parsed_drives_data = nlohmann::json::parse(last_drives_data);
         UpdateDrives(parsed_drives_data);
     }
+    else
+    {
+        QMessageBox messageBox;
+        messageBox.critical(0,"Error","Something went wrong!");
+        messageBox.setFixedSize(500,200);
+    }
 }
 
+void CMainWindow::AddDrivesData(ERequestType request_type,
+                                ERequestRangeSpecification range)
+{
+    std::string last_drives_data;
+    if(m_controller->MakeRequest(last_drives_data, request_type, range))
+    {
+        nlohmann::json parsed_drives_data = nlohmann::json::parse(last_drives_data);
+        AddToDrives(parsed_drives_data);
+    }
+    else
+    {
+        QMessageBox messageBox;
+        messageBox.critical(0,"Error","Something went wrong!");
+        messageBox.setFixedSize(500,200);
+    }
+}
 
 void CMainWindow::UpdateDrives(const nlohmann::json& data)
 {
@@ -150,8 +282,6 @@ void CMainWindow::UpdateDrives(const nlohmann::json& data)
             QString date;
             if(drives_tab->GetTabName(date))
             {
-                qDebug(date.toStdString().c_str());
-
                 ui->drives_tab_widget->addTab(drives_tab, date);
             }
             m_drives_graph->AddEntry(entry);
@@ -167,3 +297,36 @@ void CMainWindow::UpdateDrives(const nlohmann::json& data)
     ui->statusbar->clearMessage();
 }
 
+void CMainWindow::AddToDrives(const nlohmann::json& data)
+{
+    while(ui->drives_tab_widget->count())
+        {
+            ui->drives_tab_widget->widget(ui->drives_tab_widget->currentIndex())->deleteLater();
+            ui->drives_tab_widget->removeTab(ui->drives_tab_widget->currentIndex());
+        }
+
+        size_t data_size = data.size();
+        unsigned current_entry_idx = 0;
+        QString status_str = "Progress: ";
+        for(auto entry : data)
+        {
+            CDrivesTab* drives_tab = new CDrivesTab(ui->drives_tab_widget);
+            if(drives_tab->Initialize(entry))
+            {
+                QString date;
+                if(drives_tab->GetTabName(date))
+                {
+                    ui->drives_tab_widget->addTab(drives_tab, date);
+                }
+                m_drives_graph->AddEntry(entry);
+            }
+
+            ui->statusbar->showMessage(status_str +
+                                       QString::number(++current_entry_idx *
+                                                       (100.0 / data_size))
+                                       + "%");
+            this->repaint();
+        }
+        m_drives_graph->Update();
+        ui->statusbar->clearMessage();
+}

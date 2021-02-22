@@ -1,5 +1,8 @@
-#include "CProcessesTable.h"
+#include "stdafx.h"
+
 #include <QHeaderView>
+
+#include "CProcessesTable.h"
 
 CProcessesTable::CProcessesTable(QWidget* parent)
     : QTableWidget(parent),
@@ -42,16 +45,20 @@ bool CProcessesTable::Initialize(const nlohmann::json& data)
     {
         insertRow(row);
 
-        QTableWidgetItem* pid_item = new QTableWidgetItem(QString::number(process["PID"].get<unsigned>()));
+        QTableWidgetItem* pid_item = new QTableWidgetItem();
+        pid_item->setData(Qt::EditRole, process["PID"].get<unsigned>());
         setItem(row, 0, pid_item);
 
-        QTableWidgetItem* cpu_item = new QTableWidgetItem(QString::number(process["CPU_usage"].get<float>()));
+        QTableWidgetItem* cpu_item = new QTableWidgetItem();
+        cpu_item->setData(Qt::EditRole, process["CPU_usage"].get<unsigned>());
         setItem(row, 1, cpu_item);
 
-        QTableWidgetItem* pagefile_item = new QTableWidgetItem(QString::number(process["Pagefile_usage"].get<float>()));
+        QTableWidgetItem* pagefile_item = new QTableWidgetItem();
+        pagefile_item->setData(Qt::EditRole, process["Pagefile_usage"].get<unsigned>());
         setItem(row, 2, pagefile_item);
 
-        QTableWidgetItem* ram_item = new QTableWidgetItem(QString::number(process["RAM_usage"].get<float>()));
+        QTableWidgetItem* ram_item = new QTableWidgetItem();
+        ram_item->setData(Qt::EditRole, process["RAM_usage"].get<unsigned>());
         setItem(row, 3, ram_item);
 
         ++row;

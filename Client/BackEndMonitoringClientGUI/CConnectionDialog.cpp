@@ -1,8 +1,10 @@
-#include <string>
+#include "stdafx.h"
 
 #include <QMessageBox>
-#include "CConnectionDialog.h"
 #include "ui_CConnectionDialog.h"
+
+#include "CClientController.h"
+#include "CConnectionDialog.h"
 
 CConnectionDialog::CConnectionDialog(std::shared_ptr<CClientController> controller,
                                      QWidget *parent) :

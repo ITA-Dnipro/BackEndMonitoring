@@ -1,9 +1,10 @@
 #ifndef CCONNECTIONDIALOG_H
 #define CCONNECTIONDIALOG_H
 
-#include <QDialog>
 #include <memory>
-#include "CClientController.h"
+#include <QDialog>
+
+class CClientController;
 
 namespace Ui {
 class CConnectionDialog;

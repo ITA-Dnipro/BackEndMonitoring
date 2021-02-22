@@ -1,7 +1,10 @@
-#include "CProcessesTab.h"
-#include "CProcessesTable.h"
+#include "stdafx.h"
+
 #include <QGridLayout>
 #include <QDebug>
+
+#include "CProcessesTable.h"
+#include "CProcessesTab.h"
 
 CProcessesTab::CProcessesTab(QWidget* parent)
     : QWidget(parent),

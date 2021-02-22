@@ -1,5 +1,6 @@
+#include "stdafx.h"
+
 #include <QHeaderView>
-#include <string>
 
 #include "CDrivesTable.h"
 
@@ -44,17 +45,20 @@ bool CDrivesTable::Initialize(const nlohmann::json& data)
     {
         insertRow(row);
 
-        QTableWidgetItem* pid_item = new QTableWidgetItem(QString::fromStdString(drive["name"].get<std::string>()));
-        setItem(row, 0, pid_item);
+        QTableWidgetItem* name_item = new QTableWidgetItem(QString::fromStdString(drive["name"].get<std::string>()));
+        setItem(row, 0, name_item);
 
-        QTableWidgetItem* cpu_item = new QTableWidgetItem(QString::number(drive["capacity"].get<float>()));
-        setItem(row, 1, cpu_item);
+        QTableWidgetItem* capacity_item = new QTableWidgetItem();
+        capacity_item->setData(Qt::EditRole, drive["capacity"].get<unsigned>());
+        setItem(row, 1, capacity_item);
 
-        QTableWidgetItem* pagefile_item = new QTableWidgetItem(QString::number(drive["free"].get<float>()));
-        setItem(row, 2, pagefile_item);
+        QTableWidgetItem* free_item = new QTableWidgetItem();
+        free_item->setData(Qt::EditRole, drive["free"].get<unsigned>());
+        setItem(row, 2, free_item);
 
-        QTableWidgetItem* ram_item = new QTableWidgetItem(QString::number(drive["available"].get<float>()));
-        setItem(row, 3, ram_item);
+        QTableWidgetItem* avaliable_item = new QTableWidgetItem();
+        avaliable_item->setData(Qt::EditRole, drive["available"].get<unsigned>());
+        setItem(row, 3, avaliable_item);
 
         ++row;
     }
