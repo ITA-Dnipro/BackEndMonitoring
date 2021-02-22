@@ -44,6 +44,10 @@ add_executable(Server
 		${UTILS_SRC_DIR}/CMonitoringJSONDataEntry.cpp
 		${UTILS_SRC_DIR}/CMonitoringJSONDataContainer.cpp
 		${UTILS_SRC_DIR}/CDateTimePathConstructor.cpp
+		${UTILS_SRC_DIR}/IRequestExc.cpp
+		${UTILS_SRC_DIR}/IPathConstructor.cpp
+		${SERVER_SRC_DIR}/CRequestExcDiskData.cpp
+		${SERVER_SRC_DIR}/CRequestExcAllData.cpp
 		${SERVER_SRC_DIR}/CCommandLineHandler.cpp
 		${SERVER_SRC_DIR}/CContainerOfLogicalDisk.cpp
 		${SERVER_SRC_DIR}/CContainerOfProcesses.cpp
@@ -57,6 +61,7 @@ add_executable(Server
 		${SERVER_SRC_DIR}/CWindowsService.cpp
 		${SERVER_SRC_DIR}/CServiceHandler.cpp
 		${SERVER_SRC_DIR}/CProcessInfo.cpp
+		${SERVER_SRC_DIR}/CRequestExcProcessData.cpp
 		${SERVER_SRC_DIR}/BackEndMonitoringServer.cpp
 		${SERVER_SRC_DIR}/CProcessesInfoMonitoring.cpp
 		${SERVER_SRC_DIR}/CMonitoringInfoJSONDatabase.cpp

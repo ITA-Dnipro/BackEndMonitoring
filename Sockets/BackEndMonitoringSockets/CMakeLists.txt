@@ -32,6 +32,11 @@ add_library(Sockets
 		${SOCKETS_SRC_DIR}/CSocketWrapper.cpp
 		${SOCKETS_SRC_DIR}/CDataProvider.cpp
 		${UTILS_SRC_DIR}/CThreadPool.cpp
+		${UTILS_SRC_DIR}/CRequestFrame.cpp
+		${UTILS_SRC_DIR}/CRequestHandler.cpp
+		${UTILS_SRC_DIR}/CResponseFrame.cpp
+		${UTILS_SRC_DIR}/CResponseHandler.cpp
+		${UTILS_SRC_DIR}/CInteractionFrame.cpp
 		${UTILS_SRC_DIR}/CEvent.cpp
 		${UTILS_SRC_DIR}/Utils.cpp)
 
