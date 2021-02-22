@@ -10,11 +10,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED 17)
 
 #------------------------------ NUGET PACKAGES DOWNLOAD --------------------------------#
 
+if (${CMAKE_SYSTEM_NAME} STREQUAL Linux OR ${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
+    set(NUGET_INSTALL_STR "Installation for Debian-like systems: sudo apt install nuget")
+elseif(${CMAKE_SYSTEM_NAME} STREQUAL Windows)
+    set(NUGET_INSTALL_STR "Installation for Windows-like systems: check site https:////www.nuget.org//downloads")
+endif()
+
 find_program(NUGET_EXE NAMES nuget)
 
 if(NOT NUGET_EXE)
-    message("NUGET.EXE not found.")
-    message(FATAL_ERROR "Please install this executable, and run CMake again.")
+    message(FATAL_ERROR
+            "NuGet hasn't been found. "
+            "Please, install this executable, and run CMake again\n"
+            "${NUGET_INSTALL_STR}\n")
 endif()
 
 set(NUGET_PACKAGES_DIR ${CMAKE_SOURCE_DIR}/packages)
