@@ -30,7 +30,11 @@ std::string CDataProvider::GetProcessesLastInfo() const
 	{
 		processes_info = nlohmann::json({ "error", "Can't get processes data" }).dump();
 	}
-	return processes_info;
+
+	nlohmann::json proc_info;
+	proc_info["processes"] = processes_info;
+	proc_info["resources"] = GetResourcesLoadLastInfo();
+	return proc_info.dump();
 }
 
 std::string CDataProvider::GetDisksLastInfo() const
@@ -47,8 +51,7 @@ std::string CDataProvider::GetDisksLastInfo() const
 std::string CDataProvider::GetAllLastInfo() const
 {
 	nlohmann::json all_data = { {"disks info", GetDisksLastInfo()},
-								{"processes info", GetProcessesLastInfo()},
-								{"resources info", GetResourcesLoadLastInfo()} };
+								{"processes info", GetProcessesLastInfo()} };
 
 	return all_data.dump();
 }
@@ -76,7 +79,11 @@ std::string CDataProvider::GetProcessesFullInfo() const
 	{
 		processes_info = nlohmann::json({ "error", "Can't get processes data"}).dump( );
 	}
-	return processes_info;
+
+	nlohmann::json proc_info;
+	proc_info["processes"] = processes_info;
+	proc_info["resources"] = GetResourcesLoadFullInfo( );
+	return proc_info.dump( );
 }
 
 std::string CDataProvider::GetDisksFullInfo() const
@@ -93,8 +100,7 @@ std::string CDataProvider::GetDisksFullInfo() const
 std::string CDataProvider::GetAllFullInfo() const
 {
 	nlohmann::json all_data = { {"disks info", GetDisksFullInfo()},
-								{"processes info", GetProcessesFullInfo()},
-								{"resources info", GetResourcesLoadFullInfo()} };
+								{"processes info", GetProcessesFullInfo()} };
 
 	return all_data.dump();
 }
@@ -121,7 +127,11 @@ std::string CDataProvider::GetProcessesSelectedInfo(time_t from, time_t to) cons
 	{
 		processes_info = nlohmann::json({ "error", "Can't get processes data"}).dump( );
 	}
-	return processes_info;
+
+	nlohmann::json proc_info;
+	proc_info["processes"] = processes_info;
+	proc_info["resources"] = GetResourcesLoadSelectedInfo(from, to);
+	return proc_info.dump( );
 }
 
 std::string CDataProvider::GetDisksSelectedInfo(time_t from, time_t to) const
@@ -138,8 +148,7 @@ std::string CDataProvider::GetDisksSelectedInfo(time_t from, time_t to) const
 std::string CDataProvider::GetAllSelectedInfo(time_t from, time_t to) const
 {
 	nlohmann::json all_data = { {"disks info", GetDisksSelectedInfo(from, to)},
-								{"processes info", GetProcessesSelectedInfo(from, to)},
-								{"resources info", GetResourcesLoadSelectedInfo(from, to)} };
+								{"processes info", GetProcessesSelectedInfo(from, to)} };
 
 	return all_data.dump();
 }
