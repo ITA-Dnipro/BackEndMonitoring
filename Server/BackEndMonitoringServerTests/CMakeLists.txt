@@ -17,12 +17,14 @@ include_directories(${CMAKE_SOURCE_DIR}
         ${GTEST_SRC_DIR}
         ${GMOCK_SRC_DIR}
         ${UTILS_INCLUDE_DIR}
+        ${PUGIXML_INCLUDE_DIR}
         ${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/include
         ${CMAKE_SOURCE_DIR}/CLogger/include)
 
 #--------------------------------- EXECUTE CONFIGS -------------------------------------#
 
 add_executable(ServerTests
+        ${PUGIXML_SRC_DIR}/pugixml.cpp
         ${GTEST_SRC_DIR}/gtest-all.cc
         ${GMOCK_SRC_DIR}/gmock-all.cc
         ${SERVER_TESTS_SRC_DIR}/Main.cpp)

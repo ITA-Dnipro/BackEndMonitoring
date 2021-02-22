@@ -42,7 +42,7 @@ set(PUGIXML_SRC_DIR "${NUGET_PACKAGES_DIR}/${PUGIXML_FOLDER}/build/native/includ
 set(PUGIXML_INCLUDE_DIR "${NUGET_PACKAGES_DIR}/${PUGIXML_FOLDER}/build/native/include")
 
 set(NLOHMANN_JSON_SRC_DIR "${NUGET_PACKAGES_DIR}/${NLOHMANN_JSON_FOLDER}/build/native/include/nlohmann")
-set(NLOHMANN_JSON_INCLUDE_DIR "${NUGET_PACKAGES_DIR}/${NLOHMANN_JSON_FOLDER}/build/native/include/nlohmann")
+set(NLOHMANN_JSON_INCLUDE_DIR "${NUGET_PACKAGES_DIR}/${NLOHMANN_JSON_FOLDER}/build/native/include")
 
 set(UTILS_SRC_DIR "${CMAKE_SOURCE_DIR}/utils/include")
 set(UTILS_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/utils/include")

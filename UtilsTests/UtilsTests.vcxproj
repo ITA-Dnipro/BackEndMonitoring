@@ -57,6 +57,8 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
     <Import Project="..\packages\gmock.1.10.0\build\native\gmock.targets" Condition="Exists('..\packages\gmock.1.10.0\build\native\gmock.targets')" />
+    <Import Project="..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets" Condition="Exists('..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets')" />
+    <Import Project="..\packages\pugixml.1.11.0\build\native\pugixml.targets" Condition="Exists('..\packages\pugixml.1.11.0\build\native\pugixml.targets')" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -168,7 +170,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\3rdParty\include\pugixml.cpp" />
     <ClCompile Include="..\utils\include\CDataReader.cpp" />
     <ClCompile Include="..\utils\include\CEvent.cpp" />
     <ClCompile Include="..\utils\include\CHDDInfoSettings.cpp" />
@@ -196,7 +197,6 @@
     <ClCompile Include="src\CStrToNumWrapperTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\3rdParty\include\pugixml.hpp" />
     <ClInclude Include="..\utils\include\CDataReader.h" />
     <ClInclude Include="..\utils\include\CEvent.h" />
     <ClInclude Include="..\utils\include\CHDDInfoSettings.h" />
@@ -228,5 +228,7 @@
       <ErrorText>This project references NuGet packages that are not present on this machine. Use NuGet package restore to download them. For more information see: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\gmock.1.10.0\build\native\gmock.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\gmock.1.10.0\build\native\gmock.targets'))" />
+    <Error Condition="!Exists('..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets'))" />
+    <Error Condition="!Exists('..\packages\pugixml.1.11.0\build\native\pugixml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\pugixml.1.11.0\build\native\pugixml.targets'))" />
   </Target>
 </Project>
