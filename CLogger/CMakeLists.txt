@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.17)
 project(BackEndMonitoring)
 
 include_directories(${CMAKE_SOURCE_DIR}
+		${NLOHMANN_JSON_INCLUDE_DIR}
 		${CMAKE_SOURCE_DIR}/CLogger/include
-		${CMAKE_SOURCE_DIR}/utils/include
-		${CMAKE_SOURCE_DIR}/3rdParty/include)
+		${CMAKE_SOURCE_DIR}/utils/include)
 
 set(CLOGGER_SRC_DIR ${CMAKE_SOURCE_DIR}/CLogger/src)
 

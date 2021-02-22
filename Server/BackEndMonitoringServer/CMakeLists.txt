@@ -1,23 +1,23 @@
 cmake_minimum_required(VERSION 3.17)
 project(BackEndMonitoring)
 
-
 link_directories(${CMAKE_BINARY_DIR}/CLogger)
-link_directories(..)
+link_directories(.)
 link_directories(${CMAKE_BINARY_DIR}/Sockets)
 
 include_directories(${CMAKE_SOURCE_DIR}
+		${PUGIXML_INCLUDE_DIR}
+		${NLOHMANN_JSON_INCLUDE_DIR}
 		${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/include
 		${CMAKE_SOURCE_DIR}/CLogger/include
 		${CMAKE_SOURCE_DIR}/Sockets/BackEndMonitoringSockets/include
-		${CMAKE_SOURCE_DIR}/3rdParty/include
 		${CMAKE_SOURCE_DIR}/utils/include)
 
 set(SERVER_SRC_DIR ${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/src)
 
 add_executable(Server
 		${PLATFORM_SPECIFIC_UTILS}
-		${THIRD_PARTY_DIR}/pugixml.cpp
+		${PUGIXML_SRC_DIR}/pugixml.cpp
 		${UTILS_SRC_DIR}/Utils.cpp
 		${UTILS_SRC_DIR}/CStringCleaner.cpp
 		${UTILS_SRC_DIR}/StrToNumWrapper.cpp

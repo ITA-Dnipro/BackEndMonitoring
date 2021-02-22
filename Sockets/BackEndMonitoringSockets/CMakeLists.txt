@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 3.17)
 project(BackEndMonitoring)
 
-link_directories(${CMAKE_SOURCE_DIR}/packages/CLogger/Debug/linux)
-
 include_directories(${CMAKE_SOURCE_DIR}
+		${NLOHMANN_JSON_INCLUDE_DIR}
 		${CMAKE_SOURCE_DIR}/Sockets/BackEndMonitoringSockets/include
 		${CMAKE_SOURCE_DIR}/CLogger/include
 		${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/include
