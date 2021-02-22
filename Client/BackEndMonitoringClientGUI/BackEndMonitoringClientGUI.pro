@@ -12,12 +12,36 @@ DEFINES -= _UNICODE
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 INCLUDEPATH += $$PWD/../../
+INCLUDEPATH += $$PWD/../../Client/BackEndMonitoringClient/include
+INCLUDEPATH += $$PWD/../../CLogger/include
+INCLUDEPATH += $$PWD/../../BackEndMonitoringSockets/include
+INCLUDEPATH += $$PWD/../../Server/BackEndMonitoringServer/include
+INCLUDEPATH += $$PWD/../../3rdParty/include
+INCLUDEPATH += $$PWD/../../utils/include)
+
+HEADERS += \
+    ../../utils/include/stdafx.h \
+    ../BackEndMonitoringClient/include/CClient.h \
+    CConnectionDialog.h \
+    CDrivesGraph.h \
+    CDrivesTab.h \
+    CDrivesTable.h \
+    CMainWindow.h \
+    CProcessesGraph.h \
+    CProcessesTab.h \
+    CProcessesTable.h \
+    CRequestDialog.h \
+    ERequestDataType.h \
+    ERequestSelectType.h \
+    qcustomplot.h
 
 SOURCES += \
-    ../../utils/include/Utils.cpp \
+    $$PWD/../../utils/include/Utils.cpp \
     CConnectionDialog.cpp \
+    CDrivesGraph.cpp \
     CDrivesTab.cpp \
     CDrivesTable.cpp \
+    CProcessesGraph.cpp \
     CProcessesTab.cpp \
     CProcessesTable.cpp \
     CRequestDialog.cpp \
@@ -25,39 +49,27 @@ SOURCES += \
     CMainWindow.cpp \
     qcustomplot.cpp
 
-HEADERS += \
-    CConnectionDialog.h \
-    CDrivesTab.h \
-    CDrivesTable.h \
-    CMainWindow.h \
-    CProcessesTab.h \
-    CProcessesTable.h \
-    CRequestDialog.h \
-    ERequestDataType.h \
-    qcustomplot.h
 
 FORMS += \
     CConnectionDialog.ui \
     CMainWindow.ui \
     CRequestDialog.ui
 
-unix|win32: LIBS += -L$$PWD/../../packages/Client/Debug/x64/ -lBackEndMonitoringClient
 
+unix|win32: LIBS += -L$$PWD/../../packages/Client/Debug/x64/ -lBackEndMonitoringClient
 INCLUDEPATH += $$PWD/../BackEndMonitoringClient/include
 DEPENDPATH += $$PWD/../BackEndMonitoringClient/include
-
 win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Client/Debug/x64/BackEndMonitoringClient.lib
 else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Client/Debug/x64/libBackEndMonitoringClient.a
 
-unix|win32: LIBS += -L$$PWD/../../packages/Sockets/Debug/x64/ -lBackEndMonitoringSockets
 
+unix|win32: LIBS += -L$$PWD/../../packages/Sockets/Debug/x64/ -lBackEndMonitoringSockets
 INCLUDEPATH += $$PWD/../../Sockets/BackEndMonitoringSockets/include
 DEPENDPATH += $$PWD/../../Sockets/BackEndMonitoringSockets/include
-
 win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Sockets/Debug/x64/BackEndMonitoringSockets.lib
 else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Sockets/Debug/x64/libBackEndMonitoringSockets.a
 
-unix|win32: LIBS += -L$$PWD/../../packages/CLogger/Debug/x64/ -lCLogger
 
+unix|win32: LIBS += -L$$PWD/../../packages/CLogger/Debug/x64/ -lCLogger
 INCLUDEPATH += $$PWD/../../CLogger/include
 DEPENDPATH += $$PWD/../../CLogger/include

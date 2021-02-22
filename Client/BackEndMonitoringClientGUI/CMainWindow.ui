@@ -10,6 +10,12 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Arial</family>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
   <property name="contextMenuPolicy">
    <enum>Qt::DefaultContextMenu</enum>
   </property>
@@ -106,7 +112,7 @@ QToolBox::tab:selected {
              <x>0</x>
              <y>0</y>
              <width>558</width>
-             <height>373</height>
+             <height>375</height>
             </rect>
            </property>
            <attribute name="label">
@@ -132,7 +138,7 @@ QToolBox::tab:selected {
              <x>0</x>
              <y>0</y>
              <width>558</width>
-             <height>373</height>
+             <height>371</height>
             </rect>
            </property>
            <attribute name="label">
@@ -140,7 +146,45 @@ QToolBox::tab:selected {
            </attribute>
            <layout class="QGridLayout" name="gridLayout_7">
             <item row="0" column="0">
-             <widget class="QCustomPlot" name="proc_graph" native="true"/>
+             <widget class="QTabWidget" name="proc_graphs_tab">
+              <property name="styleSheet">
+               <string notr="true">QTabBar::tab:selected {background-color: rgb(227, 12, 255); color: #000000}
+QTabBar::tab:hover {color: #000000; background-color: #FFFFFF;}</string>
+              </property>
+              <property name="currentIndex">
+               <number>2</number>
+              </property>
+              <widget class="QWidget" name="CPU_tab">
+               <attribute name="title">
+                <string>CPU</string>
+               </attribute>
+               <layout class="QGridLayout" name="gridLayout_8">
+                <item row="0" column="0">
+                 <widget class="QCustomPlot" name="CPU_graph" native="true"/>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="RAM_tab">
+               <attribute name="title">
+                <string>RAM</string>
+               </attribute>
+               <layout class="QGridLayout" name="gridLayout_9">
+                <item row="0" column="0">
+                 <widget class="QCustomPlot" name="RAM_graph" native="true"/>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="pagefile_tab">
+               <attribute name="title">
+                <string>Pagefile</string>
+               </attribute>
+               <layout class="QGridLayout" name="gridLayout_10">
+                <item row="0" column="0">
+                 <widget class="QCustomPlot" name="Pagefile_graph" native="true"/>
+                </item>
+               </layout>
+              </widget>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -194,7 +238,7 @@ QToolBox::tab:selected {
              <x>0</x>
              <y>0</y>
              <width>558</width>
-             <height>373</height>
+             <height>375</height>
             </rect>
            </property>
            <attribute name="icon">
@@ -224,7 +268,7 @@ QTabBar::tab:hover {color: #000000; background-color: #FFFFFF;}</string>
              <x>0</x>
              <y>0</y>
              <width>558</width>
-             <height>373</height>
+             <height>371</height>
             </rect>
            </property>
            <attribute name="label">
@@ -282,7 +326,14 @@ QPushButton:pressed { background: silver; }</string>
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="font">
+    <font>
+     <family>Segoe UI</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+  </widget>
   <action name="actionReconnect">
    <property name="text">
     <string>Reconnect</string>

@@ -4,6 +4,7 @@
 CRequestDialog::CRequestDialog(QWidget *parent) :
     QDialog(parent),
     m_data_type(ERequestDataType::PROCESSES_DATA),
+    m_select_type(ERequestSelectType::LAST_INFO),
     ui(new Ui::CRequestDialog)
 {
     ui->setupUi(this);
@@ -22,17 +23,36 @@ ERequestDataType CRequestDialog::GetRequestType()
     return m_data_type;
 }
 
+ERequestSelectType CRequestDialog::GetSelectType()
+{
+    return m_select_type;
+}
+
 void CRequestDialog::on_request_combo_box_currentIndexChanged(int index)
 {
-    if(index == 2)
+    switch(index)
     {
-        ui->date_from->setEnabled(true);
-        ui->date_to->setEnabled(true);
-    }
-    else
-    {
-        ui->date_from->setEnabled(false);
-        ui->date_to->setEnabled(false);
+        case(0):
+        {
+            m_select_type = ERequestSelectType::LAST_INFO;
+            ui->date_from->setEnabled(false);
+            ui->date_to->setEnabled(false);
+            break;
+        }
+        case(1):
+        {
+            m_select_type = ERequestSelectType::ALL_INFO;
+            ui->date_from->setEnabled(false);
+            ui->date_to->setEnabled(false);
+            break;
+        }
+        case(2):
+        {
+            m_select_type = ERequestSelectType::SELECTED_INFO;
+            ui->date_from->setEnabled(true);
+            ui->date_to->setEnabled(true);
+            break;
+        }
     }
 }
 

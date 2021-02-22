@@ -3,11 +3,13 @@
 #include "CRequestDialog.h"
 #include "ui_CMainWindow.h"
 #include "ERequestType.h"
+#include "ERequestSelectType.h"
 #include "CProcessesTab.h"
 #include "CDrivesTab.h"
 #include "3rdParty/include/json.hpp"
 #include "Utils/include/Utils.h"
 #include <QDebug>
+#include "CDrivesGraph.h"
 
 CMainWindow::CMainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -24,6 +26,8 @@ CMainWindow::CMainWindow(QWidget *parent)
     {
         QTimer::singleShot(0, this, SLOT(close()));
     }
+
+    m_drives_graph = std::make_unique<CDrivesGraph>(ui->drives_graph);
 }
 
 CMainWindow::~CMainWindow()
@@ -69,8 +73,13 @@ void CMainWindow::UpdateProcessesData()
                                  last_proc_data))
     {
         nlohmann::json parsed_proc_data = nlohmann::json::parse(last_proc_data);
-        UpdateProcessesTable(parsed_proc_data);
-        UpdateProcessesGraph(parsed_proc_data);
+        nlohmann::json parsed_processes_data
+                = nlohmann::json::parse(parsed_proc_data["processes"].get<std::string>());
+        nlohmann::json parsed_resources_data
+                = nlohmann::json::parse(parsed_proc_data["resources"].get<std::string>());
+
+        UpdateProcessesTable(parsed_processes_data);
+        UpdateProcessesGraph(parsed_resources_data);
     }
 }
 
@@ -115,46 +124,46 @@ void CMainWindow::UpdateDrivesData()
                                  last_drives_data))
     {
         nlohmann::json parsed_drives_data = nlohmann::json::parse(last_drives_data);
-        UpdateDrivesTable(parsed_drives_data);
-        UpdateDrivesGraph(parsed_drives_data);
+        UpdateDrives(parsed_drives_data);
     }
 }
 
 
-void CMainWindow::UpdateDrivesTable(const nlohmann::json& data)
+void CMainWindow::UpdateDrives(const nlohmann::json& data)
 {
     while(ui->drives_tab_widget->count())
     {
         ui->drives_tab_widget->widget(ui->drives_tab_widget->currentIndex())->deleteLater();
         ui->drives_tab_widget->removeTab(ui->drives_tab_widget->currentIndex());
     }
+    m_drives_graph->Clear();
+
+
+    size_t data_size = data.size();
+    unsigned current_entry_idx = 0;
+    QString status_str = "Progress: ";
     for(auto entry : data)
     {
-        qDebug("Entered cycle");
         CDrivesTab* drives_tab = new CDrivesTab(ui->drives_tab_widget);
-        qDebug("Drives tab created");
         if(drives_tab->Initialize(entry))
         {
-            qDebug("Drives tab initialized");
             QString date;
             if(drives_tab->GetTabName(date))
             {
-                qDebug("Date readed");
                 qDebug(date.toStdString().c_str());
 
                 ui->drives_tab_widget->addTab(drives_tab, date);
             }
+            m_drives_graph->AddEntry(entry);
         }
+
+        ui->statusbar->showMessage(status_str +
+                                   QString::number(++current_entry_idx *
+                                                   (100.0 / data_size))
+                                   + "%");
+        this->repaint();
     }
+    m_drives_graph->Update();
+    ui->statusbar->clearMessage();
 }
 
-void CMainWindow::UpdateDrivesGraph(const nlohmann::json& data)
-{
-    time_t date;
-    Utils::StringToDate(data.begin()->at("date"), "%d.%m.%Y %X", date);
-    S
-    for(auto entry : data)
-    {
-
-    }
-}

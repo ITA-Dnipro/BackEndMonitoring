@@ -4,6 +4,7 @@
 #include <QDialog>
 
 #include "ERequestDataType.h"
+#include "ERequestSelectType.h"
 
 namespace Ui {
 class CRequestDialog;
@@ -18,6 +19,7 @@ public:
     ~CRequestDialog();
 
     ERequestDataType GetRequestType();
+    ERequestSelectType GetSelectType();
 private slots:
     void on_request_combo_box_currentIndexChanged(int index);
 
@@ -29,6 +31,7 @@ private slots:
 
 private:
     ERequestDataType m_data_type;
+    ERequestSelectType m_select_type;
     Ui::CRequestDialog *ui;
 };
 

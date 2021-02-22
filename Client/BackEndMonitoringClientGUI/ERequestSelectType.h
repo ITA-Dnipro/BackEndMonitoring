@@ -1,0 +1,11 @@
+#ifndef EREQUESTSELECTTYPE_H
+#define EREQUESTSELECTTYPE_H
+
+enum class ERequestSelectType
+{
+    LAST_INFO,
+    ALL_INFO,
+    SELECTED_INFO
+};
+
+#endif // EREQUESTSELECTTYPE_H
