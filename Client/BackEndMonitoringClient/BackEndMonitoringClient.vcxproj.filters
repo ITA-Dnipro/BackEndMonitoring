@@ -18,10 +18,19 @@
     <ClCompile Include="src\stdafx.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\WindowsUtils.cpp">
+    <ClCompile Include="..\..\utils\include\CStringCleaner.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\utils\include\Utils.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\WindowsUtils.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CInteractionFrame.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CRequestFrame.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="src\CClientController.cpp">
@@ -30,6 +39,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ERequestType.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CClientView.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\utils\include\PlatformUtils.h">
@@ -44,5 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

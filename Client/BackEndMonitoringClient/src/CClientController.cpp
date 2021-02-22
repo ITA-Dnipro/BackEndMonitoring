@@ -19,45 +19,28 @@ bool CClientController::Connect()
 	return is_connected;
 }
 
-bool CClientController::MakeRequest(ERequestType type, std::string& message)
+bool CClientController::MakeRequest(std::string& message, ERequestType req_typ,
+	ERequestRangeSpecification spec_typ,
+	const std::string& date_of_start, const std::string& date_of_end)
 {
 	CLOG_DEBUG_START_FUNCTION();
 
 	if (is_connected)
 	{
-		switch (type)
-		{
-		case (ERequestType::PROCESSES_DATA):
-		{
-			message = RequestProcessesData();
-			break;
-		}
-		case (ERequestType::DISKS_DATA):
-		{
-			message = RequestDisksData();
-			break;
-		}
-		case (ERequestType::ALL_DATA):
-		{
-			message = RequestAllData();
-			break;
-		}
-		case (ERequestType::EXIT):
-		{
-			while (!m_connector->Exit())
-				return false;
-		}
-		}
+		m_connector->MakeRequest(message, req_typ, spec_typ, date_of_start,
+			date_of_end);
 		if (message == "Error receiving data")
 		{
 			return false;
 		}
+
 		return true;
 	}
 	CLOG_DEBUG_END_FUNCTION();
 
 	return false;
 }
+
 
 bool CClientController::InitHost(const int port, const std::string& ip_address)
 {
@@ -73,25 +56,4 @@ bool CClientController::InitHost(const int port, const std::string& ip_address)
 	}
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
-}
-
-std::string CClientController::RequestProcessesData()
-{
-	CLOG_DEBUG_START_FUNCTION();
-	CLOG_DEBUG_END_FUNCTION();
-	return m_connector->MakeRequest(EClientRequestType::PROCESSES_DATA);
-}
-
-std::string CClientController::RequestDisksData()
-{
-	CLOG_DEBUG_START_FUNCTION();
-	CLOG_DEBUG_END_FUNCTION();
-	return m_connector->MakeRequest(EClientRequestType::DISKS_DATA);
-}
-
-std::string CClientController::RequestAllData()
-{
-	CLOG_DEBUG_START_FUNCTION();
-	CLOG_DEBUG_END_FUNCTION();
-	return m_connector->MakeRequest(EClientRequestType::ALL_DATA);
 }

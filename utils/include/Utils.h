@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <filesystem>
 
 enum class EMemoryConvertType;
 
@@ -27,12 +28,6 @@ namespace Utils
 	[[nodiscard]] bool IsFileEmpty(std::fstream& file);
 	[[nodiscard]] bool IsFileEmpty(std::ofstream& file);
 
-	#if defined(_WIN64) || defined(_WIN32)
-	void DisplayError(const std::string& message);
-	#endif
-	void DisplayMessage(const std::string& message);
-	void DisplayHelp();
-
 	[[nodiscard]] long double ConvertToCountType(
 		uintmax_t const value_to_calculate, EMemoryConvertType convert_type);
 	[[nodiscard]] long double RoundToDecimal(long double const value_to_round);
@@ -41,7 +36,7 @@ namespace Utils
 
 	bool StringToDate(const std::string& date_str, const std::string& date_format,
 					          time_t& result);
-										
+
 	[[nodiscard]] bool TryCreateDirectory(const std::string& path,
 		std::filesystem::perms permission = std::filesystem::perms::all,
 		std::filesystem::perm_options perms_action =
@@ -52,4 +47,18 @@ namespace Utils
 	[[nodiscard]] char DetermineSectDividingSymbol(const std::string& path);
 	bool TimeToString(time_t time, std::string& to_str,
 		              const std::string& format);
+
+#if defined(_WIN64) || defined(_WIN32)
+
+	void DisplayError(const std::string& message);
+
+    bool GetModulePath(CString& module_path);
+    bool EscapePath(CString& path);
+
+#endif
+
+	void DisplayMessage(const std::string& message);
+	void DisplayHelp();
+
+	std::string GetRelativePath();
 }

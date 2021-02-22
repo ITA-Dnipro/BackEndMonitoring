@@ -21,19 +21,19 @@ bool CClient::Init(const int arg_num, char** arguments)
 		return false;
 	}
 
-	int port = std::stol(arguments[c_port_num]);
-	std::string ip_address = arguments[c_ip_address_num];
+	m_port = std::stol(arguments[c_port_num]);
+	m_ip_address = arguments[c_ip_address_num];
 
-	result = m_controller->InitHost(port, ip_address);
+	result = m_controller->InitHost(m_port, m_ip_address);
 	if (result)
 	{
 		std::filesystem::path path_to_file(m_file_name);
 		std::filesystem::path extension = path_to_file.extension();
 		std::filesystem::path name = path_to_file.stem();
 		path_to_file.replace_filename(name.string() + extension.string());
-		m_response_data = std::fstream(path_to_file, std::ios_base::out);
+		m_client_stream = std::fstream(path_to_file, std::ios_base::out);
 		m_consolePrinter = std::make_unique<CClientView>(std::cout, std::cin);
-		m_filePrinter = std::make_unique<CClientView>(m_response_data, std::cin);
+		m_filePrinter = std::make_unique<CClientView>(m_client_stream, std::cin);
 		CLOG_DEBUG("CClientViews were created");
 	}
 	CLOG_DEBUG_END_FUNCTION();
@@ -72,7 +72,9 @@ void CClient::Execute()
 		case ERequestType::ALL_DATA_CYCLE:
 			for (unsigned i = 1u; i <= 10u; ++i)
 			{
-				result = m_controller->MakeRequest(ERequestType::ALL_DATA, message);
+				request = ERequestType::ALL_DATA;
+				result = m_controller->MakeRequest(message, request, 
+					ERequestRangeSpecification::LAST_DATA);
 				if (!message.empty())
 				{
 					PrintMessage("\n" + std::to_string(i) + "\n\n" + message + "\n\n");
@@ -88,21 +90,38 @@ void CClient::Execute()
 		case ERequestType::ALL_DATA_NON_STOP:
 		{
 			int counter = 1;
+			request = ERequestType::ALL_DATA;
 			while (result)
 			{
-				result = m_controller->MakeRequest(ERequestType::ALL_DATA, message);
+				result = m_controller->MakeRequest(message, request, 
+					ERequestRangeSpecification::LAST_DATA);
 				if (!message.empty())
 				{
 					PrintMessage("\n" + std::to_string(counter++) + "\n\n" +
 						message + "\n\n");
 					message.clear();
 				}
-				std::this_thread::sleep_for(std::chrono::seconds(5));
+				std::this_thread::sleep_for(std::chrono::seconds(1));
 			}
 			break;
 		}
+		case ERequestType::ALL_DATA:
+		{
+			result = m_controller->MakeRequest(message, request, 
+				ERequestRangeSpecification::LAST_DATA);
+			break;
+		}
+		case ERequestType::DISKS_DATA:
+			result = m_controller->MakeRequest(message, request, 
+				ERequestRangeSpecification::LAST_DATA);
+			break;
+		case ERequestType::PROCESSES_DATA:
+			result = m_controller->MakeRequest(message, request, 
+				ERequestRangeSpecification::LAST_DATA);
+			break;
 		default:
-			result = m_controller->MakeRequest(request, message);
+			result = m_controller->MakeRequest(message, request, 
+				ERequestRangeSpecification::LAST_DATA);
 			break;
 		}
 		if (!message.empty())
@@ -115,7 +134,6 @@ void CClient::Execute()
 
 	PrintMessage("Goodbye\n");
 	CLOG_DEBUG_END_FUNCTION();
-
 }
 
 void CClient::PrintMessage(const std::string& message) const

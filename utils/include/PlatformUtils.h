@@ -28,10 +28,6 @@ using sockaddress = struct sockaddr_in;
 
 #endif
 
-constexpr int c_error_socket = -1;
-constexpr int c_invalid_socket = 0;
-constexpr int c_success = 0;
-
 class CBaseSocket
 {
 public:
