@@ -1,19 +1,23 @@
+#----------------------------------- CMAKE SETTINGS ------------------------------------#
+
 cmake_minimum_required(VERSION 3.17)
 project(BackEndMonitoring)
 
-link_directories(${CMAKE_BINARY_DIR}/CLogger)
-link_directories(.)
-link_directories(${CMAKE_BINARY_DIR}/Sockets)
+#------------------------------ SRC/INCLUDE DIRS' VARS --------------------------------#
+
+set(SERVER_SRC_DIR ${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/src)
+
+#------------------------------------ INCLUDE DIRS -------------------------------------#
 
 include_directories(${CMAKE_SOURCE_DIR}
 		${PUGIXML_INCLUDE_DIR}
 		${NLOHMANN_JSON_INCLUDE_DIR}
+		${UTILS_INCLUDE_DIR}
 		${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/include
 		${CMAKE_SOURCE_DIR}/CLogger/include
-		${CMAKE_SOURCE_DIR}/Sockets/BackEndMonitoringSockets/include
-		${CMAKE_SOURCE_DIR}/utils/include)
+		${CMAKE_SOURCE_DIR}/Sockets/BackEndMonitoringSockets/include)
 
-set(SERVER_SRC_DIR ${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/src)
+#--------------------------------- EXECUTE CONFIGS -------------------------------------#
 
 add_executable(Server
 		${PLATFORM_SPECIFIC_UTILS}
@@ -58,6 +62,7 @@ add_executable(Server
 		${SERVER_SRC_DIR}/CDrivesInfoJSONDatabase.cpp
 		${SERVER_SRC_DIR}/CResourcesInfoJSONDatabase.cpp)
 
-# Link these libraries to this build
+#----------------------------------- TARGET LIBS ---------------------------------------#
+
 target_link_libraries(Server CLogger)
 target_link_libraries(Server Sockets)

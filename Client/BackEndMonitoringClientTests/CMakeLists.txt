@@ -16,9 +16,9 @@ include_directories(${CMAKE_SOURCE_DIR}
         ${GMOCK_INCLUDE_DIR}
         ${GTEST_SRC_DIR}
         ${GMOCK_SRC_DIR}
+        ${UTILS_INCLUDE_DIR}
         ${CMAKE_SOURCE_DIR}/Client/BackEndMonitoringClient/include
-        ${CMAKE_SOURCE_DIR}/CLogger/include
-        ${CMAKE_SOURCE_DIR}/utils/include)
+        ${CMAKE_SOURCE_DIR}/CLogger/include)
 
 #--------------------------------- EXECUTE CONFIGS -------------------------------------#
 
@@ -26,3 +26,7 @@ add_executable(ClientTests
         ${GTEST_SRC_DIR}/gtest-all.cc
         ${GMOCK_SRC_DIR}/gmock-all.cc
         ${CLIENT_TESTS_SRC_DIR}/Main.cpp)
+
+#----------------------------------- TARGET LIBS ---------------------------------------#
+
+target_link_libraries(ClientTests CLogger)
