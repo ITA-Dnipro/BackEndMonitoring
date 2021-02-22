@@ -43,6 +43,8 @@
     <ClCompile Include="src\CService.cpp" />
     <ClCompile Include="src\CServiceHandler.cpp" />
     <ClCompile Include="src\stdafx.cpp" />
+    <ClCompile Include="src\CLinuxService.cpp" />
+    <ClCompile Include="src\CWindowsService.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\3rdParty\include\pugiconfig.hpp" />
@@ -84,6 +86,8 @@
     <ClInclude Include="include\CServiceHandler.h" />
     <ClInclude Include="include\EMemoryConvertType.h" />
     <ClInclude Include="include\IInfoDatabase.h" />
+    <ClInclude Include="include\CLinuxService.h" />
+    <ClInclude Include="include\CWindowsService.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />

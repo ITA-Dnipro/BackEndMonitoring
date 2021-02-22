@@ -196,9 +196,11 @@
     <ClInclude Include="include\CContainerOfLogicalDisk.h" />
     <ClInclude Include="include\CContainerOfProcesses.h" />
     <ClInclude Include="include\CDrivesInfoJSONDatabase.h" />
+    <ClInclude Include="include\CLinuxService.h" />
     <ClInclude Include="include\CMonitoringInfoJSONDatabase.h" />
     <ClInclude Include="include\CProcessesInfoJSONDatabase.h" />
     <ClInclude Include="include\CResourcesInfoJSONDatabase.h" />
+    <ClInclude Include="include\CWindowsService.h" />
     <ClInclude Include="include\IHardwareInfoMonitoring.h" />
     <ClInclude Include="include\CHardwareStatusSpecification.h" />
     <ClInclude Include="include\CJSONFormatterLogicalDisk.h" />
@@ -253,6 +255,7 @@
     <ClCompile Include="src\CHardwareStatusSpecification.cpp" />
     <ClCompile Include="src\CJSONFormatterLogicalDisk.cpp" />
     <ClCompile Include="src\CJSONFormatterProcess.cpp" />
+    <ClCompile Include="src\CLinuxService.cpp" />
     <ClCompile Include="src\CLogicalDiskInfo.cpp" />
     <ClCompile Include="src\CLogicalDiskInfoMonitoring.cpp" />
     <ClCompile Include="src\CMonitoringInfoJSONDatabase.cpp" />
@@ -262,6 +265,7 @@
     <ClCompile Include="src\CResourcesInfoJSONDatabase.cpp" />
     <ClCompile Include="src\CService.cpp" />
     <ClCompile Include="src\CServiceHandler.cpp" />
+    <ClCompile Include="src\CWindowsService.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
