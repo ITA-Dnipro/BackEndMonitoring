@@ -60,7 +60,7 @@ install()
 
     mkdir $MAIN_FOLDER
     
-    cp ./Server/Server $BINARY_DEST
+    cp ./Server/BackEndMonitoringServer/Server $BINARY_DEST
     cp $XML_CONFIG_NAME $XML_CONFIG_DEST
 
     generate_dot_service

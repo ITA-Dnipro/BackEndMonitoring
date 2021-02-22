@@ -135,7 +135,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\utils\include\PlatformUtils;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -172,8 +172,6 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\3rdParty\include\pugiconfig.hpp" />
-    <ClInclude Include="..\..\3rdParty\include\pugixml.hpp" />
     <ClInclude Include="..\..\utils\include\CComunicationSettings.h" />
     <ClInclude Include="..\..\utils\include\CDataReader.h" />
     <ClInclude Include="..\..\utils\include\CDateTimePathConstructor.h" />
@@ -205,12 +203,14 @@
     <ClInclude Include="include\CContainerOfLogicalDisk.h" />
     <ClInclude Include="include\CContainerOfProcesses.h" />
     <ClInclude Include="include\CDrivesInfoJSONDatabase.h" />
+    <ClInclude Include="include\CLinuxService.h" />
     <ClInclude Include="include\CMonitoringInfoJSONDatabase.h" />
     <ClInclude Include="include\CProcessesInfoJSONDatabase.h" />
     <ClInclude Include="include\CRequestExcAllData.h" />
     <ClInclude Include="include\CRequestExcDiskData.h" />
     <ClInclude Include="include\CRequestExcProcessData.h" />
     <ClInclude Include="include\CResourcesInfoJSONDatabase.h" />
+    <ClInclude Include="include\CWindowsService.h" />
     <ClInclude Include="include\IHardwareInfoMonitoring.h" />
     <ClInclude Include="include\CHardwareStatusSpecification.h" />
     <ClInclude Include="include\CJSONFormatterLogicalDisk.h" />
@@ -226,14 +226,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\3rdParty\include\pugixml.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="..\..\utils\include\CComunicationSettings.cpp" />
     <ClCompile Include="..\..\utils\include\CDataReader.cpp" />
     <ClCompile Include="..\..\utils\include\CDateTimePathConstructor.cpp" />
@@ -272,6 +267,7 @@
     <ClCompile Include="src\CHardwareStatusSpecification.cpp" />
     <ClCompile Include="src\CJSONFormatterLogicalDisk.cpp" />
     <ClCompile Include="src\CJSONFormatterProcess.cpp" />
+    <ClCompile Include="src\CLinuxService.cpp" />
     <ClCompile Include="src\CLogicalDiskInfo.cpp" />
     <ClCompile Include="src\CLogicalDiskInfoMonitoring.cpp" />
     <ClCompile Include="src\CMonitoringInfoJSONDatabase.cpp" />
@@ -284,6 +280,7 @@
     <ClCompile Include="src\CResourcesInfoJSONDatabase.cpp" />
     <ClCompile Include="src\CService.cpp" />
     <ClCompile Include="src\CServiceHandler.cpp" />
+    <ClCompile Include="src\CWindowsService.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -293,5 +290,14 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets" Condition="Exists('..\..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets')" />
+    <Import Project="..\..\packages\pugixml.1.11.0\build\native\pugixml.targets" Condition="Exists('..\..\packages\pugixml.1.11.0\build\native\pugixml.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets'))" />
+    <Error Condition="!Exists('..\..\packages\pugixml.1.11.0\build\native\pugixml.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\pugixml.1.11.0\build\native\pugixml.targets'))" />
+  </Target>
 </Project>

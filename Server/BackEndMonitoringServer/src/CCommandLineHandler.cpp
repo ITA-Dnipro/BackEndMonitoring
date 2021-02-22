@@ -9,14 +9,14 @@
 
 CommandLineHandler::CommandLineHandler(int argc, char** argv)
     : m_argc(argc),
-    m_argv(argv)
+      m_argv(argv)
 { }
 
 bool CommandLineHandler::Parse( )
 {
 #if defined(_WIN64) || defined(_WIN32)
     ServiceParameters parameters;
-    auto service = std::make_unique<CService>(parameters);
+    auto service = std::make_unique<CWindowsService>(parameters);
     auto service_handler = std::make_unique<ServiceHandler>(std::move(service));
 
     bool success = true;
@@ -56,7 +56,7 @@ bool CommandLineHandler::Parse( )
 
     return success;
 #elif __linux__
-    auto service = std::make_unique<CService>( );
+    auto service = std::make_unique<CLinuxService>( );
     bool success = true;
 
     do

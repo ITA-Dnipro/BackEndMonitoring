@@ -1,28 +1,34 @@
+#----------------------------------- CMAKE SETTINGS ------------------------------------#
+
 cmake_minimum_required(VERSION 3.17)
 project(BackEndMonitoring)
 
-link_directories(${CMAKE_BINARY_DIR}/CLogger)
+#------------------------------ SRC/INCLUDE DIRS' VARS --------------------------------#
 
+set(UTILS_TESTS_SRC_DIR ${CMAKE_SOURCE_DIR}/UtilsTests/src)
+
+#------------------------------------ INCLUDE DIRS -------------------------------------#
 
 include_directories(${CMAKE_SOURCE_DIR}
-        ${CMAKE_SOURCE_DIR}/Client/BackEndMonitoringClient/include
-        ${CMAKE_SOURCE_DIR}/CLogger/include
-        ${CMAKE_SOURCE_DIR}/BackEndMonitoringSockets/include
-        ${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/include
-        ${CMAKE_SOURCE_DIR}/3rdParty/include
-        ${CMAKE_SOURCE_DIR}/utils/include
+        ${PUGIXML_INCLUDE_DIR}
+        ${NLOHMANN_JSON_INCLUDE_DIR}
         ${GTEST_INCLUDE_DIR}
         ${GMOCK_INCLUDE_DIR}
         ${TEST_LIB_INCLUDE_DIR}
         ${GTEST_SRC_DIR}
-        ${GMOCK_SRC_DIR})
+        ${GMOCK_SRC_DIR}
+        ${UTILS_INCLUDE_DIR}
+        ${CMAKE_SOURCE_DIR}/Client/BackEndMonitoringClient/include
+        ${CMAKE_SOURCE_DIR}/CLogger/include
+        ${CMAKE_SOURCE_DIR}/BackEndMonitoringSockets/include
+        ${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/include)
 
-set(UTILS_TESTS_SRC_DIR ${CMAKE_SOURCE_DIR}/UtilsTests/src)
+#--------------------------------- EXECUTE CONFIGS -------------------------------------#
 
 add_executable(UtilsTests
         ${GTEST_SRC_DIR}/gtest-all.cc
         ${GMOCK_SRC_DIR}/gmock-all.cc
-        ${THIRD_PARTY_DIR}/pugixml.cpp
+        ${PUGIXML_SRC_DIR}/pugixml.cpp
         ${UTILS_SRC_DIR}/Utils.cpp
         ${UTILS_SRC_DIR}/CStringCleaner.cpp
         ${UTILS_SRC_DIR}/StrToNumWrapper.cpp
@@ -47,5 +53,7 @@ add_executable(UtilsTests
         ${UTILS_TESTS_SRC_DIR}/CStringCleanerTest.cpp
         ${UTILS_TESTS_SRC_DIR}/CStrToNumWrapperTest.cpp
         ${UTILS_TESTS_SRC_DIR}/CXMLDataReaderTest.cpp)
+
+#----------------------------------- TARGET LIBS ---------------------------------------#
 
 target_link_libraries(UtilsTests CLogger)

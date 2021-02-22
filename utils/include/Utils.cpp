@@ -156,56 +156,6 @@ bool Utils::IsFileEmpty(std::ofstream& file)
     return answer;
 }
 
-#if defined(_WIN64) || defined(_WIN32)
-#define EN_US 0x0409
-
-void Utils::DisplayError(const std::string& message)
-{
-    //CLOG_DEBUG_START_FUNCTION();
-    // char*
-    LPSTR error = NULL;
-    //CLOG_TRACE_VAR_CREATION(error);
-
-    if (FormatMessage(
-        FORMAT_MESSAGE_ALLOCATE_BUFFER |
-        FORMAT_MESSAGE_FROM_SYSTEM |
-        FORMAT_MESSAGE_IGNORE_INSERTS,
-        NULL,
-        GetLastError( ),
-        EN_US,
-        reinterpret_cast<LPSTR>(&error),
-        0,
-        NULL) == 0)
-    {
-        return;
-    }
-
-    std::cout << message << ". " << error;
-    LocalFree(error);
-    //CLOG_DEBUG_END_FUNCTION();
-}
-#endif
-
-void Utils::DisplayHelp( )
-{
-#if defined(_WIN64) || defined(_WIN32)
-	std::cout << "\nUsage:\n"
-				 "Enter \"install\" to install and start the service.\n"
-				 "Enter \"uninstall\" to stop and delete the service.\n"
-				 "Enter \"help\" to show help."
-			  << std::endl;
-#elif linux
-	std::cout << "\nUsage:\n"
-				"Enter \"help\" to show help."
-			  << std::endl;
-#endif
-}
-
-void Utils::DisplayMessage(const std::string& message)
-{
-	std::cout << message << ". " << std::endl;
-}
-
 long double Utils::ConvertToCountType(
     uintmax_t const value_to_calculate, EMemoryConvertType convert_type)
 {
@@ -308,3 +258,111 @@ bool Utils::TimeToString(time_t time, std::string& to_str,
 
     return !to_str.empty();
 }
+
+#if defined(_WIN64) || defined(_WIN32)
+#define EN_US 0x0409
+
+void Utils::DisplayError(const std::string& message)
+{
+    //CLOG_DEBUG_START_FUNCTION();
+    // char*
+    LPSTR error = NULL;
+    //CLOG_TRACE_VAR_CREATION(error);
+
+    if (FormatMessage(
+        FORMAT_MESSAGE_ALLOCATE_BUFFER |
+        FORMAT_MESSAGE_FROM_SYSTEM |
+        FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL,
+        GetLastError( ),
+        EN_US,
+        reinterpret_cast<LPSTR>(&error),
+        0,
+        NULL) == 0)
+    {
+        return;
+    }
+
+    std::cout << message << ". " << error;
+    LocalFree(error);
+    //CLOG_DEBUG_END_FUNCTION();
+}
+#endif
+
+void Utils::DisplayHelp( )
+{
+#if defined(_WIN64) || defined(_WIN32)
+	std::cout << "\nUsage:\n"
+				 "Enter \"install\" to install and start the service.\n"
+				 "Enter \"uninstall\" to stop and delete the service.\n"
+				 "Enter \"help\" to show help."
+			  << std::endl;
+#elif linux
+	std::cout << "\nUsage:\n"
+				"Enter \"help\" to show help."
+			  << std::endl;
+#endif
+}
+
+void Utils::DisplayMessage(const std::string& message)
+{
+	std::cout << message << ". " << std::endl;
+}
+
+std::string Utils::GetRelativePath()
+{
+
+#if defined(_WIN64) || defined(_WIN32)
+
+    std::string executable = "BackEndMonitoringServer.exe";
+    CString module_path;
+    GetModulePath(module_path);
+    std::string path = static_cast<std::string>(module_path);
+    path = path.substr(0, path.length() - executable.length());
+    return path;
+
+#elif __linux__
+
+    char buffer[BUFSIZ];
+    readlink("/proc/self/exe", buffer, BUFSIZ);
+    std::string path = buffer;
+    for (int i = path.length(); i != 0; --i)
+    {
+        if (path[i] == '/')
+        {
+            path.erase(i + 1);
+            break;
+        }
+    }
+    return path;
+
+#endif
+
+}
+
+#if defined(_WIN64) || defined(_WIN32)
+
+bool Utils::GetModulePath(CString& module_path)
+{
+    bool success = true;
+
+    LPSTR path = module_path.GetBufferSetLength(MAX_PATH);
+
+    if (::GetModuleFileName(nullptr, path, MAX_PATH) == 0)
+    {
+        Utils::DisplayError("Failed to get module file name");
+        success = false;
+    }
+
+    module_path.ReleaseBuffer();
+    return success;
+}
+
+bool Utils::EscapePath(CString& path)
+{
+    path.Remove('\"');
+    path = '\"' + path + '\"';
+    return true;
+}
+
+#endif

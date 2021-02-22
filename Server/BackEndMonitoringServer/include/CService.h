@@ -24,89 +24,29 @@ class CHDDInfoSettings;
 class CProcessesInfoSettings;
 class CServerSettings;
 
-#if defined(_WIN64) || defined(_WIN32)
-
-struct ServiceParameters
-{
-    const CString& name = "BackendMonitoringService";
-    const CString& display_name = "Backend monitoring";
-    DWORD start_type = SERVICE_DEMAND_START;
-    DWORD err_ctrl_type = SERVICE_ERROR_NORMAL;
-    DWORD accepted_cmds = SERVICE_ACCEPT_STOP;
-};
-
-#endif
-
 class CService
 {
 public:
+    CService() = default;
+
     CService(const CService& other) = delete;
     CService& operator=(const CService& other) = delete;
 
     CService(CService&& other) = delete;
     CService& operator=(CService&& other) = delete;
 
-    static std::string GetRelativePath();
+    virtual bool Run() = 0;
 
-    bool Run();
+protected:
+    [[nodiscard]] bool InitializeLogger(const std::string& path_to_log_file, ELogLevel level);
+    [[nodiscard]] bool InitializeThreadPool(const CThreadPoolSettings& thread_pool_sett);
+    [[nodiscard]] bool InitializeLogicalDiscMonitoring(const CHDDInfoSettings& xml_settings);
+    [[nodiscard]] bool InitializeProcessesMonitoring(const CProcessesInfoSettings& xml_settings);
+    [[nodiscard]] bool InitializeSockets(const CServerSettings& server_sett);
 
-#if defined(_WIN64) || defined(_WIN32)
+    void RunServer();
 
-    static bool GetModulePath(CString& module_path);
-    static bool EscapePath(CString& path);
-
-    explicit CService(const ServiceParameters& parameters);
-
-    const CString& GetName( ) const;
-    const CString& GetDisplayName( ) const;
-    const DWORD GetStartType( ) const;
-    const DWORD GetErrorControlType( ) const;
-
-#elif __linux__
-
-    CService( );
-
-#endif
-
-private:
-    bool InitializeLogger(const std::string& path_to_log_file, ELogLevel level);
-    bool InitializeThreadPool(const CThreadPoolSettings& thread_pool_sett);
-    bool InitializeLogicalDiscMonitoring(const CHDDInfoSettings& xml_settings);
-
-    bool InitializeProcessesMonitoring(const CProcessesInfoSettings& xml_settings);
-
-    bool InitializeSockets(const CServerSettings& server_sett);
-
-    #if defined(_WIN64) || defined(_WIN32)
-
-    static DWORD WINAPI ServiceCtrlHandler(
-        DWORD control_code,
-        DWORD event_type,
-        void* event_data,
-        void* context);
-
-    static void WINAPI SvcMain(DWORD argc, CHAR** argv);
-
-    void SetStatus(
-        DWORD state,
-        DWORD exit_code = NO_ERROR,
-        DWORD wait_hint = 0);
-
-    void Start(DWORD argc, CHAR** argv);
-    void Stop( );
-    void OnStart(DWORD, CHAR**);
-    void OnStop( );
-
-#elif __linux__
-
-    static void HandleSignal(int signal);
-
-#endif
-
-    void RunServer( );
-
-private:
-    static CService* m_p_service;
+protected:
     CEvent m_stop_event;
     std::shared_ptr<CThreadPool> m_p_thread_pool;
     std::unique_ptr<CServiceHost> m_p_acceptor_socket;
@@ -116,17 +56,4 @@ private:
     std::shared_ptr<CProcessesInfoMonitoring> m_processes_monitor;
     std::shared_ptr<CLogicalDiskInfoMonitoring> m_disks_monitor;
     std::unique_ptr<std::fstream> m_log_stream;
-
-    #if defined(_WIN64) || defined(_WIN32)
-
-    SERVICE_STATUS m_status;
-    std::thread m_main_thread;
-    CString m_name;
-    CString m_display_name;
-    DWORD m_start_type;
-    DWORD m_error_control_type;
-    SERVICE_STATUS_HANDLE m_status_handle;
-
-    #endif
-
 };
