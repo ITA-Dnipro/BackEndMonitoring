@@ -75,9 +75,6 @@
     <ClCompile Include="..\utils\include\Utils.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\3rdParty\include\pugixml.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="..\utils\include\CEvent.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -91,6 +88,12 @@
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="src\CStrToNumWrapperTest.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -153,9 +156,6 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="..\utils\include\Utils.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\3rdParty\include\pugixml.hpp">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="..\utils\include\CEvent.h">

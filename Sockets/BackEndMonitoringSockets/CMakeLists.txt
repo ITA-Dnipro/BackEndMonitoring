@@ -1,16 +1,23 @@
+#----------------------------------- CMAKE SETTINGS ------------------------------------#
+
 cmake_minimum_required(VERSION 3.17)
 project(BackEndMonitoring)
 
-link_directories(${CMAKE_SOURCE_DIR}/packages/CLogger/Debug/linux)
+#------------------------------ SRC/INCLUDE DIRS' VARS --------------------------------#
+
+set(SOCKETS_SRC_DIR ${CMAKE_SOURCE_DIR}/Sockets/BackEndMonitoringSockets/src)
+
+#------------------------------------ INCLUDE DIRS -------------------------------------#
 
 include_directories(${CMAKE_SOURCE_DIR}
+		${NLOHMANN_JSON_INCLUDE_DIR}
 		${CMAKE_SOURCE_DIR}/Sockets/BackEndMonitoringSockets/include
 		${CMAKE_SOURCE_DIR}/CLogger/include
 		${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/include
 		${CMAKE_SOURCE_DIR}/3rdParty/include
 		${CMAKE_SOURCE_DIR}/utils/include)
 
-set(SOCKETS_SRC_DIR ${CMAKE_SOURCE_DIR}/Sockets/BackEndMonitoringSockets/src)
+#--------------------------------- EXECUTE CONFIGS -------------------------------------#
 
 add_library(Sockets
 		${PLATFORM_SPECIFIC_UTILS}
@@ -28,5 +35,6 @@ add_library(Sockets
 		${UTILS_SRC_DIR}/CEvent.cpp
 		${UTILS_SRC_DIR}/Utils.cpp)
 
-# Link this library to this build
+#----------------------------------- TARGET LIBS ---------------------------------------#
+
 target_link_libraries(Sockets CLogger)
