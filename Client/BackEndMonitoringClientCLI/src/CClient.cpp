@@ -69,6 +69,7 @@ void CClient::Execute(const int arg_num, char** arguments)
 			break;
 		case EClientRequests::ALL_DATA_NON_STOP:
 			result = MakeNonStopRequests();
+			break;
 		case EClientRequests::ALL_HISTORY:
 			result = MakeAllHistoryRequest();
 			break;
