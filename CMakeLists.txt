@@ -60,15 +60,14 @@ set(UTILS_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/utils/include")
 #-------------------------------- COMPILER SPECIFIC SETTINGS ---------------------------#
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-    # Using the modern MSVC preprocessor.
-    # It is necessary for the correct work of the CLogger's macros.
+    # Using the modern MSVC preprocessor. It is necessary for the correct work of the CLogger's macros.
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:preprocessor")
 elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
-    # Add support for multithreading using the POSIX threads library
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -luuid")
+    # Add support for multithreading using the POSIX threads library
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -luuid")
 endif()
 
 #-------------------------------- OS SPECIFIC SETTINGS ---------------------------------#
