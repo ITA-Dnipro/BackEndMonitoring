@@ -10,7 +10,7 @@ CClientView::CClientView(std::ostream& out_console, std::ostream& out_file,
 	m_should_write_file(true)
 { }
 
-void CClientView::PrintMenu(bool show_response_mode, bool date_range_mode) const
+void CClientView::PrintMenu(bool is_table_mode, bool date_range_mode) const
 {
 	m_console_stream << "\n\n\t\t\t\t\tMenu\n" << std::endl
 		<< "\t\x1b[1;32m[\x1b[1;31mdrives data\x1b[1;32m]\x1b[0m      "
@@ -35,7 +35,7 @@ void CClientView::PrintMenu(bool show_response_mode, bool date_range_mode) const
 	
 		<< "\t\x1b[1;32m[\x1b[1;31mchange view\x1b[1;32m]\x1b[0m      "
 				<< "change printing data mode \x1b[1;33m(current: \x1b[1;36m"
-				<< (show_response_mode ? "as json" : "as table") << "\x1b[1;33m)\x1b[0m\n\n"
+				<< (is_table_mode ? "as table" : "as json") << "\x1b[1;33m)\x1b[0m\n\n"
 	
 		<< "\t\x1b[1;32m[\x1b[1;31mcls\x1b[1;32m]\x1b[0m              clean screen\n"
 	
@@ -69,7 +69,7 @@ void CClientView::PrintMessage(const std::string& result) const
 	m_console_stream << result;
 	if(m_should_write_file)
 	{
-		m_file_stream << result << '\n';
+		m_file_stream << result << std::endl;
 	}
 }
 

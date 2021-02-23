@@ -12,11 +12,11 @@ namespace ClientUtils
 		{
 			number = std::stol(port_str);
 		}
-		catch (std::invalid_argument)
+		catch (std::invalid_argument&)
 		{
 			number = -1;
 		}
-		catch (std::out_of_range)
+		catch (std::out_of_range&)
 		{
 			number = -1;
 		}
