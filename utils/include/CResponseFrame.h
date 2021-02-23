@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CInteractionFrame.h"
-#include "EResponseError.h"
+#include "EFrameError.h"
 
 class CResponseFrame : public CInteractionFrame
 {
@@ -11,7 +11,7 @@ public:
     CResponseFrame(const CInteractionFrame& orig);
 
     bool TryFormateResponse(std::string& var_to_responsesave,
-        const std::string& json_data, EResponseError error);
+        const std::string& json_data, EFrameError error);
 
 private:
     nlohmann::json m_formatted_request;

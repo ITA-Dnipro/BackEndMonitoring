@@ -2,6 +2,7 @@
 
 #include "ERequestType.h"
 #include "ERequestRangeSpecification.h"
+#include "EFrameError.h"
 #include "GlobalVariable.h"
 #include "crossguid/guid.hpp"
 
@@ -10,7 +11,8 @@
 
 bool CRequestFrame::TryFormateRequest(std::string& var_to_save, 
 	ERequestType req_typ, ERequestRangeSpecification spec_typ, 
-	const std::string& date_of_start, const std::string& date_of_end)
+	const std::string& date_of_start, const std::string& date_of_end, 
+	EFrameError error)
 {
 	//m_guid = xg::newGuid().str();
 	//var 1
@@ -24,6 +26,7 @@ bool CRequestFrame::TryFormateRequest(std::string& var_to_save,
 			{ date_of_start, date_of_end };
 	}
 	m_formatted_request[GlobalVariable::c_request_key_spec] = spec_typ;
+	m_formatted_request[GlobalVariable::c_frame_error] = error;
 
 	var_to_save = m_formatted_request.dump();
 	return false;

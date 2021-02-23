@@ -6,7 +6,7 @@
 #include "Utils.h"
 #include "GlobalVariable.h"
 #include "CResponseFrame.h"
-#include "EResponseError.h"
+#include "EFrameError.h"
 #include "CRequestExcAllData.h"
 
 CRequestExcAllData::CRequestExcAllData(const std::string& request, 
@@ -33,7 +33,7 @@ bool CRequestExcAllData::Execute(std::string & answer)
 		if (!TryDetermineDateRange(request))
 		{
 			response.TryFormateResponse(answer, "",
-				EResponseError::INCORRECT_REQUEST);
+				EFrameError::INCORRECT_REQUEST);
 			return false;
 		}
 		time_t start{}, end{};
@@ -44,7 +44,7 @@ bool CRequestExcAllData::Execute(std::string & answer)
 		{
 			// log
 			response.TryFormateResponse(answer, "",
-				EResponseError::INCORRECT_REQUEST);
+				EFrameError::INCORRECT_REQUEST);
 			return false;
 		}
 		answer = m_p_data_base->GetAllSelectedInfo(start, end);
@@ -54,12 +54,12 @@ bool CRequestExcAllData::Execute(std::string & answer)
 	default:
 	{
 		response.TryFormateResponse(answer, "",
-			EResponseError::INCORRECT_REQUEST);
+			EFrameError::INCORRECT_REQUEST);
 		return false;
 	}
 	}
 
 	response.TryFormateResponse(answer, "",
-		EResponseError::INCORRECT_REQUEST);
+		EFrameError::INCORRECT_REQUEST);
 	return false;
 }

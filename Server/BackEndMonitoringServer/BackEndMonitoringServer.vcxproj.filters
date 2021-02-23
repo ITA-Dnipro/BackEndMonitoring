@@ -102,11 +102,12 @@
     <ClInclude Include="..\..\utils\include\CResponseFrame.h" />
     <ClInclude Include="..\..\utils\include\CResponseHandler.h" />
     <ClInclude Include="..\..\utils\include\ERequestRangeSpecification.h" />
-    <ClInclude Include="..\..\utils\include\EResponseError.h" />
     <ClInclude Include="..\..\utils\include\IRequestExc.h" />
     <ClInclude Include="..\..\utils\include\CRequestFrame.h" />
     <ClInclude Include="include\CLinuxService.h" />
     <ClInclude Include="include\CWindowsService.h" />
+    <ClInclude Include="..\..\3rdParty\include\json.hpp" />
+    <ClInclude Include="..\..\utils\include\EFrameError.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />

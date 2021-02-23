@@ -7,7 +7,7 @@
 #include "CDataProvider.h"
 #include "GlobalVariable.h"
 #include "CResponseFrame.h"
-#include "EResponseError.h"
+#include "EFrameError.h"
 #include "Log.h"
 #include "CRequestHandler.h"
 
@@ -33,11 +33,21 @@ bool CRequestHandler::HandleRequest(const std::string& request_str,
     if (!TryValidateRequest(request_str))
     {
         response.TryFormateResponse(answer, "",
-            EResponseError::INCORRECT_REQUEST); 
+            EFrameError::INCORRECT_REQUEST); 
         //log and return true
 		CLOG_ERROR("Invalid request from the client!!!");
         return false;
     }
+    EFrameError error_from_frame = GetErrorCodeFromFrame(request);
+    if (EFrameError::NONE != error_from_frame)
+    {
+        response.TryFormateResponse(answer, "",
+            error_from_frame);
+        //log and return true
+        CLOG_ERROR("Invalid request from the client!!!");
+        return false;
+    }
+
     switch (AnalyzeRequestType(request))
     {
     case ERequestType::ALL_DATA:
@@ -45,7 +55,7 @@ bool CRequestHandler::HandleRequest(const std::string& request_str,
             request_str, std::make_shared<CDataProvider>(m_data_base))))
         {
             response.TryFormateResponse(answer, "",
-                EResponseError::INCORRECT_REQUEST); 
+                EFrameError::INCORRECT_REQUEST); 
             return false;
         }
         CLOG_DEBUG("All data request from the client");
@@ -56,7 +66,7 @@ bool CRequestHandler::HandleRequest(const std::string& request_str,
             request_str, std::make_shared<CDataProvider>(m_data_base))))
         {
             response.TryFormateResponse(answer, "",
-                EResponseError::INCORRECT_REQUEST); 
+                EFrameError::INCORRECT_REQUEST); 
             return false;
         }
         CLOG_DEBUG("Disks data request from the client");
@@ -67,7 +77,7 @@ bool CRequestHandler::HandleRequest(const std::string& request_str,
             request_str, std::make_shared<CDataProvider>(m_data_base))))
         {
             response.TryFormateResponse(answer, "",
-                EResponseError::INCORRECT_REQUEST); 
+                EFrameError::INCORRECT_REQUEST); 
             return false;
         }
         CLOG_DEBUG("Processes data request from the client");
@@ -76,14 +86,21 @@ bool CRequestHandler::HandleRequest(const std::string& request_str,
     default:
     {
         response.TryFormateResponse(answer, "", 
-            EResponseError::INCORRECT_REQUEST);
+            EFrameError::LOST_REQUEST);
         CLOG_ERROR("Default case, incorrect error");
         return false;
     }
     }
     CLOG_DEBUG_END_FUNCTION();
     // could be a problem
-    return response.TryFormateResponse(answer, answer, EResponseError::NONE);
+    return response.TryFormateResponse(answer, answer, EFrameError::NONE);
+}
+
+EFrameError CRequestHandler::GetErrorCodeFromFrame(
+    const std::string& request_str)
+{
+    nlohmann::json request = nlohmann::json::parse(request_str);
+    return EFrameError(request[GlobalVariable::c_frame_error].get<int>());
 }
 
 bool CRequestHandler::TryValidateRequest(const std::string& request_str)
@@ -115,10 +132,9 @@ bool CRequestHandler::TryValidateRequest(const std::string& request_str)
 
 ERequestType CRequestHandler::AnalyzeRequestType(const nlohmann::json& request) 
 const
-{
-    int req_code = request[GlobalVariable::c_request_key_req_typ].get<int>();
-	
-    return ERequestType(req_code);
+{	
+    return ERequestType(
+        request[GlobalVariable::c_request_key_req_typ].get<int>());
 }
 
 bool CRequestHandler::ExecuteRequest(std::string& answer, 

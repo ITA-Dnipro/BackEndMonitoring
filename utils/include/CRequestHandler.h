@@ -19,6 +19,9 @@ public:
 	[[nodiscard]] bool HandleRequest(const std::string& m_request, 
 		std::string& answer);
 
+	[[nodiscard]] virtual EFrameError GetErrorCodeFromFrame(
+		const std::string& response) override;
+
 private:
 	//Request validator is calling here
 	[[nodiscard]] bool TryValidateRequest(const std::string& m_request);

@@ -172,6 +172,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\3rdParty\include\json.hpp" />
     <ClInclude Include="..\..\utils\include\CComunicationSettings.h" />
     <ClInclude Include="..\..\utils\include\CDataReader.h" />
     <ClInclude Include="..\..\utils\include\CDateTimePathConstructor.h" />
@@ -193,7 +194,7 @@
     <ClInclude Include="..\..\utils\include\CTimeSettings.h" />
     <ClInclude Include="..\..\utils\include\CXMLDataReader.h" />
     <ClInclude Include="..\..\utils\include\ERequestRangeSpecification.h" />
-    <ClInclude Include="..\..\utils\include\EResponseError.h" />
+    <ClInclude Include="..\..\utils\include\EFrameError.h" />
     <ClInclude Include="..\..\utils\include\IPathConstructor.h" />
     <ClInclude Include="..\..\utils\include\GlobalVariable.h" />
     <ClInclude Include="..\..\utils\include\IRequestExc.h" />

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "EResponseError.h"
+#include "EFrameError.h"
 #include "GlobalVariable.h"
 
 #include "CResponseHandler.h"
@@ -19,21 +19,24 @@ bool CResponseHandler::HandleResponse(const std::string& guid,
 	m_json_temp = nlohmann::json::parse(response);
     switch (DetermineErrorInResponse(m_json_temp))
 	{
-	case EResponseError::NONE:
+	case EFrameError::NONE:
         m_json_temp = m_json_temp[GlobalVariable::c_response_data];
 		break;
-	case EResponseError::INCORRECT_REQUEST:
-		// log
-        m_json_temp.clear();
-		return false;
 	default:
-		// log
+        m_json_temp.clear();
 		return false;
 	}
 
     var_storage = m_json_temp.dump();
 
 	return true;
+}
+
+EFrameError CResponseHandler::GetErrorCodeFromFrame(
+    const std::string& response_str)
+{
+    nlohmann::json response = nlohmann::json::parse(response_str);
+    return EFrameError(response[GlobalVariable::c_frame_error].get<int>());
 }
 
 bool CResponseHandler::TryValidate(const std::string& guid, 
@@ -54,7 +57,7 @@ bool CResponseHandler::TryValidate(const std::string& guid,
             answer.emplace_back(true);
             continue;
         }
-        if (GlobalVariable::c_response_error == key)
+        if (GlobalVariable::c_frame_error == key)
         {
             answer.emplace_back(true);
             continue;
@@ -68,8 +71,8 @@ bool CResponseHandler::TryValidate(const std::string& guid,
     return 4 == answer.size();
 }
 
-EResponseError CResponseHandler::DetermineErrorInResponse(
+EFrameError CResponseHandler::DetermineErrorInResponse(
 	const nlohmann::json& response)
 {
-	return response[GlobalVariable::c_response_error];
+	return response[GlobalVariable::c_frame_error];
 }

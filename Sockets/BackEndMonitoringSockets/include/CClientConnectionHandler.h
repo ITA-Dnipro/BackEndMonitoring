@@ -21,6 +21,7 @@ public:
 		ERequestType req_typ, ERequestRangeSpecification spec_typ,
 		const std::string& date_of_start = "", 
 		const std::string& date_of_end = "");
+	
 
 private:
 	bool HandleRequestEvent(const CSocket& client_socket, 
