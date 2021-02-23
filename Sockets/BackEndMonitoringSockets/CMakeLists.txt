@@ -44,3 +44,4 @@ add_library(Sockets
 #----------------------------------- TARGET LIBS ---------------------------------------#
 
 target_link_libraries(Sockets CLogger)
+target_link_libraries(Sockets Guid)
