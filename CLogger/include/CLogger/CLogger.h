@@ -397,37 +397,35 @@ std::string CLogger::MakeMessage(const CLogMessage<Args...>& log_message) const
 			// TODO remove repeat-code
 		case ELogConfig::THREAD_ID:
 		{
-			stream << "Thread id:" << " " << "[" << log_message.GetThreadId()
-				<< "]" << " ";
+			stream << "-" << log_message.GetThreadId()
+				<< "-" << " ";
 			break;
 		}
 		case ELogConfig::CALL_TIME:
 		{
-			stream << "Time:" << " " << "[" << log_message.GetTimeString()
-				<< "]" << " ";
+			stream << "(" << log_message.GetTimeString()
+				<< ")" << " ";
 			break;
 		}
 		case ELogConfig::FUNCTION_NAME:
 		{
-			stream << "Function:" << " " << log_message.GetFunctionString()
-				<< " ";
+			stream << "{" << log_message.GetFunctionString()
+				<< "}" << " ";
 			break;
 		}
 		case ELogConfig::FILE_NAME:
 		{
-			stream << "File:" << " " << log_message.GetFileString()
-				<< " ";
+			stream << log_message.GetFileString() << " ";
 			break;
 		}
 		case ELogConfig::LINE_NUMBER:
 		{
-			stream << "Line number:" << " " << log_message.GetLineNumber()
-				<< " ";
+			stream << log_message.GetLineNumber() << " ";
 			break;
 		}
 		case ELogConfig::MESSAGE:
 		{
-			stream << "Message:" << " " << "\"" << log_message.GetMessageString()
+			stream << "\"" << log_message.GetMessageString()
 				<< '\"' << " ";
 			break;
 		}
