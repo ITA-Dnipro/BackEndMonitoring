@@ -43,7 +43,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -168,6 +168,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\utils\include\CStringCleaner.cpp" />
+    <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
     <ClCompile Include="..\BackEndMonitoringClient\src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -177,12 +178,19 @@
     <ClCompile Include="src\BackEndMonitoringClientCLI.cpp" />
     <ClCompile Include="src\CClient.cpp" />
     <ClCompile Include="src\CClientView.cpp" />
+    <ClCompile Include="src\CResponseAdapter.cpp" />
+    <ClCompile Include="src\ClientUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\utils\include\CStringCleaner.h" />
+    <ClInclude Include="..\..\utils\include\GlobalVariable.h" />
+    <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="..\..\utils\include\stdafx.h" />
     <ClInclude Include="include\CClient.h" />
     <ClInclude Include="include\CClientView.h" />
+    <ClInclude Include="include\CResponseAdapter.h" />
+    <ClInclude Include="include\ClientUtils.h" />
+    <ClInclude Include="include\EClientRequests.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

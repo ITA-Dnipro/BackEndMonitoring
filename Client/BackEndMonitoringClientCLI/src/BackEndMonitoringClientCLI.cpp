@@ -25,13 +25,7 @@ int main(const int argc, char* argv[])
 
 	CClient client;
 
-	if (client.Init(argc, argv))
-	{
-		client.Execute();
-	}
-	else
-	{
-		std::cout << "Wrong parameters for the network!" << std::endl;
-	}
+	client.Execute(argc, argv);
+
 	return 0;
 }
