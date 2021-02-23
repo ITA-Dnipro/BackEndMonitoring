@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION 3.17)
 project(BackEndMonitoring)
 
-find_path(LIBUUID_INCLUDE_DIR uuid.h PATH_SUFFIXES uuid)
-find_library(LIBUUID_LIBRARY libuuid.a)
-include_directories(${LIBUUID_INCLUDE_DIR})
-
 include_directories(${CMAKE_SOURCE_DIR}
 		${NLOHMANN_JSON_INCLUDE_DIR}
 		${CMAKE_SOURCE_DIR}/3rdParty/include

@@ -8,8 +8,6 @@ project(BackEndMonitoring)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED 17)
 
-add_definitions(-DGUID_LIBUUID)
-
 #------------------------------ NUGET PACKAGES DOWNLOAD --------------------------------#
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL Linux OR ${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
@@ -75,8 +73,10 @@ endif()
 # So we have to divide these modules
 if (${CMAKE_SYSTEM_NAME} STREQUAL Linux OR ${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
     set(PLATFORM_SPECIFIC_UTILS "${UTILS_SRC_DIR}/LinuxUtils.cpp")
+    add_definitions(-DGUID_LIBUUID)
 else(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
     set(PLATFORM_SPECIFIC_UTILS "${UTILS_SRC_DIR}/WindowsUtils.cpp")
+    add_definitions(-DGUID_WINDOWS)
 endif()
 
 #----------------------------------- CMAKE SUBDIRS -------------------------------------#
