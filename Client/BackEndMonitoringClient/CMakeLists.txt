@@ -7,6 +7,7 @@ link_directories(${CMAKE_BINARY_DIR}/Sockets)
 
 include_directories(${CMAKE_SOURCE_DIR}
 		${NLOHMANN_JSON_INCLUDE_DIR}
+		${CMAKE_SOURCE_DIR}/3rdParty/include
 		${CMAKE_SOURCE_DIR}/Client/BackEndMonitoringClient/include
 		${CMAKE_SOURCE_DIR}/CLogger/include
 		${CMAKE_SOURCE_DIR}/BackEndMonitoringSockets/include

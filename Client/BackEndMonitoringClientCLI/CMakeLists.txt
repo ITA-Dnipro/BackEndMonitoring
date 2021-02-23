@@ -3,6 +3,7 @@ project(BackEndMonitoring)
 
 include_directories(${CMAKE_SOURCE_DIR}
 		${NLOHMANN_JSON_INCLUDE_DIR}
+		${CMAKE_SOURCE_DIR}/3rdParty/include
 		${CMAKE_SOURCE_DIR}/Client/BackEndMonitoringClientCLI/include
 		${CMAKE_SOURCE_DIR}/Client/BackEndMonitoringClient/include
 		${CMAKE_SOURCE_DIR}/CLogger/include
