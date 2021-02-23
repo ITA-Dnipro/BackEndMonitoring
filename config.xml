@@ -46,7 +46,7 @@
          <!--information about processes which running on the system-->
          <filename> "C:\processesinfo.txt"</filename>
          <!--flag for checking processes info  (enable / disable)-->
-         <checkprocesses> "disable"</checkprocesses>
+         <checkprocesses> "enable"</checkprocesses>
 		 <!--CountType: Bytes(0) - Kilobytes(1) - Megabytes(2) - Gigabytes(3)-->
 		 <counttype> "1"</counttype>
      </processesinfo>

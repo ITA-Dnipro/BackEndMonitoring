@@ -1,123 +1,85 @@
 #include "stdafx.h"
 
-#include "CLogger/include/Log.h"
-#include "PlatformUtils.h"
-#include "EClientRequestType.h"
+#include "Log.h"
 #include "CServiceConnectionHandler.h"
+#include "CSocketWrapper.h"
+#include "CSocket.h"
+#include "GlobalVariable.h"
 
-CServiceConnectionHandler::CServiceConnectionHandler(CDataReceiver json_data) :
-	m_json_data(json_data), m_can_receive_data(true)
+CServiceConnectionHandler::CServiceConnectionHandler(
+	CRequestHandler request_handler) : m_request_handler(request_handler)
 {
 	InitPeerStream();
 }
 
-bool CServiceConnectionHandler::HandleEvent(const int socket_fd, EEventType type)
-{
-	bool can_continue = true;
-	switch (type) {
-	case EEventType::REQUEST_DATA:
-		can_continue = HandleRequestEvent(socket_fd);
-		break;
-	case EEventType::CLOSE_EVENT:
-		can_continue = HandleResponseExitEvent(socket_fd);
-		break;
-	}
-	return can_continue;
-}
-
-bool CServiceConnectionHandler::HandleRequestEvent(const int socket_fd)
-{
-	bool can_continue = true;
-	if (m_p_peer_stream->CanReceiveData(socket_fd))
-	{
-		std::string message = m_p_peer_stream->Receive(socket_fd);
-		if (m_can_receive_data && message == "ALL_DATA")
-		{
-			CLOG_TRACE_WITH_PARAMS("All data request from the socket ",
-				socket_fd);
-			m_can_receive_data = false;
-			HandleResponseEvent(socket_fd, EClientRequestType::ALL_DATA);
-		}
-		else if (m_can_receive_data && message == "DISK_DATA")
-		{
-			CLOG_TRACE_WITH_PARAMS("Disks data request from the socket ",
-				socket_fd);
-			m_can_receive_data = false;
-			HandleResponseEvent(socket_fd, EClientRequestType::DISKS_DATA);
-		}
-		else if (m_can_receive_data && message == "PROCESS_DATA")
-		{
-			CLOG_TRACE_WITH_PARAMS("Processes data request from the socket ",
-				socket_fd);
-			m_can_receive_data = false;
-			HandleResponseEvent(socket_fd, EClientRequestType::PROCESSES_DATA);
-		}
-		else if (!m_can_receive_data && message == "DATA RECEIVED")
-		{
-			m_can_receive_data = true;
-		}
-		else if (message == "Exit")
-		{
-			CLOG_TRACE("Exit request from the client, handling close event");
-			HandleEvent(socket_fd, EEventType::CLOSE_EVENT);
-			can_continue = false;
-		}
-
-		CLOG_TRACE_WITH_PARAMS("value can_continue = ", can_continue);
-	}
-
-	int error = 0;
-	if ((error = PlatformUtils::GetConnectionError(socket_fd)) == 
-		c_client_disconnected)
-	{
-		CLOG_TRACE_WITH_PARAMS("ERROR!!! On the socket ", socket_fd,
-			" has occured error ", error);
-		can_continue = false;
-		CLOG_DEBUG_WITH_PARAMS("value can_continue = ", can_continue);
-	}
-
-	return can_continue;
-}
-
-bool CServiceConnectionHandler::HandleResponseEvent(const int socket_fd,
-	EClientRequestType type)
+bool CServiceConnectionHandler::HandleEvent(const CSocket& client, EEventType event_type)
 {
 	bool result = false;
-	CLOG_DEBUG_START_FUNCTION();
-	std::string message;
-	switch (type)
-	{
-	case EClientRequestType::ALL_DATA:
-		CLOG_TRACE("Send all info to the client");
-		message = m_json_data.GetAllInfo();
-		break;
-	case EClientRequestType::PROCESSES_DATA:
-		CLOG_TRACE("Send process info to the client");
-		message = m_json_data.GetProcessesInfo();
-		break;
-	case EClientRequestType::DISKS_DATA:
-		CLOG_TRACE("Send dick info to the client");
-		message = m_json_data.GetDisksInfo();
+	switch (event_type) {
+	case EEventType::REQUEST_DATA:
+		CLOG_DEBUG_WITH_PARAMS("Request data from the client", client.GetSocketFD());
+		result = HandleRequestEvent(client);
 		break;
 	default:
-		CLOG_TRACE_WITH_PARAMS("Wrong parameter EClientRequestType, ",
-			" cannot send response to the client");
+		CLOG_DEBUG("Default case in HandleEvent, return false");
 		return false;
 	}
-	result = m_p_peer_stream->Send(socket_fd, message);
-	CLOG_TRACE_WITH_PARAMS("Send function returned result ", result);
-	CLOG_DEBUG_END_FUNCTION();
+	CLOG_TRACE_WITH_PARAMS("We have result work with client", result, client.GetSocketFD());
 	return result;
 }
 
-bool CServiceConnectionHandler::HandleResponseExitEvent(const int socket_fd)
+bool CServiceConnectionHandler::HandleRequestEvent(const CSocket& client)
+{
+	bool should_not_close_client = false;
+	CLOG_DEBUG_START_FUNCTION();
+	std::string message;
+	std::string response_message;
+	if (m_p_peer_stream->CanReceiveData(client) &&
+		m_p_peer_stream->Receive(client, message))
+	{
+		switch(m_request_handler.GetErrorCodeFromFrame(message))
+		{
+		case EFrameError::EXIT_MESSAGE:
+			CLOG_DEBUG_WITH_PARAMS("Exit request from the client", client.GetSocketFD());
+			return false;
+		case EFrameError::CONNECTION_PROBLEM:
+			CLOG_DEBUG_WITH_PARAMS("Connection problem with the client", client.GetSocketFD());
+			return false;
+		case EFrameError::LOST_REQUEST:
+			CLOG_ERROR_WITH_PARAMS("Lost request with the client", client.GetSocketFD());
+			m_request_formatter.TryFormateRequest(response_message, 
+				ERequestType::ALL_DATA, EFrameError::LOST_REQUEST);
+			break;
+		default:
+			m_request_handler.HandleRequest(message, response_message);
+			CLOG_DEBUG_WITH_PARAMS("We receive request", message.c_str(), message.size());
+			break;
+		}
+		
+		should_not_close_client = HandleResponseEvent(client,
+				response_message);
+
+		CLOG_DEBUG_WITH_PARAMS("After sending result of work with client",
+			should_not_close_client);
+	}
+	else if (m_p_peer_stream->IsErrorOccurred(client))
+	{
+		CLOG_ERROR_WITH_PARAMS("Lost connection with the client",
+			client.GetSocketFD());
+		should_not_close_client = false;
+	}
+	CLOG_DEBUG_END_FUNCTION();
+	return should_not_close_client;
+}
+
+bool CServiceConnectionHandler::HandleResponseEvent(const CSocket& client_socket,
+	const std::string& response_message)
 {
 	bool result = false;
 	CLOG_DEBUG_START_FUNCTION();
-	CLOG_TRACE_WITH_PARAMS("Send exit response to the socket ", socket_fd,
-		" client can disconnect");
-	result = m_p_peer_stream->Send(socket_fd, "Disconnect");
-	CLOG_DEBUG_WITH_PARAMS("Send function returned result ", result);
+	result = m_p_peer_stream->Send(client_socket, response_message);
+	CLOG_DEBUG_WITH_PARAMS("Send function returned result ", result,
+		client_socket.GetSocketFD(), "We sent bytes", response_message.size());
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+class CSocket;
 
 #if defined(_WIN64) || defined(_WIN32)
 
@@ -27,30 +28,27 @@ using sockaddress = struct sockaddr_in;
 
 #endif
 
-constexpr int c_error_socket = -1;
-constexpr int c_invalid_socket = 0;
-constexpr int c_success = 0;
-
 class CBaseSocket
 {
 public:
 	CBaseSocket();
-	~CBaseSocket();
+	CBaseSocket(int socket_fd);
+	CBaseSocket(sockaddress address, int socket_fd);
+	~CBaseSocket() = default;
 
-	int GetSocketFD() const;
+	[[nodiscard]]int GetSocketFD() const;
+	void SetSocket(int socket_fd);
+	bool InitSocket();
 
 protected:
 #if defined(_WIN64) || defined(_WIN32)
-	SOCKET InitSocket();
 
 	SOCKET m_socket;
 #elif __linux__
-	int InitSocket();
 
 	int m_socket;
 #endif
 
-	sockaddress m_address;
 };
 
 namespace PlatformUtils
@@ -69,11 +67,10 @@ namespace PlatformUtils
 
 	bool BindSocket(int socket, sockaddress& current_address);
 	bool Listen(int socket, const int connections);
-	int Accept(int socket, sockaddress& current_address);
+	bool Accept( const int socket_fd, CSocket& client);
 	bool Connect(int socket, sockaddress& current_address);
 	bool SetUnblockingSocket(int socket);
 	bool CloseSocket(int socket);
-	int GetConnectionError(int socket_fd);
-
+	void CleanScreen();
 }
 

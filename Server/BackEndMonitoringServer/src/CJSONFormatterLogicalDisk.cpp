@@ -9,22 +9,20 @@ CJSONFormatterLogicalDisk::CJSONFormatterLogicalDisk() : CJSONFormatter()
 { };
 
 bool CJSONFormatterLogicalDisk::TryAddLogicalDiskData(
-    const CLogicalDiskInfo& data_to_json, unsigned short disk_number)
+    const CLogicalDiskInfo& data_to_json)
 {
-    CLOG_DEBUG_START_FUNCTION();
+    CLOG_TRACE_START_FUNCTION();
     nlohmann::json json_format_data;
     CLOG_TRACE_VAR_CREATION(json_format_data);
     constexpr size_t num_of_letter = 10ULL;
     CLOG_TRACE_VAR_CREATION(num_of_letter);
-    const std::string common_main_name("disk");
-    CLOG_TRACE_VAR_CREATION(common_main_name);
     constexpr char all_field[][num_of_letter] = {
         {'n', 'a', 'm', 'e'},
         {'c', 'a', 'p', 'a', 'c', 'i', 't', 'y'},
         {'a', 'v', 'a', 'i', 'l', 'a', 'b', 'l', 'e'},
         {'f', 'r', 'e', 'e'} };
     CLOG_TRACE_VAR_CREATION(all_field);
-    json_format_data[common_main_name + std::to_string(disk_number)] = {
+    json_format_data = {
         CreatePair<std::string>(all_field[0], data_to_json.GetDiskName()),
         CreatePair<long double>(all_field[1], 
         data_to_json.GetCapacityOfDisk()),
@@ -40,6 +38,6 @@ bool CJSONFormatterLogicalDisk::TryAddLogicalDiskData(
     {
         return false;
     }
-    CLOG_DEBUG_END_FUNCTION();
+    CLOG_TRACE_END_FUNCTION();
     return true;
 }

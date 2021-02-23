@@ -20,31 +20,36 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\CLogger\include\Log.h" />
+    <ClInclude Include="..\..\utils\include\CResponseHandler.h" />
+    <ClInclude Include="..\..\utils\include\GlobalVariable.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="include\CAcceptor.h" />
-    <ClInclude Include="include\CAcceptorWrapper.h" />
+    <ClInclude Include="include\CDataProvider.h" />
+    <ClInclude Include="include\CServiceHost.h" />
     <ClInclude Include="include\CClientConnectionHandler.h" />
     <ClInclude Include="include\CConnector.h" />
-    <ClInclude Include="include\CConnectorWrapper.h" />
+    <ClInclude Include="include\CClientConnectorHost.h" />
     <ClInclude Include="include\CServiceConnectionHandler.h" />
+    <ClInclude Include="include\CSockAddress.h" />
     <ClInclude Include="include\EEventType.h" />
     <ClInclude Include="include\CSocket.h" />
     <ClInclude Include="include\CSocketWrapper.h" />
-    <ClInclude Include="include\CDataReceiver.h" />
-    <ClInclude Include="include\EClientRequestType.h" />
     <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\utils\include\CResponseFrame.cpp" />
+    <ClCompile Include="..\..\utils\include\CResponseHandler.cpp" />
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
     <ClCompile Include="src\CAcceptor.cpp" />
-    <ClCompile Include="src\CAcceptorWrapper.cpp" />
+    <ClCompile Include="src\CDataProvider.cpp" />
+    <ClCompile Include="src\CServiceHost.cpp" />
     <ClCompile Include="src\CClientConnectionHandler.cpp" />
     <ClCompile Include="src\CConnector.cpp" />
-    <ClCompile Include="src\CConnectorWrapper.cpp" />
+    <ClCompile Include="src\CClientConnectorHost.cpp" />
     <ClCompile Include="src\CServiceConnectionHandler.cpp" />
+    <ClCompile Include="src\CSockAddress.cpp" />
     <ClCompile Include="src\CSocket.cpp" />
     <ClCompile Include="src\CSocketWrapper.cpp" />
-    <ClCompile Include="src\CDataReceiver.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -54,13 +59,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
+    <None Include="packages.config" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{91dd7f62-f437-4b75-b563-6750346f1b1c}</ProjectGuid>
     <RootNamespace>BackEndMonitoringSockets</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -140,6 +146,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.\include;$(SolutionDir)Sockets\BackEndMonitoringSockets\include;$(SolutionDir)Client\BackEndMonitoringClient\include;$(SolutionDir)Server\BackEndMonitoringServer\include;$(SolutionDir)CLogger\include\;$(SolutionDir);$(SolutionDir)utils\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -191,7 +198,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\..\utils\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\utils\include;..\..\utils\include\PlatformUtils;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <PrecompiledHeaderOutputFile>$(IntDir)stdafx.pch</PrecompiledHeaderOutputFile>
@@ -251,5 +258,12 @@
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets" Condition="Exists('..\..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets'))" />
+  </Target>
 </Project>

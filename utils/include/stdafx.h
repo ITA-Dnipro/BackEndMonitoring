@@ -86,5 +86,6 @@
 #include <typeinfo>
 #include <unordered_map>
 #include <vector>
+#include <cctype>
 
-#include "json.hpp"
+#include "nlohmann/json.hpp"

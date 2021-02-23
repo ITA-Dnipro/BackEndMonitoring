@@ -2,18 +2,18 @@
 
 #include "IHardwareInfoMonitoring.h"
 #include "CContainerOfProcesses.h"
-
-class CJSONFormatterProcess;
+#include "CProcessesInfoJSONDatabase.h"
+#include "CResourcesInfoJSONDatabase.h"
 
 class CProcessesInfoMonitoring : IHardwareInfoMonitoring
 {
 public:
-	CProcessesInfoMonitoring() = delete;
+	CProcessesInfoMonitoring( ) = delete;
 	explicit CProcessesInfoMonitoring(
 		std::chrono::duration<int> pause_duration,
-		std::string path_to_file, EMemoryConvertType count_type, 
-		CEvent& stop_event,
-		CThreadSafeVariable<CJSONFormatterProcess>& json_formatter);
+		EMemoryConvertType count_type, CEvent& stop_event,
+		std::shared_ptr<CProcessesInfoJSONDatabase> database,
+		std::shared_ptr<CResourcesInfoJSONDatabase> resources_database);
 
 	CProcessesInfoMonitoring(const CProcessesInfoMonitoring&) 
 		= delete;
@@ -26,7 +26,8 @@ public:
 
 private:
 	CContainerOfProcesses m_container;
-	CThreadSafeVariable<CJSONFormatterProcess>& m_json_formatter;
+	std::shared_ptr<CProcessesInfoJSONDatabase> m_p_database;
+	std::shared_ptr<CResourcesInfoJSONDatabase> m_p_resources_database;
 	bool m_is_initialized;
 };
 

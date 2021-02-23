@@ -1,36 +1,22 @@
 #include "stdafx.h"
 
 #include "CSocket.h"
+#include "GlobalVariable.h"
+CSocket::CSocket()
+	: CBaseSocket(GlobalVariable::c_invalid_socket)
+{ }
 
-CSocket::CSocket(const int port, const std::string& ip_address)
-{
-	SetSocketAddress(port, ip_address);
-}
-
-void CSocket::SetSocketAddress(const int port,
-	const std::string& ip_address)
-{
-	m_address.sin_family = AF_INET;
-	m_address.sin_port = htons(port);
-	inet_pton(AF_INET, ip_address.c_str(), &(m_address.sin_addr.s_addr));
-}
+CSocket::CSocket(int socket_fd)
+	: CBaseSocket(socket_fd)
+{ }
 
 bool CSocket::IsValidSocket() const
 {
-	if (m_socket == c_invalid_socket)
+	if (m_socket == GlobalVariable::c_invalid_socket 
+		|| m_socket == GlobalVariable::c_error_socket)
 	{
 		return false;
 	}
 	return true;
-}
-
-bool CSocket::CloseSocket()
-{
-	return PlatformUtils::CloseSocket(static_cast<int>(m_socket));
-}
-
-sockaddr_in CSocket::GetSocketAddress() const
-{
-	return m_address;
 }
 

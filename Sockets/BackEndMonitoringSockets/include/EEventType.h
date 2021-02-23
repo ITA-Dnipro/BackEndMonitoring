@@ -12,4 +12,5 @@ enum class EEventType
 	TIMEOUT_EVENT = 8,
 	SIGNAL_EVENT = 9,
 	CLOSE_EVENT = 10,
+	LOST_REQUEST = 11,
 };

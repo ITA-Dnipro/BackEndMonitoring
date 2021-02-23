@@ -1,31 +1,41 @@
 #ifdef __linux__
 #include "stdafx.h"
 
+//#include "Utils/include/GlobalVariable.h"
 #include "CNumericTypesParser.h"
 #include "CReadFileWrapper.h"
 #include "Utils.h"
 #include "CLogger/include/Log.h"
-
+#include "CSocket.h"
 #include "PlatformUtils.h"
+#include "GlobalVariable.h"
 
-CBaseSocket::CBaseSocket()
-{
-	m_socket = InitSocket();
-}
+CBaseSocket::CBaseSocket() : m_socket(GlobalVariable::c_invalid_socket)
+{ }
 
-CBaseSocket::~CBaseSocket()
-{ 
-	PlatformUtils::CloseSocket(m_socket);
-}
+CBaseSocket::CBaseSocket(int socket_fd) : m_socket(socket_fd)
+{ }
 
 int CBaseSocket::GetSocketFD() const
 {
 	return m_socket;
 }
 
-int CBaseSocket::InitSocket()
+void CBaseSocket::SetSocket(int socket_fd)
 {
-	return ::socket(AF_INET, SOCK_STREAM, 0);
+	if (socket_fd > 0 && socket_fd <= GlobalVariable::c_max_valid_socket)
+	{
+		m_socket = socket_fd;
+	}
+}
+bool CBaseSocket::InitSocket()
+{
+	m_socket = socket(AF_INET, SOCK_STREAM, NULL);
+	if (m_socket != GlobalVariable::c_error_socket)
+	{
+		return true;
+	}
+	return false;
 }
 
 
@@ -44,7 +54,7 @@ namespace PlatformUtils
 	bool BindSocket(int socket, sockaddress& current_address)
 	{
 		if (::bind(socket, (struct sockaddr*)&current_address,
-			sizeof(current_address)) == c_success)
+			sizeof(current_address)) == GlobalVariable::c_success)
 		{
 			return true;
 		}
@@ -53,30 +63,35 @@ namespace PlatformUtils
 
 	bool Listen(int socket, const int connections)
 	{
-		if (::listen(socket, connections) == c_success)
+		if (::listen(socket, connections) == GlobalVariable::c_success)
 		{
 			return true;
 		}
 		return false;
 	}
 
-	int Accept(int socket, sockaddress& current_address)
+	bool Accept(int socket_fd, CSocket& client)
 	{
-		int addrlen = sizeof(current_address);
-		return static_cast<int>(accept(socket, 
-			(struct sockaddr*)&current_address, (socklen_t*)&addrlen));
+		int accepted_socket = accept(socket_fd, NULL, NULL);
+		if (accepted_socket < 0)
+		{
+			return false;
+		}
+		client.SetSocket(accepted_socket);
+		return true;
 	}
 
 	bool Connect(int socket, sockaddress& current_address)
 	{
 		return connect(socket, (struct sockaddr*)&current_address, 
-			sizeof(current_address)) == c_success;
+			sizeof(current_address)) == GlobalVariable::c_success;
 	}
 
 	bool SetUnblockingSocket(int socket)
 	{
 		int dontblock = 1;
-		if (ioctl(socket, FIONBIO, (char*)&dontblock) == c_success)
+		if (ioctl(socket, FIONBIO, (char*)&dontblock) == 
+			GlobalVariable::c_success)
 		{
 			return true;
 		}
@@ -85,22 +100,15 @@ namespace PlatformUtils
 
 	bool CloseSocket(int socket)
 	{
-		if (socket != c_invalid_socket)
+		shutdown(socket, 2);
+		if (socket != GlobalVariable::c_error_socket)
 		{
-			if (close(socket) != c_error_socket)
+			if (close(socket) != GlobalVariable::c_error_socket)
 			{
 				return true;
 			}
 		}
 		return false;
-	}
-
-	int GetConnectionError(int socket_fd)
-	{
-		int error = 0;
-		socklen_t size = sizeof(error);
-		getsockopt(socket_fd, SOL_SOCKET, SO_ERROR, (char*)&error, &size);
-		return error;
 	}
 
 	bool TryGetAllNamesAllDisksInSystem(std::vector<std::string>& names)
@@ -441,6 +449,10 @@ namespace PlatformUtils
 		return success;
 	}
 
+	void CleanScreen()
+	{
+		system("clear");
+	}
 }
 
 #endif

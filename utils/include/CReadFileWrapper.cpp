@@ -1,7 +1,5 @@
 #include "stdafx.h"
 
-#include "CLogger/include/Log.h"
-
 #include "CReadFileWrapper.h"
 
 CReadFileWrapper::CReadFileWrapper(const std::filesystem::path& path)
@@ -11,51 +9,112 @@ CReadFileWrapper::CReadFileWrapper(const std::filesystem::path& path)
 bool CReadFileWrapper::Initialize()
 {
     bool success = false;
-    CLOG_DEBUG_START_FUNCTION();
     success = std::filesystem::exists(m_path);
-    CLOG_TRACE_VAR_CREATION(success);
     if(m_is_initialized)
     { return false;}
 
     std::string temp = m_path.string();
-    CLOG_TRACE_VAR_CREATION(temp);
     if(!success)
     { return success;}
 
-    m_p_file = std::make_unique<std::ifstream>(std::ifstream(m_path, std::ios::in));
+    m_p_file = std::make_unique<std::ifstream>(std::ifstream(m_path, 
+                                               std::ios::in | std::ios::binary));
     success = m_p_file->is_open();
 
     m_is_initialized = success;
-    CLOG_DEBUG_END_FUNCTION();
     return success;
+}
+
+bool CReadFileWrapper::ReadWholeFile(std::string& buffer)
+{
+    if (m_is_initialized)
+    {
+        buffer.clear( );
+        m_p_file->seekg(0, std::ios::end);        
+        buffer.resize(m_p_file->tellg( ));
+        m_p_file->seekg(0, std::ios::beg);
+        m_p_file->read(buffer.data(), buffer.size( ));
+    }
+    return m_p_file->good( );
+}
+
+bool CReadFileWrapper::Read(std::string& buffer, std::streamsize count)
+{
+    if (m_is_initialized)
+    {
+        buffer.clear( );
+        buffer.resize(count);
+        return m_p_file->read(buffer.data( ), count).good( );
+    }
+    return false;
 }
 
 bool CReadFileWrapper::ReadLine(std::string& buffer) 
 {
-    CLOG_DEBUG_START_FUNCTION();
     if(m_is_initialized)
     {
         return std::getline(*m_p_file, buffer).good();
     }
-    CLOG_DEBUG_END_FUNCTION();
+    return false;
+}
+
+bool CReadFileWrapper::ReadPrevLine(std::string& buffer)
+{
+    buffer.clear( );
+    char sym;
+    
+    
+    while (ReadPrevSym(sym))
+    {
+        if(sym == '\n')
+        { return true;}
+        buffer.insert(0, 1, sym);
+    }
+
     return false;
 }
 
 bool CReadFileWrapper::ReadSym(char& buffer) 
 {
-    CLOG_DEBUG_START_FUNCTION();
     if(m_is_initialized)
     {
         return m_p_file->get(buffer).good();
     }
-    CLOG_DEBUG_END_FUNCTION();
     return false;
+}
+
+bool CReadFileWrapper::ReadPrevSym(char& buffer)
+{
+    if (m_is_initialized)
+    {
+        std::streampos cur_pos = 0;
+        if(!GetPosition(cur_pos))
+        { return false;}
+        
+        cur_pos -= 2;
+        if(!MoveCursorTo(cur_pos))
+        { return false;}
+
+        return m_p_file->get(buffer).good( );
+    }
+    return false;
+}
+
+bool CReadFileWrapper::GetPosition(std::streampos& pos)
+{
+    pos = m_p_file->tellg( );
+    return m_p_file->good( );
+}
+
+bool CReadFileWrapper::MoveCursorTo(std::streampos pos)
+{
+    m_p_file->clear();
+    m_p_file->seekg(pos);
+    return m_p_file->good();
 }
 
 CReadFileWrapper::~CReadFileWrapper() 
 {
-    CLOG_DEBUG_START_FUNCTION();
     if(m_is_initialized)
     {     m_p_file->close();}
-    CLOG_DEBUG_END_FUNCTION();
 }

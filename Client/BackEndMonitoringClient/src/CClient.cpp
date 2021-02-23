@@ -1,17 +1,21 @@
 #include "stdafx.h"
 
 #include "ERequestType.h"
-#include "ERequestType.h"
 #include "CClient.h"
 #include "Utils.h"
+#include "CLogger/include/Log.h"
+#include "ERequestRangeSpecification.h"
 
-CClient::CClient() : m_port(0), is_connected(false)
-{
-	m_file_name = "ServerData_Client_.txt";
-}
+
+CClient::CClient() : m_port(0),
+	m_file_name("ServerData_Client_.txt"), is_connected(false)
+{ }
 
 bool CClient::Init(const int arg_num, char** arguments)
 {
+	bool result = false;
+	CLOG_DEBUG_START_FUNCTION();
+
 	if (arg_num != c_num_arguments)
 	{
 		return false;
@@ -20,21 +24,27 @@ bool CClient::Init(const int arg_num, char** arguments)
 	m_port = std::stol(arguments[c_port_num]);
 	m_ip_address = arguments[c_ip_address_num];
 
-	m_connector = InitConnector();
-	std::filesystem::path path_to_file(m_file_name);
-	std::filesystem::path extension = path_to_file.extension();
-	std::filesystem::path name = path_to_file.stem();
-	path_to_file.replace_filename(name.string() +
-		std::to_string(m_connector->GetClientSocket()) + extension.string());
-	m_response_data = std::fstream(path_to_file, std::ios_base::out);
-	m_consolePrinter = std::make_unique<CClientView>(std::cout, std::cin);
-	m_filePrinter = std::make_unique<CClientView>(m_response_data, std::cin);
+	result = InitHost(m_port, m_ip_address);
+	if (result)
+	{
+		std::filesystem::path path_to_file(m_file_name);
+		std::filesystem::path extension = path_to_file.extension();
+		std::filesystem::path name = path_to_file.stem();
+		path_to_file.replace_filename(name.string() + extension.string());
+		m_client_stream = std::fstream(path_to_file, std::ios_base::out);
+		m_consolePrinter = std::make_unique<CClientView>(std::cout, std::cin);
+		m_filePrinter = std::make_unique<CClientView>(m_client_stream, std::cin);
+		CLOG_DEBUG("CClientViews were created");
+	}
+	CLOG_DEBUG_END_FUNCTION();
 
-	return true;
+	return result;
 }
 
 void CClient::Execute()
 {
+	CLOG_DEBUG_START_FUNCTION();
+
 	bool result = true;
 	ERequestType request;
 	std::string message;
@@ -60,10 +70,11 @@ void CClient::Execute()
 			m_consolePrinter->PrintError();
 			break;
 		case ERequestType::ALL_DATA_CYCLE:
-			for (unsigned i = 1u; i <= 10; ++i)
+			for (unsigned i = 1u; i <= 10u; ++i)
 			{
-				result = MakeRequest(ERequestType::ALL_DATA, message);
-				if (message.size() > 0)
+				request = ERequestType::ALL_DATA;
+				result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
+				if (!message.empty())
 				{
 					PrintMessage("\n" + std::to_string(i) + "\n\n" + message + "\n\n");
 					message.clear();
@@ -78,24 +89,36 @@ void CClient::Execute()
 		case ERequestType::ALL_DATA_NON_STOP:
 		{
 			int counter = 1;
+			request = ERequestType::ALL_DATA;
 			while (result)
 			{
-				result = MakeRequest(ERequestType::ALL_DATA, message);
-				if (message.size() > 0)
+				result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
+				if (!message.empty())
 				{
 					PrintMessage("\n" + std::to_string(counter++) + "\n\n" +
 						message + "\n\n");
 					message.clear();
 				}
-				std::this_thread::sleep_for(std::chrono::seconds(5));
+				std::this_thread::sleep_for(std::chrono::seconds(1));
 			}
 			break;
 		}
-		default:
-			result = MakeRequest(request, message);
+		case ERequestType::ALL_DATA:
+		{
+			result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
 			break;
 		}
-		if (message.size() > 0)
+		case ERequestType::DISKS_DATA:
+			result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
+			break;
+		case ERequestType::PROCESSES_DATA:
+			result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
+			break;
+		default:
+			result = MakeRequest(message, request, ERequestRangeSpecification::LAST_DATA);
+			break;
+		}
+		if (!message.empty())
 		{
 			PrintMessage("\n" + message + "\n\n");
 			message.clear();
@@ -104,72 +127,56 @@ void CClient::Execute()
 	} while (result && request != ERequestType::EXIT);
 
 	PrintMessage("Goodbye\n");
+	CLOG_DEBUG_END_FUNCTION();
+
 }
 
 bool CClient::Connect()
 {
+	CLOG_DEBUG_START_FUNCTION();
 	is_connected = m_connector->ConnectToServer();
+	CLOG_DEBUG_WITH_PARAMS("We try connect to the server, result", is_connected);
+	CLOG_DEBUG_END_FUNCTION();
 	return is_connected;
 }
 
-bool CClient::MakeRequest(ERequestType type, std::string& message)
+bool CClient::MakeRequest(std::string& message, ERequestType req_typ,
+	ERequestRangeSpecification spec_typ,
+	const std::string& date_of_start, const std::string& date_of_end)
 {
+	CLOG_DEBUG_START_FUNCTION();
+
 	if (is_connected)
 	{
-		switch (type)
-		{
-		case (ERequestType::PROCESSES_DATA):
-		{
-			message = RequestProcessesData();
-			break;
-		}
-		case (ERequestType::DISKS_DATA):
-		{
-			message = RequestDisksData();
-			break;
-		}
-		case (ERequestType::ALL_DATA):
-		{
-			message = RequestAllData();
-			break;
-		}
-		case (ERequestType::EXIT):
-		{
-			while (!m_connector->Exit())
-				return false;
-		}
-		}
+		m_connector->MakeRequest(message, req_typ, spec_typ, date_of_start,
+			date_of_end);
 		if (message == "Error receiving data")
 		{
 			return false;
 		}
+
 		return true;
 	}
+	CLOG_DEBUG_END_FUNCTION();
+
 	return false;
 }
 
-std::unique_ptr<CConnectorWrapper> CClient::InitConnector()
+bool CClient::InitHost(const int port, const std::string& ip_address)
 {
-	return std::move(std::make_unique<CConnectorWrapper>(m_port, m_ip_address));
-}
-
-std::string CClient::RequestProcessesData()
-{
-	return m_connector->MakeRequest(EClientRequestType::PROCESSES_DATA);
-}
-
-std::string CClient::RequestDisksData()
-{
-	return m_connector->MakeRequest(EClientRequestType::DISKS_DATA);
-}
-
-std::string CClient::RequestAllData()
-{
-	return m_connector->MakeRequest(EClientRequestType::ALL_DATA);
+	bool result = false;
+	CLOG_DEBUG_START_FUNCTION();
+	m_connector = std::make_unique<CClientConnectorHost>();
+	result = m_connector->Initialize(port, ip_address);
+	CLOG_DEBUG_WITH_PARAMS("Result of the InitHost function", result);
+	CLOG_DEBUG_END_FUNCTION();
+	return result;
 }
 
 void CClient::PrintMessage(const std::string& message) const
 {
+	CLOG_DEBUG_START_FUNCTION();
 	m_consolePrinter->PrintMessage(message);
 	m_filePrinter->PrintMessage(message);
+	CLOG_DEBUG_END_FUNCTION();
 }

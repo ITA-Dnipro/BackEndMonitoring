@@ -15,8 +15,6 @@ CLogBuilder::CLogBuilder(const std::string& log_name, const ELogLevel log_level,
 		__FUNCTION__, LogUtils::GetTime(), LogUtils::GetThisThreadIdString()) })
 {}
 
-CLogBuilder::CLogBuilder(CLogBuilder&& move) noexcept = default;
-
 CLogBuilder::~CLogBuilder() noexcept = default;
 
 ELogLevel CLogBuilder::GetLogLevel() const

@@ -1,0 +1,10 @@
+#pragma once
+
+enum class EFrameError
+{
+	NONE = 0,
+	INCORRECT_REQUEST,
+	LOST_REQUEST,
+	CONNECTION_PROBLEM,
+	EXIT_MESSAGE
+};

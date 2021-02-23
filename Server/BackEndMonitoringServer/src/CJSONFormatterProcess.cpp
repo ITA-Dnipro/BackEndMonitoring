@@ -10,7 +10,7 @@ CJSONFormatterProcess::CJSONFormatterProcess() : CJSONFormatter()
 bool CJSONFormatterProcess::TryAddProcessData(
     const CProcessInfo& process_to_json)
 {
-    CLOG_DEBUG_START_FUNCTION();
+    CLOG_TRACE_START_FUNCTION();
     nlohmann::json json_format_data;
     CLOG_TRACE_VAR_CREATION(json_format_data);
     unsigned PID;
@@ -31,7 +31,8 @@ bool CJSONFormatterProcess::TryAddProcessData(
         CLOG_WARNING("Can't get some process info");
     }
 
-    json_format_data["PID " + std::to_string(PID)] = {
+    json_format_data = {
+        CreatePair<unsigned>("PID", PID),
         CreatePair<double>("CPU_usage", cpu_usage),
         CreatePair<long double>("RAM_usage", ram_usage),
         CreatePair<long double>("Pagefile_usage",pagefile_usage)
@@ -46,6 +47,6 @@ bool CJSONFormatterProcess::TryAddProcessData(
         CLOG_ERROR("Can't add processes info to json");
         return false;
     }
-    CLOG_DEBUG_END_FUNCTION();
+    CLOG_TRACE_END_FUNCTION();
     return true;
 }

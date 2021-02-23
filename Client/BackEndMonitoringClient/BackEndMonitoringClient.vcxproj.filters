@@ -15,36 +15,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\BackEndMonitoringClient.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="src\stdafx.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CClient.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\utils\include\CStringCleaner.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CClientView.cpp">
+    <ClCompile Include="..\..\utils\include\Utils.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\utils\include\Utils.cpp">
+    <ClCompile Include="..\..\utils\include\CInteractionFrame.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CRequestFrame.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CClientController.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\CClient.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="include\ERequestType.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\CStringCleaner.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="include\CClientView.h">
@@ -56,8 +50,12 @@
     <ClInclude Include="..\..\utils\include\stdafx.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CClientController.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
