@@ -3,143 +3,230 @@
 #include "ERequestType.h"
 #include "CClient.h"
 #include "Utils.h"
+#include  "ClientUtils.h"
+#include "Log.h"
+#include "GlobalVariable.h"
+#include "PlatformUtils.h"
 
-#include "CLogger/include/Log.h"
-
-CClient::CClient() : 
-	m_file_name("ServerData_Client_.txt"),
-	m_controller(new CClientController)
-{ }
-
-bool CClient::Init(const int arg_num, char** arguments)
+CClient::CClient() :
+	m_file_name("ServerResponses.txt"),
+	m_controller(new CClientController), m_show_as_table(false),
+	m_is_date_range_mode(false)
 {
-	bool result = false;
+	Init();
+}
+
+void CClient::Init()
+{
 	CLOG_DEBUG_START_FUNCTION();
 
-	if (arg_num != c_num_arguments)
-	{
-		return false;
-	}
-
-	m_port = std::stol(arguments[c_port_num]);
-	m_ip_address = arguments[c_ip_address_num];
-
-	result = m_controller->InitHost(m_port, m_ip_address);
-	if (result)
-	{
 		std::filesystem::path path_to_file(m_file_name);
 		std::filesystem::path extension = path_to_file.extension();
 		std::filesystem::path name = path_to_file.stem();
 		path_to_file.replace_filename(name.string() + extension.string());
 		m_client_stream = std::fstream(path_to_file, std::ios_base::out);
-		m_consolePrinter = std::make_unique<CClientView>(std::cout, std::cin);
-		m_filePrinter = std::make_unique<CClientView>(m_client_stream, std::cin);
-		CLOG_DEBUG("CClientViews were created");
-	}
+		m_printer = std::make_unique<CClientView>(std::cout, m_client_stream, 
+			std::cin);
+		CLOG_DEBUG("CClientViews were initialized");
 	CLOG_DEBUG_END_FUNCTION();
-
-	return result;
 }
 
-void CClient::Execute()
+void CClient::Execute(const int arg_num, char** arguments)
 {
 	CLOG_DEBUG_START_FUNCTION();
 
-	bool result = true;
-	ERequestType request;
-	std::string message;
-
-	if (m_controller->Connect())
+	if(!EstablishConnection(arg_num, arguments))
 	{
-		PrintMessage("Client connected to the server\n\n");
-	}
-	else
-	{
-		PrintMessage("Client cannot connect to the server, exit\n\n");
 		return;
 	}
+	PlatformUtils::CleanScreen();
+	
+	bool result = true;
+	EClientRequests client_request;
+	ERequestType request_type;
 
 	do
 	{
-		m_consolePrinter->PrintMenu();
-		request = m_consolePrinter->GetRequest();
+		m_printer->PrintMenu(m_show_as_table, m_is_date_range_mode);
+		client_request = m_printer->GetRequest();
 
-		switch (request)
+		switch(client_request)
 		{
-		case ERequestType::ERR:
-			m_consolePrinter->PrintError();
+		case EClientRequests::ERR:
+			m_printer->PrintError();
 			break;
-		case ERequestType::ALL_DATA_CYCLE:
-			for (unsigned i = 1u; i <= 10u; ++i)
-			{
-				request = ERequestType::ALL_DATA;
-				result = m_controller->MakeRequest(message, request, 
-					ERequestRangeSpecification::LAST_DATA);
-				if (!message.empty())
-				{
-					PrintMessage("\n" + std::to_string(i) + "\n\n" + message + "\n\n");
-					message.clear();
-				}
-				if (!result)
-				{
-					break;
-				}
-				std::this_thread::sleep_for(std::chrono::seconds(5));
-			}
+		case EClientRequests::DISKS_DATA:
+			result = MakeRequest(ERequestType::DISKS_DATA);
 			break;
-		case ERequestType::ALL_DATA_NON_STOP:
-		{
-			int counter = 1;
-			request = ERequestType::ALL_DATA;
-			while (result)
-			{
-				result = m_controller->MakeRequest(message, request, 
-					ERequestRangeSpecification::LAST_DATA);
-				if (!message.empty())
-				{
-					PrintMessage("\n" + std::to_string(counter++) + "\n\n" +
-						message + "\n\n");
-					message.clear();
-				}
-				std::this_thread::sleep_for(std::chrono::seconds(1));
-			}
+		case EClientRequests::PROCESSES_DATA:
+			result = MakeRequest(ERequestType::PROCESSES_DATA);
 			break;
-		}
-		case ERequestType::ALL_DATA:
-		{
-			result = m_controller->MakeRequest(message, request, 
-				ERequestRangeSpecification::LAST_DATA);
+		case EClientRequests::ALL_DATA:
+			result = MakeRequest(ERequestType::ALL_DATA);
 			break;
-		}
-		case ERequestType::DISKS_DATA:
-			result = m_controller->MakeRequest(message, request, 
-				ERequestRangeSpecification::LAST_DATA);
+		case EClientRequests::ALL_DATA_CYCLE:
+			result = MakeCycleOfRequests();
 			break;
-		case ERequestType::PROCESSES_DATA:
-			result = m_controller->MakeRequest(message, request, 
-				ERequestRangeSpecification::LAST_DATA);
+		case EClientRequests::ALL_DATA_NON_STOP:
+			result = MakeNonStopRequests();
+			break;
+		case EClientRequests::ALL_HISTORY:
+			result = MakeAllHistoryRequest();
+			break;
+		case EClientRequests::DATE_MODE:
+			m_is_date_range_mode = !m_is_date_range_mode;
+			break;
+		case EClientRequests::CHANGE_OUTPUT_TO_FILE:
+			m_printer->SetIsWritingFile(!m_printer->GetIsWritingFile());
+			break;
+		case EClientRequests::CHANGE_VIEW_MODE:
+			m_show_as_table = !m_show_as_table;
+			break;
+		case EClientRequests::CLS:
+			PlatformUtils::CleanScreen();
+			break;
+		case EClientRequests::EXIT:
+			MakeExitRequest();
+			result = false;
 			break;
 		default:
-			result = m_controller->MakeRequest(message, request, 
-				ERequestRangeSpecification::LAST_DATA);
+			m_printer->PrintError();
 			break;
 		}
-		if (!message.empty())
-		{
-			PrintMessage("\n" + message + "\n\n");
-			message.clear();
-		}
 
-	} while (result && request != ERequestType::EXIT);
+	} while (result && client_request != EClientRequests::EXIT);
 
-	PrintMessage("Goodbye\n");
+	m_printer->PrintMessage("Goodbye\n");
 	CLOG_DEBUG_END_FUNCTION();
 }
 
-void CClient::PrintMessage(const std::string& message) const
+bool CClient::MakeCycleOfRequests() const
 {
-	CLOG_DEBUG_START_FUNCTION();
-	m_consolePrinter->PrintMessage(message);
-	m_filePrinter->PrintMessage(message);
-	CLOG_DEBUG_END_FUNCTION();
+	ERequestType request = ERequestType::ALL_DATA;
+	bool result = false;
+	std::string message;
+	for (unsigned i = 1u; i <= 10u; ++i)
+	{
+		request = ERequestType::ALL_DATA;
+		result = m_controller->MakeRequest(message, request,
+			ERequestRangeSpecification::LAST_DATA);
+		if (!message.empty())
+		{
+			m_printer->PrintMessage("\n\t\t\t" + std::to_string(i) + "\n");
+			PrintMessage(message, request);
+			message.clear();
+		}
+		if (!result)
+		{
+			break;
+		}
+		std::this_thread::sleep_for(std::chrono::seconds(5));
+	}
+	return result;
+}
+
+bool CClient::MakeNonStopRequests() const
+{
+	int counter = 1;
+	ERequestType request = ERequestType::ALL_DATA;
+	bool result = false;
+	std::string message;
+	while (true)
+	{
+		result = m_controller->MakeRequest(message, request,
+			ERequestRangeSpecification::LAST_DATA);
+		if (!message.empty())
+		{
+			m_printer->PrintMessage("\n\t\t\t" + std::to_string(++counter) + "\n");
+			PrintMessage(message, request);
+			message.clear();
+		}
+		std::this_thread::sleep_for(std::chrono::seconds(5));
+	}
+	return result;
+}
+
+void CClient::MakeExitRequest() const
+{
+	m_controller->MakeExitRequest();
+}
+
+void CClient::PrintMessage(const std::string& message, ERequestType req_type) const
+{
+	std::string converted_message = resp_converter.ConvertResponse(message,
+		req_type, m_show_as_table);
+	m_printer->PrintMessage("\n" + converted_message + "\n\n");
+}
+
+bool CClient::MakeAllHistoryRequest() const
+{
+	std::string message;
+	bool result = m_controller->MakeRequest(message,
+		ERequestType::ALL_DATA, ERequestRangeSpecification::ALL_DATA);
+	PrintMessage(message, ERequestType::ALL_DATA);
+	return result;
+}
+
+bool CClient::EstablishConnection(const int arg_num, char** arguments)
+{
+	if (arg_num == static_cast<int>(Arguments::COUNT)
+		&& ClientUtils::c_port_flag.compare(arguments[static_cast<int>(Arguments::PORT_FLAG)]) == 0
+		&& ClientUtils::c_ip_address_flag.compare(arguments[static_cast<int>(Arguments::IP_FLAG)]) == 0)
+	{
+		int port = ClientUtils::ConvertToInt(arguments[static_cast<int>(Arguments::PORT)]);
+		std::string ip_address = arguments[static_cast<int>(Arguments::IP)];
+
+		if (ClientUtils::IsValidPort(port)
+			&& ClientUtils::IsValidIpAddress(ip_address)
+			&& m_controller->InitHost(port, ip_address)
+			&& Connect(port, ip_address))
+		{
+			return true;
+		}
+	}
+	m_printer->PrintHelp();
+
+	return false;
+}
+
+bool CClient::Connect(const int port, const std::string& ip_address)
+{
+	bool result;
+
+	if (m_controller->Connect())
+	{
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+		PlatformUtils::CleanScreen();
+		return true;
+	}
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+	PlatformUtils::CleanScreen();
+	return false;
+}
+
+bool CClient::MakeRequest(ERequestType req_type) const
+{
+	std::string first_date;
+	std::string second_date;
+
+	if(m_is_date_range_mode)
+	{
+		m_printer->PrintMessage("Please, enter first date (format DD.MM.YY HH:MM:SS):\n");
+		first_date = m_printer->EnterDate();
+		m_printer->PrintMessage("Please, enter second date (format DD.MM.YY HH:MM:SS):\n");
+		second_date = m_printer->EnterDate();
+	}
+	ERequestRangeSpecification req_specification = m_is_date_range_mode ? 
+		ERequestRangeSpecification::RANGE_OF_DATA :
+		ERequestRangeSpecification::LAST_DATA;
+	
+	std::string message;
+	bool result = m_controller->MakeRequest(message,
+		req_type, req_specification, first_date, second_date);
+
+	if (req_type != ERequestType::EXIT && !message.empty())
+	{
+		PrintMessage(message, req_type);
+	}
+	return result;
 }

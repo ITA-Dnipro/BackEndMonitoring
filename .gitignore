@@ -52,6 +52,8 @@ Server/BackEndMonitoringServerTests/Build/**
 CLogger/Build/**
 UtilsTests/Build/**
 Sockets/BackEndMonitoringSockets/Build/**
+Guid/Build/**
+
 .idea/**
 cmake-build-debug/**
 cmake-build-release/**

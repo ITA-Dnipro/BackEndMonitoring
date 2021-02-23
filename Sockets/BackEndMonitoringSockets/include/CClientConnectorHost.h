@@ -16,7 +16,8 @@ public:
 	bool Initialize(const int port, const std::string& ip_address);
 	bool ConnectToServer() const;
 	[[nodiscard]] std::string MakeRequest(std::string& message, 
-		ERequestType req_typ, ERequestRangeSpecification spec_typ,
+		ERequestType req_typ, EFrameError error = EFrameError::NONE, 
+		ERequestRangeSpecification spec_typ = ERequestRangeSpecification::LAST_DATA,
 		const std::string& date_of_start = "", 
 		const std::string& date_of_end = "") const;
 	bool Exit() const;

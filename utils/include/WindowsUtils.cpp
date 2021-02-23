@@ -1,11 +1,11 @@
 #include "stdafx.h"
 
-#include "Sockets/BackEndMonitoringSockets/include/CSocket.h"
+#include "CSocket.h"
 
 #if defined(_WIN64) || defined(_WIN32)
-#include "Utils/include/GlobalVariable.h"
+#include "GlobalVariable.h"
 #include "Utils.h"
-#include "CLogger/include/Log.h"
+#include "Log.h"
 #include "PlatformUtils.h"
 
 #pragma warning(disable : 6385)
@@ -316,6 +316,10 @@ namespace PlatformUtils
 		return false;
 	}
 
+	void CleanScreen()
+	{
+		system("cls");
+	}
 }
 
 #endif
