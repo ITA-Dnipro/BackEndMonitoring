@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.17)
 project(BackEndMonitoring)
 
+find_path(LIBUUID_INCLUDE_DIR uuid.h PATH_SUFFIXES uuid)
+find_library(LIBUUID_LIBRARY libuuid.a)
+include_directories(${LIBUUID_INCLUDE_DIR})
+
 include_directories(${CMAKE_SOURCE_DIR}
 		${NLOHMANN_JSON_INCLUDE_DIR}
 		${CMAKE_SOURCE_DIR}/3rdParty/include
@@ -25,5 +29,6 @@ add_executable(ClientCLI
 
 # Link these libraries to this build
 target_link_libraries(ClientCLI CLogger)
+target_link_libraries(ClientCLI Guid)
 target_link_libraries(ClientCLI Sockets)
 target_link_libraries(ClientCLI Client)

@@ -26,4 +26,5 @@ add_library(Client
 
 # Link these libraries to this build
 target_link_libraries(Client CLogger)
+target_link_libraries(Client Guid)
 target_link_libraries(Client Sockets)
