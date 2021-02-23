@@ -21,7 +21,7 @@ bool CClientConnectionHandler::HandleEvent(const CSocket& client_socket,
 	CLOG_DEBUG_START_FUNCTION();
 	m_current_request = message;
 	result = HandleRequestEvent(client_socket, message);
-
+	message.clear();
 	CLOG_DEBUG_WITH_PARAMS("Result after HandleRequestEvent is equal", result);
 	if (result)
 	{

@@ -35,10 +35,11 @@ void CClient::Execute(const int arg_num, char** arguments)
 {
 	CLOG_DEBUG_START_FUNCTION();
 
-	if(!EstablishConnectionWithServer(arg_num, arguments))
+	if(!EstablishConnection(arg_num, arguments))
 	{
 		return;
 	}
+	PlatformUtils::CleanScreen();
 	
 	bool result = true;
 	EClientRequests client_request;
@@ -68,6 +69,8 @@ void CClient::Execute(const int arg_num, char** arguments)
 			break;
 		case EClientRequests::ALL_DATA_NON_STOP:
 			result = MakeNonStopRequests();
+		case EClientRequests::ALL_HISTORY:
+			result = MakeAllHistoryRequest();
 			break;
 		case EClientRequests::DATE_MODE:
 			m_is_date_range_mode = !m_is_date_range_mode;
@@ -108,7 +111,8 @@ bool CClient::MakeCycleOfRequests() const
 			ERequestRangeSpecification::LAST_DATA);
 		if (!message.empty())
 		{
-			m_printer->PrintMessage("\n" + std::to_string(i) + "\n\n" + message + "\n\n");
+			m_printer->PrintMessage("\n\t\t\t" + std::to_string(i) + "\n");
+			PrintMessage(message, request);
 			message.clear();
 		}
 		if (!result)
@@ -132,9 +136,8 @@ bool CClient::MakeNonStopRequests() const
 			ERequestRangeSpecification::LAST_DATA);
 		if (!message.empty())
 		{
-			std::string message_new = resp_converter.ConvertResponse(message, ERequestType::ALL_DATA);
-			m_printer->PrintMessage("\n" + std::to_string(counter++) + "\n\n" +
-				message_new + "\n\n");
+			m_printer->PrintMessage("\n\t\t\t" + std::to_string(++counter) + "\n");
+			PrintMessage(message, request);
 			message.clear();
 		}
 		std::this_thread::sleep_for(std::chrono::seconds(5));
@@ -147,15 +150,30 @@ void CClient::MakeExitRequest() const
 	m_controller->MakeExitRequest();
 }
 
-bool CClient::EstablishConnectionWithServer(const int arg_num, char** arguments)
+void CClient::PrintMessage(const std::string& message, ERequestType req_type) const
 {
-	int port;
-	std::string ip_address;
-	
-	if (arg_num == c_num_arguments)
+	std::string converted_message = resp_converter.ConvertResponse(message,
+		req_type, m_show_as_table);
+	m_printer->PrintMessage("\n" + converted_message + "\n\n");
+}
+
+bool CClient::MakeAllHistoryRequest() const
+{
+	std::string message;
+	bool result = m_controller->MakeRequest(message,
+		ERequestType::ALL_DATA, ERequestRangeSpecification::ALL_DATA);
+	PrintMessage(message, ERequestType::ALL_DATA);
+	return result;
+}
+
+bool CClient::EstablishConnection(const int arg_num, char** arguments)
+{
+	if (arg_num == static_cast<int>(Arguments::COUNT)
+		&& ClientUtils::c_port_flag.compare(arguments[static_cast<int>(Arguments::PORT_FLAG)]) == 0
+		&& ClientUtils::c_ip_address_flag.compare(arguments[static_cast<int>(Arguments::IP_FLAG)]) == 0)
 	{
-		port = ClientUtils::ConvertToInt(arguments[c_port_num]);
-		ip_address = arguments[c_ip_address_num];
+		int port = ClientUtils::ConvertToInt(arguments[static_cast<int>(Arguments::PORT)]);
+		std::string ip_address = arguments[static_cast<int>(Arguments::IP)];
 
 		if (ClientUtils::IsValidPort(port)
 			&& ClientUtils::IsValidIpAddress(ip_address)
@@ -165,40 +183,9 @@ bool CClient::EstablishConnectionWithServer(const int arg_num, char** arguments)
 			return true;
 		}
 	}
-	m_printer->PrintErrorConnection();
-	std::this_thread::sleep_for(std::chrono::seconds(1));
-	PlatformUtils::CleanScreen();
+	m_printer->PrintHelp();
 
-	std::string entered_port;
-	std::string entered_address;
-	do
-	{
-		entered_port = m_printer->EnterPort();
-		if(entered_port.compare(g_c_client_requests[g_c_exit_request]) == 0)
-		{
-			return false;
-		}
-		entered_address = m_printer->EnterIpAddress();
-		if (entered_address.compare(g_c_client_requests[g_c_exit_request]) == 0)
-		{
-			return false;
-		}
-		port = ClientUtils::ConvertToInt(entered_port);
-		ip_address = entered_address;
-		
-		if(ClientUtils::IsValidPort(port)
-			&& ClientUtils::IsValidIpAddress(ip_address)
-			&& m_controller->InitHost(port, ip_address)
-			&& Connect(port, ip_address))
-		{
-			return true;
-		}
-
-		m_printer->PrintErrorConnection();
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-		PlatformUtils::CleanScreen();
-
-	} while (true);
+	return false;
 }
 
 bool CClient::Connect(const int port, const std::string& ip_address)
@@ -207,12 +194,10 @@ bool CClient::Connect(const int port, const std::string& ip_address)
 
 	if (m_controller->Connect())
 	{
-		m_printer->PrintSuccessConnection();
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 		PlatformUtils::CleanScreen();
 		return true;
 	}
-	m_printer->PrintErrorConnection();
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 	PlatformUtils::CleanScreen();
 	return false;
@@ -220,14 +205,27 @@ bool CClient::Connect(const int port, const std::string& ip_address)
 
 bool CClient::MakeRequest(ERequestType req_type) const
 {
+	std::string first_date;
+	std::string second_date;
+
+	if(m_is_date_range_mode)
+	{
+		m_printer->PrintMessage("Please, enter first date (format DD.MM.YY HH:MM:SS):\n");
+		first_date = m_printer->EnterDate();
+		m_printer->PrintMessage("Please, enter second date (format DD.MM.YY HH:MM:SS):\n");
+		second_date = m_printer->EnterDate();
+	}
+	ERequestRangeSpecification req_specification = m_is_date_range_mode ? 
+		ERequestRangeSpecification::RANGE_OF_DATA :
+		ERequestRangeSpecification::LAST_DATA;
+	
 	std::string message;
 	bool result = m_controller->MakeRequest(message,
-		req_type, ERequestRangeSpecification::LAST_DATA);
+		req_type, req_specification, first_date, second_date);
 
 	if (req_type != ERequestType::EXIT && !message.empty())
 	{
-		std::string message_new = resp_converter.ConvertResponse(message, req_type);
-		m_printer->PrintMessage("\n" + message_new + "\n\n");
+		PrintMessage(message, req_type);
 	}
 	return result;
 }

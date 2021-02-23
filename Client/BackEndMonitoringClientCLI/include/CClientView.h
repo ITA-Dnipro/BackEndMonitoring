@@ -13,14 +13,12 @@ public:
 
 	void PrintMenu(bool show_response_mode, bool date_range_mode) const;
 	EClientRequests GetRequest() const;
-	std::string EnterPort() const;
-	std::string EnterIpAddress() const;
 	void PrintMessage(const std::string& result) const;
 	void PrintError() const;
-	void PrintSuccessConnection() const;
-	void PrintErrorConnection() const;
 	void SetIsWritingFile(bool status);
 	bool GetIsWritingFile() const;
+	std::string EnterDate() const;
+	void PrintHelp() const;
 
 private:
 	

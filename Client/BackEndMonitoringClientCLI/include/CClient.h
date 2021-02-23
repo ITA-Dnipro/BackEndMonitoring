@@ -13,17 +13,16 @@ public:
 	void Execute(const int arg_num, char** arguments);
 
 private:
-	const int c_num_arguments = 3;
-	const int c_ip_address_num = 2;
-	const int c_port_num = 1;
 	
 	void Init();
-	bool EstablishConnectionWithServer(const int arg_num, char** arguments);
+	bool EstablishConnection(const int arg_num, char** arguments);
 	bool Connect(const int port, const std::string& ip_address);
 	bool MakeRequest(ERequestType req_type) const;
 	bool MakeCycleOfRequests() const;
 	bool MakeNonStopRequests() const;
 	void MakeExitRequest() const;
+	void PrintMessage(const std::string& message, ERequestType req_type) const;
+	bool MakeAllHistoryRequest() const;
 	
 	std::string m_file_name;
 	std::unique_ptr<CClientController> m_controller;

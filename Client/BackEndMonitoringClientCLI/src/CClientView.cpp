@@ -2,6 +2,7 @@
 
 #include "CStringCleaner.h"
 #include "CClientView.h"
+#include "ClientUtils.h"
 
 CClientView::CClientView(std::ostream& out_console, std::ostream& out_file, 
 	std::istream& in) : m_console_stream(out_console),
@@ -22,7 +23,9 @@ void CClientView::PrintMenu(bool show_response_mode, bool date_range_mode) const
 				<< "all current info about the server state\n"
 	
 		<< "\t\x1b[1;32m[\x1b[1;31mnon stop\x1b[1;32m]\x1b[0m         "
-				<< "make requests to the server non-stop \x1b[1;33m(all data)\x1b[0m\n\n"
+				<< "make requests to the server non-stop \x1b[1;33m(all data)\x1b[0m\n"
+		<< "\t\x1b[1;32m[\x1b[1;31mall stored info\x1b[1;32m]\x1b[0m         "
+		<< "make request of all stored info from the server \x1b[1;33m(all data)\x1b[0m\n\n"
 	
 		<< "\t\x1b[1;32m[\x1b[1;31mdate mode\x1b[1;32m]\x1b[0m        " << "change request mode \x1b[1;33m(current: \x1b[1;36m"
 				<< (date_range_mode ? "request by date range" : "last info") << "\x1b[1;33m)\x1b[0m\n"
@@ -32,7 +35,7 @@ void CClientView::PrintMenu(bool show_response_mode, bool date_range_mode) const
 	
 		<< "\t\x1b[1;32m[\x1b[1;31mchange view\x1b[1;32m]\x1b[0m      "
 				<< "change printing data mode \x1b[1;33m(current: \x1b[1;36m"
-				<< (show_response_mode ? "as json" : "as table") << "\x1b[1;33m)\x1b[0m\n"
+				<< (show_response_mode ? "as json" : "as table") << "\x1b[1;33m)\x1b[0m\n\n"
 	
 		<< "\t\x1b[1;32m[\x1b[1;31mcls\x1b[1;32m]\x1b[0m              clean screen\n"
 	
@@ -61,24 +64,6 @@ EClientRequests CClientView::GetRequest() const
 	return EClientRequests::ERR;
 }
 
-std::string CClientView::EnterPort() const
-{
-	std::string port;
-	m_console_stream << "Please, enter port for connection (or \"exit\" to exit):\n";
-	std::getline(m_input_stream, port);
-
-	return port;
-}
-
-std::string CClientView::EnterIpAddress() const
-{
-	std::string ip_address;
-	m_console_stream << "Please, enter ip address for connection (or \"exit\" to exit):\n";
-	std::getline(m_input_stream, ip_address);
-
-	return ip_address;
-}
-
 void CClientView::PrintMessage(const std::string& result) const
 {
 	m_console_stream << result;
@@ -98,29 +83,25 @@ void CClientView::PrintError() const
 	}
 }
 
-void CClientView::PrintSuccessConnection() const
-{
-	std::string msg = "\n\n\n\n\n\t\t\t\tSuccessfully connected to the server!\n";
-	m_console_stream << msg;
-	if (m_should_write_file)
-	{
-		m_file_stream << msg;
-	}
-}
-
-void CClientView::PrintErrorConnection() const
-{
-	std::string err_message = "\n\n\n\n\n\t\t\t\tYou passed the wrong networking parameters, please, try again!\n";
-	m_console_stream << err_message;
-	if (m_should_write_file)
-	{
-		m_file_stream << err_message;
-	}
-}
-
 bool CClientView::GetIsWritingFile() const
 {
 	return m_should_write_file;
+}
+
+std::string CClientView::EnterDate() const
+{
+	std::string date;
+	std::getline(m_input_stream, date);
+	return date;
+}
+
+void CClientView::PrintHelp() const
+{
+	m_console_stream << "help\n"
+		<< "Client " << ClientUtils::c_port_flag << " [value] "
+			 << ClientUtils::c_ip_address_flag << " [value]\n\n"
+		<< ClientUtils::c_port_flag << " [value] - port for connection to the server\n"
+			<< ClientUtils::c_ip_address_flag << " [value] - ip address for connection to the server\n\n";
 }
 
 void CClientView::SetIsWritingFile(bool status)
