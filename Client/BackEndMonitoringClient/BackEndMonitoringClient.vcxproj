@@ -119,6 +119,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.\include;$(SolutionDir)Sockets\BackEndMonitoringSockets\include;$(SolutionDir)Client\BackEndMonitoringClient\include;$(SolutionDir)Server\BackEndMonitoringServer\include;$(SolutionDir)CLogger\include\;$(SolutionDir);$(SolutionDir)utils\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
