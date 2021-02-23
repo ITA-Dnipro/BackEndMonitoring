@@ -27,9 +27,8 @@ bool CClientController::MakeRequest(std::string& message, ERequestType req_typ,
 
 	if (is_connected)
 	{
-		m_connector->MakeRequest(message, req_typ, EFrameError::NONE, spec_typ, date_of_start,
-			date_of_end);
-		if (message == "Error receiving data")
+        if (!m_connector->MakeRequest(message, req_typ, EFrameError::NONE, spec_typ, date_of_start,
+                                      date_of_end))
 		{
 			return false;
 		}

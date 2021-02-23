@@ -40,6 +40,8 @@ CMainWindow::CMainWindow(QWidget *parent)
 
 CMainWindow::~CMainWindow()
 {
+    m_timer.stop();
+    m_controller->MakeExitRequest();
     delete ui;
 }
 
@@ -118,15 +120,14 @@ void CMainWindow::HandleAddRequest(ERequestType request_type,
             QMessageBox messageBox;
             messageBox.critical(0,"Error","Something went wrong!");
             messageBox.setFixedSize(500,200);
+            close();
         }
     }
 
     }
     catch(const nlohmann::json::exception&)
     {
-        QMessageBox messageBox;
-        messageBox.critical(0,"Error","Something went wrong!");
-        messageBox.setFixedSize(500,200);
+        ui->statusbar->showMessage("Something went wrong!", 2000);
     }
 }
 
@@ -167,9 +168,7 @@ void CMainWindow::HandleUpdateRequest(ERequestType request_type,
     }
     catch(const nlohmann::json::exception&)
     {
-        QMessageBox messageBox;
-        messageBox.critical(0,"Error","Something went wrong!");
-        messageBox.setFixedSize(500,200);
+        ui->statusbar->showMessage("Something went wrong!", 2000);
     }
 }
 
@@ -195,6 +194,7 @@ void CMainWindow::UpdateProcessesData(ERequestType request_type,
         QMessageBox messageBox;
         messageBox.critical(0,"Error","Something went wrong!");
         messageBox.setFixedSize(500,200);
+        close();
     }
 }
 
@@ -218,6 +218,7 @@ void CMainWindow::AddProcessesData(ERequestType request_type,
         QMessageBox messageBox;
         messageBox.critical(0,"Error","Something went wrong!");
         messageBox.setFixedSize(500,200);
+        close();
     }
 }
 
@@ -286,7 +287,7 @@ void CMainWindow::AddToProcessesGraph(const nlohmann::json& data)
     if(!success)
     {
         QMessageBox messageBox;
-        messageBox.critical(0,"Error","Something went wrong!");
+        messageBox.warning(0,"Error","Something went wrong!");
         messageBox.setFixedSize(500,200);
     }
 
@@ -309,6 +310,7 @@ void CMainWindow::UpdateDrivesData(ERequestType request_type,
         QMessageBox messageBox;
         messageBox.critical(0,"Error","Something went wrong!");
         messageBox.setFixedSize(500,200);
+        close();
     }
 }
 
@@ -326,6 +328,7 @@ void CMainWindow::AddDrivesData(ERequestType request_type,
         QMessageBox messageBox;
         messageBox.critical(0,"Error","Something went wrong!");
         messageBox.setFixedSize(500,200);
+        close();
     }
 }
 

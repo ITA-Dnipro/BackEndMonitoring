@@ -74,4 +74,13 @@ unix|win32: LIBS += -L$$PWD/../../packages/CLogger/Debug/x64/ -lCLogger
 INCLUDEPATH += $$PWD/../../CLogger/include
 DEPENDPATH += $$PWD/../../CLogger/include
 
+
+unix|win32: LIBS += -L$$PWD/../../packages/Guid/Debug/x64/ -lGuid
+
+INCLUDEPATH += $$PWD/../../Guid/include
+DEPENDPATH += $$PWD/../../Guid/include
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Guid/Debug/x64/Guid.lib
+else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Guid/Debug/x64/libGuid.a
+
 RC_ICONS = monitor.ico

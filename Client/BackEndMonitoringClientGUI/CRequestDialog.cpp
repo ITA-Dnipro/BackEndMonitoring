@@ -14,7 +14,9 @@ CRequestDialog::CRequestDialog(QWidget *parent) :
     ui->setupUi(this);
 
     ui->date_from->setEnabled(false);
+    ui->date_from->setDate(QDate::currentDate());
     ui->date_to->setEnabled(false);
+    ui->date_to->setDate(QDate::currentDate());
 }
 
 CRequestDialog::~CRequestDialog()

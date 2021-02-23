@@ -34,7 +34,7 @@ bool CClientConnectorHost::Initialize(const int port, const std::string& ip_addr
 	return m_is_initialized;
 }
 
-std::string CClientConnectorHost::MakeRequest(std::string& message, 
+bool CClientConnectorHost::MakeRequest(std::string& message,
 	ERequestType req_typ, EFrameError error, ERequestRangeSpecification spec_typ,
 	const std::string& date_of_start, const std::string& date_of_end) const
 {
@@ -42,7 +42,7 @@ std::string CClientConnectorHost::MakeRequest(std::string& message,
 	if(!m_is_initialized)
 	{
 		CLOG_ERROR("Client host is not initialized");
-		return "Client host is not initialized";
+                return false;
 	}
 	message.clear();
 
@@ -50,10 +50,10 @@ std::string CClientConnectorHost::MakeRequest(std::string& message,
 		message, req_typ, error, spec_typ, date_of_start, date_of_end))
 	{
 		CLOG_DEBUG_WITH_PARAMS("We receive message with length", message.size());
-		return message;
+                return true;
 	}
 	CLOG_DEBUG_END_FUNCTION();
-	return "Error receiving data";
+        return false;
 }
 
 bool CClientConnectorHost::ConnectToServer() const
