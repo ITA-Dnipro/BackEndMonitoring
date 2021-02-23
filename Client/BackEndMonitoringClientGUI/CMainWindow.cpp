@@ -91,6 +91,7 @@ void CMainWindow::on_update_timer_tick()
 void CMainWindow::HandleAddRequest(ERequestType request_type,
                                    ERequestRangeSpecification range)
 {
+    try{
     switch (request_type) {
         case(ERequestType::PROCESSES_DATA) :
         {
@@ -119,6 +120,14 @@ void CMainWindow::HandleAddRequest(ERequestType request_type,
             messageBox.setFixedSize(500,200);
         }
     }
+
+    }
+    catch(const nlohmann::json::exception&)
+    {
+        QMessageBox messageBox;
+        messageBox.critical(0,"Error","Something went wrong!");
+        messageBox.setFixedSize(500,200);
+    }
 }
 
 void CMainWindow::HandleUpdateRequest(ERequestType request_type,
@@ -126,6 +135,7 @@ void CMainWindow::HandleUpdateRequest(ERequestType request_type,
                                       const std::string& from,
                                       const std::string& to)
 {
+    try{
     switch (request_type) {
         case(ERequestType::PROCESSES_DATA) :
         {
@@ -153,6 +163,13 @@ void CMainWindow::HandleUpdateRequest(ERequestType request_type,
             messageBox.critical(0,"Error","Something went wrong!");
             messageBox.setFixedSize(500,200);
         }
+    }
+    }
+    catch(const nlohmann::json::exception&)
+    {
+        QMessageBox messageBox;
+        messageBox.critical(0,"Error","Something went wrong!");
+        messageBox.setFixedSize(500,200);
     }
 }
 
@@ -247,7 +264,6 @@ void CMainWindow::AddProcessesTable(const nlohmann::json& data)
                 }
             }
         }
-        //ui->statusbar->repaint();
     }
 }
 
@@ -260,11 +276,20 @@ void CMainWindow::UpdateProcessesGraph(const nlohmann::json& data)
 
 void CMainWindow::AddToProcessesGraph(const nlohmann::json& data)
 {
+    bool success = false;
     for(auto entry : data)
     {
-        m_processes_graph->AddEntry(entry);
+        success = m_processes_graph->AddEntry(entry);
     }
-    m_processes_graph->Update();
+    success = m_processes_graph->Update();
+
+    if(!success)
+    {
+        QMessageBox messageBox;
+        messageBox.critical(0,"Error","Something went wrong!");
+        messageBox.setFixedSize(500,200);
+    }
+
 }
 
 

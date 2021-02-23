@@ -22,6 +22,10 @@
   <property name="windowTitle">
    <string>BackEndMonitoring</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>monitor.ico</normaloff>monitor.ico</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">background : rgb(247, 247, 247);</string>
   </property>

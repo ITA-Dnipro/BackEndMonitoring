@@ -73,3 +73,5 @@ else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Sockets/Debug/x64/li
 unix|win32: LIBS += -L$$PWD/../../packages/CLogger/Debug/x64/ -lCLogger
 INCLUDEPATH += $$PWD/../../CLogger/include
 DEPENDPATH += $$PWD/../../CLogger/include
+
+RC_ICONS = monitor.ico
