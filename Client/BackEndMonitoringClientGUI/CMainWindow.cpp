@@ -17,7 +17,7 @@ CMainWindow::CMainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::CMainWindow),
       m_controller(new CClientController),
-      timer(this)
+      m_timer(this)
 {
     ui->setupUi(this);
 
@@ -30,6 +30,9 @@ CMainWindow::CMainWindow(QWidget *parent)
     }
 
     m_drives_graph = std::make_unique<CDrivesGraph>(ui->drives_graph);
+
+    connect(&m_timer, SIGNAL(timeout()), this, SLOT(on_update_timer_tick()));
+    m_timer.start(10000);
 }
 
 CMainWindow::~CMainWindow()
@@ -74,6 +77,12 @@ void CMainWindow::on_request_button_clicked()
         }
     }
     delete dialog;
+}
+
+void CMainWindow::on_update_timer_tick()
+{
+    HandleAddRequest(ERequestType::ALL_DATA,
+                     ERequestRangeSpecification::LAST_DATA);
 }
 
 void CMainWindow::HandleAddRequest(ERequestType request_type,

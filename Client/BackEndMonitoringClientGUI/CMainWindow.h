@@ -28,6 +28,8 @@ private slots:
     void on_actionReconnect_triggered();
 
     void on_request_button_clicked();
+
+    void on_update_timer_tick();
 private:
     void HandleAddRequest(ERequestType request_type,
                           ERequestRangeSpecification range);
@@ -58,7 +60,7 @@ private:
     void AddToDrives(const nlohmann::json& data);
 
 
-    QTimer timer;
+    QTimer m_timer;
     std::shared_ptr<CClientController> m_controller;
     std::unique_ptr<CDrivesGraph> m_drives_graph;
     Ui::CMainWindow *ui;
