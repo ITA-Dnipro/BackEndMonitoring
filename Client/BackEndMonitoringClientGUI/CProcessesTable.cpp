@@ -50,7 +50,7 @@ bool CProcessesTable::Initialize(const nlohmann::json& data)
         setItem(row, 0, pid_item);
 
         QTableWidgetItem* cpu_item = new QTableWidgetItem();
-        cpu_item->setData(Qt::EditRole, process["CPU_usage"].get<unsigned>());
+        cpu_item->setData(Qt::EditRole, process["CPU_usage"].get<float>());
         setItem(row, 1, cpu_item);
 
         QTableWidgetItem* pagefile_item = new QTableWidgetItem();

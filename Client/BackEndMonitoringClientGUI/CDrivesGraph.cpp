@@ -86,9 +86,14 @@ bool CDrivesGraph::Update()
           m_graph->graph(found_index)->setData(graph.second);
           m_graph->graph(found_index)->setName(graph.first);
 
-          QColor color(20+200/4.0*found_index,70*(1.6-found_index/4.0), 150, 150);
-          m_graph->graph(found_index)->setPen(QPen(color.lighter(200)));
-          m_graph->graph(found_index)->setBrush(QBrush(color));
+          QColor color(20+200/4.0*found_index,70*(1.6-found_index/4.0),
+                       (150 * found_index) % 150 + 100,
+                       (150 * found_index) % 150 + 100);
+
+          QPen pen (color.darker(200));
+          pen.setWidth(5);
+          m_graph->graph(found_index)->setPen(pen);
+          //m_graph->graph(found_index)->setBrush(QBrush(color));
         }
     }
 

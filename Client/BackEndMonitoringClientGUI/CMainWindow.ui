@@ -63,7 +63,7 @@ QTabBar::tab:hover {color: #000000; background-color: #FFFFFF;}</string>
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="iconSize">
        <size>
@@ -111,8 +111,8 @@ QToolBox::tab:selected {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>145</width>
-             <height>24</height>
+             <width>558</width>
+             <height>371</height>
             </rect>
            </property>
            <attribute name="label">
@@ -152,7 +152,7 @@ QToolBox::tab:selected {
 QTabBar::tab:hover {color: #000000; background-color: #FFFFFF;}</string>
               </property>
               <property name="currentIndex">
-               <number>2</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="CPU_tab">
                <attribute name="title">

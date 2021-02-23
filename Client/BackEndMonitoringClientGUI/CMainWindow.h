@@ -9,6 +9,7 @@
 #include "ERequestRangeSpecification.h"
 
 class CDrivesGraph;
+class CProcessesGraph;
 class CClientController;
 
 QT_BEGIN_NAMESPACE
@@ -46,6 +47,7 @@ private:
                           ERequestRangeSpecification range);
 
     void UpdateProcessesTable(const nlohmann::json& data);
+    void AddProcessesTable(const nlohmann::json& data);
     void UpdateProcessesGraph(const nlohmann::json& data);
     void AddToProcessesGraph(const nlohmann::json& data);
 
@@ -63,6 +65,7 @@ private:
     QTimer m_timer;
     std::shared_ptr<CClientController> m_controller;
     std::unique_ptr<CDrivesGraph> m_drives_graph;
+    std::unique_ptr<CProcessesGraph> m_processes_graph;
     Ui::CMainWindow *ui;
 };
 #endif // CMAINWINDOW_H
