@@ -29,67 +29,76 @@ bool CRequestHandler::HandleRequest(const std::string& request_str,
     nlohmann::json request = nlohmann::json::parse(request_str);
     CResponseFrame response(request[GlobalVariable::c_request_key_id]);
     CLOG_DEBUG_START_FUNCTION();
+    try
+    {
 
-    if (!TryValidateRequest(request_str))
-    {
-        response.TryFormateResponse(answer, "",
-            EFrameError::INCORRECT_REQUEST); 
-        //log and return true
-		CLOG_ERROR("Invalid request from the client!!!");
-        return false;
-    }
-    EFrameError error_from_frame = GetErrorCodeFromFrame(request_str);
-    if (EFrameError::NONE != error_from_frame)
-    {
-        response.TryFormateResponse(answer, "",
-            error_from_frame);
-        //log and return true
-        CLOG_ERROR("Invalid request from the client!!!");
-        return false;
-    }
-
-    switch (AnalyzeRequestType(request))
-    {
-    case ERequestType::ALL_DATA:
-        if (!ExecuteRequest(answer, std::make_shared<CRequestExcAllData>(
-            request_str, std::make_shared<CDataProvider>(m_data_base))))
+        if (!TryValidateRequest(request_str))
         {
             response.TryFormateResponse(answer, "",
                 EFrameError::INCORRECT_REQUEST); 
+            //log and return true
+	    	CLOG_ERROR("Invalid request from the client!!!");
             return false;
         }
-        CLOG_DEBUG("All data request from the client");
-
-        break;
-    case ERequestType::DISKS_DATA:
-        if(!ExecuteRequest(answer, std::make_shared<CRequestExcDiskData>(
-            request_str, std::make_shared<CDataProvider>(m_data_base))))
+        EFrameError error_from_frame = GetErrorCodeFromFrame(request_str);
+        if (EFrameError::NONE != error_from_frame)
         {
             response.TryFormateResponse(answer, "",
-                EFrameError::INCORRECT_REQUEST); 
+                error_from_frame);
+            //log and return true
+            CLOG_ERROR("Invalid request from the client!!!");
             return false;
         }
-        CLOG_DEBUG("Disks data request from the client");
 
-        break;
-    case ERequestType::PROCESSES_DATA:
-        if(!ExecuteRequest(answer, std::make_shared<CRequestExcProcessData>(
-            request_str, std::make_shared<CDataProvider>(m_data_base))))
+        switch (AnalyzeRequestType(request))
         {
-            response.TryFormateResponse(answer, "",
-                EFrameError::INCORRECT_REQUEST); 
+        case ERequestType::ALL_DATA:
+            if (!ExecuteRequest(answer, std::make_shared<CRequestExcAllData>(
+                request_str, std::make_shared<CDataProvider>(m_data_base))))
+            {
+                response.TryFormateResponse(answer, "",
+                    EFrameError::INCORRECT_REQUEST); 
+                return false;
+            }
+            CLOG_DEBUG("All data request from the client");
+
+            break;
+        case ERequestType::DISKS_DATA:
+            if(!ExecuteRequest(answer, std::make_shared<CRequestExcDiskData>(
+                request_str, std::make_shared<CDataProvider>(m_data_base))))
+            {
+                response.TryFormateResponse(answer, "",
+                    EFrameError::INCORRECT_REQUEST); 
+                return false;
+            }
+            CLOG_DEBUG("Disks data request from the client");
+
+            break;
+        case ERequestType::PROCESSES_DATA:
+            if(!ExecuteRequest(answer, std::make_shared<CRequestExcProcessData>(
+                request_str, std::make_shared<CDataProvider>(m_data_base))))
+            {
+                response.TryFormateResponse(answer, "",
+                    EFrameError::INCORRECT_REQUEST); 
+                return false;
+            }
+            CLOG_DEBUG("Processes data request from the client");
+
+            break;
+        default:
+        {
+            response.TryFormateResponse(answer, "", 
+                EFrameError::LOST_REQUEST);
+            CLOG_ERROR("Default case, incorrect error");
             return false;
         }
-        CLOG_DEBUG("Processes data request from the client");
-
-        break;
-    default:
-    {
-        response.TryFormateResponse(answer, "", 
-            EFrameError::LOST_REQUEST);
-        CLOG_ERROR("Default case, incorrect error");
-        return false;
+        }
     }
+    // todo: kind of exceptio
+    catch (...)
+    {
+        return response.TryFormateResponse(answer, answer, 
+            EFrameError::INCORRECT_REQUEST);
     }
     CLOG_DEBUG_END_FUNCTION();
     // could be a problem

@@ -3,6 +3,7 @@ project(BackEndMonitoring)
 
 include_directories(${CMAKE_SOURCE_DIR}
 		${NLOHMANN_JSON_INCLUDE_DIR}
+		${CMAKE_SOURCE_DIR}/3rdParty/include
 		${CMAKE_SOURCE_DIR}/Client/BackEndMonitoringClientCLI/include
 		${CMAKE_SOURCE_DIR}/Client/BackEndMonitoringClient/include
 		${CMAKE_SOURCE_DIR}/CLogger/include
@@ -24,5 +25,6 @@ add_executable(ClientCLI
 
 # Link these libraries to this build
 target_link_libraries(ClientCLI CLogger)
+target_link_libraries(ClientCLI Guid)
 target_link_libraries(ClientCLI Sockets)
 target_link_libraries(ClientCLI Client)

@@ -7,6 +7,7 @@ link_directories(${CMAKE_BINARY_DIR}/Sockets)
 
 include_directories(${CMAKE_SOURCE_DIR}
 		${NLOHMANN_JSON_INCLUDE_DIR}
+		${CMAKE_SOURCE_DIR}/3rdParty/include
 		${CMAKE_SOURCE_DIR}/Client/BackEndMonitoringClient/include
 		${CMAKE_SOURCE_DIR}/CLogger/include
 		${CMAKE_SOURCE_DIR}/BackEndMonitoringSockets/include
@@ -25,4 +26,5 @@ add_library(Client
 
 # Link these libraries to this build
 target_link_libraries(Client CLogger)
+target_link_libraries(Client Guid)
 target_link_libraries(Client Sockets)
