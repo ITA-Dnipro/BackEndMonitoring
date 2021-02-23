@@ -82,6 +82,8 @@ void CClient::Execute(const int arg_num, char** arguments)
 			PlatformUtils::CleanScreen();
 			break;
 		case EClientRequests::EXIT:
+			MakeExitRequest();
+			result = false;
 			break;
 		default:
 			m_printer->PrintError();
@@ -139,7 +141,12 @@ bool CClient::MakeNonStopRequests() const
 	}
 	return result;
 }
-	
+
+void CClient::MakeExitRequest() const
+{
+	m_controller->MakeExitRequest();
+}
+
 bool CClient::EstablishConnectionWithServer(const int arg_num, char** arguments)
 {
 	int port;
@@ -217,9 +224,9 @@ bool CClient::MakeRequest(ERequestType req_type) const
 	bool result = m_controller->MakeRequest(message,
 		req_type, ERequestRangeSpecification::LAST_DATA);
 
-	if (!message.empty())
+	if (req_type != ERequestType::EXIT && !message.empty())
 	{
-		std::string message_new = resp_converter.ConvertResponse(message, ERequestType::ALL_DATA);
+		std::string message_new = resp_converter.ConvertResponse(message, req_type);
 		m_printer->PrintMessage("\n" + message_new + "\n\n");
 	}
 	return result;

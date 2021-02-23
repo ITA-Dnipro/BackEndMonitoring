@@ -28,28 +28,44 @@ bool CServiceConnectionHandler::HandleEvent(const CSocket& client, EEventType ev
 	return result;
 }
 
-bool CServiceConnectionHandler::HandleRequestEvent(const CSocket& client_socket)
+bool CServiceConnectionHandler::HandleRequestEvent(const CSocket& client)
 {
 	bool should_not_close_client = false;
 	CLOG_DEBUG_START_FUNCTION();
 	std::string message;
 	std::string response_message;
-	if (m_p_peer_stream->CanReceiveData(client_socket) &&
-		m_p_peer_stream->Receive(client_socket, message))
+	if (m_p_peer_stream->CanReceiveData(client) &&
+		m_p_peer_stream->Receive(client, message))
 	{
-		CLOG_DEBUG_WITH_PARAMS("We receive request", message.c_str(), message.size());
-		m_request_handler.HandleRequest(message, response_message);
+		switch(m_request_handler.GetErrorCodeFromFrame(message))
+		{
+		case EFrameError::EXIT_MESSAGE:
+			CLOG_DEBUG_WITH_PARAMS("Exit request from the client", client.GetSocketFD());
+			return false;
+		case EFrameError::CONNECTION_PROBLEM:
+			CLOG_DEBUG_WITH_PARAMS("Connection problem with the client", client.GetSocketFD());
+			return false;
+		case EFrameError::LOST_REQUEST:
+			CLOG_ERROR_WITH_PARAMS("Lost request with the client", client.GetSocketFD());
+			m_request_formatter.TryFormateRequest(response_message, 
+				ERequestType::ALL_DATA, EFrameError::LOST_REQUEST);
+			break;
+		default:
+			m_request_handler.HandleRequest(message, response_message);
+			CLOG_DEBUG_WITH_PARAMS("We receive request", message.c_str(), message.size());
+			break;
+		}
 		
-		should_not_close_client = HandleResponseEvent(client_socket,
+		should_not_close_client = HandleResponseEvent(client,
 				response_message);
 
 		CLOG_DEBUG_WITH_PARAMS("After sending result of work with client",
 			should_not_close_client);
 	}
-	else if (m_p_peer_stream->IsErrorOccurred(client_socket))
+	else if (m_p_peer_stream->IsErrorOccurred(client))
 	{
 		CLOG_ERROR_WITH_PARAMS("Lost connection with the client",
-			client_socket.GetSocketFD());
+			client.GetSocketFD());
 		should_not_close_client = false;
 	}
 	CLOG_DEBUG_END_FUNCTION();

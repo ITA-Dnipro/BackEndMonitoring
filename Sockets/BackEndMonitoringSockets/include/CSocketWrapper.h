@@ -1,5 +1,6 @@
  #pragma once
 
+#include "CRequestFrame.h"
 class CSocket;
 
 //This class allows to send and receive data from one side to another
@@ -25,4 +26,6 @@ private:
 		const std::string& key) const;
 	bool IsAllDataReceived(int msg_size, int received_msg_size) const;
 	[[nodiscard]] int ConvertDataToInt(const std::string& data) const;
+
+	CRequestFrame m_request_formatter;
 };

@@ -1,7 +1,5 @@
 #pragma once
-#include "EEventType.h"
 #include "CSocketWrapper.h"
-#include "ERequestType.h"
 #include "ERequestRangeSpecification.h"
 #include "CRequestFrame.h"
 #include "CResponseHandler.h"
@@ -18,9 +16,11 @@ public:
 	~CClientConnectionHandler() noexcept = default;
 
 	bool HandleEvent(const CSocket& client_socket, std::string& message, 
-		ERequestType req_typ, ERequestRangeSpecification spec_typ,
+		ERequestType req_typ, EFrameError error = EFrameError::NONE, 
+		ERequestRangeSpecification spec_typ = ERequestRangeSpecification::LAST_DATA,
 		const std::string& date_of_start = "", 
 		const std::string& date_of_end = "");
+	
 
 private:
 	bool HandleRequestEvent(const CSocket& client_socket, 

@@ -23,6 +23,7 @@ private:
 	bool MakeRequest(ERequestType req_type) const;
 	bool MakeCycleOfRequests() const;
 	bool MakeNonStopRequests() const;
+	void MakeExitRequest() const;
 	
 	std::string m_file_name;
 	std::unique_ptr<CClientController> m_controller;

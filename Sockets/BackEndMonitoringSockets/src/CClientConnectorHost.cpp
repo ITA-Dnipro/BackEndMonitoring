@@ -35,7 +35,7 @@ bool CClientConnectorHost::Initialize(const int port, const std::string& ip_addr
 }
 
 std::string CClientConnectorHost::MakeRequest(std::string& message, 
-	ERequestType req_typ, ERequestRangeSpecification spec_typ,
+	ERequestType req_typ, EFrameError error, ERequestRangeSpecification spec_typ,
 	const std::string& date_of_start, const std::string& date_of_end) const
 {
 	CLOG_DEBUG_START_FUNCTION();
@@ -47,7 +47,7 @@ std::string CClientConnectorHost::MakeRequest(std::string& message,
 	message.clear();
 
 	if (m_p_client_handler->HandleEvent(m_connector->GetSocket(),
-		message, req_typ, spec_typ, date_of_start, date_of_end))
+		message, req_typ, error, spec_typ, date_of_start, date_of_end))
 	{
 		CLOG_DEBUG_WITH_PARAMS("We receive message with length", message.size());
 		return message;

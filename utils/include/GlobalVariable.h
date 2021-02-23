@@ -12,10 +12,6 @@ namespace GlobalVariable
 	constexpr int c_success = 0;
 	constexpr int c_max_valid_socket = 65535;
 	constexpr int c_max_port_value = 65535;
-	const std::string c_request_error = "ERROR";
-	const std::string c_lost_request = "REQUEST LOST";
-	const std::string c_connection_problem = "-1";
-	const std::string c_exit_message = "EXIT";
 
 	static const std::string c_request_key_id = "id";
 	static const std::string c_request_key_req_typ = "request_type";
@@ -23,7 +19,7 @@ namespace GlobalVariable
 	static const std::string c_request_key_duration = "duration";
 	static const std::string c_request_format_default = "%d.%m.%Y %X";
 	static const std::string c_response_data = "data";
-	static const std::string c_response_error = "error";
+	static const std::string c_frame_error = "error";
 
 
 }

@@ -2,7 +2,7 @@
 
 #include "CInteractionHandler.h"
 
-enum class EResponseError;
+enum class EFrameError;
 
 class CResponseHandler : public CInteractionHandler
 {
@@ -14,10 +14,13 @@ public:
 	[[nodiscard]] bool HandleResponse(const std::string& guid, 
 		const std::string& response, std::string& var_storage);
 
+	[[nodiscard]] virtual EFrameError GetErrorCodeFromFrame(
+		const std::string& response) override;
+
 private:
 	[[nodiscard]] bool TryValidate(const std::string& guid, 
 		const std::string& response);
-	[[nodiscard]] EResponseError DetermineErrorInResponse(
+	[[nodiscard]] EFrameError DetermineErrorInResponse(
 		const nlohmann::json& response);
 
 private:

@@ -27,7 +27,7 @@ bool CClientController::MakeRequest(std::string& message, ERequestType req_typ,
 
 	if (is_connected)
 	{
-		m_connector->MakeRequest(message, req_typ, spec_typ, date_of_start,
+		m_connector->MakeRequest(message, req_typ, EFrameError::NONE, spec_typ, date_of_start,
 			date_of_end);
 		if (message == "Error receiving data")
 		{
@@ -39,6 +39,12 @@ bool CClientController::MakeRequest(std::string& message, ERequestType req_typ,
 	CLOG_DEBUG_END_FUNCTION();
 
 	return false;
+}
+
+void CClientController::MakeExitRequest() const
+{
+	std::string message;
+	m_connector->MakeRequest(message, ERequestType::EXIT, EFrameError::EXIT_MESSAGE);
 }
 
 

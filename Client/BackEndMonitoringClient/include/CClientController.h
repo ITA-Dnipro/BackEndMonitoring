@@ -13,6 +13,7 @@ public:
 		ERequestRangeSpecification spec_typ,
 		const std::string& date_of_start = "",
 		const std::string& date_of_end = "");
+	void MakeExitRequest() const;
 	bool InitHost(const int port, const std::string& ip_address);
 
 private:

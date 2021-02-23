@@ -39,6 +39,9 @@
     <ClCompile Include="src\ClientUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\utils\include\CRequestFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\utils\include\stdafx.h">
@@ -51,9 +54,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\utils\include\CStringCleaner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\utils\include\GlobalVariable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\EClientRequests.h">

@@ -167,6 +167,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\utils\include\CRequestFrame.cpp" />
     <ClCompile Include="..\..\utils\include\CStringCleaner.cpp" />
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
     <ClCompile Include="..\BackEndMonitoringClient\src\stdafx.cpp">
@@ -183,7 +184,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\utils\include\CStringCleaner.h" />
-    <ClInclude Include="..\..\utils\include\GlobalVariable.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="..\..\utils\include\stdafx.h" />
     <ClInclude Include="include\CClient.h" />

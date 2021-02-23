@@ -11,15 +11,13 @@ CClientConnectionHandler::CClientConnectionHandler()
 }
 
 bool CClientConnectionHandler::HandleEvent(const CSocket& client_socket,
-	std::string& message, ERequestType req_typ, 
+	std::string& message, ERequestType req_typ, EFrameError error,
 	ERequestRangeSpecification spec_typ,
 	const std::string& date_of_start, const std::string& date_of_end)
 {
-	m_request_formatter.TryFormateRequest(message, req_typ, spec_typ, 
+	bool result = m_request_formatter.TryFormateRequest(message, req_typ, error, spec_typ,
 		date_of_start, date_of_end);
 
-	// TODO make response handler here
-	bool result = true;
 	CLOG_DEBUG_START_FUNCTION();
 	m_current_request = message;
 	result = HandleRequestEvent(client_socket, message);
@@ -60,13 +58,13 @@ bool CClientConnectionHandler::HandleResponseEvent(const CSocket& client_socket,
 	CLOG_DEBUG_WITH_PARAMS("We send request to the server, result", result);
 	if (result)
 	{
-		// TODO wrong response + error from the server
-		if (message.compare(GlobalVariable::c_connection_problem) == 0)
+		
+		if (m_response_handler.GetErrorCodeFromFrame(message) == EFrameError::CONNECTION_PROBLEM)
 		{
 			CLOG_ERROR_WITH_PARAMS("Response from the server", message);
 			return false;
 		}
-		else if (message.compare(GlobalVariable::c_lost_request) == 0)
+		else if (m_response_handler.GetErrorCodeFromFrame(message) == EFrameError::LOST_REQUEST)
 		{
 			CLOG_ERROR_WITH_PARAMS("Response from the server", message);
 			result = HandleLostRequestEvent(client_socket, message);
@@ -92,7 +90,15 @@ bool CClientConnectionHandler::HandleExitEvent(const CSocket& client_socket)
 {
 	bool result = false;
 	CLOG_DEBUG_START_FUNCTION();
-	result = SendRequestToServer(client_socket, GlobalVariable::c_exit_message);
+	std::string exit_message;
+	result = m_request_formatter.TryFormateRequest(exit_message, 
+		ERequestType::EXIT, EFrameError::EXIT_MESSAGE);
+
+	if(result)
+	{
+		result = SendRequestToServer(client_socket, exit_message);
+	}
+	
 	CLOG_DEBUG_WITH_PARAMS("HandleExitEvent send exit message", result);
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
@@ -105,8 +111,8 @@ bool CClientConnectionHandler::HandleLostRequestEvent(const CSocket& client_sock
 
 	const int max_trials = 5;
 	int count_trials = 0;
-	
-	if(m_current_request.compare(GlobalVariable::c_request_error) == 0)
+
+	if(m_response_handler.GetErrorCodeFromFrame(message) == EFrameError::INCORRECT_REQUEST)
 	{
 		CLOG_ERROR("We receive error from the server");
 		return false;
@@ -116,14 +122,14 @@ bool CClientConnectionHandler::HandleLostRequestEvent(const CSocket& client_sock
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		CLOG_DEBUG_WITH_PARAMS("Request data again", client_socket.GetSocketFD(), 
 			m_current_request);
-		// TODO wrong response from the server
+
 		if (SendRequestToServer(client_socket, m_current_request)
 			&& m_p_client_stream->Receive(client_socket, message))
 		{
 			CLOG_DEBUG_WITH_PARAMS("We receive response", message.size());
 			if (!message.empty() 
-				&& message.compare(GlobalVariable::c_lost_request) != 0 
-				&& message.compare(GlobalVariable::c_connection_problem) != 0)
+				&& m_response_handler.GetErrorCodeFromFrame(message) != EFrameError::LOST_REQUEST
+				&& m_response_handler.GetErrorCodeFromFrame(message) != EFrameError::CONNECTION_PROBLEM)
 			{
 				CLOG_DEBUG("We receive correct response");
 				return true;
