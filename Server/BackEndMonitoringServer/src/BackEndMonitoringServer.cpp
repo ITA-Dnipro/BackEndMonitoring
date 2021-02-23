@@ -25,9 +25,9 @@ int main(int argc, char** argv)
 	CLOG_CREATION_SET_LOG_FLUSH(ELogFlush::FLUSH);
 	CLOG_CREATION_SET_LOG_CONFIG(
 		ELogConfig::THREAD_ID, ELogConfig::CALL_TIME,
-		ELogConfig::LOG_LEVEL, ELogConfig::FUNCTION_NAME,
-		ELogConfig::MESSAGE, ELogConfig::PARAMS);
-
+		ELogConfig::LOG_LEVEL, ELogConfig::MESSAGE,
+		ELogConfig::FUNCTION_NAME, ELogConfig::PARAMS);
+	
 	CLOG_CREATION_ADD_SAFE_STREAM(stream);
 
 	CLOG_BUILD();
