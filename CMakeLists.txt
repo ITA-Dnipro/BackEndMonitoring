@@ -82,6 +82,7 @@ endif()
 
 add_subdirectory(CLogger)
 add_subdirectory(Sockets/BackEndMonitoringSockets)
+add_subdirectory(Guid)
 add_subdirectory(Client/BackEndMonitoringClient)
 add_subdirectory(Client/BackEndMonitoringClientCLI)
 add_subdirectory(Client/BackEndMonitoringClientTests)

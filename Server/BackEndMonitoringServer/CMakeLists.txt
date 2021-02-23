@@ -72,4 +72,5 @@ add_executable(Server
 #----------------------------------- TARGET LIBS ---------------------------------------#
 
 target_link_libraries(Server CLogger)
+target_link_libraries(Server Guid)
 target_link_libraries(Server Sockets)
