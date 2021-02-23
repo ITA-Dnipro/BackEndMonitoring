@@ -26,7 +26,17 @@ CRequestHandler::CRequestHandler(const CRequestHandler& orig) :
 bool CRequestHandler::HandleRequest(const std::string& request_str, 
     std::string& answer)
 {
-    nlohmann::json request = nlohmann::json::parse(request_str);
+    nlohmann::json request;
+	try
+	{
+        request = nlohmann::json::parse(request_str);
+		
+	}
+	catch(...)
+	{
+        CLOG_ERROR("Incorrect request!!!");
+        return false;
+	}
     CResponseFrame response(request[GlobalVariable::c_request_key_id]);
     CLOG_DEBUG_START_FUNCTION();
     try
@@ -94,14 +104,13 @@ bool CRequestHandler::HandleRequest(const std::string& request_str,
         }
         }
     }
-    // todo: kind of exceptio
     catch (...)
     {
         return response.TryFormateResponse(answer, answer, 
             EFrameError::INCORRECT_REQUEST);
     }
     CLOG_DEBUG_END_FUNCTION();
-    // could be a problem
+
     return response.TryFormateResponse(answer, answer, EFrameError::NONE);
 }
 

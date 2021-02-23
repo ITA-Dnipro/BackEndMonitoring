@@ -64,22 +64,22 @@ EClientRequests CClientView::GetRequest() const
 	return EClientRequests::ERR;
 }
 
-void CClientView::PrintMessage(const std::string& result) const
+void CClientView::PrintMessage(const std::string& message) const
 {
-	m_console_stream << result;
+	m_console_stream << message << std::endl;
 	if(m_should_write_file)
 	{
-		m_file_stream << result << std::endl;
+		m_file_stream << message << std::endl;
 	}
 }
 
 void CClientView::PrintError() const
 {
 	std::string err_message = "Sorry, you entered something wrong :(\n";
-	m_console_stream << err_message;
+	m_console_stream << err_message << std::endl;
 	if (m_should_write_file)
 	{
-		m_file_stream << err_message;
+		m_file_stream << err_message << std::endl;
 	}
 }
 

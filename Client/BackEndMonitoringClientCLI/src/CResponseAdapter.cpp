@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "CResponseAdapter.h"
 #include  "GlobalVariable.h"
 #include "VariadicTable.h"
+#include "CResponseAdapter.h"
 
 std::string CResponseAdapter::ConvertResponse(const std::string& response, 
-	ERequestType request_type, bool is_table_mode) const
+	ERequestType request_type, bool is_table_mode)
 {
 	std::string result_str;
 	try
@@ -24,7 +24,7 @@ std::string CResponseAdapter::ConvertResponse(const std::string& response,
 	}
 	catch(...)
 	{
-		result_str = "Cannot parse response from the server";
+		result_str = "Can not get correct response server";
 	}
 	
 	return result_str;
@@ -34,18 +34,19 @@ std::string CResponseAdapter::ConvertDiskInfo(const std::string& response,
 	bool is_table_mode) const
 {
 	nlohmann::json json_response = nlohmann::json::parse(response);
-	nlohmann::json parsed_drives = json_response[0]["info"];
+	//nlohmann::json parsed_drives = json_response[0]["info"];
 
-	std::string response_disk = json_response[0]["date"].get<std::string>();
-	response_disk += "\n";
+	std::string response_disk;// = json_response[0]["date"].get<std::string>();
+	//response_disk += "\n";
 	if(is_table_mode)
 	{
-		response_disk.append(MakeDiskTable(parsed_drives));
+		response_disk.append(MakeDiskTable(json_response));
 	}
 	else
 	{
-		response_disk.append(json_response[0]["info"].dump(2));
+		response_disk.append(json_response.dump(2));
 	}
+
 	return response_disk;
 }
 
@@ -61,18 +62,19 @@ std::string CResponseAdapter::ConvertAllData(const std::string& response,
 	std::string drives = json_response["disks info"].get<std::string>();
 	nlohmann::json json_drives = nlohmann::json::parse(drives);
 	
-	std::string converted_response = nlohmann::json::parse(drives)[0]["date"].get<std::string>();
+	std::string converted_response;
 
 	if(is_table_mode)
 	{
 		converted_response.append("\ndrives\n");
-		converted_response.append(MakeDiskTable(json_drives[0]["info"]));
+		converted_response.append(MakeDiskTable(json_drives));
 		converted_response.append("\n\nprocesses\n");
 		converted_response.append(MakeProcTable(parsed_proc));
 	}
 	else
 	{
 		nlohmann::json result;
+		converted_response.append(nlohmann::json::parse(drives)[0]["date"].get<std::string>());
 		result["processes"] = std::move(parsed_proc);
 		result["drives"] = std::move(json_drives);
 
@@ -90,8 +92,8 @@ std::string CResponseAdapter::ConvertProcessesInfo(const std::string& response,
 	nlohmann::json json_proc = json_response["processes"];
 	nlohmann::json parsed_processes = nlohmann::json::parse(json_proc.get<std::string>());
 
-	std::string converted_processes = 
-		parsed_processes[0]["date"].get<std::string>();
+	std::string converted_processes;
+		
 	converted_processes.append("\n");
 	if(is_table_mode)
 	{
@@ -99,6 +101,7 @@ std::string CResponseAdapter::ConvertProcessesInfo(const std::string& response,
 	}
 	else
 	{
+		converted_processes.append(parsed_processes[0]["date"].get<std::string>());
 		converted_processes.append(json_proc.get<std::string>());
 	}
 
@@ -107,39 +110,56 @@ std::string CResponseAdapter::ConvertProcessesInfo(const std::string& response,
 
 std::string CResponseAdapter::MakeDiskTable(const nlohmann::json& disk_info) const
 {
-	VariadicTable<std::string, float, float, float> vt({ "Disk name", "Capacity",
-	"Available", "Free" }, 15);
+	std::string response;
 
-	for (auto& drive : disk_info)
+	for (auto& cur_disk : disk_info)
 	{
-		vt.addRow(drive["name"].get<std::string>(), drive["capacity"].get<float>(),
-			drive["available"].get<float>(), drive["free"].get<float>());
+		VariadicTable<std::string, float, float, float> vt({ "Disk name", "Capacity",
+"Available", "Free" }, 15);
+		std::stringstream stream;
+		vt.setColumnFormat({ VariadicTableColumnFormat::AUTO, VariadicTableColumnFormat::FIXED,
+			VariadicTableColumnFormat::FIXED, VariadicTableColumnFormat::FIXED });
+		vt.setColumnPrecision({ 0, 2, 2, 2 });
+		stream << cur_disk["date"].get<std::string>();
+		stream << "\n";
+		for (auto& drive : cur_disk["info"])
+		{
+			vt.addRow(drive["name"].get<std::string>(), drive["capacity"].get<float>(),
+				drive["available"].get<float>(), drive["free"].get<float>());
+		}
+
+		vt.print(stream);
+		stream << "\n\n";
+		response.append(stream.str());
 	}
 
-	std::stringstream stream;
-	vt.setColumnFormat({ VariadicTableColumnFormat::AUTO, VariadicTableColumnFormat::FIXED,
-		VariadicTableColumnFormat::FIXED, VariadicTableColumnFormat::FIXED });
-	vt.setColumnPrecision({ 0, 2, 2, 2 });
-	vt.print(stream);
-	
-	return stream.str();
+	return response;
 }
 
 std::string CResponseAdapter::MakeProcTable(const nlohmann::json& proc_info) const
 {
-	VariadicTable<int, float, float, float> vt({ "PID", "CPU",
-		"RAM", "Pagefile" }, 15);
-	for (auto& proc : proc_info[0]["info"])
-	{
-		vt.addRow(proc["PID"].get<int>(), proc["CPU_usage"].get<float>(),
-			proc["RAM_usage"].get<float>(), proc["Pagefile_usage"].get<float>());
-	}
+	std::string response;
 
-	std::stringstream stream;
-	vt.setColumnFormat({ VariadicTableColumnFormat::AUTO, VariadicTableColumnFormat::FIXED,
-		VariadicTableColumnFormat::FIXED, VariadicTableColumnFormat::FIXED });
-	vt.setColumnPrecision({ 0, 2, 2, 2 });
-	vt.print(stream);
+	for (auto& cur_proc : proc_info)
+	{
+		VariadicTable<int, float, float, float> vt({ "PID", "CPU",
+	"RAM", "Pagefile" }, 15);
+
+		std::stringstream stream;
+		vt.setColumnFormat({ VariadicTableColumnFormat::AUTO, VariadicTableColumnFormat::FIXED,
+			VariadicTableColumnFormat::FIXED, VariadicTableColumnFormat::FIXED });
+		vt.setColumnPrecision({ 0, 2, 2, 2 });
+		stream << cur_proc["date"].get<std::string>();
+		stream << "\n";
+		for (auto& proc : cur_proc["info"])
+		{
+			vt.addRow(proc["PID"].get<int>(), proc["CPU_usage"].get<float>(),
+				proc["RAM_usage"].get<float>(), proc["Pagefile_usage"].get<float>());
+		}
+		vt.print(stream);
+		stream << "\n\n";
+		response.append(stream.str());
+	}
 	
-	return stream.str();
+	return response;
 }
