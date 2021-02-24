@@ -61,6 +61,14 @@
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CLogger\CLogger.vcxproj">
+      <Project>{1604205a-fbeb-45dc-b262-6c219fe87d8d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Guid\Guid.vcxproj">
+      <Project>{c98cd3c8-415c-4fd3-a244-19fca29ee627}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

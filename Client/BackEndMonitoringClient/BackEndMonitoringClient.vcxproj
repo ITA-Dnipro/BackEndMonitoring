@@ -211,6 +211,17 @@
     <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CLogger\CLogger.vcxproj">
+      <Project>{1604205a-fbeb-45dc-b262-6c219fe87d8d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Guid\Guid.vcxproj">
+      <Project>{c98cd3c8-415c-4fd3-a244-19fca29ee627}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sockets\BackEndMonitoringSockets\BackEndMonitoringSockets.vcxproj">
+      <Project>{91dd7f62-f437-4b75-b563-6750346f1b1c}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets" Condition="Exists('..\..\packages\nlohmann.json.3.9.1\build\native\nlohmann.json.targets')" />
