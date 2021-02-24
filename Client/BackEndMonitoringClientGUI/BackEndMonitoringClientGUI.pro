@@ -127,7 +127,7 @@ win32: {
     }
 }
 
-unix: !macx {
+unix: !macx: {
     unix:!macx: LIBS += -L$$PWD/../../CLogger/ -lCLogger
     INCLUDEPATH += $$PWD/../../CLogger
     DEPENDPATH += $$PWD/../../CLogger
@@ -148,9 +148,7 @@ unix: !macx {
     INCLUDEPATH += $$PWD/../BackEndMonitoringClient/include
     DEPENDPATH += $$PWD/../BackEndMonitoringClient/include
     unix:!macx: PRE_TARGETDEPS += $$PWD/../BackEndMonitoringClient/libClient.a
+
+    unix:!macx: LIBS += -luuid
 }
 
-    unix:!macx: LIBS += -L$$PWD/../../../../../../lib/x86_64-linux-gnu/ -luuid
-    INCLUDEPATH += $$PWD/../../../../../../usr/include/uuid
-    DEPENDPATH += $$PWD/../../../../../../usr/include/uuid
-    unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../../../lib/x86_64-linux-gnu/libuuid.a

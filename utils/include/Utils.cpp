@@ -193,16 +193,24 @@ EMemoryConvertType Utils::DefineCountType(int count_type_from_xml)
 bool Utils::StringToDate(const std::string& date_str,
                          const std::string& date_format, time_t& result)
 {
+    CLOG_DEBUG_START_FUNCTION_WITH_PARAMS(date_str, date_format);
     tm temp_date;
+    
+    #if defined(_WIN64) || defined(_WIN32)
     std::istringstream ss_date(date_str);
     ss_date >> std::get_time(&temp_date, date_format.c_str());
     if(ss_date.fail())
     { return false;}
-
+    #else
+    strptime(date_str.c_str(), date_format.c_str(), &temp_date);
+    #endif
+    
     result = mktime(&temp_date);
+    CLOG_DEBUG_WITH_PARAMS("ASDFG", result);
     if(result < 0)
     { return false;}
 
+    CLOG_DEBUG_END_FUNCTION();
     return true;
 }
 
