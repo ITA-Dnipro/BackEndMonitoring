@@ -35,7 +35,7 @@ std::string CResponseAdapter::ConvertDiskInfo(const std::string& response,
 {
 	nlohmann::json json_response = nlohmann::json::parse(response);
 
-	std::string response_disk = json_response[0]["date"];
+        std::string response_disk;
 
 	if(is_table_mode)
 	{
@@ -74,6 +74,7 @@ std::string CResponseAdapter::ConvertAllData(const std::string& response,
 	{
 		nlohmann::json result;
 		converted_response.append(nlohmann::json::parse(drives)[0]["date"].get<std::string>());
+                converted_response.append("\n");
 		result["processes"] = std::move(parsed_proc);
 		result["drives"] = std::move(json_drives);
 
