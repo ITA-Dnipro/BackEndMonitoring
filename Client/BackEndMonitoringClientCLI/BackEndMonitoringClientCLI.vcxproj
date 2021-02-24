@@ -82,6 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <TargetName>Client</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -147,7 +148,8 @@
       <Command>xcopy /y /d "$(SolutionDir)packages\CLogger\$(Configuration)\x64\CLogger.dll" "$(OutDir)"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>rename "$(TargetPath)" "Client.exe"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -175,6 +177,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\utils\include\CRequestFrame.cpp" />
+    <ClCompile Include="..\..\utils\include\CResponseHandler.cpp" />
     <ClCompile Include="..\..\utils\include\CStringCleaner.cpp" />
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
     <ClCompile Include="..\BackEndMonitoringClient\src\stdafx.cpp">
@@ -190,9 +193,11 @@
     <ClCompile Include="src\ClientUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\utils\include\CResponseHandler.h" />
     <ClInclude Include="..\..\utils\include\CStringCleaner.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="..\..\utils\include\stdafx.h" />
+    <ClInclude Include="..\..\utils\include\VariadicTable.h" />
     <ClInclude Include="include\CClient.h" />
     <ClInclude Include="include\CClientView.h" />
     <ClInclude Include="include\CResponseAdapter.h" />

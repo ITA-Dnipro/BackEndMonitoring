@@ -17,12 +17,12 @@ private:
 	void Init();
 	bool EstablishConnection(const int arg_num, char** arguments);
 	bool Connect(const int port, const std::string& ip_address);
-	bool MakeRequest(ERequestType req_type) const;
-	bool MakeCycleOfRequests() const;
-	bool MakeNonStopRequests() const;
+	bool MakeRequest(ERequestType req_type);
+	bool MakeCycleOfRequests();
+	bool MakeNonStopRequests();
 	void MakeExitRequest() const;
-	void PrintMessage(const std::string& message, ERequestType req_type) const;
-	bool MakeAllHistoryRequest() const;
+	void PrintMessage(const std::string& message, ERequestType req_type);
+	bool MakeAllHistoryRequest();
 	
 	std::string m_file_name;
 	std::unique_ptr<CClientController> m_controller;

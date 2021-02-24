@@ -96,14 +96,14 @@ void CClient::Execute(const int arg_num, char** arguments)
 
 	} while (result && client_request != EClientRequests::EXIT);
 
-	m_printer->PrintMessage("Goodbye\n");
+	m_printer->PrintMessage("Connection closed\n");
 	CLOG_DEBUG_END_FUNCTION();
 }
 
-bool CClient::MakeCycleOfRequests() const
+bool CClient::MakeCycleOfRequests()
 {
 	ERequestType request = ERequestType::ALL_DATA;
-	bool result = false;
+	bool result = true;
 	std::string message;
 	for (unsigned i = 1u; i <= 10u; ++i)
 	{
@@ -116,8 +116,9 @@ bool CClient::MakeCycleOfRequests() const
 			PrintMessage(message, request);
 			message.clear();
 		}
-		if (!result)
+		if (!result || message.empty())
 		{
+			result = false;
 			break;
 		}
 		std::this_thread::sleep_for(std::chrono::seconds(5));
@@ -125,21 +126,25 @@ bool CClient::MakeCycleOfRequests() const
 	return result;
 }
 
-bool CClient::MakeNonStopRequests() const
+bool CClient::MakeNonStopRequests()
 {
-	int counter = 1;
+	int counter = 0;
 	ERequestType request = ERequestType::ALL_DATA;
-	bool result = false;
+	bool result = true;
 	std::string message;
-	while (true)
+	while (result)
 	{
 		result = m_controller->MakeRequest(message, request,
 			ERequestRangeSpecification::LAST_DATA);
-		if (!message.empty())
+		if (result && !message.empty())
 		{
 			m_printer->PrintMessage("\n\t\t\t" + std::to_string(++counter) + "\n");
 			PrintMessage(message, request);
 			message.clear();
+		}
+		else
+		{
+			break;
 		}
 		std::this_thread::sleep_for(std::chrono::seconds(5));
 	}
@@ -151,14 +156,14 @@ void CClient::MakeExitRequest() const
 	m_controller->MakeExitRequest();
 }
 
-void CClient::PrintMessage(const std::string& message, ERequestType req_type) const
+void CClient::PrintMessage(const std::string& message, ERequestType req_type)
 {
 	std::string converted_message = resp_converter.ConvertResponse(message,
 		req_type, m_show_as_table);
 	m_printer->PrintMessage("\n" + converted_message + "\n\n");
 }
 
-bool CClient::MakeAllHistoryRequest() const
+bool CClient::MakeAllHistoryRequest()
 {
 	std::string message;
 	bool result = m_controller->MakeRequest(message,
@@ -184,6 +189,7 @@ bool CClient::EstablishConnection(const int arg_num, char** arguments)
 			return true;
 		}
 	}
+	m_printer->PrintMessage("Cannot connect to the server!\n");
 	m_printer->PrintHelp();
 
 	return false;
@@ -204,7 +210,7 @@ bool CClient::Connect(const int port, const std::string& ip_address)
 	return false;
 }
 
-bool CClient::MakeRequest(ERequestType req_type) const
+bool CClient::MakeRequest(ERequestType req_type)
 {
 	std::string first_date;
 	std::string second_date;

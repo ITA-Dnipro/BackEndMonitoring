@@ -18,7 +18,7 @@ enum class EClientRequests : size_t
 	COUNT
 };
 
-constexpr size_t g_c_exit_request = 8ULL;
+inline constexpr size_t g_c_exit_request = 8ULL;
 static const std::string g_c_client_requests[static_cast<size_t>(EClientRequests::COUNT)]
 = { "", "drives data", "processes data", "all data", "non stop", "all stored info",
 	"cycle", "date mode", "file", "change view", "exit", "cls" };

@@ -5,9 +5,6 @@
 
 #include "CResponseHandler.h"
 
-CResponseHandler::CResponseHandler() : CInteractionHandler()
-{ }
-
 bool CResponseHandler::HandleResponse(const std::string& guid, 
     const std::string &response, std::string& var_storage)
 {
