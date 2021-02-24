@@ -70,6 +70,8 @@ add_executable(Server
 		${SERVER_SRC_DIR}/CDrivesInfoJSONDatabase.cpp
 		${SERVER_SRC_DIR}/CResourcesInfoJSONDatabase.cpp)
 
+set_target_properties(Server PROPERTIES OUTPUT_NAME "Client")
+
 #----------------------------------- TARGET LIBS ---------------------------------------#
 
 target_link_libraries(Server CLogger)
