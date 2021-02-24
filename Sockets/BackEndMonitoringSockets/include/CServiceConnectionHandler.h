@@ -1,23 +1,31 @@
 #pragma once
-#include "CServiceHandler.h"
-#include "CSocketWrapper.h"
-#include "DataReceiver.h"
+#include "EEventType.h"
+#include "CRequestHandler.h"
+#include "CRequestFrame.h"
+
+class CSocketWrapper;
+class CSocket;
+enum class EClientRequestType;
+
 // This class handles event form the server
-class CServiceConnectionHandler : public CServiceHandler
+class CServiceConnectionHandler
 {
 public:
-	CServiceConnectionHandler(const int socket, 
-		std::shared_ptr<CLogger> logger);
-	void HandleEvent(const int socket, EventType type) override;
-	int GetHandle() const override;
+	CServiceConnectionHandler() = delete;
+	CServiceConnectionHandler(CRequestHandler json_data);
+	CServiceConnectionHandler(const CServiceConnectionHandler&) = delete;
+	CServiceConnectionHandler(CServiceConnectionHandler&&) noexcept = delete;
+	~CServiceConnectionHandler() noexcept = default;
+
+	bool HandleEvent(const CSocket& client, EEventType event_type);
 
 private:
-	void HandleRequestEvent(const int client_socket);
-	void HandleResponseEvent(const int client_socket);
-	std::unique_ptr<CSocketWrapper> InitPeerStream(int handle);
+	bool HandleRequestEvent(const CSocket& client);
+	bool HandleResponseEvent(const CSocket& client_socket, 
+		const std::string& response_message);
+	void InitPeerStream();
 
-	std::unique_ptr<CSocketWrapper> m_peer_stream;
-	int m_server_socket;
-	DataReceiver data;
-	std::shared_ptr<CLogger> m_logger;
+	CRequestHandler m_request_handler;
+	CRequestFrame m_request_formatter;
+	std::unique_ptr<CSocketWrapper> m_p_peer_stream;
 };

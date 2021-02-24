@@ -1,2 +1,0 @@
-C:\Users\Sergei\source\repos\BackEndMonitoring\Sockets\BackEndMonitoringSockets\Build\DebugWin64\out\BackEndMonitoringSockets.pdb
-C:\Users\Sergei\source\repos\BackEndMonitoring\Sockets\BackEndMonitoringSockets\Build\DebugWin64\temp\BackEndMonitoringSockets.pdb

@@ -3,6 +3,7 @@
 
 #include "ELogConfig/ELogConfig.h"
 #include "ELogLevel/ELogLevel.h"
+#include "ELogFlush/ELogFlush.h"
 #include "CLogMessage/CLogMessage.h"
 
 /// <summary>
@@ -27,6 +28,7 @@ public:
 	///		const auto* testLogger = new CLogger("TestName", ELogLevel::DEBUG_LEVEL));
 	/// </example>
 	explicit CLogger(const std::string& log_name, ELogLevel log_level);
+	explicit CLogger(const std::string& log_name, ELogLevel log_level, ELogFlush log_flush);
 	CLogger(const CLogger&) = delete;
 	/// <summary>
 	///		Default move ctor for <c>CLogBuilder</c>
@@ -39,7 +41,7 @@ public:
 	///		const auto* testLogger2 = new CLogger(std::move(*testLogger1));
 	/// </example>
 	CLogger(CLogger&& move) noexcept;
-	
+
 	/// <summary>
 	///		Default dtor of <c>CLogger</c>
 	/// </summary>
@@ -110,6 +112,35 @@ public:
 	///		testLogger->SetLogLevel(ELogLevel::TRACE_LEVEL);
 	/// </example>
 	CLogger& SetLogLevel(ELogLevel log_level);
+
+	/// <summary>
+	///		<c>ELogFlush</c> getter
+	/// </summary>
+	/// <returns>
+	///		<c>ELogFlush</c>, which indicates if output stream flushes
+	/// </returns>
+	/// <example>
+	///		const auto* testLogger = new CLogger("TestName", ELogLevel::DEBUG_LEVEL,
+	///			ELogFlush::FLUSH);
+	///		ELogFlush test = testLogger->GetLogFlush();
+	/// </example>
+	[[nodiscard]] ELogFlush GetLogFlush() const;
+	/// <summary>
+	///		<c>ELogFlush</c> setter
+	/// </summary>
+	/// <param name="log_flush">
+	///		<c>ELogFlush</c> to set
+	///	</param>
+	/// <returns>
+	///		Reference to <c>this</c> object
+	///		to continue work with class methods in one line
+	/// </returns>
+	/// <example>
+	///		const auto* testLogger = new CLogger("TestName", ELogLevel::DEBUG_LEVEL,
+	///			ELogFlush::FLUSH);
+	///		testLogger->SetLogFlush(ELogLevel::NOT_FLUSH);
+	/// </example>
+	CLogger& SetLogFlush(ELogFlush log_flush);
 
 	/// <summary>
 	///		Name of <c>CLogger</c> getter
@@ -213,8 +244,9 @@ public:
 
 private:
 	ELogLevel m_log_level;
+	ELogFlush m_log_flush;
 	std::string m_log_name;
-	std::list<ELogConfig> m_log_config_list;	
+	std::list<ELogConfig> m_log_config_list;
 	std::list<std::pair<std::reference_wrapper<std::ostream>,
 		std::unique_ptr<std::mutex>>> m_write_stream_list;
 
@@ -231,6 +263,9 @@ private:
 	template<typename... Args>
 	void PrintToAllStreams(const CLogMessage<Args...>& log_message) const;
 
+	template<typename... Args>
+	std::string MakeMessage(const CLogMessage<Args...>& log_message) const;
+	
 	/// <summary>
 	///		Prints to one stream <c>CLogMessage</c> object
 	/// </summary>
@@ -247,8 +282,7 @@ private:
 	/// <returns>
 	///		Modified output stream
 	/// </returns>
-	template<typename... Args>
-	std::ostream& PrintLogMessage(const CLogMessage<Args...>& log_message,
+	std::ostream& PrintLogMessage(const std::string& message,
 		std::ostream& stream) const;
 
 	/// <summary>
@@ -298,9 +332,8 @@ private:
 	///		String to print
 	/// </param>
 	void PrintToAllStreams(const std::string& info) const;
-	
-	std::ostream& PrintLogInfo(const std::string& info,
-		std::ostream& stream) const;
+
+	inline std::ostream& FlushFunction(std::ostream&) const;
 };
 
 template<typename... Args>
@@ -308,7 +341,7 @@ CLogger& CLogger::SetLogConfig(Args... args)
 {
 	m_log_config_list.clear();
 	AddLogConfig(args...);
-	
+
 	return *this;
 }
 
@@ -340,80 +373,79 @@ void CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message) const
 template<typename ... Args>
 void CLogger::PrintToAllStreams(const CLogMessage<Args...>& log_message) const
 {
+	const std::string message = MakeMessage(log_message);
 	for (const auto& [stream, mutex] : m_write_stream_list)
 	{
 		auto unique_lock = nullptr == mutex ?
 			std::unique_lock<std::mutex>() :
 			std::unique_lock<std::mutex>(*mutex);
-		
-		PrintLogMessage(log_message, stream);
+
+		PrintLogMessage(message, stream);
 	}
 }
 
 template<typename... Args>
-std::ostream& CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message,
-	std::ostream& stream) const
+std::string CLogger::MakeMessage(const CLogMessage<Args...>& log_message) const
 {
-	std::stringstream ss;
-
+	if (m_log_config_list.empty())
+	{
+		return std::string("");
+	}
+	
+	std::stringstream stream;
+	constexpr auto delimiter = "\t";
+	
 	for (const auto& config : m_log_config_list)
 	{
 		switch (config)
 		{
-			// TODO different delimiters and scopes
-			// TODO remove repeat-code
-			// TODO config flush
 		case ELogConfig::THREAD_ID:
 		{
-			ss << "Thread id:" << " " << "[" << log_message.GetThreadId()
-				<< "]" << " " << std::flush;
+			stream << "-" << log_message.GetThreadId()
+				<< "-" << delimiter;
 			break;
 		}
 		case ELogConfig::CALL_TIME:
 		{
-			ss << "Time:" << " " << "[" << log_message.GetTimeString()
-				<< "]" << " " << std::flush;
+			stream << "<" + log_message.GetTimeString() + ">" << delimiter;
 			break;
 		}
 		case ELogConfig::FUNCTION_NAME:
 		{
-			ss << "Function:" << " " << log_message.GetFunctionString()
-				<< " " << std::flush;
+			stream << std::setw(75) << std::left <<
+				"{" + log_message.GetFunctionString() + "}" << delimiter;
 			break;
 		}
 		case ELogConfig::FILE_NAME:
 		{
-			ss << "File:" << " " << log_message.GetFileString()
-				<< " " << std::flush;
+			stream << log_message.GetFileString() << delimiter;
 			break;
 		}
 		case ELogConfig::LINE_NUMBER:
 		{
-			ss << "Line number:" << " " << log_message.GetLineNumber()
-				<< " " << std::flush;
+			stream << log_message.GetLineNumber() << delimiter;
 			break;
 		}
 		case ELogConfig::MESSAGE:
 		{
-			ss << "Message:" << " " << log_message.GetMessageString()
-				<< " " << std::flush;
+			stream << std::setw(75) << std::left <<
+				"\"" + log_message.GetMessageString() + '\"' << delimiter;
 			break;
 		}
 		case ELogConfig::LOG_LEVEL:
 		{
-			ss << "[" << LogLevelToString(log_message.GetLogLevel())
-				<< "]" << " " << std::flush;
+			stream << "[" + LogLevelToString(log_message.GetLogLevel())
+				+ "]" << delimiter;
 			break;
 		}
 		case ELogConfig::PARAMS:
 		{
-			PrintParams(log_message, ss);
-			ss << std::flush;
+			PrintParams(log_message, stream);
 			break;
 		}
 		case ELogConfig::LOG_NAME:
 		{
-			ss << m_log_name << " " << std::flush;
+			stream << m_log_name << delimiter;
 			break;
 		}
 		case ELogConfig::NONE:
@@ -421,10 +453,11 @@ std::ostream& CLogger::PrintLogMessage(const CLogMessage<Args...>& log_message,
 			break;
 		}
 		}
+
+		FlushFunction(stream);
 	}
 
-	// TODO remove last char " "
-	return stream << ss.str() << std::endl;
+	return stream.str();
 }
 
 template<typename... Args>
@@ -445,8 +478,27 @@ template<typename TupleType, size_t ...Size>
 std::ostream& CLogger::PrintParams(const TupleType& tuple,
 	std::index_sequence<Size...> index, std::ostream& stream) const
 {
-	(..., (stream << (0u == Size ? "" : ", ") << std::get<Size>(tuple).first << " "
+	std::stringstream temp;
+	(..., (temp << (0u == Size ? "" : ", ") << std::get<Size>(tuple).first << " "
 		<< "=" << " " << std::get<Size>(tuple).second));
 
-	return stream;
+	return stream << std::setw(120) << std::left << temp.str();
+}
+
+inline std::ostream& CLogger::FlushFunction(std::ostream& stream) const {
+	switch (m_log_flush)
+	{
+	case ELogFlush::FLUSH:
+	{
+		return stream << std::flush;
+	}
+	case ELogFlush::NOT_FLUSH:
+	{
+		return stream;
+	}
+	default:
+	{
+		return stream;
+	}
+	}
 }

@@ -1,21 +1,15 @@
 #pragma once
-#include <iostream>
-#include "CBaseSocket.h"
-// Base class for CAcceptorSocket, CConnectorSocket and CSocketWrapper
+#include "PlatformUtils.h"
+
 class CSocket : public CBaseSocket
 {
 public:
-	CSocket(const int port, const std::string& ip_address, 
-		std::shared_ptr<CLogger> logger);
-	CSocket(const int socket, std::shared_ptr<CLogger> logger);
-	virtual ~CSocket();
-	virtual int GetHandle() const;
+	explicit CSocket();
+	explicit CSocket(int socket_fd);
+	CSocket(const CSocket& obj) = default;
+	CSocket(CSocket&& obj) noexcept = default;
+	CSocket& operator = (const CSocket& obj) = default;
 
-protected:
-	int InitSocket();
-	void SetSocketAddress(const int port, const std::string& ip_address);
 	bool IsValidSocket() const;
-	bool CloseSocket();
 
-	sockaddr_in m_address;
 };

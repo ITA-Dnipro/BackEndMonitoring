@@ -13,52 +13,28 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Sockets">
-      <UniqueIdentifier>{0a49ae18-b52e-412d-a6da-2ed75d91190c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Sockets">
-      <UniqueIdentifier>{e3f38d12-cc67-42e7-b607-764a9b50323a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Handlers">
       <UniqueIdentifier>{5a865737-a1bd-4921-9122-1b3556983aa1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Handlers">
       <UniqueIdentifier>{c133ec42-a782-489b-a031-55354485d041}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{bf2fce04-dc4b-4725-90a2-be0f9451e8a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{ab0e11b6-3c1f-41db-9b49-1c80935bb0d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\CAcceptor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\CConnector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CConnectorWrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\DataReceiver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\CAcceptorSocket.h">
-      <Filter>Header Files\Sockets</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CBaseSocket.h">
-      <Filter>Header Files\Sockets</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CConnectorSocket.h">
-      <Filter>Header Files\Sockets</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CSocket.h">
-      <Filter>Header Files\Sockets</Filter>
-    </ClInclude>
     <ClInclude Include="include\CSocketWrapper.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CAcceptorWrapper.h">
-      <Filter>Header Files\Sockets</Filter>
     </ClInclude>
     <ClInclude Include="include\CClientConnectionHandler.h">
       <Filter>Header Files\Handlers</Filter>
@@ -66,43 +42,49 @@
     <ClInclude Include="include\CServiceConnectionHandler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
-    <ClInclude Include="include\CServiceHandler.h">
+    <ClInclude Include="include\CSocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CLogger\include\Log.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EEventType.h">
       <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CServiceHost.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CClientConnectorHost.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CAcceptor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CSockAddress.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\GlobalVariable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\PlatformUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CDataProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\utils\include\CResponseHandler.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CAcceptor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CAcceptorWrapper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\CConnector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CConnectorWrapper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DataReceiver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\stdafx.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CAcceptorSocket.cpp">
-      <Filter>Source Files\Sockets</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CBaseSocket.cpp">
-      <Filter>Source Files\Sockets</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CSocket.cpp">
-      <Filter>Source Files\Sockets</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CConnectorSocket.cpp">
-      <Filter>Source Files\Sockets</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CSocketWrapper.cpp">
-      <Filter>Source Files\Sockets</Filter>
     </ClCompile>
     <ClCompile Include="src\CClientConnectionHandler.cpp">
       <Filter>Source Files\Handlers</Filter>
@@ -110,5 +92,39 @@
     <ClCompile Include="src\CServiceConnectionHandler.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
+    <ClCompile Include="src\CSocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSocketWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\WindowsUtils.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CServiceHost.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CClientConnectorHost.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CSockAddress.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\WindowsUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CDataProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CResponseHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\include\CResponseFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\PropertySheets\CodeStylerSettings\.clang-format" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

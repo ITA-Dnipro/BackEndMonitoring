@@ -1,23 +1,42 @@
 #pragma once
-#include "CAcceptorSocket.h"
-#include "CServiceConnectionHandler.h"
-#include "CServiceHandler.h"
+#include "CSocket.h"
+
+class CServiceConnectionHandler;
+class CServiceHandler;
+class CEvent;
+class CSockAddress;
+
 // Class for accepting connection by the server
 class CAcceptor
 {
 public:
-	CAcceptor(const int port, const std::string& ip_address, 
-		std::shared_ptr<CLogger> logger);
-	int GetConnectedHandle();
-	int GetHandle() const;
+	CAcceptor() = delete;
+	explicit CAcceptor(bool is_blocked, int socket_timeout, CEvent& event);
+	CAcceptor(const CAcceptor&) = delete;
+	CAcceptor(CAcceptor&&) noexcept = delete;
+	~CAcceptor() noexcept;
+
+	bool Initialize(const std::string& ip_address, const int listener_port, 
+		const int connections);
+	bool AcceptNewClient(CSocket& client);
+	bool IsTimeOutWithoutConnections() const;
 
 private:
-	std::unique_ptr<CAcceptorSocket> InitAcceptor(const int port, 
-		const std::string& ip_address);
+	bool BindSocket() const;
+	bool StartListening(const int connections) const;
+	bool MakeSocketMulticonnected() const;
+	bool InitSocket(const int port, const std::string& ip_address);
+	std::unique_ptr<CSockAddress> InitSocketAddress(const std::string& ip_address, 
+		const int listener_port);
+	bool AcceptNonBlockingSockets(CSocket& client);
+	bool AcceptBlockingSockets(CSocket& client);
 
-	const int m_port;
-	std::string m_address;
-	std::unique_ptr<CAcceptorSocket> m_peer_acceptor;
-	std::shared_ptr<CLogger> m_logger;
+	std::unique_ptr<CSocket> m_p_socket_acceptor;
+	CEvent& m_event;
+	std::unique_ptr<CSockAddress> m_socket_address;
+	int m_socket_timeout;
+	bool m_is_socket_blocked;
+	bool m_is_acceptor_initialized;
+	bool m_is_time_out;
 };
 
