@@ -21,5 +21,6 @@ namespace GlobalVariable
 	static const std::string c_response_data = "data";
 	static const std::string c_frame_error = "error";
 
-
+	constexpr size_t num_of_pair_in_response = 3;
+	constexpr size_t max_num_of_pair_in_request = 5;
 }

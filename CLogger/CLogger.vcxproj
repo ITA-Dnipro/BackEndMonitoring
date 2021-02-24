@@ -141,7 +141,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>For %%a in ( "$(TargetPath)",  "$(TargetPath)/../$(AssemblyName).lib" ) do (xcopy /y /d /c "%%~a" "$(SolutionDir)packages\CLogger\$(Configuration)\x64\")</Command>
+      <Command>For %%a in ( "$(TargetPath)",  "$(TargetDir)$(AssemblyName).lib" ) do (xcopy /y /d /c "%%~a" "$(SolutionDir)packages\CLogger\$(Configuration)\x64\")</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -163,7 +163,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>For %%a in ( "$(TargetPath)",  "$(TargetPath)/../$(AssemblyName).lib" ) do (xcopy /y /d /c "%%~a" "$(SolutionDir)packages\CLogger\$(Configuration)\x64\")</Command>
+      <Command>For %%a in ( "$(TargetPath)",  "$(TargetDir)$(AssemblyName).lib" ) do (xcopy /y /d /c "%%~a" "$(SolutionDir)packages\CLogger\$(Configuration)\x64\")</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
