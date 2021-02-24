@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ #include "stdafx.h"
 #include "CSettings.h"
 
 CSettings::CSettings(std::shared_ptr<CDataReader> p_data_reader) : 

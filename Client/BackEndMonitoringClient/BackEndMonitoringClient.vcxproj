@@ -107,7 +107,7 @@
       <Command>xcopy /y /d "$(SolutionDir)packages\CLogger\$(Configuration)\x86\CLogger.dll" "$(OutDir)"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(AssemblyName).lib" "$(SolutionDir)packages\Client\$(Configuration)\x86\"</Command>
+      <Command>xcopy /y /d /c "$(TargetPath)" "$(SolutionDir)packages\Client\$(Configuration)\x86\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -133,7 +133,7 @@
       <Command>xcopy /y /d "$(SolutionDir)packages\CLogger\$(Configuration)\x86\CLogger.dll" "$(OutDir)"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(AssemblyName).lib" "$(SolutionDir)packages\Client\$(Configuration)\x86\"</Command>
+      <Command>xcopy /y /d /c "$(TargetPath)" "$(SolutionDir)packages\Client\$(Configuration)\x86\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -155,7 +155,7 @@
       <Command>xcopy /y /d "$(SolutionDir)packages\CLogger\$(Configuration)\x64\CLogger.dll" "$(OutDir)"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(AssemblyName).lib" "$(SolutionDir)packages\Client\$(Configuration)\x64\"</Command>
+      <Command>xcopy /y /d /c "$(TargetPath)" "$(SolutionDir)packages\Client\$(Configuration)\x64\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -183,7 +183,7 @@
       <Command>xcopy /y /d "$(SolutionDir)packages\CLogger\$(Configuration)\x64\CLogger.dll" "$(OutDir)"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(AssemblyName).lib" "$(SolutionDir)packages\Client\$(Configuration)\x64\"</Command>
+      <Command>xcopy /y /d /c "$(TargetPath)" "$(SolutionDir)packages\Client\$(Configuration)\x64\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
