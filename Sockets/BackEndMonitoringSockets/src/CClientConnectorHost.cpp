@@ -34,7 +34,9 @@ bool CClientConnectorHost::Initialize(const int port, const std::string& ip_addr
 	return m_is_initialized;
 }
 
-std::string CClientConnectorHost::MakeRequest(EClientRequestType r_type) const
+std::string CClientConnectorHost::MakeRequest(std::string& message, 
+	ERequestType req_typ, EFrameError error, ERequestRangeSpecification spec_typ,
+	const std::string& date_of_start, const std::string& date_of_end) const
 {
 	CLOG_DEBUG_START_FUNCTION();
 	if(!m_is_initialized)
@@ -42,23 +44,10 @@ std::string CClientConnectorHost::MakeRequest(EClientRequestType r_type) const
 		CLOG_ERROR("Client host is not initialized");
 		return "Client host is not initialized";
 	}
-	std::string message;
-	EEventType request_event = EEventType::LOST_REQUEST;
-	if( r_type == EClientRequestType::ALL_DATA)
-	{
-		request_event = EEventType::REQUEST_ALL_DATA;
-	}
-	else if (r_type == EClientRequestType::DISKS_DATA)
-	{
-		request_event = EEventType::REQUEST_DISK_DATA;
-	}
-	else if (r_type == EClientRequestType::PROCESSES_DATA)
-	{
-		request_event = EEventType::REQUEST_PROCESS_DATA;
-	}
+	message.clear();
 
 	if (m_p_client_handler->HandleEvent(m_connector->GetSocket(),
-		request_event, message))
+		message, req_typ, error, spec_typ, date_of_start, date_of_end))
 	{
 		CLOG_DEBUG_WITH_PARAMS("We receive message with length", message.size());
 		return message;
@@ -81,22 +70,6 @@ bool CClientConnectorHost::ConnectToServer() const
 	CLOG_DEBUG_WITH_PARAMS("Result of connection to the server", result);
 	CLOG_DEBUG_END_FUNCTION();
 	return result;
-}
-
-bool CClientConnectorHost::Exit() const
-{
-	CLOG_DEBUG_START_FUNCTION();
-	std::string message;
-	m_p_client_handler->HandleEvent(m_connector->GetSocket(),
-		EEventType::CLOSE_EVENT, message);
-	if (message.compare(GlobalVariable::c_connection_problem) == 0)
-	{
-		CLOG_DEBUG_WITH_PARAMS("Disconnect from the server, we receive response", 
-			message);
-		return true;
-	}
-	CLOG_DEBUG_END_FUNCTION();
-	return false;
 }
 
 std::unique_ptr<CConnector> CClientConnectorHost::InitConnector()

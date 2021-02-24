@@ -4,6 +4,8 @@
 #include "CLogger/include/Log.h"
 #include "CSocket.h"
 #include "GlobalVariable.h"
+#include "ERequestType.h"
+#include "EFrameError.h"
 
 bool CSocketWrapper::Receive(const CSocket& client_socket, std::string& message)
 {
@@ -16,7 +18,8 @@ bool CSocketWrapper::Receive(const CSocket& client_socket, std::string& message)
 	int total_msg_size = ReceiveHeader(client_socket);
 	if (total_msg_size <= 0)
 	{
-		message = GlobalVariable::c_connection_problem;
+		m_request_formatter.TryFormateRequest(message, 
+			ERequestType::ERR, EFrameError::CONNECTION_PROBLEM);
 		return false;
 	}
 	message.reserve(total_msg_size);
@@ -29,7 +32,8 @@ bool CSocketWrapper::Receive(const CSocket& client_socket, std::string& message)
 
 		if (received_bytes <= 0)
 		{
-			message = GlobalVariable::c_connection_problem;
+			m_request_formatter.TryFormateRequest(message,
+				ERequestType::ERR, EFrameError::CONNECTION_PROBLEM);
 			CLOG_ERROR_WITH_PARAMS("Cannot receive data from the socket", 
 				client_socket.GetSocketFD());
 			return false;

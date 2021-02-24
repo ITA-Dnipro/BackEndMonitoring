@@ -2,11 +2,13 @@
 
 #include "CServiceConnectionHandler.h"
 #include "CThreadPool.h"
-#include "CServiceHost.h"
 #include "CAcceptor.h"
 #include "CSocketWrapper.h"
 #include "Log.h"
 #include "GlobalVariable.h"
+#include "CRequestHandler.h"
+
+#include "CServiceHost.h"
 
 CServiceHost::CServiceHost(int port, const std::string& ip_address,
     bool is_blocked, int socket_timeout, CEvent& event) :
@@ -21,7 +23,7 @@ CServiceHost::~CServiceHost()
 }
 
 bool CServiceHost::Initialize(std::shared_ptr<CThreadPool> pool,
-	CDataProvider& json_data, const int connections)
+	CRequestHandler& json_data, const int connections)
 {
 	bool result = false;
 	CLOG_DEBUG_START_FUNCTION();
@@ -90,11 +92,11 @@ void CServiceHost::InitAcceptor()
 }
 
 void CServiceHost::InitServiceHandler(
-		CDataProvider& json_data)
+	CRequestHandler& request_handler)
 {
 	CLOG_DEBUG_START_FUNCTION();
 	m_p_service_handler =
-		std::make_unique<CServiceConnectionHandler>(std::move(json_data));
+		std::make_unique<CServiceConnectionHandler>(std::move(request_handler));
 	CLOG_TRACE_VAR_CREATION(m_p_service_handler);
 	CLOG_DEBUG_END_FUNCTION();
 }

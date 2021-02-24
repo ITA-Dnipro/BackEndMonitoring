@@ -31,7 +31,8 @@ bool CJSONFormatterProcess::TryAddProcessData(
         CLOG_WARNING("Can't get some process info");
     }
 
-    json_format_data["PID " + std::to_string(PID)] = {
+    json_format_data = {
+        CreatePair<unsigned>("PID", PID),
         CreatePair<double>("CPU_usage", cpu_usage),
         CreatePair<long double>("RAM_usage", ram_usage),
         CreatePair<long double>("Pagefile_usage",pagefile_usage)

@@ -71,6 +71,6 @@ namespace PlatformUtils
 	bool Connect(int socket, sockaddress& current_address);
 	bool SetUnblockingSocket(int socket);
 	bool CloseSocket(int socket);
-
+	void CleanScreen();
 }
 

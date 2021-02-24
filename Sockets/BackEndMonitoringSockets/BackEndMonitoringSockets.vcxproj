@@ -20,9 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\CLogger\include\Log.h" />
+    <ClInclude Include="..\..\utils\include\CResponseHandler.h" />
     <ClInclude Include="..\..\utils\include\GlobalVariable.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="include\CAcceptor.h" />
+    <ClInclude Include="include\CDataProvider.h" />
     <ClInclude Include="include\CServiceHost.h" />
     <ClInclude Include="include\CClientConnectionHandler.h" />
     <ClInclude Include="include\CConnector.h" />
@@ -32,13 +34,14 @@
     <ClInclude Include="include\EEventType.h" />
     <ClInclude Include="include\CSocket.h" />
     <ClInclude Include="include\CSocketWrapper.h" />
-    <ClInclude Include="include\CDataProvider.h" />
-    <ClInclude Include="include\EClientRequestType.h" />
     <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\utils\include\CResponseFrame.cpp" />
+    <ClCompile Include="..\..\utils\include\CResponseHandler.cpp" />
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
     <ClCompile Include="src\CAcceptor.cpp" />
+    <ClCompile Include="src\CDataProvider.cpp" />
     <ClCompile Include="src\CServiceHost.cpp" />
     <ClCompile Include="src\CClientConnectionHandler.cpp" />
     <ClCompile Include="src\CConnector.cpp" />
@@ -47,7 +50,6 @@
     <ClCompile Include="src\CSockAddress.cpp" />
     <ClCompile Include="src\CSocket.cpp" />
     <ClCompile Include="src\CSocketWrapper.cpp" />
-    <ClCompile Include="src\CDataProvider.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -155,7 +157,7 @@
       <AdditionalLibraryDirectories>ws2_32.dll;</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(AssemblyName).lib" "$(SolutionDir)packages\Sockets\$(Configuration)\x86\"</Command>
+      <Command>xcopy /y /d /c "$(TargetPath)" "$(SolutionDir)packages\Sockets\$(Configuration)\x86\"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)packages\CLogger\$(Configuration)\x86\CLogger.dll" "$(OutDir)"</Command>
@@ -182,7 +184,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(AssemblyName).lib" "$(SolutionDir)packages\Sockets\$(Configuration)\x86\"</Command>
+      <Command>xcopy /y /d /c "$(TargetPath)" "$(SolutionDir)packages\Sockets\$(Configuration)\x86\"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)packages\CLogger\$(Configuration)\x86\CLogger.dll" "$(OutDir)"</Command>
@@ -214,7 +216,7 @@
       <Path>.\Build\DebugWin64\log\$(MSBuildProjectName).log</Path>
     </BuildLog>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(AssemblyName).lib" "$(SolutionDir)packages\Sockets\$(Configuration)\x64\"</Command>
+      <Command>xcopy /y /d /c "$(TargetPath)" "$(SolutionDir)packages\Sockets\$(Configuration)\x64\"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)packages\CLogger\$(Configuration)\x64\CLogger.dll" "$(OutDir)"</Command>
@@ -245,7 +247,7 @@
       <Path>.\Build\ReleaseWin64\log\$(MSBuildProjectName).log</Path>
     </BuildLog>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(AssemblyName).lib" "$(SolutionDir)packages\Sockets\$(Configuration)\x64\"</Command>
+      <Command>xcopy /y /d /c "$(TargetPath)" "$(SolutionDir)packages\Sockets\$(Configuration)\x64\"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)packages\CLogger\$(Configuration)\x64\CLogger.dll" "$(OutDir)"</Command>

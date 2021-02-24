@@ -449,6 +449,10 @@ namespace PlatformUtils
 		return success;
 	}
 
+	void CleanScreen()
+	{
+		system("clear");
+	}
 }
 
 #endif

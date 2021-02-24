@@ -9,6 +9,5 @@ class CJSONFormatterLogicalDisk :
 {
 public:
     CJSONFormatterLogicalDisk();
-    bool TryAddLogicalDiskData(const CLogicalDiskInfo& data_to_json,
-                               unsigned short disk_number);
+    bool TryAddLogicalDiskData(const CLogicalDiskInfo& data_to_json);
 };

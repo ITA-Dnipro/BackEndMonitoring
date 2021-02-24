@@ -11,6 +11,7 @@ set(SOCKETS_SRC_DIR ${CMAKE_SOURCE_DIR}/Sockets/BackEndMonitoringSockets/src)
 
 include_directories(${CMAKE_SOURCE_DIR}
 		${NLOHMANN_JSON_INCLUDE_DIR}
+#		${CMAKE_SOURCE_DIR}/3rdParty/include
 		${CMAKE_SOURCE_DIR}/Sockets/BackEndMonitoringSockets/include
 		${CMAKE_SOURCE_DIR}/CLogger/include
 		${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/include
@@ -32,9 +33,15 @@ add_library(Sockets
 		${SOCKETS_SRC_DIR}/CSocketWrapper.cpp
 		${SOCKETS_SRC_DIR}/CDataProvider.cpp
 		${UTILS_SRC_DIR}/CThreadPool.cpp
+		${UTILS_SRC_DIR}/CRequestFrame.cpp
+		${UTILS_SRC_DIR}/CRequestHandler.cpp
+		${UTILS_SRC_DIR}/CResponseFrame.cpp
+		${UTILS_SRC_DIR}/CResponseHandler.cpp
+		${UTILS_SRC_DIR}/CInteractionFrame.cpp
 		${UTILS_SRC_DIR}/CEvent.cpp
 		${UTILS_SRC_DIR}/Utils.cpp)
 
 #----------------------------------- TARGET LIBS ---------------------------------------#
 
 target_link_libraries(Sockets CLogger)
+target_link_libraries(Sockets Guid)
