@@ -1,5 +1,0 @@
-Client connected to the server
-
-
-Goodbye
-

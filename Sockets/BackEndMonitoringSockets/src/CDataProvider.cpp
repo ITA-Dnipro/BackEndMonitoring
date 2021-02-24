@@ -17,7 +17,7 @@ std::string CDataProvider::GetResourcesLoadLastInfo() const
 	if (m_p_resources_data.get() == nullptr ||
 		!m_p_resources_data->GetLastInfo(resources_info))
 	{
-		resources_info = nlohmann::json({ "error", "Can't get resources data" }).dump( );
+		resources_info = nlohmann::json({ { "error", "Can't get resources data" } }).dump( );
 	}
 	return resources_info;
 }
@@ -28,7 +28,7 @@ std::string CDataProvider::GetProcessesLastInfo() const
 	if (m_p_processes_data.get() == nullptr ||
 		!m_p_processes_data->GetLastInfo(processes_info))
 	{
-		processes_info = nlohmann::json({ "error", "Can't get processes data" }).dump();
+		processes_info = nlohmann::json({{ "error", "Can't get processes data" }}).dump();
 	}
 
 	nlohmann::json proc_info;
@@ -43,7 +43,7 @@ std::string CDataProvider::GetDisksLastInfo() const
 	if (m_p_disks_data.get() == nullptr ||
 		!m_p_disks_data->GetLastInfo(disks_info))
 	{
-		disks_info = nlohmann::json({ "error", "Can't get disks data"}).dump( );
+		disks_info = nlohmann::json({{ "error", "Can't get disks data"}}).dump( );
 	}
 	return disks_info;
 }
@@ -77,7 +77,7 @@ std::string CDataProvider::GetProcessesFullInfo() const
 	if (m_p_processes_data.get() == nullptr ||
 		!m_p_processes_data->GetAllInfo(processes_info))
 	{
-		processes_info = nlohmann::json({ "error", "Can't get processes data"}).dump( );
+		processes_info = nlohmann::json({{ "error", "Can't get processes data"}}).dump( );
 	}
 
 	nlohmann::json proc_info;
@@ -92,7 +92,7 @@ std::string CDataProvider::GetDisksFullInfo() const
 	if (m_p_disks_data.get() == nullptr ||
 		!m_p_disks_data->GetAllInfo(disks_info))
 	{
-		disks_info = nlohmann::json({ "error", "Can't get disks data"}).dump( );
+		disks_info = nlohmann::json({{ "error", "Can't get disks data"}}).dump( );
 	}
 	return disks_info;
 }
@@ -125,7 +125,7 @@ std::string CDataProvider::GetProcessesSelectedInfo(time_t from, time_t to) cons
 	if (m_p_processes_data.get() == nullptr ||
 		!m_p_processes_data->GetSelectedInfo(from, to, processes_info))
 	{
-		processes_info = nlohmann::json({ "error", "Can't get processes data"}).dump( );
+		processes_info = nlohmann::json({{ "error", "Can't get processes data"}}).dump( );
 	}
 
 	nlohmann::json proc_info;
@@ -140,7 +140,7 @@ std::string CDataProvider::GetDisksSelectedInfo(time_t from, time_t to) const
 	if (m_p_disks_data.get() == nullptr ||
 		!m_p_disks_data->GetSelectedInfo(from, to, disks_info))
 	{
-		disks_info = nlohmann::json({ "error", "Can't get disks data" }).dump( );
+		disks_info = nlohmann::json({{ "error", "Can't get disks data" }}).dump( );
 	}
 	return disks_info;
 }

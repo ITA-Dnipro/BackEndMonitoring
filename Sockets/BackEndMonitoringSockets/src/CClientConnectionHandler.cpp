@@ -1,9 +1,10 @@
 #include "stdafx.h"
 
-#include "CClientConnectionHandler.h"
 #include "CSocket.h"
 #include "CLogger/include/Log.h"
 #include "GlobalVariable.h"
+
+#include "CClientConnectionHandler.h"
 
 CClientConnectionHandler::CClientConnectionHandler()
 {

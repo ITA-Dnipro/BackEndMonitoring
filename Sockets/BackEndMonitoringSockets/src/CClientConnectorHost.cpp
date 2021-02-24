@@ -42,7 +42,7 @@ bool CClientConnectorHost::MakeRequest(std::string& message,
 	if(!m_is_initialized)
 	{
 		CLOG_ERROR("Client host is not initialized");
-		return "Client host is not initialized";
+                return false;
 	}
 	message.clear();
 
