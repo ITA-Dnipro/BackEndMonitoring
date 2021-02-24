@@ -103,7 +103,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)packages\Sockets\$(Configuration)\x86\;$(SolutionDir)packages\Guid\$(Configuration)\x86\;$(SolutionDir)packages\CLogger\$(Configuration)\x86\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)packages\CLogger\$(Configuration)\x86\CLogger.dll" "$(OutDir)"</Command>
+      <Command>For %%a in ( "$(SolutionDir)packages\CLogger\$(Configuration)\x86\CLogger.dll", "$(SolutionDir)config.xml") do (xcopy /y /d "%%~a" "$(OutDir)")</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -126,7 +126,7 @@
       <AdditionalDependencies>Guid.lib;CLogger.lib;BackendMonitoringSockets.lib;Wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)packages\CLogger\$(Configuration)\x86\CLogger.dll" "$(OutDir)"</Command>
+      <Command>For %%a in ( "$(SolutionDir)packages\CLogger\$(Configuration)\x86\CLogger.dll", "$(SolutionDir)config.xml") do (xcopy /y /d "%%~a" "$(OutDir)")</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -168,7 +168,7 @@
       <AdditionalDependencies>Guid.lib;CLogger.lib;BackendMonitoringSockets.lib;Wsock32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)packages\CLogger\$(Configuration)\x64\CLogger.dll" "$(OutDir)"</Command>
+      <Command>For %%a in ( "$(SolutionDir)packages\CLogger\$(Configuration)\x64\CLogger.dll", "$(SolutionDir)config.xml") do (xcopy /y /d "%%~a" "$(OutDir)")</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

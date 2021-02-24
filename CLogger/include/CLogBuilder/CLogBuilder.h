@@ -197,6 +197,10 @@ public:
 	/// </example>
 	CLogBuilder& AddThreadUnsafeStream(std::ostream& stream);
 
+	template<typename... Args>
+	CLogBuilder& AddLogConfig(ELogConfig log_config, Args... args);
+	CLogBuilder& AddLogConfig(ELogConfig log_config);
+
 	/// <summary>
 	///		Allocates memory and creates <c>CLogger</c>
 	/// </summary>
@@ -258,10 +262,6 @@ private:
 	
 	std::list<std::reference_wrapper<std::ostream>> m_write_stream_safe_list;
 	std::list<std::reference_wrapper<std::ostream>> m_write_stream_unsafe_list;
-	
-	template<typename... Args>
-	CLogBuilder& AddLogConfig(ELogConfig log_config, Args... args);
-	CLogBuilder& AddLogConfig(ELogConfig log_config);
 
 	void PrintBuffer(CLogger* logger);
 };
