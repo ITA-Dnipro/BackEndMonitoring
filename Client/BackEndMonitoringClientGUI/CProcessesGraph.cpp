@@ -125,31 +125,34 @@ bool CProcessesGraph::Update()
     m_RAM_graph->yAxis->setRange(0, m_RAM_max_val + (m_RAM_max_val * 0.1));
     m_pagefile_graph->yAxis->setRange(0, m_pagefile_max_val + (m_pagefile_max_val * 0.1));
 
-    QColor cpu_color(170, 0, 0);
+    QColor cpu_color(170, 20, 20);
     QPen cpu_pen(cpu_color);
     cpu_pen.setWidth(3);
     if(m_CPU_graph->graphCount() == 0)
     { m_CPU_graph->addGraph();}
     m_CPU_graph->graph(0)->setData(m_CPU_data);
     m_CPU_graph->graph(0)->setPen(cpu_pen);
+    m_CPU_graph->graph(0)->setBrush(QBrush(cpu_color.lighter(200)));
     m_CPU_graph->replot();
 
-    QColor ram_color(0, 170, 0);
+    QColor ram_color(20, 170, 20);
     QPen ram_pen(ram_color);
     ram_pen.setWidth(3);
     if(m_RAM_graph->graphCount() == 0)
     { m_RAM_graph->addGraph();}
     m_RAM_graph->graph(0)->setData(m_RAM_data);
     m_RAM_graph->graph(0)->setPen(ram_pen);
+    m_RAM_graph->graph(0)->setBrush(QBrush(ram_color.lighter(200)));
     m_RAM_graph->replot();
 
-    QColor pf_color(0, 0, 170);
+    QColor pf_color(20, 20, 170);
     QPen pf_pen(pf_color);
     pf_pen.setWidth(3);
     if(m_pagefile_graph->graphCount() == 0)
     { m_pagefile_graph->addGraph();}
     m_pagefile_graph->graph(0)->setData(m_pagefile_data);
     m_pagefile_graph->graph(0)->setPen(pf_pen);
+    m_pagefile_graph->graph(0)->setBrush(QBrush(pf_color.lighter(200)));
     m_pagefile_graph->replot();
 
     return true;

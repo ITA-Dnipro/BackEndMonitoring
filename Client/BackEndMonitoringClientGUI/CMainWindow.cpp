@@ -11,6 +11,7 @@
 #include "CDrivesGraph.h"
 #include "Utils.h"
 #include "CClientController.h"
+#include "CConnectionErrorDialog.h"
 
 #include "CMainWindow.h"
 
@@ -191,10 +192,23 @@ void CMainWindow::UpdateProcessesData(ERequestType request_type,
     }
     else
     {
-        QMessageBox messageBox;
-        messageBox.critical(0,"Error","Something went wrong!");
-        messageBox.setFixedSize(500,200);
-        close();
+        CConnectionErrorDialog dialog;
+        dialog.exec();
+        if(dialog.IsNeedToOpenReconnectMenu())
+        {
+            dialog.close();
+
+            CConnectionDialog con_dialog(m_controller);
+            con_dialog.exec();
+            if(!con_dialog.IsConnected())
+            {
+                close();
+            }
+        }
+        else
+        {
+            close();
+        }
     }
 }
 
@@ -215,10 +229,23 @@ void CMainWindow::AddProcessesData(ERequestType request_type,
     }
     else
     {
-        QMessageBox messageBox;
-        messageBox.critical(0,"Error","Something went wrong!");
-        messageBox.setFixedSize(500,200);
-        close();
+        CConnectionErrorDialog dialog;
+        dialog.exec();
+        if(dialog.IsNeedToOpenReconnectMenu())
+        {
+            dialog.close();
+
+            CConnectionDialog con_dialog(m_controller);
+            con_dialog.exec();
+            if(!con_dialog.IsConnected())
+            {
+                close();
+            }
+        }
+        else
+        {
+            close();
+        }
     }
 }
 
@@ -307,10 +334,23 @@ void CMainWindow::UpdateDrivesData(ERequestType request_type,
     }
     else
     {
-        QMessageBox messageBox;
-        messageBox.critical(0,"Error","Something went wrong!");
-        messageBox.setFixedSize(500,200);
-        close();
+        CConnectionErrorDialog dialog;
+        dialog.exec();
+        if(dialog.IsNeedToOpenReconnectMenu())
+        {
+            dialog.close();
+
+            CConnectionDialog con_dialog(m_controller);
+            con_dialog.exec();
+            if(!con_dialog.IsConnected())
+            {
+                close();
+            }
+        }
+        else
+        {
+            close();
+        }
     }
 }
 
@@ -325,10 +365,23 @@ void CMainWindow::AddDrivesData(ERequestType request_type,
     }
     else
     {
-        QMessageBox messageBox;
-        messageBox.critical(0,"Error","Something went wrong!");
-        messageBox.setFixedSize(500,200);
-        close();
+        CConnectionErrorDialog dialog;
+        dialog.exec();
+        if(dialog.IsNeedToOpenReconnectMenu())
+        {
+            dialog.close();
+
+            CConnectionDialog con_dialog(m_controller);
+            con_dialog.exec();
+            if(!con_dialog.IsConnected())
+            {
+                close();
+            }
+        }
+        else
+        {
+            close();
+        }
     }
 }
 

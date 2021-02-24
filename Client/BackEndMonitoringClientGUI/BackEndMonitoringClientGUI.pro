@@ -23,6 +23,7 @@ INCLUDEPATH += $$PWD/../../packages/nlohmann.json.3.9.1/build/native/include
 HEADERS += \
     ../../utils/include/stdafx.h \
     CConnectionDialog.h \
+    CConnectionErrorDialog.h \
     CDrivesGraph.h \
     CDrivesTab.h \
     CDrivesTable.h \
@@ -34,6 +35,7 @@ HEADERS += \
     qcustomplot.h
 
 SOURCES += \
+    CConnectionErrorDialog.cpp \
     stadafx.cpp \
     $$PWD/../../utils/include/Utils.cpp \
     ../BackEndMonitoringClient/src/CClientController.cpp \
@@ -52,6 +54,7 @@ SOURCES += \
 
 FORMS += \
     CConnectionDialog.ui \
+    CConnectionErrorDialog.ui \
     CMainWindow.ui \
     CRequestDialog.ui
 
