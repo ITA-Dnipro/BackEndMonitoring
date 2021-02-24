@@ -399,7 +399,6 @@ std::string CLogger::MakeMessage(const CLogMessage<Args...>& log_message) const
 	{
 		switch (config)
 		{
-			// TODO remove repeat-code
 		case ELogConfig::THREAD_ID:
 		{
 			stream << "-" << log_message.GetThreadId()
@@ -408,14 +407,13 @@ std::string CLogger::MakeMessage(const CLogMessage<Args...>& log_message) const
 		}
 		case ELogConfig::CALL_TIME:
 		{
-			stream << "<" << log_message.GetTimeString()
-				<< ">" << delimiter;
+			stream << "<" + log_message.GetTimeString() + ">" << delimiter;
 			break;
 		}
 		case ELogConfig::FUNCTION_NAME:
 		{
-			stream << std::setw(75) << std::left << "{" << log_message.GetFunctionString()
-				<< "}" << delimiter;
+			stream << std::setw(75) << std::left <<
+				"{" + log_message.GetFunctionString() + "}" << delimiter;
 			break;
 		}
 		case ELogConfig::FILE_NAME:
@@ -436,8 +434,8 @@ std::string CLogger::MakeMessage(const CLogMessage<Args...>& log_message) const
 		}
 		case ELogConfig::LOG_LEVEL:
 		{
-			stream << "[" << LogLevelToString(log_message.GetLogLevel())
-				<< "]" << delimiter;
+			stream << "[" + LogLevelToString(log_message.GetLogLevel())
+				+ "]" << delimiter;
 			break;
 		}
 		case ELogConfig::PARAMS:
