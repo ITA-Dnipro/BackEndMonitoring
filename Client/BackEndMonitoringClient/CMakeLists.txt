@@ -1,9 +1,14 @@
+#----------------------------------- CMAKE SETTINGS ------------------------------------#
+
 cmake_minimum_required(VERSION 3.17)
 project(BackEndMonitoring)
 
-link_directories(${CMAKE_BINARY_DIR}/CLogger)
-link_directories(.)
-link_directories(${CMAKE_BINARY_DIR}/Sockets)
+#------------------------------ SRC/INCLUDE DIRS' VARS --------------------------------#
+
+set(CLIENT_SRC_DIR ${CMAKE_SOURCE_DIR}/Client/BackEndMonitoringClient/src)
+
+#------------------------------------ INCLUDE DIRS -------------------------------------#
+
 
 include_directories(${CMAKE_SOURCE_DIR}
 		${NLOHMANN_JSON_INCLUDE_DIR}
@@ -14,7 +19,7 @@ include_directories(${CMAKE_SOURCE_DIR}
 		${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/include
 		${CMAKE_SOURCE_DIR}/utils/include)
 
-set(CLIENT_SRC_DIR ${CMAKE_SOURCE_DIR}/Client/BackEndMonitoringClient/src)
+#--------------------------------- EXECUTE CONFIGS -------------------------------------#
 
 add_library(Client
 		${UTILS_SRC_DIR}/CReadFileWrapper.cpp
@@ -24,7 +29,8 @@ add_library(Client
 		${UTILS_SRC_DIR}/CStringCleaner.cpp
 		${CLIENT_SRC_DIR}/CClientController.cpp)
 
-# Link these libraries to this build
+#----------------------------------- TARGET LIBS ---------------------------------------#
+
 target_link_libraries(Client CLogger)
 target_link_libraries(Client Guid)
 target_link_libraries(Client Sockets)
