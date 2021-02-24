@@ -120,16 +120,6 @@ TEST_F(CNumericTypesParserTestFixture, AsNaturalDoubleZeroFail)
 	ASSERT_FALSE(parser->AsNaturalNumber(result));
 }
 
-TEST_F(CNumericTypesParserTestFixture, AsNaturalDoubleFail)
-{
-	const auto str = std::to_string(this->floatTest);
-	const auto parser = std::make_unique<CNumericTypesParser>(str);
-	double result;
-
-	ASSERT_FALSE(parser->AsNaturalNumber(result));
-}
-
-
 TEST_F(CNumericTypesParserTestFixture, AsNaturalDoubleStringFail)
 {
 	const auto parser = std::make_unique<CNumericTypesParser>(this->failStringTest);
@@ -164,15 +154,6 @@ TEST_F(CNumericTypesParserTestFixture, AsNaturalLongDoubleZeroFail)
 	ASSERT_FALSE(parser->AsNaturalNumber(result));
 }
 
-TEST_F(CNumericTypesParserTestFixture, AsNaturalLongDoubleFail)
-{
-	const auto str = std::to_string(this->floatTest);
-	const auto parser = std::make_unique<CNumericTypesParser>(str);
-	long double result;
-
-	ASSERT_FALSE(parser->AsNaturalNumber(result));
-}
-
 TEST_F(CNumericTypesParserTestFixture, AsNaturalLongDoubleStringFail)
 {
 	const auto parser = std::make_unique<CNumericTypesParser>(this->failStringTest);
@@ -201,15 +182,6 @@ TEST_F(CNumericTypesParserTestFixture, AsNaturalFloatNegativeFail)
 TEST_F(CNumericTypesParserTestFixture, AsNaturalFloatZeroFail)
 {
 	const auto str = std::to_string(this->zeroTest);
-	const auto parser = std::make_unique<CNumericTypesParser>(str);
-	float result;
-
-	ASSERT_FALSE(parser->AsNaturalNumber(result));
-}
-
-TEST_F(CNumericTypesParserTestFixture, AsNaturalFloatFail)
-{
-	const auto str = std::to_string(this->floatTest);
 	const auto parser = std::make_unique<CNumericTypesParser>(str);
 	float result;
 
