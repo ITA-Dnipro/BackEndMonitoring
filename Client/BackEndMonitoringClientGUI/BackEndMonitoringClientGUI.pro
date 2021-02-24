@@ -3,9 +3,6 @@ QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 CONFIG += c++17
-QMAKE_CXXFLAGS += /Zc:preprocessor
-DEFINES -= UNICODE
-DEFINES -= _UNICODE
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -38,6 +35,7 @@ SOURCES += \
     CConnectionErrorDialog.cpp \
     stadafx.cpp \
     $$PWD/../../utils/include/Utils.cpp \
+    $$PWD/../../utils/include/CRequestFrame.cpp \
     ../BackEndMonitoringClient/src/CClientController.cpp \
     CConnectionDialog.cpp \
     CDrivesGraph.cpp \
@@ -58,10 +56,13 @@ FORMS += \
     CMainWindow.ui \
     CRequestDialog.ui
 
+RC_ICONS = monitor.ico
 
+win32: {
+    QMAKE_CXXFLAGS += /Zc:preprocessor
+    DEFINES -= UNICODE
+    DEFINES -= _UNICODE
 
-CONFIG(win32, unix|win32)
-{
     QMAKE_CXXFLAGS_RELEASE += -MD
     QMAKE_CFLAGS_RELEASE += -MD
 
@@ -69,65 +70,64 @@ CONFIG(win32, unix|win32)
     QMAKE_CFLAGS_DEBUG += -MDd
 
     CONFIG(debug, debug|release){
-        unix|win32: LIBS += -L$$PWD/../../packages/Client/Debug/x64/ -lBackEndMonitoringClient
+        win32: LIBS += -L$$PWD/../../packages/Client/Debug/x64/ -lBackEndMonitoringClient
         INCLUDEPATH += $$PWD/../BackEndMonitoringClient/include
         DEPENDPATH += $$PWD/../BackEndMonitoringClient/include
         win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Client/Debug/x64/BackEndMonitoringClient.lib
-        else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Client/Debug/x64/libBackEndMonitoringClient.a
+        else:win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Client/Debug/x64/libBackEndMonitoringClient.a
 
 
-        unix|win32: LIBS += -L$$PWD/../../packages/Sockets/Debug/x64/ -lBackEndMonitoringSockets
+        win32: LIBS += -L$$PWD/../../packages/Sockets/Debug/x64/ -lBackEndMonitoringSockets
         INCLUDEPATH += $$PWD/../../Sockets/BackEndMonitoringSockets/include
         DEPENDPATH += $$PWD/../../Sockets/BackEndMonitoringSockets/include
         win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Sockets/Debug/x64/BackEndMonitoringSockets.lib
-        else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Sockets/Debug/x64/libBackEndMonitoringSockets.a
+        else:win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Sockets/Debug/x64/libBackEndMonitoringSockets.a
 
 
-        unix|win32: LIBS += -L$$PWD/../../packages/CLogger/Debug/x64/ -lCLogger
+        win32: LIBS += -L$$PWD/../../packages/CLogger/Debug/x64/ -lCLogger
         INCLUDEPATH += $$PWD/../../CLogger/include
         DEPENDPATH += $$PWD/../../CLogger/include
 
 
-        unix|win32: LIBS += -L$$PWD/../../packages/Guid/Debug/x64/ -lGuid
+        win32: LIBS += -L$$PWD/../../packages/Guid/Debug/x64/ -lGuid
 
         INCLUDEPATH += $$PWD/../../Guid/include
         DEPENDPATH += $$PWD/../../Guid/include
 
         win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Guid/Debug/x64/Guid.lib
-        else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Guid/Debug/x64/libGuid.a
+        else:win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Guid/Debug/x64/libGuid.a
     }
 
     CONFIG(release, debug|release)
     {
-        unix|win32: LIBS += -L$$PWD/../../packages/Client/Release/x64/ -lBackEndMonitoringClient
+        win32: LIBS += -L$$PWD/../../packages/Client/Release/x64/ -lBackEndMonitoringClient
         INCLUDEPATH += $$PWD/../BackEndMonitoringClient/include
         DEPENDPATH += $$PWD/../BackEndMonitoringClient/include
         win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Client/Release/x64/BackEndMonitoringClient.lib
-        else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Client/Release/x64/libBackEndMonitoringClient.a
+        else:win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Client/Release/x64/libBackEndMonitoringClient.a
 
 
-        unix|win32: LIBS += -L$$PWD/../../packages/Sockets/Release/x64/ -lBackEndMonitoringSockets
+        win32: LIBS += -L$$PWD/../../packages/Sockets/Release/x64/ -lBackEndMonitoringSockets
         INCLUDEPATH += $$PWD/../../Sockets/BackEndMonitoringSockets/include
         DEPENDPATH += $$PWD/../../Sockets/BackEndMonitoringSockets/include
         win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Sockets/Release/x64/BackEndMonitoringSockets.lib
-        else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Sockets/Release/x64/libBackEndMonitoringSockets.a
+        else:win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Sockets/Release/x64/libBackEndMonitoringSockets.a
 
 
-        unix|win32: LIBS += -L$$PWD/../../packages/CLogger/Release/x64/ -lCLogger
+        win32: LIBS += -L$$PWD/../../packages/CLogger/Release/x64/ -lCLogger
         INCLUDEPATH += $$PWD/../../CLogger/include
         DEPENDPATH += $$PWD/../../CLogger/include
 
 
-        unix|win32: LIBS += -L$$PWD/../../packages/Guid/Release/x64/ -lGuid
+        win32: LIBS += -L$$PWD/../../packages/Guid/Release/x64/ -lGuid
         INCLUDEPATH += $$PWD/../../Guid/include
         DEPENDPATH += $$PWD/../../Guid/include
         win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Guid/Release/x64/Guid.lib
-        else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Guid/Release/x64/libGuid.a
+        else:win32-g++: PRE_TARGETDEPS += $$PWD/../../packages/Guid/Release/x64/libGuid.a
     }
 }
 
-CONFIG(win32, unix|win32)
-{
+unix: !macx {
     unix:!macx: LIBS += -L$$PWD/../../CLogger/ -lCLogger
     INCLUDEPATH += $$PWD/../../CLogger
     DEPENDPATH += $$PWD/../../CLogger
@@ -150,9 +150,7 @@ CONFIG(win32, unix|win32)
     unix:!macx: PRE_TARGETDEPS += $$PWD/../BackEndMonitoringClient/libClient.a
 }
 
-RC_ICONS = monitor.ico
-
-
-
-
-
+    unix:!macx: LIBS += -L$$PWD/../../../../../../lib/x86_64-linux-gnu/ -luuid
+    INCLUDEPATH += $$PWD/../../../../../../usr/include/uuid
+    DEPENDPATH += $$PWD/../../../../../../usr/include/uuid
+    unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../../../lib/x86_64-linux-gnu/libuuid.a
