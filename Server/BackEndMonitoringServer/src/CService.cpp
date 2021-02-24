@@ -125,20 +125,16 @@ bool CService::InitializeLogger(
 
     if (m_log_stream->is_open())
     {
-        CLOG_CREATION_START( );
+		CLOG_CREATION_START();
 
-        CLOG_CREATION_SET_LOG_NAME("Logger");
+		CLOG_CREATION_SET_LOG_NAME("Service Logger");
         CLOG_CREATION_SET_LOG_LEVEL(level);
-        CLOG_CREATION_SET_LOG_CONFIG(
-            ELogConfig::LOG_NAME,
-            ELogConfig::LOG_LEVEL,
-            ELogConfig::CALL_TIME,
-            ELogConfig::THREAD_ID,
-            ELogConfig::FILE_NAME,
-            ELogConfig::FUNCTION_NAME,
-            ELogConfig::LINE_NUMBER,
-            ELogConfig::MESSAGE,
-            ELogConfig::PARAMS);
+		CLOG_CREATION_SET_LOG_FLUSH(ELogFlush::FLUSH);
+		CLOG_CREATION_SET_LOG_CONFIG(
+			ELogConfig::THREAD_ID, ELogConfig::CALL_TIME,
+			ELogConfig::LOG_LEVEL, ELogConfig::MESSAGE,
+			ELogConfig::FUNCTION_NAME, ELogConfig::PARAMS);
+
 
         CLOG_CREATION_ADD_SAFE_STREAM(*m_log_stream);
 

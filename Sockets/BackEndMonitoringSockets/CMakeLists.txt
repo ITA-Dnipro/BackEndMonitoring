@@ -11,7 +11,7 @@ set(SOCKETS_SRC_DIR ${CMAKE_SOURCE_DIR}/Sockets/BackEndMonitoringSockets/src)
 
 include_directories(${CMAKE_SOURCE_DIR}
 		${NLOHMANN_JSON_INCLUDE_DIR}
-#		${CMAKE_SOURCE_DIR}/3rdParty/include
+		${GUID_INCLUDE_DIR}
 		${CMAKE_SOURCE_DIR}/Sockets/BackEndMonitoringSockets/include
 		${CMAKE_SOURCE_DIR}/CLogger/include
 		${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/include

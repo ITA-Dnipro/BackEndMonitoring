@@ -27,13 +27,8 @@ bool CClientController::MakeRequest(std::string& message, ERequestType req_typ,
 
 	if (is_connected)
 	{
-        if (!m_connector->MakeRequest(message, req_typ, EFrameError::NONE, spec_typ, date_of_start,
-                                      date_of_end))
-		{
-			return false;
-		}
-
-		return true;
+		return m_connector->MakeRequest(message, req_typ, EFrameError::NONE, spec_typ, date_of_start,
+			date_of_end);
 	}
 	CLOG_DEBUG_END_FUNCTION();
 

@@ -13,6 +13,7 @@ include_directories(${CMAKE_SOURCE_DIR}
 		${PUGIXML_INCLUDE_DIR}
 		${NLOHMANN_JSON_INCLUDE_DIR}
 		${UTILS_INCLUDE_DIR}
+		${GUID_INCLUDE_DIR}
 		${CMAKE_SOURCE_DIR}/Server/BackEndMonitoringServer/include
 		${CMAKE_SOURCE_DIR}/CLogger/include
 		${CMAKE_SOURCE_DIR}/Sockets/BackEndMonitoringSockets/include)
@@ -68,6 +69,8 @@ add_executable(Server
 		${SERVER_SRC_DIR}/CProcessesInfoJSONDatabase.cpp
 		${SERVER_SRC_DIR}/CDrivesInfoJSONDatabase.cpp
 		${SERVER_SRC_DIR}/CResourcesInfoJSONDatabase.cpp)
+
+set_target_properties(Server PROPERTIES OUTPUT_NAME "Client")
 
 #----------------------------------- TARGET LIBS ---------------------------------------#
 

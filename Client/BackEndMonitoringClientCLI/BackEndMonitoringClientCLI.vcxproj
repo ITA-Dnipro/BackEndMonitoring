@@ -76,9 +76,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <TargetName>Client</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>Client</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -86,6 +88,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>Client</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -124,7 +127,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)packages\Guid\$(Configuration)\x86\;$(SolutionDir)packages\Client\$(Configuration)\x86\;$(SolutionDir)packages\Sockets\$(Configuration)\x86\;$(SolutionDir)packages\CLogger\$(Configuration)\x86\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Guid.lib;CLogger.lib;BackendMonitoringSockets.lib;Wsock32.lib;Ws2_32.lib;BackendMonitoringClient.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;../../packages/crossguid/crossguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Guid.lib;CLogger.lib;BackendMonitoringSockets.lib;Wsock32.lib;Ws2_32.lib;BackendMonitoringClient.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)packages\CLogger\$(Configuration)\x86\CLogger.dll" "$(OutDir)"</Command>
@@ -177,6 +180,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\utils\include\CRequestFrame.cpp" />
+    <ClCompile Include="..\..\utils\include\CResponseHandler.cpp" />
     <ClCompile Include="..\..\utils\include\CStringCleaner.cpp" />
     <ClCompile Include="..\..\utils\include\WindowsUtils.cpp" />
     <ClCompile Include="..\BackEndMonitoringClient\src\stdafx.cpp">
@@ -192,6 +196,7 @@
     <ClCompile Include="src\ClientUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\utils\include\CResponseHandler.h" />
     <ClInclude Include="..\..\utils\include\CStringCleaner.h" />
     <ClInclude Include="..\..\utils\include\PlatformUtils.h" />
     <ClInclude Include="..\..\utils\include\stdafx.h" />
@@ -204,6 +209,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CLogger\CLogger.vcxproj">
+      <Project>{1604205a-fbeb-45dc-b262-6c219fe87d8d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Guid\Guid.vcxproj">
+      <Project>{c98cd3c8-415c-4fd3-a244-19fca29ee627}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sockets\BackEndMonitoringSockets\BackEndMonitoringSockets.vcxproj">
+      <Project>{91dd7f62-f437-4b75-b563-6750346f1b1c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\BackEndMonitoringClient\BackEndMonitoringClient.vcxproj">
+      <Project>{753765df-b310-4626-a659-86490d3df917}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

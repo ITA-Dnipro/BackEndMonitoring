@@ -7,7 +7,7 @@ enum class EFrameError;
 class CResponseHandler : public CInteractionHandler
 {
 public:
-	CResponseHandler();
+	CResponseHandler() = default;
 	CResponseHandler(const CResponseHandler&) = delete;
 	CResponseHandler(CResponseHandler&&) = delete;
 

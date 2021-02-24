@@ -7,7 +7,7 @@
 CClientView::CClientView(std::ostream& out_console, std::ostream& out_file, 
 	std::istream& in) : m_console_stream(out_console),
 	m_file_stream(out_file), m_input_stream(in),
-	m_should_write_file(true)
+	m_should_write_file(false)
 { }
 
 void CClientView::PrintMenu(bool is_table_mode, bool date_range_mode) const
@@ -24,7 +24,7 @@ void CClientView::PrintMenu(bool is_table_mode, bool date_range_mode) const
 	
 		<< "\t\x1b[1;32m[\x1b[1;31mnon stop\x1b[1;32m]\x1b[0m         "
 				<< "make requests to the server non-stop \x1b[1;33m(all data)\x1b[0m\n"
-		<< "\t\x1b[1;32m[\x1b[1;31mall stored info\x1b[1;32m]\x1b[0m         "
+		<< "\t\x1b[1;32m[\x1b[1;31mall stored info\x1b[1;32m]\x1b[0m  "
 		<< "make request of all stored info from the server \x1b[1;33m(all data)\x1b[0m\n\n"
 	
 		<< "\t\x1b[1;32m[\x1b[1;31mdate mode\x1b[1;32m]\x1b[0m        " << "change request mode \x1b[1;33m(current: \x1b[1;36m"
@@ -64,22 +64,22 @@ EClientRequests CClientView::GetRequest() const
 	return EClientRequests::ERR;
 }
 
-void CClientView::PrintMessage(const std::string& result) const
+void CClientView::PrintMessage(const std::string& message) const
 {
-	m_console_stream << result;
+	m_console_stream << message << std::endl;
 	if(m_should_write_file)
 	{
-		m_file_stream << result << std::endl;
+		m_file_stream << message << std::endl;
 	}
 }
 
 void CClientView::PrintError() const
 {
 	std::string err_message = "Sorry, you entered something wrong :(\n";
-	m_console_stream << err_message;
+	m_console_stream << err_message << std::endl;
 	if (m_should_write_file)
 	{
-		m_file_stream << err_message;
+		m_file_stream << err_message << std::endl;
 	}
 }
 

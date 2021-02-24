@@ -1,6 +1,0 @@
-
-Cannot parse response from the server
-
-
-Goodbye
-

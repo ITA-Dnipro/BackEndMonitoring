@@ -5,9 +5,6 @@
 
 #include "CResponseHandler.h"
 
-CResponseHandler::CResponseHandler() : CInteractionHandler()
-{ }
-
 bool CResponseHandler::HandleResponse(const std::string& guid, 
     const std::string &response, std::string& var_storage)
 {
@@ -52,9 +49,10 @@ bool CResponseHandler::TryValidate(const std::string& guid,
 {
     std::vector<bool> answer;
     nlohmann::json response = nlohmann::json::parse(response_str);
-    
+    m_num_of_pairs_in_json = 0;
     for (const auto& [key, value] : response.items())
     {
+        ++m_num_of_pairs_in_json;
         if (GlobalVariable::c_request_key_id == key)
         {
             answer.emplace_back(true);
@@ -76,7 +74,8 @@ bool CResponseHandler::TryValidate(const std::string& guid,
         answer.emplace_back(true);
     }
 
-    return 4 == answer.size();
+    return (GlobalVariable::num_of_pair_in_response == m_num_of_pairs_in_json)
+        && (4 == answer.size());
 }
 
 EFrameError CResponseHandler::DetermineErrorInResponse(

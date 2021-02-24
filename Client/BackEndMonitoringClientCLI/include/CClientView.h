@@ -13,7 +13,7 @@ public:
 
 	void PrintMenu(bool is_table_mode, bool date_range_mode) const;
 	EClientRequests GetRequest() const;
-	void PrintMessage(const std::string& result) const;
+	void PrintMessage(const std::string& message) const;
 	void PrintError() const;
 	void SetIsWritingFile(bool status);
 	bool GetIsWritingFile() const;

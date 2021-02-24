@@ -26,7 +26,17 @@ CRequestHandler::CRequestHandler(const CRequestHandler& orig) :
 bool CRequestHandler::HandleRequest(const std::string& request_str, 
     std::string& answer)
 {
-    nlohmann::json request = nlohmann::json::parse(request_str);
+    nlohmann::json request;
+	try
+	{
+        request = nlohmann::json::parse(request_str);
+		
+	}
+	catch(...)
+	{
+        CLOG_ERROR("Incorrect request!!!");
+        return false;
+	}
     CResponseFrame response(request[GlobalVariable::c_request_key_id]);
     CLOG_DEBUG_START_FUNCTION();
     try
@@ -49,41 +59,26 @@ bool CRequestHandler::HandleRequest(const std::string& request_str,
             CLOG_ERROR("Invalid request from the client!!!");
             return false;
         }
+        ERequestType req_typ = AnalyzeRequestType(request);
 
-        switch (AnalyzeRequestType(request))
+        std::shared_ptr<IRequestExc> request_hahdler;
+
+        switch (req_typ)
         {
         case ERequestType::ALL_DATA:
-            if (!ExecuteRequest(answer, std::make_shared<CRequestExcAllData>(
-                request_str, std::make_shared<CDataProvider>(m_data_base))))
-            {
-                response.TryFormateResponse(answer, "",
-                    EFrameError::INCORRECT_REQUEST); 
-                return false;
-            }
+            request_hahdler = std::make_shared<CRequestExcAllData>(
+                request_str, std::make_shared<CDataProvider>(m_data_base));
             CLOG_DEBUG("All data request from the client");
-
             break;
         case ERequestType::DISKS_DATA:
-            if(!ExecuteRequest(answer, std::make_shared<CRequestExcDiskData>(
-                request_str, std::make_shared<CDataProvider>(m_data_base))))
-            {
-                response.TryFormateResponse(answer, "",
-                    EFrameError::INCORRECT_REQUEST); 
-                return false;
-            }
+            request_hahdler = std::make_shared<CRequestExcDiskData>(
+                request_str, std::make_shared<CDataProvider>(m_data_base));
             CLOG_DEBUG("Disks data request from the client");
-
             break;
         case ERequestType::PROCESSES_DATA:
-            if(!ExecuteRequest(answer, std::make_shared<CRequestExcProcessData>(
-                request_str, std::make_shared<CDataProvider>(m_data_base))))
-            {
-                response.TryFormateResponse(answer, "",
-                    EFrameError::INCORRECT_REQUEST); 
-                return false;
-            }
+            request_hahdler = std::make_shared<CRequestExcProcessData>(
+                request_str, std::make_shared<CDataProvider>(m_data_base));
             CLOG_DEBUG("Processes data request from the client");
-
             break;
         default:
         {
@@ -93,15 +88,20 @@ bool CRequestHandler::HandleRequest(const std::string& request_str,
             return false;
         }
         }
+        if (!ExecuteRequest(answer, request_hahdler))
+        {
+            response.TryFormateResponse(answer, "",
+                EFrameError::INCORRECT_REQUEST);
+        }
+
     }
-    // todo: kind of exceptio
     catch (...)
     {
         return response.TryFormateResponse(answer, answer, 
             EFrameError::INCORRECT_REQUEST);
     }
     CLOG_DEBUG_END_FUNCTION();
-    // could be a problem
+
     return response.TryFormateResponse(answer, answer, EFrameError::NONE);
 }
 
@@ -117,8 +117,11 @@ bool CRequestHandler::TryValidateRequest(const std::string& request_str)
 {
     std::vector<bool> answer;
         nlohmann::json request = nlohmann::json::parse(request_str);
+
+        m_num_of_pairs_in_json = 0;
     for (const auto& [key, value] : request.items())
     {
+        ++m_num_of_pairs_in_json;
         if (GlobalVariable::c_request_key_id == key)
         {
             answer.emplace_back(true);
@@ -137,7 +140,8 @@ bool CRequestHandler::TryValidateRequest(const std::string& request_str)
     }
 
     //false if not valid
-    return 3 == answer.size();
+    return (GlobalVariable::max_num_of_pair_in_request >= 
+        m_num_of_pairs_in_json) && (3 == answer.size());
 }
 
 ERequestType CRequestHandler::AnalyzeRequestType(const nlohmann::json& request) 
