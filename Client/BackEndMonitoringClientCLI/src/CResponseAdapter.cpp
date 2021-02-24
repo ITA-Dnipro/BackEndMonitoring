@@ -34,17 +34,16 @@ std::string CResponseAdapter::ConvertDiskInfo(const std::string& response,
 	bool is_table_mode) const
 {
 	nlohmann::json json_response = nlohmann::json::parse(response);
-	//nlohmann::json parsed_drives = json_response[0]["info"];
 
-	std::string response_disk;// = json_response[0]["date"].get<std::string>();
-	//response_disk += "\n";
+	std::string response_disk = json_response[0]["date"];
+
 	if(is_table_mode)
 	{
-		response_disk.append(MakeDiskTable(json_response));
+		response_disk = MakeDiskTable(json_response);
 	}
 	else
 	{
-		response_disk.append(json_response.dump(2));
+		response_disk = json_response.dump(2);
 	}
 
 	return response_disk;
@@ -101,7 +100,6 @@ std::string CResponseAdapter::ConvertProcessesInfo(const std::string& response,
 	}
 	else
 	{
-		converted_processes.append(parsed_processes[0]["date"].get<std::string>());
 		converted_processes.append(json_proc.get<std::string>());
 	}
 

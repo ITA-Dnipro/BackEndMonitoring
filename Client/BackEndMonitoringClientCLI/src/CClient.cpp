@@ -96,14 +96,14 @@ void CClient::Execute(const int arg_num, char** arguments)
 
 	} while (result && client_request != EClientRequests::EXIT);
 
-	m_printer->PrintMessage("Goodbye\n");
+	m_printer->PrintMessage("Connection closed\n");
 	CLOG_DEBUG_END_FUNCTION();
 }
 
 bool CClient::MakeCycleOfRequests()
 {
 	ERequestType request = ERequestType::ALL_DATA;
-	bool result = false;
+	bool result = true;
 	std::string message;
 	for (unsigned i = 1u; i <= 10u; ++i)
 	{
@@ -116,8 +116,9 @@ bool CClient::MakeCycleOfRequests()
 			PrintMessage(message, request);
 			message.clear();
 		}
-		if (!result)
+		if (!result || message.empty())
 		{
+			result = false;
 			break;
 		}
 		std::this_thread::sleep_for(std::chrono::seconds(5));
@@ -129,17 +130,21 @@ bool CClient::MakeNonStopRequests()
 {
 	int counter = 0;
 	ERequestType request = ERequestType::ALL_DATA;
-	bool result = false;
+	bool result = true;
 	std::string message;
-	while (true)
+	while (result)
 	{
 		result = m_controller->MakeRequest(message, request,
 			ERequestRangeSpecification::LAST_DATA);
-		if (!message.empty())
+		if (result && !message.empty())
 		{
 			m_printer->PrintMessage("\n\t\t\t" + std::to_string(++counter) + "\n");
 			PrintMessage(message, request);
 			message.clear();
+		}
+		else
+		{
+			break;
 		}
 		std::this_thread::sleep_for(std::chrono::seconds(5));
 	}

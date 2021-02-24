@@ -1,6 +1,5 @@
 #pragma once
 #include "ERequestType.h"
-#include "CResponseHandler.h"
 
 class CResponseAdapter
 {
@@ -19,6 +18,4 @@ private:
 	std::string ConvertProcessesInfo(const std::string& response, bool is_table_mode) const;
 	std::string MakeDiskTable(const nlohmann::json& disk_info) const;
 	std::string MakeProcTable(const nlohmann::json& proc_info) const;
-
-	CResponseHandler m_response_handler;
 };
